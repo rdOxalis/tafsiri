@@ -64,6 +64,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `ocrError` transient state flag; `TranslatorScreen` upgraded to `ConsumerWidget` with `ref.listen`
 - `isOcrProcessing` drives spinner on image button and disables it during processing
 - `ocrSourceCamera` / `ocrSourceGallery` strings added to all 11 ARB files
+- Launcher icon: two speech bubbles with translation arrow on teal background (SVG source in `assets/icon/`), all Android mipmap densities generated via `flutter_launcher_icons`
 - Dark theme support: `ThemeData` for both light and dark brightness, `ThemeMode.system`
 - Refined `AppBarTheme` (elevation 0, `scrolledUnderElevation: 1`), `CardThemeData`, `InputDecorationTheme`, floating `SnackBarThemeData`
 

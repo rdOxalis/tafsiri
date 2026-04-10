@@ -106,7 +106,7 @@
 - [x] [12.1] M  Error-handling audit: noApiKey/apiError/networkError in OutputArea; OCR SnackBar; STT button disabled when unavailable — all wired (2026-04-10)
 - [x] [12.2] S  `lib/core/constants.dart` — all magic strings, PayPal URL, STT locale map complete (2026-04-10)
 - [x] [12.3] S  Final `ThemeData` in `app.dart` — dark/light scheme, `ThemeMode.system`, AppBar/Card/Input/SnackBar themes (2026-04-10)
-- [ ] [12.4] S  Launcher icon — deferred: requires designer-supplied icon asset (mipmap-* folders or flutter_launcher_icons)
+- [x] [12.4] S  Launcher icon — SVG designed (two speech bubbles + arrow, teal), exported to 1024×1024 PNG, all mipmap densities generated via `flutter_launcher_icons` (2026-04-10)
 - [x] [12.5] M  l10n completeness pass — all 11 ARB files verified (43 keys each, en/en_GB 85 with @-metadata) (2026-04-10)
 - [x] [12.6] S  `flutter analyze` — zero warnings/lints ✓ (2026-04-10)
 - [x] [12.7] M  Full test suite — 44/44 passing (2026-04-10)

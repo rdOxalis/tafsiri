@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background: rounded square, teal -->
+  <rect width="512" height="512" rx="112" ry="112" fill="#00897B"/>
+
+  <!-- Left speech bubble (solid white) -->
+  <path d="
+    M 108 148
+    A 44 44 0 0 1 152 104
+    L 284 104
+    A 44 44 0 0 1 328 148
+    L 328 238
+    A 44 44 0 0 1 284 282
+    L 180 282
+    L 140 322
+    L 148 282
+    L 152 282
+    A 44 44 0 0 1 108 238
+    Z
+  " fill="white"/>
+
+  <!-- Right speech bubble (outline white, tail on top-right) -->
+  <path d="
+    M 184 274
+    A 44 44 0 0 0 228 318
+    L 332 318
+    L 340 358
+    L 372 318
+    L 360 318
+    A 44 44 0 0 0 404 274
+    L 404 184
+    A 44 44 0 0 0 360 140
+    L 336 140
+  " fill="none" stroke="white" stroke-width="26" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Arrow left-to-right inside left bubble -->
+  <line x1="158" y1="193" x2="272" y2="193" stroke="#00897B" stroke-width="22" stroke-linecap="round"/>
+  <polyline points="248,170 278,193 248,216" fill="none" stroke="#00897B" stroke-width="22" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>
