@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Taleinntasting er ikke tilgjengelig på denne enheten.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Kamera",
+  "ocrSourceGallery": "Galleri"
 }

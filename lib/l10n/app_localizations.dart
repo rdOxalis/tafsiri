@@ -354,6 +354,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'ChatGPT'**
   String get providerOpenAI;
+
+  /// Bottom sheet option to pick image from camera
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Camera'**
+  String get ocrSourceCamera;
+
+  /// Bottom sheet option to pick image from gallery
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Gallery'**
+  String get ocrSourceGallery;
 }
 
 class _AppLocalizationsDelegate

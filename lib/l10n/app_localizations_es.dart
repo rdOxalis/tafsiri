@@ -131,4 +131,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
+
+  @override
+  String get ocrSourceCamera => 'Cámara';
+
+  @override
+  String get ocrSourceGallery => 'Galería';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../l10n/app_localizations.dart';
 import '../translator_controller.dart';
 
@@ -15,6 +16,8 @@ class ActionBar extends ConsumerWidget {
         ref.watch(translatorProvider.select((s) => s.isSttAvailable));
     final isListening =
         ref.watch(translatorProvider.select((s) => s.isListening));
+    final isOcrProcessing =
+        ref.watch(translatorProvider.select((s) => s.isOcrProcessing));
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -29,13 +32,22 @@ class ActionBar extends ConsumerWidget {
                 : null,
             onPressed: (isLoading || !isSttAvailable)
                 ? null
-                : () => ref.read(translatorProvider.notifier).toggleListening(),
+                : () =>
+                    ref.read(translatorProvider.notifier).toggleListening(),
           ),
-          // Image — stub, wired in Phase 11
+          // Image / OCR
           IconButton(
             tooltip: l10n.imageButton,
-            icon: const Icon(Icons.image),
-            onPressed: isLoading ? null : () {},
+            icon: isOcrProcessing
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.image),
+            onPressed: (isLoading || isOcrProcessing)
+                ? null
+                : () => _showImageSourceSheet(context, ref, l10n),
           ),
           const Spacer(),
           FilledButton.icon(
@@ -53,6 +65,43 @@ class ActionBar extends ConsumerWidget {
                 : () => ref.read(translatorProvider.notifier).translate(),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showImageSourceSheet(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: Text(l10n.ocrSourceCamera),
+              onTap: () {
+                Navigator.pop(ctx);
+                ref.read(translatorProvider.notifier).pickImageAndRecognize(
+                      source: ImageSource.camera,
+                    );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: Text(l10n.ocrSourceGallery),
+              onTap: () {
+                Navigator.pop(ctx);
+                ref.read(translatorProvider.notifier).pickImageAndRecognize(
+                      source: ImageSource.gallery,
+                    );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

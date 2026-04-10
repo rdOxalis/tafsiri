@@ -119,5 +119,11 @@
   "@providerClaude": { "description": "Display name for the Claude provider" },
 
   "providerOpenAI": "ChatGPT",
-  "@providerOpenAI": { "description": "Display name for the OpenAI provider" }
+  "@providerOpenAI": { "description": "Display name for the OpenAI provider" },
+
+  "ocrSourceCamera": "Camera",
+  "@ocrSourceCamera": { "description": "Bottom sheet option to pick image from camera" },
+
+  "ocrSourceGallery": "Gallery",
+  "@ocrSourceGallery": { "description": "Bottom sheet option to pick image from gallery" }
 }

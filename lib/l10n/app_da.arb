@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Taleindtastning er ikke tilgængelig på denne enhed.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Kamera",
+  "ocrSourceGallery": "Galleri"
 }

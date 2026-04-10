@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Spraakinvoer is niet beschikbaar op dit apparaat.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Camera",
+  "ocrSourceGallery": "Galerij"
 }

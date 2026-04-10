@@ -54,6 +54,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Microphone button: idle shows `mic_none`, active shows `mic` in error colour; disabled when STT unavailable
 - Auto-translate triggered on `finalResult == true`; partial words shown live in input field
 - `SpeechListenOptions` used for `cancelOnError` + `partialResults` (speech_to_text v7 API)
+- Image input (OCR): `ActionBar` bottom sheet (Camera / Gallery) → `pickImageAndRecognize()` in controller
+- `google_mlkit_text_recognition` pipeline: pick image → `TextRecognizer.processImage` → set input field
+- No auto-translate on OCR result (ADR-015); empty result or error shows localised SnackBar
+- `ocrError` transient state flag; `TranslatorScreen` upgraded to `ConsumerWidget` with `ref.listen`
+- `isOcrProcessing` drives spinner on image button and disables it during processing
+- `ocrSourceCamera` / `ocrSourceGallery` strings added to all 11 ARB files
 
 ---
 

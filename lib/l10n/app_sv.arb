@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Röstinmatning är inte tillgänglig på den här enheten.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Kamera",
+  "ocrSourceGallery": "Galleri"
 }

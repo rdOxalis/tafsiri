@@ -39,5 +39,7 @@
   "errorSttUnavailable": "La entrada de voz no está disponible en este dispositivo.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Cámara",
+  "ocrSourceGallery": "Galería"
 }

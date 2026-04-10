@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Ingizo la sauti halipatikani kwenye kifaa hiki.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Kamera",
+  "ocrSourceGallery": "Picha"
 }

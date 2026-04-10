@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Wprowadzanie głosowe nie jest dostępne na tym urządzeniu.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Aparat",
+  "ocrSourceGallery": "Galeria"
 }

@@ -130,6 +130,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
+
+  @override
+  String get ocrSourceCamera => 'Camera';
+
+  @override
+  String get ocrSourceGallery => 'Gallery';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -258,4 +264,10 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get providerOpenAI => 'ChatGPT';
+
+  @override
+  String get ocrSourceCamera => 'Camera';
+
+  @override
+  String get ocrSourceGallery => 'Gallery';
 }

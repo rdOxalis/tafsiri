@@ -39,5 +39,7 @@
   "errorSttUnavailable": "Spracheingabe ist auf diesem Gerät nicht verfügbar.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",
-  "providerOpenAI": "ChatGPT"
+  "providerOpenAI": "ChatGPT",
+  "ocrSourceCamera": "Kamera",
+  "ocrSourceGallery": "Galerie"
 }

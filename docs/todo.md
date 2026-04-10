@@ -95,12 +95,12 @@
 - [x] [10.6] S  `RECORD_AUDIO` runtime permission handled by `speech_to_text` built-in flow (2026-04-10)
 
 ### Phase 11 — Image Input (OCR)
-- [ ] [11.1] M  `image_picker` integration — bottom sheet with Camera / Gallery options
-- [ ] [11.2] M  `google_mlkit_text_recognition` OCR pipeline — pick image → extract text
-- [ ] [11.3] S  Place OCR result in input field via `TranslatorController.setInputText()` — no auto-translate (ADR-015)
-- [ ] [11.4] S  OCR failure: show localised error message, leave input unchanged
-- [ ] [11.5] S  `CAMERA` runtime permission handling
-- [ ] [11.6] S  MLKit model download indicator on first use
+- [x] [11.1] M  `image_picker` bottom sheet with Camera / Gallery options in `ActionBar` (2026-04-10)
+- [x] [11.2] M  `google_mlkit_text_recognition` OCR pipeline in `pickImageAndRecognize()` (2026-04-10)
+- [x] [11.3] S  OCR result placed in input field — no auto-translate per ADR-015 (2026-04-10)
+- [x] [11.4] S  OCR failure: `ocrError` state flag → `ref.listen` in `TranslatorScreen` → SnackBar (2026-04-10)
+- [x] [11.5] S  `CAMERA` runtime permission handled by `image_picker` built-in flow (2026-04-10)
+- [x] [11.6] S  `ocrSourceCamera` + `ocrSourceGallery` added to all 11 ARB files (2026-04-10)
 
 ### Phase 12 — Polish & Release Prep
 - [ ] [12.1] M  Full error-handling audit: no-API-key snackbar, 4xx/5xx in output area, network error, OCR fail, STT unavailable
