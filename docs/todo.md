@@ -28,13 +28,13 @@
 - [x] [2.6] S  `flutter gen-l10n` ✓; `flutter analyze` — no issues (2026-04-10)
 
 ### Phase 3 — Settings & Persistence
-- [ ] [3.1] M  Create `SettingsController` (Riverpod) that loads/saves all 7 settings keys on init
-- [ ] [3.2] M  Build `settings_screen.dart`: 3× API key input (obscured + visibility toggle), provider `SegmentedButton`, target/alt lang text fields, locale dropdown, donate button
-- [ ] [3.3] S  Warning banner when active provider has no API key set
-- [ ] [3.4] S  Donate button with `url_launcher` + PayPal URL from `constants.dart`; localised label via ARB
-- [ ] [3.5] S  Connect locale dropdown to `LocaleNotifier` — change is live immediately
-- [ ] [3.6] S  Navigation to/from Settings screen (bottom nav or app bar action)
-- [ ] [3.7] M  Unit tests for `SettingsController` — verify all keys persist and reload correctly
+- [x] [3.1] M  `SettingsController` (Riverpod `AsyncNotifier`) — 6 prefs keys, `hasApiKeyForActiveProvider`, `activeApiKey` (2026-04-10)
+- [x] [3.2] M  `settings_screen.dart` — API key fields (obscured + toggle), `SegmentedButton`, target/alt lang, locale dropdown, donate (2026-04-10)
+- [x] [3.3] S  Warning banner rendered when `hasApiKeyForActiveProvider == false` (2026-04-10)
+- [x] [3.4] S  Donate button with `url_launcher` + `kPayPalDonateUrl` from `constants.dart` — **TODO: replace placeholder URL** (2026-04-10)
+- [x] [3.5] S  Locale dropdown connected to `LocaleNotifier` — live switch (2026-04-10)
+- [x] [3.6] S  `MainScreen` with `NavigationBar` (Translator / History / Settings); placeholder screens for phases 6 + 8 (2026-04-10)
+- [x] [3.7] M  8 unit tests for `SettingsController` — all green ✓ (2026-04-10)
 
 ### Phase 4 — AI Services
 - [ ] [4.1] S  Create `lib/core/services/ai_service.dart` — abstract `AiService` interface with `translate()` method

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tafsiri/l10n/app_localizations.dart';
 import 'core/locale_notifier.dart';
+import 'shared/widgets/main_screen.dart';
 
 class TafsiriApp extends ConsumerWidget {
   const TafsiriApp({super.key});
@@ -38,11 +39,7 @@ class TafsiriApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('Tafsiri'),
-        ),
-      ),
+      home: const MainScreen(),
     );
   }
 }

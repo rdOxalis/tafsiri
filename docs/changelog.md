@@ -19,6 +19,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Localisation scaffold: 10 ARB files (en_GB, en, sw, de, fr, nl, es, da, nb, sv, pl), 37 foundation strings
 - `AppLocalizations` generated via `flutter gen-l10n`; wired into `MaterialApp`
 - `LocaleNotifier` (Riverpod) for live locale switching backed by `shared_preferences`
+- Settings screen: API key inputs, provider selector, language fields, locale dropdown, donate button
+- `SettingsController` (AsyncNotifier) managing all 6 SharedPreferences keys
+- `MainScreen` with bottom `NavigationBar` (Translator / History / Settings)
+- `lib/core/constants.dart` with all prefs keys, provider names, STT locale map, PayPal URL placeholder
+- 8 unit tests for `SettingsController` — all passing
 
 ---
 
