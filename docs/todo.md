@@ -20,12 +20,12 @@
 - [x] [1.7] S  `flutter build apk --debug` ✓ — fixes: Java 17 (flutter config --jdk-dir), NDK 27.0.12077973, speech_to_text ^7.0.0 (2026-04-10)
 
 ### Phase 2 — Localisation
-- [ ] [2.1] S  Add `generate: true` to `pubspec.yaml`; create `l10n.yaml` (`arb-dir: lib/l10n`, template: `app_en_GB.arb`, output-class: `AppLocalizations`)
-- [ ] [2.2] M  Create `lib/l10n/app_en_GB.arb` as canonical template with all foundation strings (buttons, labels, errors, settings, history, donate)
-- [ ] [2.3] M  Create remaining 9 ARB files (`sw`, `de`, `fr`, `nl`, `es`, `da`, `no`, `sv`, `pl`) with full translations
-- [ ] [2.4] S  Wire `flutter_localizations` into `MaterialApp` (`localizationsDelegates`, `supportedLocales`, `locale` from Riverpod)
-- [ ] [2.5] S  Create `LocaleNotifier` (Riverpod) backed by `shared_preferences` key `app_locale`; exposes `setLocale(String code)`
-- [ ] [2.6] S  Run `flutter gen-l10n`; confirm `AppLocalizations` is importable; smoke test
+- [x] [2.1] S  `generate: true` in `pubspec.yaml` ✓; `l10n.yaml` created (2026-04-10)
+- [x] [2.2] M  `lib/l10n/app_en_GB.arb` — 37 foundation strings across all screens (2026-04-10)
+- [x] [2.3] M  9 ARB files created: sw, de, fr, nl, es, da, nb, sv, pl — note: `app_no.arb` → `app_nb.arb` per ADR-011; `app_en.arb` added as required fallback (2026-04-10)
+- [x] [2.4] S  `flutter_localizations` wired into `MaterialApp` with `localeProvider` (2026-04-10)
+- [x] [2.5] S  `LocaleNotifier` (Riverpod `AsyncNotifier`) in `lib/core/locale_notifier.dart`; `supportedAppLocales` const list (2026-04-10)
+- [x] [2.6] S  `flutter gen-l10n` ✓; `flutter analyze` — no issues (2026-04-10)
 
 ### Phase 3 — Settings & Persistence
 - [ ] [3.1] M  Create `SettingsController` (Riverpod) that loads/saves all 7 settings keys on init
