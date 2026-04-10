@@ -168,3 +168,12 @@
 **Context:** Android users expect apps to respect the system dark/light mode preference. Hardcoding light-only would feel dated on Android 10+.  
 **Decision:** `TafsiriApp` provides both `theme` and `darkTheme` via a shared `_buildTheme(Brightness)` factory, and sets `themeMode: ThemeMode.system`. Seed colour is Material teal `Colors.teal` for both modes.  
 **Consequences:** No user-facing toggle needed — the system preference controls it. Both modes share the same teal identity and are visually consistent.
+
+---
+
+## ADR-020: ProGuard keep rules for google_mlkit_text_recognition release build
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** `flutter build apk --release` failed with R8 errors: the `google_mlkit_text_recognition` plugin references optional script-recognizer classes (Chinese, Devanagari, Japanese, Korean) and Google Play Core split-install classes that are not bundled in the base Latin-script SDK. R8 treats missing references as fatal errors.  
+**Decision:** Add `-dontwarn` rules for all missing classes to `android/app/proguard-rules.pro`. Enable `isMinifyEnabled = true` with `proguardFiles` reference in the release build type. The optional script models are not shipped — the app only uses Latin-script OCR.  
+**Consequences:** Release build succeeds. Optional script recognizers remain unsupported in v1 (out of scope). If Chinese/Japanese/Korean OCR is added in v2, the corresponding SDK dependency must be added and the `-dontwarn` rule removed.

@@ -112,7 +112,7 @@
 - [x] [12.7] M  Full test suite — 44/44 passing (2026-04-10)
 - [x] [12.8] M  `docs/architecture.md` — Mermaid diagrams, module table, DB schema, API table, prompt template (2026-04-10)
 - [x] [12.9] S  `docs/changelog.md` — v1.0.0 entry complete (2026-04-10)
-- [x] [12.10] S `flutter build apk --debug` verified; release build requires production keystore (ADR-016)
+- [x] [12.10] S `flutter build apk --release` ✓ 42.7 MB — ProGuard rules added for MLKit + Play Core; debug keystore used (ADR-016)
 
 ---
 

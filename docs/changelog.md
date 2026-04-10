@@ -9,6 +9,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.1] - 2026-04-10
+
+### Fixed
+- Release APK build: R8 minifier failed on missing MLKit optional script-recognizer classes (Chinese, Devanagari, Japanese, Korean) and Google Play Core split-install classes — added `-dontwarn` rules to `android/app/proguard-rules.pro`
+- `isMinifyEnabled = true` explicitly set in release build type with `proguardFiles` reference
+- `flutter build apk --release` now succeeds: 42.7 MB signed with debug keystore
+
+---
+
 ## [1.0.0] - 2026-04-10
 
 ### Added

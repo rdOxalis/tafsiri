@@ -250,14 +250,24 @@ Customisations:
 ```bash
 # Debug APK (uses debug keystore automatically)
 flutter build apk --debug
-# → build/app/outputs/flutter-apk/app-debug.apk
+# → build/app/outputs/flutter-apk/app-debug.apk  (~124 MB)
 
-# Release APK (requires production keystore — see ADR-016)
+# Release APK (R8 minified, currently signed with debug keystore)
 flutter build apk --release
-# → build/app/outputs/flutter-apk/app-release.apk
+# → build/app/outputs/flutter-apk/app-release.apk  (~42 MB)
 ```
 
-Production keystore is **not** committed to git. Reference via `android/key.properties` (gitignored). See ADR-016.
+### ProGuard / R8
+
+`android/app/proguard-rules.pro` contains `-dontwarn` rules for:
+- `google_mlkit_text_recognition` optional script recognizers (Chinese, Devanagari, Japanese, Korean) — not bundled in the Latin-script base SDK but referenced by the plugin
+- Google Play Core split-install classes — referenced by MLKit's dynamic model download, not used directly
+
+`android/app/build.gradle.kts` release type sets `isMinifyEnabled = true` and references `proguard-rules.pro`.
+
+### Signing
+
+Production keystore is **not** committed to git. Reference via `android/key.properties` (gitignored). Current build uses the debug keystore. See ADR-016.
 
 ---
 
