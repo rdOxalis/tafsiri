@@ -14,7 +14,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Android permissions configured (INTERNET, RECORD_AUDIO, CAMERA, storage)
 - `lib/` directory tree per spec (core, features, shared, l10n)
 - Minimal app shell: `ProviderScope` + `TafsiriApp` (ConsumerWidget, teal theme)
-- `flutter pub get` resolves cleanly (101 packages)
+- `flutter pub get` resolves cleanly; `flutter build apk --debug` succeeds
+- NDK upgraded to 27.0.12077973; `speech_to_text` upgraded to ^7.0.0; Flutter configured with Java 17
 
 ---
 

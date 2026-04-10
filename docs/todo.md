@@ -2,7 +2,7 @@
 
 ## In Progress
 
-- [ ] [1.7] S  `flutter build apk --debug` — abgebrochen wegen schlechter Netzwerkverbindung; neu starten im neuen Netzwerk
+<!-- Move items here when actively working on them -->
 
 ---
 
@@ -17,7 +17,7 @@
 - [x] [1.6] S  Replace default counter app — `main.dart` mit `ProviderScope`, `app.dart` mit `TafsiriApp` (ConsumerWidget, Material3, teal) (2026-04-10)
 - [x] [1.2b] S  `minSdk = 21` in `android/app/build.gradle.kts` (google_mlkit_text_recognition requirement) (2026-04-10)
 - [x] [1.2c] S  `flutter pub get` — 101 Dependencies aufgelöst ✓ (2026-04-10)
-- [ ] [1.7] S  `flutter build apk --debug` — **ausstehend** (Netzwerkwechsel nötig)
+- [x] [1.7] S  `flutter build apk --debug` ✓ — fixes: Java 17 (flutter config --jdk-dir), NDK 27.0.12077973, speech_to_text ^7.0.0 (2026-04-10)
 
 ### Phase 2 — Localisation
 - [ ] [2.1] S  Add `generate: true` to `pubspec.yaml`; create `l10n.yaml` (`arb-dir: lib/l10n`, template: `app_en_GB.arb`, output-class: `AppLocalizations`)
