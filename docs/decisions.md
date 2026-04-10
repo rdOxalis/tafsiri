@@ -87,3 +87,66 @@
 **Context:** App needed a memorable, internationally distinctive name reflecting its core purpose and Swahili focus.  
 **Decision:** "Tafsiri" — Swahili for "translation" (also used as a verb: "to translate"). Derived from Arabic *tafsīr*. Fully established in everyday Swahili (Kenya, Tanzania). Package name: `ke.darkman.tafsiri`.  
 **Consequences:** Strong identity, directly descriptive, fits the `ke.darkman` namespace naturally.
+
+---
+
+## ADR-011: Norwegian locale code — `nb` not `no`
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** Flutter's `supportedLocales` uses IETF BCP-47 tags. Norwegian Bokmål is `nb`, not `no`. Using `no` causes Flutter to fail to match the locale.  
+**Decision:** The ARB filename stays `app_no.arb` (consistent with spec naming convention), but the `Locale` object in `supportedLocales` is `Locale('nb')`. The mapping is documented in `SettingsController`.  
+**Consequences:** Slight mismatch between filename and locale code — acceptable. Must be handled carefully in the locale dropdown (display "Norwegian", value `nb`).
+
+---
+
+## ADR-012: Default AI model per provider
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** The spec does not pin specific model names. Low-cost models are appropriate for translation tasks.  
+**Decision:** Default models: `claude-haiku-4-5` (Anthropic), `gpt-4o-mini` (OpenAI), `mistral-small-latest` (Mistral). Model names are constants in `lib/core/constants.dart`.  
+**Consequences:** Easy to update. Low cost per translation. Quality is sufficient for the target use case.
+
+---
+
+## ADR-013: Source language extraction from AI response via `LANG:xx` prefix
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** The translation prompt returns only the translated text. The controller needs the detected source language to update `lastSourceLang` for STT locale mapping. A separate detection API call would violate ADR-003 (no second round-trip). Returning JSON risks the AI adding preamble.  
+**Decision:** The prompt instructs the AI to respond with exactly: `LANG:[ISO-639-1 code]\n[translated text]`. The controller strips the first line, stores the code as `lastSourceLang`, and displays only the translated text.  
+**Consequences:** Fragile if the AI ignores the format — mitigated by explicit prompt wording ("EXACTLY this format and nothing else"). Fallback: if the prefix is missing, `lastSourceLang` is left unchanged and STT uses the previous locale.
+
+---
+
+## ADR-014: SQLite migration stub from v1
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** The spec defines a v1 schema. Adding columns later without an `onUpgrade` handler causes crashes on existing installs.  
+**Decision:** `db_helper.dart` includes an `onUpgrade` stub (empty body with a comment) at schema version 1. Version is incremented for each future migration.  
+**Consequences:** No immediate cost. Prevents data loss bugs in future updates.
+
+---
+
+## ADR-015: OCR does not auto-translate
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** Voice input (STT) auto-translates on final result because the user's intent is unambiguous — they spoke to translate. OCR text from an image may contain multiple blocks, noise, or unwanted content. The user should review before translating.  
+**Decision:** OCR result is placed in the input field only. The user taps Translate manually.  
+**Consequences:** One extra tap for OCR users. Reduces risk of wasted API calls on poor OCR output.
+
+---
+
+## ADR-016: Release keystore not committed to git
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** Android release signing requires a keystore file. Committing it to a public repo is a security risk.  
+**Decision:** The release keystore is generated locally and referenced via environment variables or a `key.properties` file that is listed in `.gitignore`. The `android/app/build.gradle` signing config reads from `key.properties`.  
+**Consequences:** Each developer/CI environment must provision the keystore separately. Must be documented in `docs/architecture.md` or a `CONTRIBUTING.md` when CI is set up.
+
+---
+
+## ADR-017: Star icon tap as primary favourite interaction (not swipe)
+**Date:** 2026-04-10  
+**Status:** Accepted  
+**Context:** The spec allows "swipe-to-favourite or star icon". Each history list item already uses swipe-to-delete (`Dismissible`). Having two swipe gestures on the same item creates an ambiguous UX.  
+**Decision:** Star icon tap on the list item is the primary way to mark/unmark a favourite in v1. Swipe gesture is reserved exclusively for delete.  
+**Consequences:** Cleaner gesture model. Slightly less discoverable than swipe, but the star icon is a universal convention.
