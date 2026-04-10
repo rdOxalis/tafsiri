@@ -28,6 +28,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Shared `buildPrompt()` with `LANG:xx` prefix protocol (ADR-013)
 - `aiServiceProvider` (Riverpod) auto-selects backend from active provider setting
 - API key masking in all debug output; 12 service unit tests — all passing
+- `TranslationEntry` model with `toMap()`/`fromMap()`/`copyWith()`
+- `TranslatorController` (`Notifier`): translate flow, LANG prefix parsing, `TranslatorError` enum
+- 10 unit tests for `TranslatorController` — all passing
 - PayPal donate URL set to `https://paypal.me/CarlDarkman`
 
 ---

@@ -46,12 +46,12 @@
 - [x] [4.7] S  API key masking via `maskApiKey()` from `constants.dart` in all `debugPrint` calls (2026-04-10)
 
 ### Phase 5 — Translation Core
-- [ ] [5.1] S  Create `TranslationEntry` model in `lib/shared/models/translation_entry.dart` with `toMap()`/`fromMap()`
-- [ ] [5.2] M  Create `TranslatorController` (Riverpod `AsyncNotifier`) — input text, output text, loading, error, `lastSourceLang`
-- [ ] [5.3] M  Implement `translate()`: read settings, build prompt (with `LANG:xx\n` prefix per ADR-013), call `AiService`, strip prefix, update state
-- [ ] [5.4] M  Extract `lastSourceLang` from `LANG:xx\n` prefix in AI response; store in controller state
-- [ ] [5.5] S  Stub `save-to-SQLite` hook in controller (callback / TODO comment) — completed in Phase 7
-- [ ] [5.6] M  Unit tests for `TranslatorController` using mocked `AiService`
+- [x] [5.1] S  `TranslationEntry` model — `toMap()`/`fromMap()`, `copyWith()`, UTC ISO-8601 for `createdAt` (2026-04-10)
+- [x] [5.2] M  `TranslatorController` (`Notifier<TranslatorState>`) — inputText, outputText, isLoading, `TranslatorError` enum, lastSourceLang (2026-04-10)
+- [x] [5.3] M  `translate()` — reads settings, validates API key, calls `aiServiceProvider`, updates state (2026-04-10)
+- [x] [5.4] M  `_extractSourceLang()` / `_extractTranslation()` — parse `LANG:xx\n` prefix per ADR-013 (2026-04-10)
+- [x] [5.5] S  SQLite save stub: `// TODO(phase7): await _dao.insert(...)` in `translate()` (2026-04-10)
+- [x] [5.6] M  10 unit tests for `TranslatorController` — all green ✓ (2026-04-10)
 
 ### Phase 6 — Translator UI
 - [ ] [6.1] S  `translator_screen.dart` — Scaffold + layout skeleton
