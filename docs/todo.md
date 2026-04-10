@@ -118,6 +118,7 @@
 
 ## Done
 
-<!-- Items moved here with completion date, e.g.:
-- [x] [1.1] flutter create (2026-04-10)
--->
+- [x] v1.0.0 — alle 12 Phasen abgeschlossen (2026-04-10)
+  - Foundation, Localisation, Settings, AI Services, Translation Core, Translator UI,
+    SQLite, History, Favourites, Voice Input (STT), Image Input (OCR), Polish & Release Prep
+  - 44/44 Tests grün · `flutter analyze` clean · Debug-APK gebaut · Icon generiert
