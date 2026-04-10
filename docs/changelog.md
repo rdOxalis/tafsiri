@@ -49,6 +49,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `FavouritesFilter` widget: All / Favourites `FilterChip` row at top of history screen
 - `HistoryController.toggleFilter()` switches between `dao.getAll()` and `dao.getFavourites()`
 - Star icon in `HistoryListItem` wired to `toggleFavourite(id)` with live optimistic state update
+- Voice input (STT): `TranslatorController` holds `SpeechToText` instance, `toggleListening()`, `isSttAvailable`/`isListening` state fields
+- STT locale derived from `lastSourceLang` via `kSttLocaleMap`; falls back to device locale when unknown
+- Microphone button: idle shows `mic_none`, active shows `mic` in error colour; disabled when STT unavailable
+- Auto-translate triggered on `finalResult == true`; partial words shown live in input field
+- `SpeechListenOptions` used for `cancelOnError` + `partialResults` (speech_to_text v7 API)
 
 ---
 

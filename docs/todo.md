@@ -87,12 +87,12 @@
 - [x] [9.4] S  `HistoryScreen` updated: filter bar above list, `Expanded` wraps the async list (2026-04-10)
 
 ### Phase 10 — Voice Input (STT)
-- [ ] [10.1] M  `SpeechToText` lifecycle in `TranslatorController` — `init()`, `startListening()`, `stopListening()`, `isAvailable`
-- [ ] [10.2] S  `_sttLocaleMap` const map (10 languages → BCP-47) in `constants.dart`
-- [ ] [10.3] M  Microphone button in `action_bar.dart` — disabled state, recording state indicator (visual feedback)
-- [ ] [10.4] S  Auto-translate on STT `finalResult == true` → call `controller.translate()`
-- [ ] [10.5] S  STT locale fallback to `SpeechToText.systemLocale()` if `source_lang` unknown
-- [ ] [10.6] S  `RECORD_AUDIO` runtime permission via `speech_to_text` built-in flow (no extra package)
+- [x] [10.1] M  `SpeechToText` lifecycle in `TranslatorController` — `_initStt()` (lazy via microtask), `toggleListening()`, `isSttAvailable`, `isListening` in state (2026-04-10)
+- [x] [10.2] S  `kSttLocaleMap` const map (10 languages → BCP-47) already in `constants.dart` (2026-04-10)
+- [x] [10.3] M  Microphone button in `action_bar.dart` — `mic_none` icon idle, `mic` icon + error colour while recording, disabled when unavailable or loading (2026-04-10)
+- [x] [10.4] S  Auto-translate on STT `finalResult == true` → calls `translate()` (2026-04-10)
+- [x] [10.5] S  STT locale fallback: `kSttLocaleMap[lastSourceLang]` → null → `speech_to_text` uses device locale (2026-04-10)
+- [x] [10.6] S  `RECORD_AUDIO` runtime permission handled by `speech_to_text` built-in flow (2026-04-10)
 
 ### Phase 11 — Image Input (OCR)
 - [ ] [11.1] M  `image_picker` integration — bottom sheet with Camera / Gallery options

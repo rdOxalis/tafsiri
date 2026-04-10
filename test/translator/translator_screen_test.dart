@@ -96,7 +96,7 @@ void main() {
       await tester.pumpWidget(_wrap(const TranslatorScreen()));
       await tester.pump();
 
-      expect(find.byIcon(Icons.mic), findsOneWidget);
+      expect(find.byIcon(Icons.mic_none), findsOneWidget);
       expect(find.byIcon(Icons.image), findsOneWidget);
     });
   });

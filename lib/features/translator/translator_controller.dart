@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import '../../core/constants.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
@@ -15,6 +18,8 @@ class TranslatorState {
   final bool isLoading;
   final TranslatorError? error;
   final String? lastSourceLang;
+  final bool isSttAvailable;
+  final bool isListening;
 
   const TranslatorState({
     this.inputText = '',
@@ -22,6 +27,8 @@ class TranslatorState {
     this.isLoading = false,
     this.error,
     this.lastSourceLang,
+    this.isSttAvailable = false,
+    this.isListening = false,
   });
 
   TranslatorState copyWith({
@@ -32,6 +39,8 @@ class TranslatorState {
     TranslatorError? error,
     bool clearError = false,
     String? lastSourceLang,
+    bool? isSttAvailable,
+    bool? isListening,
   }) =>
       TranslatorState(
         inputText: inputText ?? this.inputText,
@@ -39,19 +48,76 @@ class TranslatorState {
         isLoading: isLoading ?? this.isLoading,
         error: clearError ? null : error ?? this.error,
         lastSourceLang: lastSourceLang ?? this.lastSourceLang,
+        isSttAvailable: isSttAvailable ?? this.isSttAvailable,
+        isListening: isListening ?? this.isListening,
       );
 }
 
 class TranslatorController extends Notifier<TranslatorState> {
+  final _stt = SpeechToText();
+
   @override
-  TranslatorState build() => const TranslatorState();
+  TranslatorState build() {
+    ref.onDispose(_stt.stop);
+    Future.microtask(_initStt);
+    return const TranslatorState();
+  }
+
+  Future<void> _initStt() async {
+    try {
+      final available = await _stt.initialize(
+        onError: (e) => debugPrint('[STT] error: ${e.errorMsg}'),
+        onStatus: (s) {
+          if (s == SpeechToText.notListeningStatus) {
+            state = state.copyWith(isListening: false);
+          }
+        },
+      );
+      state = state.copyWith(isSttAvailable: available);
+    } catch (e) {
+      debugPrint('[STT] init failed: $e');
+    }
+  }
+
+  Future<void> toggleListening() async {
+    if (state.isListening) {
+      await _stt.stop();
+      state = state.copyWith(isListening: false);
+      return;
+    }
+
+    final localeId = kSttLocaleMap[state.lastSourceLang];
+    state = state.copyWith(isListening: true, clearOutput: true, clearError: true);
+
+    await _stt.listen(
+      onResult: _onSttResult,
+      localeId: localeId,
+      listenOptions: SpeechListenOptions(
+        cancelOnError: true,
+        partialResults: true,
+      ),
+    );
+  }
+
+  void _onSttResult(SpeechRecognitionResult result) {
+    state = state.copyWith(inputText: result.recognizedWords);
+    if (result.finalResult) {
+      state = state.copyWith(isListening: false);
+      translate();
+    }
+  }
 
   void setInputText(String text) {
     state = state.copyWith(inputText: text, clearOutput: true, clearError: true);
   }
 
   void clearInput() {
-    state = const TranslatorState();
+    state = state.copyWith(
+      inputText: '',
+      clearOutput: true,
+      clearError: true,
+      isListening: false,
+    );
   }
 
   Future<void> translate() async {
@@ -89,7 +155,7 @@ class TranslatorController extends Notifier<TranslatorState> {
         clearError: true,
       );
 
-      // Save to SQLite (Phase 7)
+      // Save to SQLite
       final daoAsync = ref.read(translationDaoProvider);
       daoAsync.whenData((dao) => dao.insert(
             TranslationEntry(
@@ -101,7 +167,6 @@ class TranslatorController extends Notifier<TranslatorState> {
               createdAt: DateTime.now().toUtc(),
             ),
           ));
-
     } on AiApiException catch (e) {
       debugPrint('[TranslatorController] API error ${e.statusCode}');
       state = state.copyWith(isLoading: false, error: TranslatorError.apiError);

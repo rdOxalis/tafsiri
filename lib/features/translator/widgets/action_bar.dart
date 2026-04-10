@@ -11,16 +11,25 @@ class ActionBar extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final isLoading =
         ref.watch(translatorProvider.select((s) => s.isLoading));
+    final isSttAvailable =
+        ref.watch(translatorProvider.select((s) => s.isSttAvailable));
+    final isListening =
+        ref.watch(translatorProvider.select((s) => s.isListening));
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
       child: Row(
         children: [
-          // Microphone — stub, wired in Phase 10
+          // Microphone
           IconButton(
             tooltip: l10n.microphoneButton,
-            icon: const Icon(Icons.mic),
-            onPressed: isLoading ? null : () {},
+            icon: Icon(isListening ? Icons.mic : Icons.mic_none),
+            color: isListening
+                ? Theme.of(context).colorScheme.error
+                : null,
+            onPressed: (isLoading || !isSttAvailable)
+                ? null
+                : () => ref.read(translatorProvider.notifier).toggleListening(),
           ),
           // Image — stub, wired in Phase 11
           IconButton(
