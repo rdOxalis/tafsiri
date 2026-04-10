@@ -1,41 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/history/history_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/translator/translator_screen.dart';
 import '../../l10n/app_localizations.dart';
+import '../providers/selected_tab_provider.dart';
 
-// History placeholder — replaced in Phase 8
-class _HistoryPlaceholder extends StatelessWidget {
-  const _HistoryPlaceholder();
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text('History — coming in Phase 8'));
-}
-
-class MainScreen extends ConsumerStatefulWidget {
+class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
-
-  @override
-  ConsumerState<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends ConsumerState<MainScreen> {
-  int _currentIndex = 0;
 
   static const _screens = [
     TranslatorScreen(),
-    _HistoryPlaceholder(),
+    HistoryScreen(),
     SettingsScreen(),
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final currentIndex = ref.watch(selectedTabProvider);
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: _screens[currentIndex],
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (i) => setState(() => _currentIndex = i),
+        selectedIndex: currentIndex,
+        onDestinationSelected: (i) =>
+            ref.read(selectedTabProvider.notifier).state = i,
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.translate),

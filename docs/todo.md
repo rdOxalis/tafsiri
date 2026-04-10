@@ -72,12 +72,13 @@
 - [x] [7.5] M  8 DAO tests with `sqflite_common_ffi` in-memory DB; UTC ISO-8601 timestamps — all green ✓ (2026-04-10)
 
 ### Phase 8 — History Screen
-- [ ] [8.1] M  `HistoryController` (Riverpod `AsyncNotifier`) — load/reload, delete, toggleFavourite
-- [ ] [8.2] M  `history_screen.dart` — `ListView.builder` consuming `HistoryController`
-- [ ] [8.3] M  `history_list_item.dart` — source text (truncated), result (truncated), target lang, timestamp, provider badge, favourite star
-- [ ] [8.4] M  Reload-to-input: confirm dialog on tap → `TranslatorController.setInputText()` → navigate to Translator tab
-- [ ] [8.5] M  Swipe-to-delete: `Dismissible` → `dao.delete()` → `SnackBar` with undo (`dao.insert()`)
-- [ ] [8.6] S  Empty state widget when history list is empty
+- [x] [8.1] M  `HistoryController` (Riverpod `AsyncNotifier`) — load/reload, delete, toggleFavourite (2026-04-10)
+- [x] [8.2] M  `history_screen.dart` — `ListView.builder` consuming `HistoryController` (2026-04-10)
+- [x] [8.3] M  `history_list_item.dart` — source text (truncated), result (truncated), target lang, timestamp, provider badge, favourite star (2026-04-10)
+- [x] [8.4] M  Reload-to-input: confirm dialog on tap → `TranslatorController.setInputText()` → navigate to Translator tab (2026-04-10)
+- [x] [8.5] M  Swipe-to-delete: `Dismissible` → `dao.delete()` → `SnackBar` with undo (`dao.insert()`) (2026-04-10)
+- [x] [8.6] S  Empty state widget when history list is empty (2026-04-10)
+- [x] [8.7] S  `MainScreen` refactored to `ConsumerWidget` using `selectedTabProvider`; `_HistoryPlaceholder` removed (2026-04-10)
 
 ### Phase 9 — Favourites
 - [ ] [9.1] S  `favourites_filter.dart` — `FilterChip` toggling between All / Favourites

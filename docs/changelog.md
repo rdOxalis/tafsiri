@@ -40,6 +40,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `translationDaoProvider` (FutureProvider); save-after-translate wired in `TranslatorController`
 - 8 DAO unit tests with in-memory SQLite (`sqflite_common_ffi`) — all passing
 - PayPal donate URL set to `https://paypal.me/CarlDarkman`
+- `HistoryController` (`AsyncNotifier`) with `delete` (returns entry for undo), `restore`, `toggleFavourite`, `reload`
+- `HistoryScreen` with `ListView.builder`, `Dismissible` swipe-to-delete, undo `SnackBar`, empty-state widget
+- `HistoryListItem` card: source/result text (2-line truncated), provider badge (C/G/M), target lang, timestamp, star toggle
+- Reload-to-input: confirm dialog on history tap → loads `sourceText` into translator, navigates to Translator tab
+- `selectedTabProvider` (`StateProvider<int>`) for cross-widget tab navigation
+- `MainScreen` refactored from `ConsumerStatefulWidget` to `ConsumerWidget` backed by `selectedTabProvider`
 
 ---
 
