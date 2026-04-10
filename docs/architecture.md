@@ -126,7 +126,7 @@ The `LANG:xx` prefix is stripped by `TranslatorController` before display. The e
 | `nl` | `app_nl.arb` |
 | `es` | `app_es.arb` |
 | `da` | `app_da.arb` |
-| `nb` | `app_no.arb` (Norwegian Bokmål — see ADR-011) |
+| `nb` | `app_nb.arb` (Norwegian Bokmål — see ADR-011) |
 | `sv` | `app_sv.arb` |
 | `pl` | `app_pl.arb` |
 
@@ -144,4 +144,4 @@ The `LANG:xx` prefix is stripped by `TranslatorController` before display. The e
 
 ---
 
-*Last updated: 2026-04-10 — initial scaffold*
+*Last updated: 2026-04-10 — v1.0.0 complete*

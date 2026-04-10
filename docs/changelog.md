@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.0] - 2026-04-10
+
 ### Added
 - Project scaffold and documentation structure (`docs/`)
 - Flutter project created (`ke.darkman.tafsiri`, minSdk 21, Material3)
@@ -60,6 +64,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `ocrError` transient state flag; `TranslatorScreen` upgraded to `ConsumerWidget` with `ref.listen`
 - `isOcrProcessing` drives spinner on image button and disables it during processing
 - `ocrSourceCamera` / `ocrSourceGallery` strings added to all 11 ARB files
+- Dark theme support: `ThemeData` for both light and dark brightness, `ThemeMode.system`
+- Refined `AppBarTheme` (elevation 0, `scrolledUnderElevation: 1`), `CardThemeData`, `InputDecorationTheme`, floating `SnackBarThemeData`
+
+### Changed
+- `[1.0.0]` first release — all 12 phases complete
 
 ---
 

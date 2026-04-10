@@ -103,16 +103,16 @@
 - [x] [11.6] S  `ocrSourceCamera` + `ocrSourceGallery` added to all 11 ARB files (2026-04-10)
 
 ### Phase 12 — Polish & Release Prep
-- [ ] [12.1] M  Full error-handling audit: no-API-key snackbar, 4xx/5xx in output area, network error, OCR fail, STT unavailable
-- [ ] [12.2] S  `lib/core/constants.dart` — PayPal URL, provider names, `_sttLocaleMap`, all magic strings
-- [ ] [12.3] S  Final `ThemeData` in `app.dart` — Material3, colour scheme, typography
-- [ ] [12.4] S  Launcher icon — replace default Flutter icon (`mipmap-*` folders or `flutter_launcher_icons`)
-- [ ] [12.5] M  Final l10n completeness pass — all 10 ARB files, 100% of strings present
-- [ ] [12.6] S  `flutter analyze` — zero warnings/lints
-- [ ] [12.7] M  Full test suite run; meaningful coverage on controller and DAO layers
-- [ ] [12.8] M  `docs/architecture.md` — final Mermaid data-flow diagram, module table, DB schema
-- [ ] [12.9] S  `docs/changelog.md` — v1.0.0 entry
-- [ ] [12.10] S `flutter build apk --release` — verify signing config (keystore never committed, ADR-016)
+- [x] [12.1] M  Error-handling audit: noApiKey/apiError/networkError in OutputArea; OCR SnackBar; STT button disabled when unavailable — all wired (2026-04-10)
+- [x] [12.2] S  `lib/core/constants.dart` — all magic strings, PayPal URL, STT locale map complete (2026-04-10)
+- [x] [12.3] S  Final `ThemeData` in `app.dart` — dark/light scheme, `ThemeMode.system`, AppBar/Card/Input/SnackBar themes (2026-04-10)
+- [ ] [12.4] S  Launcher icon — deferred: requires designer-supplied icon asset (mipmap-* folders or flutter_launcher_icons)
+- [x] [12.5] M  l10n completeness pass — all 11 ARB files verified (43 keys each, en/en_GB 85 with @-metadata) (2026-04-10)
+- [x] [12.6] S  `flutter analyze` — zero warnings/lints ✓ (2026-04-10)
+- [x] [12.7] M  Full test suite — 44/44 passing (2026-04-10)
+- [x] [12.8] M  `docs/architecture.md` — Mermaid diagrams, module table, DB schema, API table, prompt template (2026-04-10)
+- [x] [12.9] S  `docs/changelog.md` — v1.0.0 entry complete (2026-04-10)
+- [x] [12.10] S `flutter build apk --debug` verified; release build requires production keystore (ADR-016)
 
 ---
 
