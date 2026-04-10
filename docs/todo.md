@@ -65,11 +65,11 @@
 - [x] [6.9] M  6 widget tests for `TranslatorScreen` — all green ✓ (2026-04-10)
 
 ### Phase 7 — SQLite
-- [ ] [7.1] M  `db_helper.dart` — SQLite init, `CREATE TABLE` DDL per spec, `onUpgrade` stub (ADR-014)
-- [ ] [7.2] M  `translation_dao.dart` — `insert`, `getAll` (desc), `getByFavourite`, `setFavourite`, `delete`
-- [ ] [7.3] S  Riverpod provider for `TranslationDao` (lazy singleton)
-- [ ] [7.4] S  Complete save-after-translate in `TranslatorController` (Phase 5.5 stub)
-- [ ] [7.5] M  Unit tests for DAO with in-memory SQLite (`openDatabase(':memory:')`); use `DateTime.now().toUtc().toIso8601String()` for `created_at`
+- [x] [7.1] M  `db_helper.dart` — singleton, `CREATE TABLE` DDL, `onUpgrade` stub (ADR-014), test inject/reset helpers (2026-04-10)
+- [x] [7.2] M  `translation_dao.dart` — `insert`, `getAll` (desc), `getFavourites`, `setFavourite`, `delete` (2026-04-10)
+- [x] [7.3] S  `translationDaoProvider` (`FutureProvider`) in `dao_provider.dart` (2026-04-10)
+- [x] [7.4] S  `TranslatorController.translate()` saves entry via `daoAsync.whenData()` after success (2026-04-10)
+- [x] [7.5] M  8 DAO tests with `sqflite_common_ffi` in-memory DB; UTC ISO-8601 timestamps — all green ✓ (2026-04-10)
 
 ### Phase 8 — History Screen
 - [ ] [8.1] M  `HistoryController` (Riverpod `AsyncNotifier`) — load/reload, delete, toggleFavourite

@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
 import '../../features/settings/settings_controller.dart';
+import '../../shared/models/translation_entry.dart';
 
 enum TranslatorError { noApiKey, apiError, networkError }
 
@@ -87,8 +89,18 @@ class TranslatorController extends Notifier<TranslatorState> {
         clearError: true,
       );
 
-      // Phase 7: save entry to SQLite
-      // TODO(phase7): await _dao.insert(TranslationEntry(...));
+      // Save to SQLite (Phase 7)
+      final daoAsync = ref.read(translationDaoProvider);
+      daoAsync.whenData((dao) => dao.insert(
+            TranslationEntry(
+              sourceText: input,
+              resultText: translation,
+              sourceLang: sourceLang ?? '',
+              targetLang: settings.targetLanguage,
+              aiProvider: settings.activeProvider,
+              createdAt: DateTime.now().toUtc(),
+            ),
+          ));
 
     } on AiApiException catch (e) {
       debugPrint('[TranslatorController] API error ${e.statusCode}');

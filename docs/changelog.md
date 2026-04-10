@@ -36,6 +36,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Action bar: mic stub, image stub, FilledButton translate with loading state
 - Input area: external state sync via `ref.listen` for history reload (Phase 8)
 - 6 widget tests for `TranslatorScreen` — all passing
+- SQLite layer: `DbHelper` singleton, `TranslationDao` (insert/getAll/getFavourites/setFavourite/delete)
+- `translationDaoProvider` (FutureProvider); save-after-translate wired in `TranslatorController`
+- 8 DAO unit tests with in-memory SQLite (`sqflite_common_ffi`) — all passing
 - PayPal donate URL set to `https://paypal.me/CarlDarkman`
 
 ---
