@@ -18,9 +18,7 @@ const kDefaultAltLanguage = 'English';
 const kDefaultProvider = kProviderMistral;
 
 // External URLs
-// TODO: replace with actual PayPal donate URL from BluesoundPlayer app
-const kPayPalDonateUrl =
-    'https://www.paypal.com/donate/?hosted_button_id=PLACEHOLDER';
+const kPayPalDonateUrl = 'https://paypal.me/CarlDarkman';
 
 // API key log masking
 String maskApiKey(String key) {

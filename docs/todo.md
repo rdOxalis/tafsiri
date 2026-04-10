@@ -31,19 +31,19 @@
 - [x] [3.1] M  `SettingsController` (Riverpod `AsyncNotifier`) — 6 prefs keys, `hasApiKeyForActiveProvider`, `activeApiKey` (2026-04-10)
 - [x] [3.2] M  `settings_screen.dart` — API key fields (obscured + toggle), `SegmentedButton`, target/alt lang, locale dropdown, donate (2026-04-10)
 - [x] [3.3] S  Warning banner rendered when `hasApiKeyForActiveProvider == false` (2026-04-10)
-- [x] [3.4] S  Donate button with `url_launcher` + `kPayPalDonateUrl` from `constants.dart` — **TODO: replace placeholder URL** (2026-04-10)
+- [x] [3.4] S  Donate button with `url_launcher` + `kPayPalDonateUrl` (`https://paypal.me/CarlDarkman`) (2026-04-10)
 - [x] [3.5] S  Locale dropdown connected to `LocaleNotifier` — live switch (2026-04-10)
 - [x] [3.6] S  `MainScreen` with `NavigationBar` (Translator / History / Settings); placeholder screens for phases 6 + 8 (2026-04-10)
 - [x] [3.7] M  8 unit tests for `SettingsController` — all green ✓ (2026-04-10)
 
 ### Phase 4 — AI Services
-- [ ] [4.1] S  Create `lib/core/services/ai_service.dart` — abstract `AiService` interface with `translate()` method
-- [ ] [4.2] M  Implement `ClaudeService` (Anthropic Messages API, model `claude-haiku-4-5`)
-- [ ] [4.3] M  Implement `OpenAiService` (OpenAI Chat Completions API, model `gpt-4o-mini`)
-- [ ] [4.4] M  Implement `MistralService` (Mistral Chat API, model `mistral-small-latest`)
-- [ ] [4.5] S  `AiServiceFactory` / Riverpod provider — reads `active_provider` from settings, returns correct `AiService`
-- [ ] [4.6] L  Unit tests for all three services with mocked `http.Client` (happy path + 4xx/5xx)
-- [ ] [4.7] S  API key masking (`sk-****`) in all service log/debug output
+- [x] [4.1] S  `ai_service.dart` — abstract `AiService` + `AiApiException` + shared `buildPrompt()` (ADR-013 format) (2026-04-10)
+- [x] [4.2] M  `ClaudeService` — Anthropic Messages API, model `claude-haiku-4-5-20251001` (2026-04-10)
+- [x] [4.3] M  `OpenAiService` — Chat Completions API, model `gpt-4o-mini` (2026-04-10)
+- [x] [4.4] M  `MistralService` — Mistral Chat API, model `mistral-small-latest` (2026-04-10)
+- [x] [4.5] S  `aiServiceProvider` (Riverpod `Provider`) — switches on `active_provider` from settings (2026-04-10)
+- [x] [4.6] L  12 unit tests (4 per service): happy path, 401, 4xx/5xx, header verification — all green ✓ (2026-04-10)
+- [x] [4.7] S  API key masking via `maskApiKey()` from `constants.dart` in all `debugPrint` calls (2026-04-10)
 
 ### Phase 5 — Translation Core
 - [ ] [5.1] S  Create `TranslationEntry` model in `lib/shared/models/translation_entry.dart` with `toMap()`/`fromMap()`

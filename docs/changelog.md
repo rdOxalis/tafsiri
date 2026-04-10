@@ -24,6 +24,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `MainScreen` with bottom `NavigationBar` (Translator / History / Settings)
 - `lib/core/constants.dart` with all prefs keys, provider names, STT locale map, PayPal URL placeholder
 - 8 unit tests for `SettingsController` — all passing
+- AI service layer: abstract `AiService` + `AiApiException`; `ClaudeService`, `OpenAiService`, `MistralService`
+- Shared `buildPrompt()` with `LANG:xx` prefix protocol (ADR-013)
+- `aiServiceProvider` (Riverpod) auto-selects backend from active provider setting
+- API key masking in all debug output; 12 service unit tests — all passing
+- PayPal donate URL set to `https://paypal.me/CarlDarkman`
 
 ---
 
