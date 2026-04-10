@@ -2,20 +2,22 @@
 
 ## In Progress
 
-<!-- Move items here when actively working on them -->
+- [ ] [1.7] S  `flutter build apk --debug` — abgebrochen wegen schlechter Netzwerkverbindung; neu starten im neuen Netzwerk
 
 ---
 
 ## Backlog
 
 ### Phase 1 — Foundation
-- [ ] [1.1] S  `flutter create --org ke.darkman --project-name tafsiri .` — verify `applicationId` in `build.gradle`
-- [ ] [1.2] S  Add all dependencies to `pubspec.yaml` (14 production + dev deps per spec)
-- [ ] [1.3] S  Add Android permissions to `AndroidManifest.xml` (INTERNET, RECORD_AUDIO, CAMERA, READ_EXTERNAL_STORAGE, READ_MEDIA_IMAGES)
-- [ ] [1.4] S  Create full `lib/` directory tree per spec (core/, features/, shared/, l10n/)
-- [ ] [1.5] S  Create `docs/` scaffold — `todo.md`, `changelog.md`, `architecture.md`; move `decisions.md` → `docs/decisions.md`
-- [ ] [1.6] S  Replace default counter app in `main.dart` + `app.dart` with minimal `ProviderScope` + `MaterialApp` shell
-- [ ] [1.7] S  `flutter pub get` + `flutter build apk --debug` compiles clean; set `minSdkVersion 21` in `build.gradle`
+- [x] [1.1] S  `flutter create --org ke.darkman --project-name tafsiri .` — `applicationId = ke.darkman.tafsiri` ✓ (2026-04-10)
+- [x] [1.2] S  Add all dependencies to `pubspec.yaml`; `intl` auf `^0.20.2` angepasst (flutter_localizations-Pin) (2026-04-10)
+- [x] [1.3] S  Add Android permissions to `AndroidManifest.xml` (INTERNET, RECORD_AUDIO, CAMERA, READ_EXTERNAL_STORAGE maxSdk=32, READ_MEDIA_IMAGES) (2026-04-10)
+- [x] [1.4] S  Create full `lib/` directory tree per spec (core/, features/, shared/, l10n/) (2026-04-10)
+- [x] [1.5] S  Create `docs/` scaffold — `todo.md`, `changelog.md`, `architecture.md`; `decisions.md` → `docs/decisions.md` (2026-04-10)
+- [x] [1.6] S  Replace default counter app — `main.dart` mit `ProviderScope`, `app.dart` mit `TafsiriApp` (ConsumerWidget, Material3, teal) (2026-04-10)
+- [x] [1.2b] S  `minSdk = 21` in `android/app/build.gradle.kts` (google_mlkit_text_recognition requirement) (2026-04-10)
+- [x] [1.2c] S  `flutter pub get` — 101 Dependencies aufgelöst ✓ (2026-04-10)
+- [ ] [1.7] S  `flutter build apk --debug` — **ausstehend** (Netzwerkwechsel nötig)
 
 ### Phase 2 — Localisation
 - [ ] [2.1] S  Add `generate: true` to `pubspec.yaml`; create `l10n.yaml` (`arb-dir: lib/l10n`, template: `app_en_GB.arb`, output-class: `AppLocalizations`)
