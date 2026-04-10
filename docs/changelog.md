@@ -31,6 +31,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `TranslationEntry` model with `toMap()`/`fromMap()`/`copyWith()`
 - `TranslatorController` (`Notifier`): translate flow, LANG prefix parsing, `TranslatorError` enum
 - 10 unit tests for `TranslatorController` — all passing
+- Translator UI: `InputArea`, `OutputArea`, `ActionBar`, `TranslatorScreen`
+- Output area: 4 states (hint/loading/error/result), copy to clipboard, error colours
+- Action bar: mic stub, image stub, FilledButton translate with loading state
+- Input area: external state sync via `ref.listen` for history reload (Phase 8)
+- 6 widget tests for `TranslatorScreen` — all passing
 - PayPal donate URL set to `https://paypal.me/CarlDarkman`
 
 ---

@@ -54,15 +54,15 @@
 - [x] [5.6] M  10 unit tests for `TranslatorController` — all green ✓ (2026-04-10)
 
 ### Phase 6 — Translator UI
-- [ ] [6.1] S  `translator_screen.dart` — Scaffold + layout skeleton
-- [ ] [6.2] M  `input_area.dart` — multiline `TextField`, clear button, clipboard paste button
-- [ ] [6.3] M  `output_area.dart` — read-only display, copy-to-clipboard, empty/loading/error/result states
-- [ ] [6.4] S  `action_bar.dart` — microphone button (stub), image button (stub), translate button; all localised
-- [ ] [6.5] M  Wire all widgets to `TranslatorController` via `ConsumerWidget` / `ref.watch`
-- [ ] [6.6] S  Loading indicator (`CircularProgressIndicator`) in output area while `isLoading == true`
-- [ ] [6.7] S  Error display in output area (red-tinted text / error state)
-- [ ] [6.8] S  Bottom navigation bar — Translator / History / Settings tabs
-- [ ] [6.9] M  Widget tests for translator screen using mocked controller
+- [x] [6.1] S  `translator_screen.dart` — Column layout: InputArea / OutputArea / ActionBar (2026-04-10)
+- [x] [6.2] M  `input_area.dart` — multiline TextField, paste + clear buttons, external sync via `ref.listen` (2026-04-10)
+- [x] [6.3] M  `output_area.dart` — 4 states: empty hint / loading / error / result + copy button (2026-04-10)
+- [x] [6.4] S  `action_bar.dart` — mic stub, image stub, FilledButton translate (disabled during loading) (2026-04-10)
+- [x] [6.5] M  All widgets wired to `translatorProvider` via `ConsumerWidget`/`ConsumerStatefulWidget` (2026-04-10)
+- [x] [6.6] S  `CircularProgressIndicator` in output area + inline in translate button during loading (2026-04-10)
+- [x] [6.7] S  Error text in `colorScheme.error` colour; `TranslatorError` → localised string via switch (2026-04-10)
+- [x] [6.8] S  `MainScreen` updated: `TranslatorScreen` live, history placeholder remains for Phase 8 (2026-04-10)
+- [x] [6.9] M  6 widget tests for `TranslatorScreen` — all green ✓ (2026-04-10)
 
 ### Phase 7 — SQLite
 - [ ] [7.1] M  `db_helper.dart` — SQLite init, `CREATE TABLE` DDL per spec, `onUpgrade` stub (ADR-014)

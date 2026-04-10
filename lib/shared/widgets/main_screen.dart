@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/settings/settings_screen.dart';
+import '../../features/translator/translator_screen.dart';
 import '../../l10n/app_localizations.dart';
 
-// Placeholder screens for Phase 6 and 8
-class _TranslatorPlaceholder extends StatelessWidget {
-  const _TranslatorPlaceholder();
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Translator — coming in Phase 6'));
-}
-
+// History placeholder — replaced in Phase 8
 class _HistoryPlaceholder extends StatelessWidget {
   const _HistoryPlaceholder();
   @override
-  Widget build(BuildContext context) => const Center(child: Text('History — coming in Phase 8'));
+  Widget build(BuildContext context) =>
+      const Center(child: Text('History — coming in Phase 8'));
 }
 
 class MainScreen extends ConsumerStatefulWidget {
@@ -27,7 +23,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   int _currentIndex = 0;
 
   static const _screens = [
-    _TranslatorPlaceholder(),
+    TranslatorScreen(),
     _HistoryPlaceholder(),
     SettingsScreen(),
   ];
