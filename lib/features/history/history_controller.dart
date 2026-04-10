@@ -3,17 +3,24 @@ import '../../core/database/dao_provider.dart';
 import '../../shared/models/translation_entry.dart';
 
 class HistoryController extends AsyncNotifier<List<TranslationEntry>> {
+  bool showFavouritesOnly = false;
+
   @override
   Future<List<TranslationEntry>> build() async {
     final dao = await ref.watch(translationDaoProvider.future);
-    return dao.getAll();
+    return showFavouritesOnly ? dao.getFavourites() : dao.getAll();
+  }
+
+  void toggleFilter() {
+    showFavouritesOnly = !showFavouritesOnly;
+    reload();
   }
 
   Future<void> reload() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final dao = await ref.read(translationDaoProvider.future);
-      return dao.getAll();
+      return showFavouritesOnly ? dao.getFavourites() : dao.getAll();
     });
   }
 

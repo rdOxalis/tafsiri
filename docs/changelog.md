@@ -46,6 +46,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Reload-to-input: confirm dialog on history tap → loads `sourceText` into translator, navigates to Translator tab
 - `selectedTabProvider` (`StateProvider<int>`) for cross-widget tab navigation
 - `MainScreen` refactored from `ConsumerStatefulWidget` to `ConsumerWidget` backed by `selectedTabProvider`
+- `FavouritesFilter` widget: All / Favourites `FilterChip` row at top of history screen
+- `HistoryController.toggleFilter()` switches between `dao.getAll()` and `dao.getFavourites()`
+- Star icon in `HistoryListItem` wired to `toggleFavourite(id)` with live optimistic state update
 
 ---
 

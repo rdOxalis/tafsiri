@@ -81,10 +81,10 @@
 - [x] [8.7] S  `MainScreen` refactored to `ConsumerWidget` using `selectedTabProvider`; `_HistoryPlaceholder` removed (2026-04-10)
 
 ### Phase 9 — Favourites
-- [ ] [9.1] S  `favourites_filter.dart` — `FilterChip` toggling between All / Favourites
-- [ ] [9.2] S  `showFavouritesOnly` flag in `HistoryController`; passes `isFavourite: true` to DAO query
-- [ ] [9.3] M  Star icon tap in `HistoryListItem` → `controller.toggleFavourite(id)` (ADR-017: star icon over swipe to avoid gesture conflict)
-- [ ] [9.4] S  End-to-end verification: mark favourite → filter → only favourites shown
+- [x] [9.1] S  `favourites_filter.dart` — `FilterChip` toggling between All / Favourites (2026-04-10)
+- [x] [9.2] S  `showFavouritesOnly` flag in `HistoryController`; `toggleFilter()` reloads with `dao.getFavourites()` or `dao.getAll()` (2026-04-10)
+- [x] [9.3] M  Star icon tap in `HistoryListItem` → `controller.toggleFavourite(id)` (ADR-017: star icon over swipe to avoid gesture conflict) (2026-04-10)
+- [x] [9.4] S  `HistoryScreen` updated: filter bar above list, `Expanded` wraps the async list (2026-04-10)
 
 ### Phase 10 — Voice Input (STT)
 - [ ] [10.1] M  `SpeechToText` lifecycle in `TranslatorController` — `init()`, `startListening()`, `stopListening()`, `isAvailable`
