@@ -136,4 +136,10 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galerij';
+
+  @override
+  String get sttLanguageLabel => 'Taal voor spraakinvoer';
+
+  @override
+  String get sttLanguageAuto => 'Automatisch (van laatste vertaling)';
 }

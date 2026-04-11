@@ -118,6 +118,14 @@
 
 ## Done
 
+- [x] v1.0.3 — Bug fixes, UX improvements, prompt overhaul (2026-04-11)
+  - History reload loads both input and output
+  - Settings persistence fixed (onChanged instead of onSubmitted)
+  - STT language setting added
+  - Swipe-right-to-favourite + visible delete button in history
+  - AI prompt split into system/user roles; max_tokens → 4096
+  - Input area rounded corners fixed; paste button moved to action bar
+
 - [x] v1.0.2 — Post-test UI polish (2026-04-11)
   - Translator screen: "Tafsiri" heading, action bar in the middle, rounded containers for input/output
   - Settings: only active provider's API key field shown

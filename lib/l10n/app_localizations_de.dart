@@ -139,4 +139,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galerie';
+
+  @override
+  String get sttLanguageLabel => 'Sprache der Spracheingabe';
+
+  @override
+  String get sttLanguageAuto => 'Automatisch (aus letzter Übersetzung)';
 }

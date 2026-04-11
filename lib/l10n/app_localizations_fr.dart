@@ -137,4 +137,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galerie';
+
+  @override
+  String get sttLanguageLabel => 'Langue de la saisie vocale';
+
+  @override
+  String get sttLanguageAuto => 'Auto (de la dernière traduction)';
 }

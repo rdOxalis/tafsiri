@@ -137,4 +137,10 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galleri';
+
+  @override
+  String get sttLanguageLabel => 'Röstinmatningsspråk';
+
+  @override
+  String get sttLanguageAuto => 'Auto (från senaste översättning)';
 }

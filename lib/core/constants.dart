@@ -26,6 +26,24 @@ String maskApiKey(String key) {
   return '${key.substring(0, 4)}****';
 }
 
+// SharedPreferences key for STT input language
+const kPrefSttLanguage = 'stt_language';
+
+// STT language options: (ISO-639-1 code, display name). Empty code = auto.
+const List<(String, String)> kSttLanguageOptions = [
+  ('', 'Auto'),
+  ('de', 'Deutsch'),
+  ('en', 'English'),
+  ('fr', 'Français'),
+  ('nl', 'Nederlands'),
+  ('es', 'Español'),
+  ('da', 'Dansk'),
+  ('nb', 'Norsk'),
+  ('sv', 'Svenska'),
+  ('pl', 'Polski'),
+  ('sw', 'Kiswahili'),
+];
+
 // STT locale map: ISO-639-1 → BCP-47
 const Map<String, String> kSttLocaleMap = {
   'sw': 'sw-TZ',

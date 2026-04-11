@@ -43,8 +43,17 @@ class HistoryScreen extends ConsumerWidget {
                     final entry = entries[index];
                     return Dismissible(
                       key: ValueKey(entry.id),
-                      direction: DismissDirection.endToStart,
+                      direction: DismissDirection.horizontal,
                       background: Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 20),
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        child: Icon(
+                          entry.isFavourite ? Icons.star : Icons.star_border,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      secondaryBackground: Container(
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.only(right: 20),
                         color: Theme.of(context).colorScheme.errorContainer,
@@ -53,6 +62,17 @@ class HistoryScreen extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.onErrorContainer,
                         ),
                       ),
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.startToEnd) {
+                          // Swipe right → toggle favourite, don't dismiss
+                          await ref
+                              .read(historyProvider.notifier)
+                              .toggleFavourite(entry.id!);
+                          return false;
+                        }
+                        // Swipe left → delete
+                        return true;
+                      },
                       onDismissed: (_) async {
                         final deleted = await ref
                             .read(historyProvider.notifier)
@@ -76,6 +96,7 @@ class HistoryScreen extends ConsumerWidget {
                             .read(historyProvider.notifier)
                             .toggleFavourite(entry.id!),
                         onTap: () => _confirmReload(context, ref, l10n, entry),
+                        onDelete: () => _deleteEntry(context, ref, l10n, entry),
                       ),
                     );
                   },
@@ -84,6 +105,26 @@ class HistoryScreen extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> _deleteEntry(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    entry,
+  ) async {
+    final deleted = await ref.read(historyProvider.notifier).delete(entry.id!);
+    if (deleted == null || !context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.delete),
+        action: SnackBarAction(
+          label: l10n.undoDelete,
+          onPressed: () =>
+              ref.read(historyProvider.notifier).restore(deleted),
+        ),
       ),
     );
   }
@@ -113,7 +154,8 @@ class HistoryScreen extends ConsumerWidget {
     );
 
     if (confirmed != true || !context.mounted) return;
-    ref.read(translatorProvider.notifier).setInputText(entry.sourceText);
+    ref.read(translatorProvider.notifier)
+        .loadHistoryEntry(entry.sourceText, entry.resultText);
     ref.read(selectedTabProvider.notifier).state = 0;
   }
 }

@@ -137,4 +137,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galería';
+
+  @override
+  String get sttLanguageLabel => 'Idioma de entrada de voz';
+
+  @override
+  String get sttLanguageAuto => 'Auto (de la última traducción)';
 }

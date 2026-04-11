@@ -29,11 +29,15 @@ class MistralService implements AiService {
       },
       body: jsonEncode({
         'model': _model,
+        'max_tokens': 4096,
         'messages': [
           {
+            'role': 'system',
+            'content': AiService.buildSystemPrompt(targetLanguage, altLanguage),
+          },
+          {
             'role': 'user',
-            'content':
-                AiService.buildPrompt(text, targetLanguage, altLanguage),
+            'content': AiService.buildUserMessage(text),
           },
         ],
       }),

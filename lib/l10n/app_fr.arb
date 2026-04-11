@@ -41,5 +41,8 @@
   "providerClaude": "Claude",
   "providerOpenAI": "ChatGPT",
   "ocrSourceCamera": "Appareil photo",
-  "ocrSourceGallery": "Galerie"
+  "ocrSourceGallery": "Galerie",
+
+  "sttLanguageLabel": "Langue de la saisie vocale",
+  "sttLanguageAuto": "Auto (de la dernière traduction)"
 }

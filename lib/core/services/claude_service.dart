@@ -31,12 +31,12 @@ class ClaudeService implements AiService {
       },
       body: jsonEncode({
         'model': _model,
-        'max_tokens': 1024,
+        'max_tokens': 4096,
+        'system': AiService.buildSystemPrompt(targetLanguage, altLanguage),
         'messages': [
           {
             'role': 'user',
-            'content':
-                AiService.buildPrompt(text, targetLanguage, altLanguage),
+            'content': AiService.buildUserMessage(text),
           },
         ],
       }),

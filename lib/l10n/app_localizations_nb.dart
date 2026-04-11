@@ -137,4 +137,10 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galleri';
+
+  @override
+  String get sttLanguageLabel => 'Taleinputspråk';
+
+  @override
+  String get sttLanguageAuto => 'Auto (fra siste oversettelse)';
 }

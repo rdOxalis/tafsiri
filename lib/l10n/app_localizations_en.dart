@@ -136,6 +136,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Gallery';
+
+  @override
+  String get sttLanguageLabel => 'Voice Input Language';
+
+  @override
+  String get sttLanguageAuto => 'Auto (from last translation)';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -270,4 +276,10 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get ocrSourceGallery => 'Gallery';
+
+  @override
+  String get sttLanguageLabel => 'Voice Input Language';
+
+  @override
+  String get sttLanguageAuto => 'Auto (from last translation)';
 }

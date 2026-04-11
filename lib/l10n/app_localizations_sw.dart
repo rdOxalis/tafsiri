@@ -137,4 +137,10 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Picha';
+
+  @override
+  String get sttLanguageLabel => 'Lugha ya Ingizo la Sauti';
+
+  @override
+  String get sttLanguageAuto => 'Kiotomatiki (kutoka tafsiri ya mwisho)';
 }

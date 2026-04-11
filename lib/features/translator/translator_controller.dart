@@ -96,7 +96,10 @@ class TranslatorController extends Notifier<TranslatorState> {
       return;
     }
 
-    final localeId = kSttLocaleMap[state.lastSourceLang];
+    // Prefer explicit STT language from settings, fall back to auto-detected source lang.
+    final sttLang = ref.read(settingsProvider).valueOrNull?.sttLanguage ?? '';
+    final langCode = sttLang.isNotEmpty ? sttLang : state.lastSourceLang;
+    final localeId = kSttLocaleMap[langCode];
     state = state.copyWith(isListening: true, clearOutput: true, clearError: true);
 
     await _stt.listen(
@@ -152,6 +155,14 @@ class TranslatorController extends Notifier<TranslatorState> {
 
   void setInputText(String text) {
     state = state.copyWith(inputText: text, clearOutput: true, clearError: true);
+  }
+
+  void loadHistoryEntry(String sourceText, String resultText) {
+    state = state.copyWith(
+      inputText: sourceText,
+      outputText: resultText,
+      clearError: true,
+    );
   }
 
   void clearInput() {

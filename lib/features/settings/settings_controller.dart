@@ -9,6 +9,7 @@ class SettingsState {
   final String activeProvider;
   final String targetLanguage;
   final String altLanguage;
+  final String sttLanguage; // ISO-639-1 code, empty = auto
 
   const SettingsState({
     required this.apiKeyMistral,
@@ -17,6 +18,7 @@ class SettingsState {
     required this.activeProvider,
     required this.targetLanguage,
     required this.altLanguage,
+    required this.sttLanguage,
   });
 
   const SettingsState.defaults()
@@ -25,7 +27,8 @@ class SettingsState {
         apiKeyOpenAI = '',
         activeProvider = kDefaultProvider,
         targetLanguage = kDefaultTargetLanguage,
-        altLanguage = kDefaultAltLanguage;
+        altLanguage = kDefaultAltLanguage,
+        sttLanguage = '';
 
   bool get hasApiKeyForActiveProvider {
     switch (activeProvider) {
@@ -60,6 +63,7 @@ class SettingsState {
     String? activeProvider,
     String? targetLanguage,
     String? altLanguage,
+    String? sttLanguage,
   }) {
     return SettingsState(
       apiKeyMistral: apiKeyMistral ?? this.apiKeyMistral,
@@ -68,6 +72,7 @@ class SettingsState {
       activeProvider: activeProvider ?? this.activeProvider,
       targetLanguage: targetLanguage ?? this.targetLanguage,
       altLanguage: altLanguage ?? this.altLanguage,
+      sttLanguage: sttLanguage ?? this.sttLanguage,
     );
   }
 }
@@ -84,6 +89,7 @@ class SettingsController extends AsyncNotifier<SettingsState> {
       targetLanguage:
           prefs.getString(kPrefTargetLanguage) ?? kDefaultTargetLanguage,
       altLanguage: prefs.getString(kPrefAltLanguage) ?? kDefaultAltLanguage,
+      sttLanguage: prefs.getString(kPrefSttLanguage) ?? '',
     );
   }
 
@@ -119,6 +125,12 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(kPrefAltLanguage, language);
     state = AsyncData(state.requireValue.copyWith(altLanguage: language));
+  }
+
+  Future<void> setSttLanguage(String code) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(kPrefSttLanguage, code);
+    state = AsyncData(state.requireValue.copyWith(sttLanguage: code));
   }
 }
 

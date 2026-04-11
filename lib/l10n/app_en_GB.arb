@@ -125,5 +125,11 @@
   "@ocrSourceCamera": { "description": "Bottom sheet option to pick image from camera" },
 
   "ocrSourceGallery": "Gallery",
-  "@ocrSourceGallery": { "description": "Bottom sheet option to pick image from gallery" }
+  "@ocrSourceGallery": { "description": "Bottom sheet option to pick image from gallery" },
+
+  "sttLanguageLabel": "Voice Input Language",
+  "@sttLanguageLabel": { "description": "Label for the STT language selector in settings" },
+
+  "sttLanguageAuto": "Auto (from last translation)",
+  "@sttLanguageAuto": { "description": "Option in STT language selector meaning auto-detect" }
 }

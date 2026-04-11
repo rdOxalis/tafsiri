@@ -366,6 +366,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'Gallery'**
   String get ocrSourceGallery;
+
+  /// Label for the STT language selector in settings
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Voice Input Language'**
+  String get sttLanguageLabel;
+
+  /// Option in STT language selector meaning auto-detect
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Auto (from last translation)'**
+  String get sttLanguageAuto;
 }
 
 class _AppLocalizationsDelegate

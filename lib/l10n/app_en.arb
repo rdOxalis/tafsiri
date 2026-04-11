@@ -125,5 +125,8 @@
   "@ocrSourceCamera": { "description": "Bottom sheet option to pick image from camera" },
 
   "ocrSourceGallery": "Gallery",
-  "@ocrSourceGallery": { "description": "Bottom sheet option to pick image from gallery" }
+  "@ocrSourceGallery": { "description": "Bottom sheet option to pick image from gallery" },
+
+  "sttLanguageLabel": "Voice Input Language",
+  "sttLanguageAuto": "Auto (from last translation)"
 }

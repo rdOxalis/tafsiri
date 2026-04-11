@@ -104,7 +104,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   visible: _mistralVisible,
                   onToggleVisibility: () =>
                       setState(() => _mistralVisible = !_mistralVisible),
-                  onSubmitted: (v) => ref
+                  onChanged: (v) => ref
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderMistral, v),
                 ),
@@ -115,7 +115,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   visible: _claudeVisible,
                   onToggleVisibility: () =>
                       setState(() => _claudeVisible = !_claudeVisible),
-                  onSubmitted: (v) => ref
+                  onChanged: (v) => ref
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderClaude, v),
                 ),
@@ -126,7 +126,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   visible: _openAiVisible,
                   onToggleVisibility: () =>
                       setState(() => _openAiVisible = !_openAiVisible),
-                  onSubmitted: (v) => ref
+                  onChanged: (v) => ref
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderOpenAI, v),
                 ),
@@ -140,7 +140,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 controller: _targetLangController,
                 decoration:
                     InputDecoration(labelText: l10n.targetLanguageLabel),
-                onSubmitted: (v) => ref
+                onChanged: (v) => ref
                     .read(settingsProvider.notifier)
                     .setTargetLanguage(v),
               ),
@@ -149,8 +149,35 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 controller: _altLangController,
                 decoration:
                     InputDecoration(labelText: l10n.altLanguageLabel),
-                onSubmitted: (v) =>
+                onChanged: (v) =>
                     ref.read(settingsProvider.notifier).setAltLanguage(v),
+              ),
+
+              const Divider(height: 32),
+
+              // --- STT Input Language ---
+              _SectionHeader(l10n.sttLanguageLabel),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                value: kSttLanguageOptions.any(
+                        (e) => e.$1 == settings.sttLanguage)
+                    ? settings.sttLanguage
+                    : '',
+                items: kSttLanguageOptions
+                    .map((e) => DropdownMenuItem(
+                          value: e.$1,
+                          child: Text(e.$1.isEmpty
+                              ? l10n.sttLanguageAuto
+                              : e.$2),
+                        ))
+                    .toList(),
+                onChanged: (code) {
+                  if (code != null) {
+                    ref
+                        .read(settingsProvider.notifier)
+                        .setSttLanguage(code);
+                  }
+                },
               ),
 
               const Divider(height: 32),
@@ -258,14 +285,14 @@ class _ApiKeyField extends StatelessWidget {
   final TextEditingController controller;
   final bool visible;
   final VoidCallback onToggleVisibility;
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String> onChanged;
 
   const _ApiKeyField({
     required this.label,
     required this.controller,
     required this.visible,
     required this.onToggleVisibility,
-    required this.onSubmitted,
+    required this.onChanged,
   });
 
   @override
@@ -280,7 +307,7 @@ class _ApiKeyField extends StatelessWidget {
           onPressed: onToggleVisibility,
         ),
       ),
-      onSubmitted: onSubmitted,
+      onChanged: onChanged,
     );
   }
 }

@@ -8,12 +8,14 @@ class HistoryListItem extends StatelessWidget {
   final TranslationEntry entry;
   final VoidCallback onTap;
   final VoidCallback onToggleFavourite;
+  final VoidCallback onDelete;
 
   const HistoryListItem({
     super.key,
     required this.entry,
     required this.onTap,
     required this.onToggleFavourite,
+    required this.onDelete,
   });
 
   @override
@@ -73,6 +75,15 @@ class HistoryListItem extends StatelessWidget {
                         ? 'Remove from favourites'
                         : 'Add to favourites',
                     onPressed: onToggleFavourite,
+                  ),
+                  const SizedBox(width: 4),
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline, size: 20),
+                    color: Theme.of(context).colorScheme.outline,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    tooltip: 'Delete',
+                    onPressed: onDelete,
                   ),
                 ],
               ),

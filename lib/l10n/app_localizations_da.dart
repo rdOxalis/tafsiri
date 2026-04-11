@@ -137,4 +137,10 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galleri';
+
+  @override
+  String get sttLanguageLabel => 'Taleinputsprog';
+
+  @override
+  String get sttLanguageAuto => 'Auto (fra seneste oversættelse)';
 }

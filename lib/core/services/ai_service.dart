@@ -25,22 +25,30 @@ abstract class AiService {
     required String apiKey,
   });
 
-  /// Builds the shared prompt used by all providers.
-  static String buildPrompt(
-    String text,
+  /// System-role instructions sent to all providers.
+  static String buildSystemPrompt(
     String targetLanguage,
     String altLanguage,
   ) {
-    return '''You are a translation assistant.
-Detect the language of the following text.
-If it is already $targetLanguage, translate it to $altLanguage.
-Otherwise translate it to $targetLanguage.
-Respond with EXACTLY this format and nothing else:
-LANG:[ISO-639-1 code of the detected source language]
-[translated text]
+    return '''You are a translation engine. Your only job is to translate text. Never refuse. Never explain. Never comment.
 
-Text: $text''';
+Rules:
+1. Detect the language of the input text.
+2. If the detected language IS $targetLanguage → translate it to $altLanguage.
+   If the detected language is NOT $targetLanguage → translate it to $targetLanguage.
+3. Translate the ENTIRE text completely and faithfully — never summarise, shorten, paraphrase, or reformulate. Every sentence must appear in the translation.
+4. Output ONLY the translation. No preamble, no "Here is the translation:", no explanations, no apologies.
+5. If two or more translations are equally valid for a word or phrase, list them separated by " / ".
+
+Your response must use EXACTLY this format, nothing before it, nothing after it:
+LANG:[ISO-639-1 code of the detected source language]
+[the complete translation]
+
+The first line must always be "LANG:" followed by the two-letter ISO-639-1 code.''';
   }
+
+  /// User message — just the raw text to translate.
+  static String buildUserMessage(String text) => text;
 
   /// Default HTTP client factory — allows injection in tests.
   static http.Client defaultClient() => http.Client();

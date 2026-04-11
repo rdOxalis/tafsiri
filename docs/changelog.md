@@ -9,6 +9,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.3] - 2026-04-11
+
+### Added
+- STT voice input language setting in Settings screen — dropdown with Auto + 10 supported languages; overrides the auto-detected source language when set. All 11 ARB files updated.
+- Swipe-right-to-favourite gesture on history list items (`Dismissible` with `confirmDismiss: false` so the card stays in place)
+- Visible delete button (`delete_outline`) on each history list item alongside the star
+
+### Changed
+- History reload now loads both source text (input area) and result text (output area), not just source text
+- Settings persistence: all text fields now use `onChanged` instead of `onSubmitted` — values are saved on every keystroke, not only on keyboard Done press
+- Paste/clipboard button moved from input area to the action bar (between Image and Translate buttons)
+- AI prompt split into system role (instructions) and user message (text only) for all three providers — Claude uses top-level `system` field, OpenAI/Mistral use `role: system` in the messages array
+- `max_tokens` increased from 1024 to 4096 for all providers — prevents truncation of longer OCR texts
+- System prompt strengthened: explicit rule to translate the ENTIRE text without summarising, shortening, or paraphrasing
+- Input area rounded corners fixed (`clipBehavior: Clip.antiAlias` on the container)
+
+### Fixed
+- History reload was loading only source text and leaving the output area empty
+- Settings API keys and language fields were not persisted when navigating away without pressing Done
+- `TextEditingController` in InputArea now initialised with current state so history-reloaded text is visible immediately after tab switch
+
+---
+
 ## [1.0.2] - 2026-04-11
 
 ### Changed

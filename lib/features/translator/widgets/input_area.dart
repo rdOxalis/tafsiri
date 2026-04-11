@@ -16,7 +16,9 @@ class _InputAreaState extends ConsumerState<InputArea> {
   @override
   void initState() {
     super.initState();
-    _textController = TextEditingController();
+    // Read current state so history-reload (set before this widget is built) is visible.
+    final initialText = ref.read(translatorProvider).inputText;
+    _textController = TextEditingController(text: initialText);
   }
 
   @override
@@ -44,6 +46,7 @@ class _InputAreaState extends ConsumerState<InputArea> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       child: Container(
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),

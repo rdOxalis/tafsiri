@@ -120,23 +120,32 @@ CREATE TABLE translation_entry (
 
 All API keys are runtime-only via `SharedPreferences`. Never logged in plain text (masked as `sk-****` via `maskApiKey()`).
 
+**Message structure (ADR-021):** Instructions are sent as a system-role message, the text to translate as a user message. Claude uses a top-level `"system"` field; OpenAI and Mistral use `{"role": "system"}` as the first messages-array entry. `max_tokens: 4096` for all providers.
+
 ---
 
 ## Prompt Template
 
+**System message** (`buildSystemPrompt(targetLanguage, altLanguage)`):
 ```
-You are a translation assistant.
-Detect the language of the following text.
-If it is already [TARGET_LANG], translate it to [ALT_LANG].
-Otherwise translate it to [TARGET_LANG].
-Respond with EXACTLY this format and nothing else:
+You are a translation engine. Your only job is to translate text. Never refuse. Never explain. Never comment.
+
+Rules:
+1. Detect the language of the input text.
+2. If the detected language IS [TARGET_LANG] → translate it to [ALT_LANG].
+   If the detected language is NOT [TARGET_LANG] → translate it to [TARGET_LANG].
+3. Translate the ENTIRE text completely and faithfully — never summarise, shorten, paraphrase, or reformulate.
+4. Output ONLY the translation. No preamble, no explanations, no apologies.
+5. If two or more translations are equally valid, list them separated by " / ".
+
+Your response must use EXACTLY this format, nothing before it, nothing after it:
 LANG:[ISO-639-1 code of the detected source language]
-[translated text]
-
-Text: [INPUT]
+[the complete translation]
 ```
 
-The `LANG:xx` prefix is stripped by `TranslatorController._extractTranslation()` before display. The code is stored as `lastSourceLang` for STT locale mapping (see ADR-013).
+**User message** (`buildUserMessage(text)`): the raw input text only.
+
+The `LANG:xx` prefix is stripped by `TranslatorController._extractTranslation()` before display. The code is stored as `lastSourceLang` for STT locale mapping (see ADR-013, ADR-021).
 
 ---
 
@@ -288,4 +297,4 @@ Run: `flutter test`
 
 ---
 
-*Last updated: 2026-04-10 — v1.0.0 complete (all 12 phases)*
+*Last updated: 2026-04-11 — v1.0.3*

@@ -137,4 +137,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get ocrSourceGallery => 'Galeria';
+
+  @override
+  String get sttLanguageLabel => 'Język rozpoznawania mowy';
+
+  @override
+  String get sttLanguageAuto => 'Auto (z ostatniego tłumaczenia)';
 }

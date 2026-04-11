@@ -171,6 +171,24 @@
 
 ---
 
+## ADR-021: AI prompt split into system role and user message
+**Date:** 2026-04-11  
+**Status:** Accepted  
+**Context:** All three providers were receiving instructions and text in a single `user` message. ChatGPT in particular ignored the translation rules (wrong target language, reformulation instead of translation, no output for longer texts). System-role messages carry higher instruction weight with all providers.  
+**Decision:** Split `buildPrompt()` into `buildSystemPrompt(targetLanguage, altLanguage)` and `buildUserMessage(text)`. Claude sends the system prompt as a top-level `"system"` field (Anthropic API standard). OpenAI and Mistral send it as `{"role": "system", ...}` as the first message. The user message contains only the raw text. `max_tokens` raised to 4096 for all providers.  
+**Consequences:** Better instruction compliance across all providers. Longer OCR texts no longer truncated. `buildPrompt()` removed — any future prompt change must update `buildSystemPrompt()`.
+
+---
+
+## ADR-022: STT input language setting
+**Date:** 2026-04-11  
+**Status:** Accepted  
+**Context:** STT locale was derived solely from the detected source language of the last translation (ADR-008). If the last translation detected French, the microphone would listen in French even if the user wanted to speak German. This caused mis-recognition when switching input languages.  
+**Decision:** Add a `stt_language` SharedPreferences key (ISO-639-1 code, empty = auto). A dropdown in Settings lists Auto + all 10 supported languages. `TranslatorController.toggleListening()` prefers the explicit setting over the auto-detected `lastSourceLang`.  
+**Consequences:** User has full control over the STT recognition locale. Auto mode (default) preserves the existing adaptive behaviour from ADR-008.
+
+---
+
 ## ADR-020: ProGuard keep rules for google_mlkit_text_recognition release build
 **Date:** 2026-04-10  
 **Status:** Accepted  
