@@ -57,97 +57,168 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         error: (e, _) => Center(child: Text(e.toString())),
         data: (settings) {
           _syncControllers(settings);
-          return SingleChildScrollView(
+          return ListView(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (!settings.hasApiKeyForActiveProvider)
-                  _WarningBanner(message: l10n.warningNoApiKey),
-
-                // --- Provider ---
-                const SizedBox(height: 16),
-                Text(l10n.providerLabel,
-                    style: Theme.of(context).textTheme.titleSmall),
+            children: [
+              // --- Warning banner ---
+              if (!settings.hasApiKeyForActiveProvider) ...[
+                _WarningBanner(message: l10n.warningNoApiKey),
                 const SizedBox(height: 8),
-                _ProviderSelector(
-                  selected: settings.activeProvider,
-                  onChanged: (p) =>
-                      ref.read(settingsProvider.notifier).setActiveProvider(p),
-                ),
-
-                // --- API Keys ---
-                const SizedBox(height: 24),
-                _ApiKeyField(
-                  label: l10n.apiKeyMistral,
-                  controller: _mistralController,
-                  visible: _mistralVisible,
-                  onToggleVisibility: () =>
-                      setState(() => _mistralVisible = !_mistralVisible),
-                  onSubmitted: (v) => ref
-                      .read(settingsProvider.notifier)
-                      .setApiKey(kProviderMistral, v),
-                ),
-                const SizedBox(height: 12),
-                _ApiKeyField(
-                  label: l10n.apiKeyClaude,
-                  controller: _claudeController,
-                  visible: _claudeVisible,
-                  onToggleVisibility: () =>
-                      setState(() => _claudeVisible = !_claudeVisible),
-                  onSubmitted: (v) => ref
-                      .read(settingsProvider.notifier)
-                      .setApiKey(kProviderClaude, v),
-                ),
-                const SizedBox(height: 12),
-                _ApiKeyField(
-                  label: l10n.apiKeyOpenAI,
-                  controller: _openAiController,
-                  visible: _openAiVisible,
-                  onToggleVisibility: () =>
-                      setState(() => _openAiVisible = !_openAiVisible),
-                  onSubmitted: (v) => ref
-                      .read(settingsProvider.notifier)
-                      .setApiKey(kProviderOpenAI, v),
-                ),
-
-                // --- Languages ---
-                const SizedBox(height: 24),
-                TextField(
-                  controller: _targetLangController,
-                  decoration:
-                      InputDecoration(labelText: l10n.targetLanguageLabel),
-                  onSubmitted: (v) => ref
-                      .read(settingsProvider.notifier)
-                      .setTargetLanguage(v),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _altLangController,
-                  decoration:
-                      InputDecoration(labelText: l10n.altLanguageLabel),
-                  onSubmitted: (v) =>
-                      ref.read(settingsProvider.notifier).setAltLanguage(v),
-                ),
-
-                // --- App Language ---
-                const SizedBox(height: 24),
-                Text(l10n.appLanguageLabel,
-                    style: Theme.of(context).textTheme.titleSmall),
-                const SizedBox(height: 8),
-                _LocaleDropdown(),
-
-                // --- Donate ---
-                const SizedBox(height: 40),
-                _DonateButton(label: l10n.donateButton),
-                const SizedBox(height: 24),
               ],
-            ),
+
+              // --- AI Provider ---
+              _SectionHeader(l10n.providerLabel),
+              const SizedBox(height: 8),
+              RadioListTile<String>(
+                value: kProviderMistral,
+                groupValue: settings.activeProvider,
+                title: Text(l10n.providerMistral),
+                onChanged: (p) => ref
+                    .read(settingsProvider.notifier)
+                    .setActiveProvider(p!),
+              ),
+              RadioListTile<String>(
+                value: kProviderClaude,
+                groupValue: settings.activeProvider,
+                title: Text(l10n.providerClaude),
+                onChanged: (p) => ref
+                    .read(settingsProvider.notifier)
+                    .setActiveProvider(p!),
+              ),
+              RadioListTile<String>(
+                value: kProviderOpenAI,
+                groupValue: settings.activeProvider,
+                title: Text(l10n.providerOpenAI),
+                onChanged: (p) => ref
+                    .read(settingsProvider.notifier)
+                    .setActiveProvider(p!),
+              ),
+
+              const Divider(height: 32),
+
+              // --- API Keys ---
+              _ApiKeyField(
+                label: l10n.apiKeyMistral,
+                controller: _mistralController,
+                visible: _mistralVisible,
+                onToggleVisibility: () =>
+                    setState(() => _mistralVisible = !_mistralVisible),
+                onSubmitted: (v) => ref
+                    .read(settingsProvider.notifier)
+                    .setApiKey(kProviderMistral, v),
+              ),
+              const SizedBox(height: 12),
+              _ApiKeyField(
+                label: l10n.apiKeyClaude,
+                controller: _claudeController,
+                visible: _claudeVisible,
+                onToggleVisibility: () =>
+                    setState(() => _claudeVisible = !_claudeVisible),
+                onSubmitted: (v) => ref
+                    .read(settingsProvider.notifier)
+                    .setApiKey(kProviderClaude, v),
+              ),
+              const SizedBox(height: 12),
+              _ApiKeyField(
+                label: l10n.apiKeyOpenAI,
+                controller: _openAiController,
+                visible: _openAiVisible,
+                onToggleVisibility: () =>
+                    setState(() => _openAiVisible = !_openAiVisible),
+                onSubmitted: (v) => ref
+                    .read(settingsProvider.notifier)
+                    .setApiKey(kProviderOpenAI, v),
+              ),
+
+              const Divider(height: 32),
+
+              // --- Translation Languages ---
+              _SectionHeader(l10n.targetLanguageLabel),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _targetLangController,
+                decoration:
+                    InputDecoration(labelText: l10n.targetLanguageLabel),
+                onSubmitted: (v) => ref
+                    .read(settingsProvider.notifier)
+                    .setTargetLanguage(v),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _altLangController,
+                decoration:
+                    InputDecoration(labelText: l10n.altLanguageLabel),
+                onSubmitted: (v) =>
+                    ref.read(settingsProvider.notifier).setAltLanguage(v),
+              ),
+
+              const Divider(height: 32),
+
+              // --- App Language ---
+              _SectionHeader(l10n.appLanguageLabel),
+              const SizedBox(height: 8),
+              _LocaleDropdown(),
+
+              const Divider(height: 32),
+
+              // --- Donate ---
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.coffee_outlined),
+                title: Text(l10n.donateButton),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => _showDonateDialog(context, l10n),
+              ),
+              const SizedBox(height: 8),
+            ],
           );
         },
       ),
     );
   }
+
+  void _showDonateDialog(BuildContext context, AppLocalizations l10n) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        icon: const Icon(Icons.coffee_outlined, size: 32),
+        title: Text(l10n.donateButton),
+        content: const Text('PayPal · paypal.me/CarlDarkman'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton.icon(
+            icon: const Icon(Icons.open_in_new, size: 18),
+            label: Text(l10n.donateButton),
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final uri = Uri.parse(kPayPalDonateUrl);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+
+class _SectionHeader extends StatelessWidget {
+  final String text;
+  const _SectionHeader(this.text);
+
+  @override
+  Widget build(BuildContext context) => Text(
+        text,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+      );
 }
 
 class _WarningBanner extends StatelessWidget {
@@ -177,26 +248,6 @@ class _WarningBanner extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _ProviderSelector extends StatelessWidget {
-  final String selected;
-  final ValueChanged<String> onChanged;
-
-  const _ProviderSelector({required this.selected, required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return SegmentedButton<String>(
-      segments: const [
-        ButtonSegment(value: kProviderMistral, label: Text('Mistral')),
-        ButtonSegment(value: kProviderClaude, label: Text('Claude')),
-        ButtonSegment(value: kProviderOpenAI, label: Text('ChatGPT')),
-      ],
-      selected: {selected},
-      onSelectionChanged: (s) => onChanged(s.first),
     );
   }
 }
@@ -256,28 +307,6 @@ class _LocaleDropdown extends ConsumerWidget {
           ref.read(localeProvider.notifier).setLocale(code);
         }
       },
-    );
-  }
-}
-
-class _DonateButton extends StatelessWidget {
-  final String label;
-  const _DonateButton({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton.icon(
-        icon: const Icon(Icons.coffee),
-        label: Text(label),
-        onPressed: () async {
-          final uri = Uri.parse(kPayPalDonateUrl);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri, mode: LaunchMode.externalApplication);
-          }
-        },
-      ),
     );
   }
 }

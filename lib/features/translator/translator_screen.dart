@@ -24,12 +24,15 @@ class TranslatorScreen extends ConsumerWidget {
       },
     );
 
-    return const Column(
-      children: [
-        Expanded(child: InputArea()),
-        Expanded(child: OutputArea()),
-        ActionBar(),
-      ],
+    return const SafeArea(
+      bottom: false,
+      child: Column(
+        children: [
+          Expanded(child: InputArea()),
+          Expanded(child: OutputArea()),
+          ActionBar(),
+        ],
+      ),
     );
   }
 }
