@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../l10n/app_localizations.dart';
@@ -48,6 +49,23 @@ class ActionBar extends ConsumerWidget {
             onPressed: (isLoading || isOcrProcessing)
                 ? null
                 : () => _showImageSourceSheet(context, ref, l10n),
+          ),
+          // Paste from clipboard
+          IconButton(
+            tooltip: l10n.pasteButton,
+            icon: const Icon(Icons.content_paste),
+            onPressed: isLoading
+                ? null
+                : () async {
+                    final data =
+                        await Clipboard.getData(Clipboard.kTextPlain);
+                    final text = data?.text ?? '';
+                    if (text.isNotEmpty) {
+                      ref
+                          .read(translatorProvider.notifier)
+                          .setInputText(text);
+                    }
+                  },
           ),
           const Spacer(),
           FilledButton.icon(
