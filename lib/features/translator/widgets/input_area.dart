@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 import '../translator_controller.dart';
@@ -42,52 +41,42 @@ class _InputAreaState extends ConsumerState<InputArea> {
     final hasText =
         ref.watch(translatorProvider.select((s) => s.inputText.isNotEmpty));
 
-    return Card(
-      margin: const EdgeInsets.all(12),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 4, 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Stack(
           children: [
             TextField(
               controller: _textController,
               maxLines: null,
-              minLines: 4,
+              expands: true,
+              textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
                 hintText: l10n.inputHint,
                 border: InputBorder.none,
+                contentPadding:
+                    const EdgeInsets.fromLTRB(16, 12, 48, 12),
               ),
               onChanged: (v) =>
                   ref.read(translatorProvider.notifier).setInputText(v),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  tooltip: l10n.pasteButton,
-                  icon: const Icon(Icons.content_paste),
-                  onPressed: () async {
-                    final data = await Clipboard.getData(Clipboard.kTextPlain);
-                    final text = data?.text ?? '';
-                    if (text.isNotEmpty) {
-                      ref
-                          .read(translatorProvider.notifier)
-                          .setInputText(text);
-                    }
+            if (hasText)
+              Positioned(
+                top: 4,
+                right: 4,
+                child: IconButton(
+                  tooltip: l10n.clearButton,
+                  icon: const Icon(Icons.clear, size: 18),
+                  onPressed: () {
+                    _textController.clear();
+                    ref.read(translatorProvider.notifier).clearInput();
                   },
                 ),
-                IconButton(
-                  tooltip: l10n.clearButton,
-                  icon: const Icon(Icons.clear),
-                  onPressed: hasText
-                      ? () {
-                          _textController.clear();
-                          ref.read(translatorProvider.notifier).clearInput();
-                        }
-                      : null,
-                ),
-              ],
-            ),
+              ),
           ],
         ),
       ),

@@ -12,23 +12,30 @@ class OutputArea extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(translatorProvider);
 
-    return Card(
-      margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 4, 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Stack(
           children: [
-            Expanded(child: _buildBody(context, l10n, state)),
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 48, 12),
+                child: _buildBody(context, l10n, state),
+              ),
+            ),
             if (state.outputText != null && !state.isLoading)
-              Align(
-                alignment: Alignment.centerRight,
+              Positioned(
+                top: 4,
+                right: 4,
                 child: IconButton(
                   tooltip: l10n.copyButton,
-                  icon: const Icon(Icons.copy),
+                  icon: const Icon(Icons.copy, size: 18),
                   onPressed: () {
-                    Clipboard.setData(
-                        ClipboardData(text: state.outputText!));
+                    Clipboard.setData(ClipboardData(text: state.outputText!));
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(l10n.copyButton),
@@ -53,8 +60,7 @@ class OutputArea extends ConsumerWidget {
       return Center(
         child: Text(
           _errorMessage(l10n, state.error!),
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.error),
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
           textAlign: TextAlign.center,
         ),
       );

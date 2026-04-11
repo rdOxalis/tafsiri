@@ -118,6 +118,12 @@
 
 ## Done
 
+- [x] v1.0.2 — Post-test UI polish (2026-04-11)
+  - Translator screen: "Tafsiri" heading, action bar in the middle, rounded containers for input/output
+  - Settings: only active provider's API key field shown
+  - Paste button removed; clear button as overlay
+  - 44/44 tests grün · `flutter analyze` clean
+
 - [x] v1.0.0 — alle 12 Phasen abgeschlossen (2026-04-10)
   - Foundation, Localisation, Settings, AI Services, Translation Core, Translator UI,
     SQLite, History, Favourites, Voice Input (STT), Image Input (OCR), Polish & Release Prep

@@ -9,6 +9,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.2] - 2026-04-11
+
+### Changed
+- Translator screen redesigned: "Tafsiri" heading above input area; action bar (Mic/Image/Translate) moved to the middle between input and output areas
+- Input area: replaced Card with a full-height rounded container (`surfaceContainerHighest`), removed paste/clipboard button, clear button repositioned as overlay in top-right corner
+- Output area: same rounded container style as input area, copy button overlay in top-right corner; consistent visual language across both panels
+- Settings screen: only the API key field for the currently active provider is shown — switching provider shows the corresponding field
+
+### Removed
+- Paste/clipboard button from input area (clipboard → manual paste via long-press is the standard Android pattern)
+
+---
+
 ## [1.0.1] - 2026-04-10
 
 ### Fixed

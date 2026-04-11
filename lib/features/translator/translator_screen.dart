@@ -24,13 +24,24 @@ class TranslatorScreen extends ConsumerWidget {
       },
     );
 
-    return const SafeArea(
+    return SafeArea(
       bottom: false,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: InputArea()),
-          Expanded(child: OutputArea()),
-          ActionBar(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            child: Text(
+              'Tafsiri',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          const Expanded(child: InputArea()),
+          const ActionBar(),
+          const Expanded(child: OutputArea()),
         ],
       ),
     );

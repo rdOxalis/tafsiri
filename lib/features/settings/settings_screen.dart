@@ -96,39 +96,40 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
               const Divider(height: 32),
 
-              // --- API Keys ---
-              _ApiKeyField(
-                label: l10n.apiKeyMistral,
-                controller: _mistralController,
-                visible: _mistralVisible,
-                onToggleVisibility: () =>
-                    setState(() => _mistralVisible = !_mistralVisible),
-                onSubmitted: (v) => ref
-                    .read(settingsProvider.notifier)
-                    .setApiKey(kProviderMistral, v),
-              ),
-              const SizedBox(height: 12),
-              _ApiKeyField(
-                label: l10n.apiKeyClaude,
-                controller: _claudeController,
-                visible: _claudeVisible,
-                onToggleVisibility: () =>
-                    setState(() => _claudeVisible = !_claudeVisible),
-                onSubmitted: (v) => ref
-                    .read(settingsProvider.notifier)
-                    .setApiKey(kProviderClaude, v),
-              ),
-              const SizedBox(height: 12),
-              _ApiKeyField(
-                label: l10n.apiKeyOpenAI,
-                controller: _openAiController,
-                visible: _openAiVisible,
-                onToggleVisibility: () =>
-                    setState(() => _openAiVisible = !_openAiVisible),
-                onSubmitted: (v) => ref
-                    .read(settingsProvider.notifier)
-                    .setApiKey(kProviderOpenAI, v),
-              ),
+              // --- API Key for active provider only ---
+              if (settings.activeProvider == kProviderMistral)
+                _ApiKeyField(
+                  label: l10n.apiKeyMistral,
+                  controller: _mistralController,
+                  visible: _mistralVisible,
+                  onToggleVisibility: () =>
+                      setState(() => _mistralVisible = !_mistralVisible),
+                  onSubmitted: (v) => ref
+                      .read(settingsProvider.notifier)
+                      .setApiKey(kProviderMistral, v),
+                ),
+              if (settings.activeProvider == kProviderClaude)
+                _ApiKeyField(
+                  label: l10n.apiKeyClaude,
+                  controller: _claudeController,
+                  visible: _claudeVisible,
+                  onToggleVisibility: () =>
+                      setState(() => _claudeVisible = !_claudeVisible),
+                  onSubmitted: (v) => ref
+                      .read(settingsProvider.notifier)
+                      .setApiKey(kProviderClaude, v),
+                ),
+              if (settings.activeProvider == kProviderOpenAI)
+                _ApiKeyField(
+                  label: l10n.apiKeyOpenAI,
+                  controller: _openAiController,
+                  visible: _openAiVisible,
+                  onToggleVisibility: () =>
+                      setState(() => _openAiVisible = !_openAiVisible),
+                  onSubmitted: (v) => ref
+                      .read(settingsProvider.notifier)
+                      .setApiKey(kProviderOpenAI, v),
+                ),
 
               const Divider(height: 32),
 
