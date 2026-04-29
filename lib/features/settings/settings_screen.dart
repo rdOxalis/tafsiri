@@ -66,9 +66,71 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 const SizedBox(height: 8),
               ],
 
+              // --- Translation Languages ---
+              _SectionHeader(l10n.translationLanguagesSection),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _targetLangController,
+                decoration:
+                    InputDecoration(labelText: l10n.targetLanguageLabel),
+                onChanged: (v) => ref
+                    .read(settingsProvider.notifier)
+                    .setTargetLanguage(v),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _altLangController,
+                decoration:
+                    InputDecoration(labelText: l10n.altLanguageLabel),
+                onChanged: (v) =>
+                    ref.read(settingsProvider.notifier).setAltLanguage(v),
+              ),
+
+              const Divider(height: 32),
+
+              // --- Speech Recognition ---
+              _SectionHeader(l10n.sttLanguageLabel),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                value: kSttLanguageOptions.any(
+                        (e) => e.$1 == settings.sttLanguage)
+                    ? settings.sttLanguage
+                    : '',
+                items: kSttLanguageOptions
+                    .map((e) => DropdownMenuItem(
+                          value: e.$1,
+                          child: Text(e.$1.isEmpty
+                              ? l10n.sttLanguageAuto
+                              : e.$2),
+                        ))
+                    .toList(),
+                onChanged: (code) {
+                  if (code != null) {
+                    ref
+                        .read(settingsProvider.notifier)
+                        .setSttLanguage(code);
+                  }
+                },
+              ),
+
+              const Divider(height: 32),
+
+              // --- App Language ---
+              _SectionHeader(l10n.appLanguageLabel),
+              const SizedBox(height: 8),
+              _LocaleDropdown(),
+
+              const Divider(height: 32),
+
               // --- AI Provider ---
               _SectionHeader(l10n.providerLabel),
-              const SizedBox(height: 8),
+              Text(
+                l10n.providerSubtitle,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+              ),
+              const SizedBox(height: 4),
               RadioListTile<String>(
                 value: kProviderMistral,
                 groupValue: settings.activeProvider,
@@ -93,9 +155,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     .read(settingsProvider.notifier)
                     .setActiveProvider(p!),
               ),
-
-              const Divider(height: 32),
-
+              const SizedBox(height: 8),
               // --- API Key for active provider only ---
               if (settings.activeProvider == kProviderMistral)
                 _ApiKeyField(
@@ -130,62 +190,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderOpenAI, v),
                 ),
-
-              const Divider(height: 32),
-
-              // --- Translation Languages ---
-              _SectionHeader(l10n.targetLanguageLabel),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _targetLangController,
-                decoration:
-                    InputDecoration(labelText: l10n.targetLanguageLabel),
-                onChanged: (v) => ref
-                    .read(settingsProvider.notifier)
-                    .setTargetLanguage(v),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _altLangController,
-                decoration:
-                    InputDecoration(labelText: l10n.altLanguageLabel),
-                onChanged: (v) =>
-                    ref.read(settingsProvider.notifier).setAltLanguage(v),
-              ),
-
-              const Divider(height: 32),
-
-              // --- STT Input Language ---
-              _SectionHeader(l10n.sttLanguageLabel),
-              const SizedBox(height: 8),
-              DropdownButtonFormField<String>(
-                value: kSttLanguageOptions.any(
-                        (e) => e.$1 == settings.sttLanguage)
-                    ? settings.sttLanguage
-                    : '',
-                items: kSttLanguageOptions
-                    .map((e) => DropdownMenuItem(
-                          value: e.$1,
-                          child: Text(e.$1.isEmpty
-                              ? l10n.sttLanguageAuto
-                              : e.$2),
-                        ))
-                    .toList(),
-                onChanged: (code) {
-                  if (code != null) {
-                    ref
-                        .read(settingsProvider.notifier)
-                        .setSttLanguage(code);
-                  }
-                },
-              ),
-
-              const Divider(height: 32),
-
-              // --- App Language ---
-              _SectionHeader(l10n.appLanguageLabel),
-              const SizedBox(height: 8),
-              _LocaleDropdown(),
 
               const Divider(height: 32),
 

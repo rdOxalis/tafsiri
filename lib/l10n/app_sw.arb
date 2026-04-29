@@ -27,8 +27,9 @@
   "apiKeyClaude": "Ufunguo wa Claude API",
   "apiKeyOpenAI": "Ufunguo wa OpenAI API",
   "providerLabel": "Mtoa huduma wa AI",
-  "targetLanguageLabel": "Lugha Lengwa",
-  "altLanguageLabel": "Lugha Mbadala",
+  "providerSubtitle": "tumia ufunguo wako wa API",
+  "targetLanguageLabel": "Lugha ya Msingi",
+  "altLanguageLabel": "Lugha ya Pili",
   "appLanguageLabel": "Lugha ya Programu",
   "warningNoApiKey": "Hakuna ufunguo wa API kwa mtoa huduma aliyechaguliwa. Tafadhali ongeza ufunguo wako hapa chini.",
   "donateButton": "Nununulie kahawa",
@@ -42,7 +43,12 @@
   "providerOpenAI": "ChatGPT",
   "ocrSourceCamera": "Kamera",
   "ocrSourceGallery": "Picha",
-
-  "sttLanguageLabel": "Lugha ya Ingizo la Sauti",
-  "sttLanguageAuto": "Kiotomatiki (kutoka tafsiri ya mwisho)"
+  "sttLanguageLabel": "Utambuzi wa Sauti (Maikrofoni)",
+  "sttLanguageAuto": "Kiotomatiki (kutoka tafsiri ya mwisho)",
+  "translationLanguagesSection": "Lugha za Tafsiri",
+  "translationInfoTitle": "Jinsi inavyofanya kazi",
+  "translationInfoPart1": "Maandishi yaliyoingizwa yatatafsirishwa kwa ",
+  "translationInfoPart2": ". Ikiwa maandishi tayari ni ",
+  "translationInfoPart3": ", yatatafsirishwa kwa ",
+  "translationInfoPart4": "."
 }

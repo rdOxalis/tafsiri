@@ -27,8 +27,9 @@
   "apiKeyClaude": "Klucz API Claude",
   "apiKeyOpenAI": "Klucz API OpenAI",
   "providerLabel": "Dostawca AI",
-  "targetLanguageLabel": "Język docelowy",
-  "altLanguageLabel": "Język alternatywny",
+  "providerSubtitle": "użyj własnego klucza API",
+  "targetLanguageLabel": "Język podstawowy",
+  "altLanguageLabel": "Język dodatkowy",
   "appLanguageLabel": "Język aplikacji",
   "warningNoApiKey": "Brak klucza API dla aktywnego dostawcy. Dodaj swój klucz poniżej.",
   "donateButton": "Postaw mi kawę",
@@ -42,7 +43,12 @@
   "providerOpenAI": "ChatGPT",
   "ocrSourceCamera": "Aparat",
   "ocrSourceGallery": "Galeria",
-
-  "sttLanguageLabel": "Język rozpoznawania mowy",
-  "sttLanguageAuto": "Auto (z ostatniego tłumaczenia)"
+  "sttLanguageLabel": "Rozpoznawanie mowy (Mikrofon)",
+  "sttLanguageAuto": "Auto (z ostatniego tłumaczenia)",
+  "translationLanguagesSection": "Języki tłumaczenia",
+  "translationInfoTitle": "Jak to działa",
+  "translationInfoPart1": "Wprowadzony tekst jest tłumaczony na ",
+  "translationInfoPart2": ". Jeśli tekst jest już w języku ",
+  "translationInfoPart3": ", zostanie przetłumaczony na ",
+  "translationInfoPart4": "."
 }

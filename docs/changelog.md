@@ -9,6 +9,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.4] - 2026-04-29
+
+### Added
+- Translation philosophy info button (ⓘ) as leftmost item in the ActionBar — tapping opens a dialog explaining the bidirectional translation logic (primary ↔ secondary language) with the actual language names shown as tappable links that navigate to Settings (ADR-023)
+- `translationLanguagesSection`, `translationInfoTitle`, `translationInfoPart1–4`, `providerSubtitle` ARB strings added to all 11 locales
+- AI Provider section now shows subtitle "bring your own API-Key" (de/en) with native translations for the other 8 locales
+
+### Changed
+- Settings screen section order: Translation Languages → Speech Recognition (Microphone) → App Language → AI Provider → API Key → Donate
+- "Target Language" renamed to "Primary Language" / "Primärsprache" across all 11 locales
+- "Alternative Language" renamed to "Secondary Language" / "Sekundärsprache" across all 11 locales
+- "Voice Input Language" renamed to "Speech Recognition (Microphone)" / "Spracherkennung (Mikrofon)" across all 11 locales
+- Info dialog language names now loaded via `ref.watch` in `build()` instead of `ref.read` at tap-time — fixes empty placeholders on first launch
+
+### Fixed
+- History tab not showing first translation after app start — SQLite insert is now `await`ed directly in `translate()` before `ref.invalidate(historyProvider)`, replacing the fire-and-forget `whenData` pattern
+- Info dialog showing "…" placeholders for language names on first launch (settings not yet loaded at tap-time)
+
+---
+
 ## [1.0.3] - 2026-04-11
 
 ### Added

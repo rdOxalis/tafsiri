@@ -90,10 +90,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get providerLabel => 'Dostawca AI';
 
   @override
-  String get targetLanguageLabel => 'Język docelowy';
+  String get providerSubtitle => 'użyj własnego klucza API';
 
   @override
-  String get altLanguageLabel => 'Język alternatywny';
+  String get targetLanguageLabel => 'Język podstawowy';
+
+  @override
+  String get altLanguageLabel => 'Język dodatkowy';
 
   @override
   String get appLanguageLabel => 'Język aplikacji';
@@ -139,8 +142,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ocrSourceGallery => 'Galeria';
 
   @override
-  String get sttLanguageLabel => 'Język rozpoznawania mowy';
+  String get sttLanguageLabel => 'Rozpoznawanie mowy (Mikrofon)';
 
   @override
   String get sttLanguageAuto => 'Auto (z ostatniego tłumaczenia)';
+
+  @override
+  String get translationLanguagesSection => 'Języki tłumaczenia';
+
+  @override
+  String get translationInfoTitle => 'Jak to działa';
+
+  @override
+  String get translationInfoPart1 => 'Wprowadzony tekst jest tłumaczony na ';
+
+  @override
+  String get translationInfoPart2 => '. Jeśli tekst jest już w języku ';
+
+  @override
+  String get translationInfoPart3 => ', zostanie przetłumaczony na ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }

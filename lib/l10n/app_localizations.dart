@@ -277,16 +277,22 @@ abstract class AppLocalizations {
   /// **'AI Provider'**
   String get providerLabel;
 
+  /// Subtitle under the AI Provider section — intentionally not translated
+  ///
+  /// In en_GB, this message translates to:
+  /// **'bring your own API-Key'**
+  String get providerSubtitle;
+
   /// Label for the target language input field
   ///
   /// In en_GB, this message translates to:
-  /// **'Target Language'**
+  /// **'Primary Language'**
   String get targetLanguageLabel;
 
   /// Label for the alternative language input field
   ///
   /// In en_GB, this message translates to:
-  /// **'Alternative Language'**
+  /// **'Secondary Language'**
   String get altLanguageLabel;
 
   /// Label for the app UI language selector
@@ -370,7 +376,7 @@ abstract class AppLocalizations {
   /// Label for the STT language selector in settings
   ///
   /// In en_GB, this message translates to:
-  /// **'Voice Input Language'**
+  /// **'Speech Recognition (Microphone)'**
   String get sttLanguageLabel;
 
   /// Option in STT language selector meaning auto-detect
@@ -378,6 +384,42 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'Auto (from last translation)'**
   String get sttLanguageAuto;
+
+  /// Section header for the translation languages group in settings
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Translation Languages'**
+  String get translationLanguagesSection;
+
+  /// Title of the translation logic info dialog
+  ///
+  /// In en_GB, this message translates to:
+  /// **'How translation works'**
+  String get translationInfoTitle;
+
+  /// First text segment before the primary language name in the info dialog
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Text you enter is translated to '**
+  String get translationInfoPart1;
+
+  /// Second text segment between the two primary language occurrences
+  ///
+  /// In en_GB, this message translates to:
+  /// **'. If the text is already '**
+  String get translationInfoPart2;
+
+  /// Third text segment before the secondary language name
+  ///
+  /// In en_GB, this message translates to:
+  /// **', it is translated to '**
+  String get translationInfoPart3;
+
+  /// Final punctuation segment of the info dialog text
+  ///
+  /// In en_GB, this message translates to:
+  /// **'.'**
+  String get translationInfoPart4;
 }
 
 class _AppLocalizationsDelegate

@@ -27,8 +27,9 @@
   "apiKeyClaude": "Claude API-nyckel",
   "apiKeyOpenAI": "OpenAI API-nyckel",
   "providerLabel": "AI-leverantör",
-  "targetLanguageLabel": "Målspråk",
-  "altLanguageLabel": "Alternativt språk",
+  "providerSubtitle": "ta med din egen API-nyckel",
+  "targetLanguageLabel": "Primärt språk",
+  "altLanguageLabel": "Sekundärt språk",
   "appLanguageLabel": "Appspråk",
   "warningNoApiKey": "Ingen API-nyckel angiven för den aktiva leverantören. Lägg till din nyckel nedan.",
   "donateButton": "Bjud mig på ett kaffe",
@@ -42,7 +43,12 @@
   "providerOpenAI": "ChatGPT",
   "ocrSourceCamera": "Kamera",
   "ocrSourceGallery": "Galleri",
-
-  "sttLanguageLabel": "Röstinmatningsspråk",
-  "sttLanguageAuto": "Auto (från senaste översättning)"
+  "sttLanguageLabel": "Taligenkänning (Mikrofon)",
+  "sttLanguageAuto": "Auto (från senaste översättning)",
+  "translationLanguagesSection": "Översättningsspråk",
+  "translationInfoTitle": "Så här fungerar det",
+  "translationInfoPart1": "Inmatad text översätts till ",
+  "translationInfoPart2": ". Om texten redan är ",
+  "translationInfoPart3": ", översätts den till ",
+  "translationInfoPart4": "."
 }

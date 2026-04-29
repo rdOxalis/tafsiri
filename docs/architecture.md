@@ -193,7 +193,7 @@ STT locale map (ISO 639-1 → BCP-47):
 
 ## Localisation
 
-11 ARB files in `lib/l10n/`, 39 user-facing strings each:
+11 ARB files in `lib/l10n/`, 45 user-facing strings each:
 
 | Locale | File |
 |--------|------|
@@ -297,4 +297,4 @@ Run: `flutter test`
 
 ---
 
-*Last updated: 2026-04-11 — v1.0.3*
+*Last updated: 2026-04-29 — v1.0.4*

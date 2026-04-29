@@ -27,8 +27,9 @@
   "apiKeyClaude": "Claude API-nøkkel",
   "apiKeyOpenAI": "OpenAI API-nøkkel",
   "providerLabel": "AI-leverandør",
-  "targetLanguageLabel": "Målspråk",
-  "altLanguageLabel": "Alternativt språk",
+  "providerSubtitle": "bruk din egen API-nøkkel",
+  "targetLanguageLabel": "Primærspråk",
+  "altLanguageLabel": "Sekundærspråk",
   "appLanguageLabel": "Appspråk",
   "warningNoApiKey": "Ingen API-nøkkel angitt for den aktive leverandøren. Legg til nøkkelen din nedenfor.",
   "donateButton": "Kjøp meg en kaffe",
@@ -42,7 +43,12 @@
   "providerOpenAI": "ChatGPT",
   "ocrSourceCamera": "Kamera",
   "ocrSourceGallery": "Galleri",
-
-  "sttLanguageLabel": "Taleinputspråk",
-  "sttLanguageAuto": "Auto (fra siste oversettelse)"
+  "sttLanguageLabel": "Talegjenkjenning (Mikrofon)",
+  "sttLanguageAuto": "Auto (fra siste oversettelse)",
+  "translationLanguagesSection": "Oversettingsspråk",
+  "translationInfoTitle": "Slik fungerer det",
+  "translationInfoPart1": "Innskrevet tekst oversettes til ",
+  "translationInfoPart2": ". Hvis teksten allerede er ",
+  "translationInfoPart3": ", oversettes den til ",
+  "translationInfoPart4": "."
 }

@@ -189,6 +189,24 @@
 
 ---
 
+## ADR-023: Translation philosophy info button in ActionBar
+**Date:** 2026-04-29
+**Status:** Accepted
+**Context:** Users were not always aware of the bidirectional translation logic (primary ↔ secondary language toggle based on detected language). A discoverable explanation directly on the translator screen was needed without cluttering the UI permanently.
+**Decision:** Add a small ⓘ `IconButton` as the leftmost item in the ActionBar (between the two text areas). Tapping it opens an `AlertDialog` that explains the logic using the current primary and secondary language names as tappable links that navigate to the Settings tab. Language names are read via `ref.watch(settingsProvider)` in `build()` so they are always available immediately, even on first launch.
+**Consequences:** Users can understand the translation logic on demand. Language names in the dialog always reflect current configuration. No permanent screen real estate consumed.
+
+---
+
+## ADR-024: Await SQLite insert before invalidating history provider
+**Date:** 2026-04-29
+**Status:** Accepted
+**Context:** The history provider was not showing the first translation after app start. The root cause was that `dao.insert()` was called fire-and-forget via `whenData`, which returned immediately without waiting for the insert to complete. `ref.invalidate(historyProvider)` was then called before the row existed in SQLite. On subsequent translations the history provider was already alive, masking the race.
+**Decision:** Replace the `whenData` fire-and-forget with a sequential `await ref.read(translationDaoProvider.future)` + `await dao.insert(...)` + `ref.invalidate(historyProvider)` block inside `translate()`. The insert is guaranteed complete before the provider is invalidated.
+**Consequences:** History is consistent after every translation including the very first. Slight increase in time-to-history-refresh (one extra `await`) — negligible in practice since SQLite inserts are fast.
+
+---
+
 ## ADR-020: ProGuard keep rules for google_mlkit_text_recognition release build
 **Date:** 2026-04-10  
 **Status:** Accepted  

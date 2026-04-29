@@ -118,6 +118,15 @@
 
 ## Done
 
+- [x] v1.0.4 — Settings UX, info dialog, history fix (2026-04-29)
+  - Settings reordered: Translation Languages first, AI Provider last before Donate
+  - "Target/Alternative Language" → "Primary/Secondary Language" in all 11 locales
+  - "Voice Input Language" → "Speech Recognition (Microphone)" in all 11 locales
+  - AI Provider section subtitle "bring your own API-Key" (de/en untranslated, 8 locales translated)
+  - Translation philosophy info button (ⓘ) in ActionBar with live language names and Settings links
+  - Fix: first translation now appears in History (await SQLite insert before invalidating provider)
+  - Fix: info dialog language placeholders no longer empty on first launch
+
 - [x] v1.0.3 — Bug fixes, UX improvements, prompt overhaul (2026-04-11)
   - History reload loads both input and output
   - Settings persistence fixed (onChanged instead of onSubmitted)

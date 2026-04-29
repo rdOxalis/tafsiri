@@ -9,6 +9,7 @@ import '../../core/constants.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
+import '../../features/history/history_controller.dart';
 import '../../features/settings/settings_controller.dart';
 import '../../shared/models/translation_entry.dart';
 
@@ -209,18 +210,23 @@ class TranslatorController extends Notifier<TranslatorState> {
         clearError: true,
       );
 
-      // Save to SQLite
-      final daoAsync = ref.read(translationDaoProvider);
-      daoAsync.whenData((dao) => dao.insert(
-            TranslationEntry(
-              sourceText: input,
-              resultText: translation,
-              sourceLang: sourceLang ?? '',
-              targetLang: settings.targetLanguage,
-              aiProvider: settings.activeProvider,
-              createdAt: DateTime.now().toUtc(),
-            ),
-          ));
+      // Save to SQLite and refresh history
+      try {
+        final dao = await ref.read(translationDaoProvider.future);
+        await dao.insert(
+          TranslationEntry(
+            sourceText: input,
+            resultText: translation,
+            sourceLang: sourceLang ?? '',
+            targetLang: settings.targetLanguage,
+            aiProvider: settings.activeProvider,
+            createdAt: DateTime.now().toUtc(),
+          ),
+        );
+        ref.invalidate(historyProvider);
+      } catch (e) {
+        debugPrint('[TranslatorController] db save failed: $e');
+      }
     } on AiApiException catch (e) {
       debugPrint('[TranslatorController] API error ${e.statusCode}');
       state = state.copyWith(isLoading: false, error: TranslatorError.apiError);

@@ -90,10 +90,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get providerLabel => 'AI-udbyder';
 
   @override
-  String get targetLanguageLabel => 'Målsprog';
+  String get providerSubtitle => 'brug din egen API-nøgle';
 
   @override
-  String get altLanguageLabel => 'Alternativt sprog';
+  String get targetLanguageLabel => 'Primært sprog';
+
+  @override
+  String get altLanguageLabel => 'Sekundært sprog';
 
   @override
   String get appLanguageLabel => 'App-sprog';
@@ -139,8 +142,26 @@ class AppLocalizationsDa extends AppLocalizations {
   String get ocrSourceGallery => 'Galleri';
 
   @override
-  String get sttLanguageLabel => 'Taleinputsprog';
+  String get sttLanguageLabel => 'Talegenkendelse (Mikrofon)';
 
   @override
   String get sttLanguageAuto => 'Auto (fra seneste oversættelse)';
+
+  @override
+  String get translationLanguagesSection => 'Oversættelsessprog';
+
+  @override
+  String get translationInfoTitle => 'Sådan fungerer det';
+
+  @override
+  String get translationInfoPart1 => 'Indtastet tekst oversættes til ';
+
+  @override
+  String get translationInfoPart2 => '. Hvis teksten allerede er ';
+
+  @override
+  String get translationInfoPart3 => ', oversættes den til ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }

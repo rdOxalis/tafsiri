@@ -90,10 +90,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get providerLabel => 'AI-leverandør';
 
   @override
-  String get targetLanguageLabel => 'Målspråk';
+  String get providerSubtitle => 'bruk din egen API-nøkkel';
 
   @override
-  String get altLanguageLabel => 'Alternativt språk';
+  String get targetLanguageLabel => 'Primærspråk';
+
+  @override
+  String get altLanguageLabel => 'Sekundærspråk';
 
   @override
   String get appLanguageLabel => 'Appspråk';
@@ -139,8 +142,26 @@ class AppLocalizationsNb extends AppLocalizations {
   String get ocrSourceGallery => 'Galleri';
 
   @override
-  String get sttLanguageLabel => 'Taleinputspråk';
+  String get sttLanguageLabel => 'Talegjenkjenning (Mikrofon)';
 
   @override
   String get sttLanguageAuto => 'Auto (fra siste oversettelse)';
+
+  @override
+  String get translationLanguagesSection => 'Oversettingsspråk';
+
+  @override
+  String get translationInfoTitle => 'Slik fungerer det';
+
+  @override
+  String get translationInfoPart1 => 'Innskrevet tekst oversettes til ';
+
+  @override
+  String get translationInfoPart2 => '. Hvis teksten allerede er ';
+
+  @override
+  String get translationInfoPart3 => ', oversettes den til ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }

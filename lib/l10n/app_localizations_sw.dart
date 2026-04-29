@@ -90,10 +90,13 @@ class AppLocalizationsSw extends AppLocalizations {
   String get providerLabel => 'Mtoa huduma wa AI';
 
   @override
-  String get targetLanguageLabel => 'Lugha Lengwa';
+  String get providerSubtitle => 'tumia ufunguo wako wa API';
 
   @override
-  String get altLanguageLabel => 'Lugha Mbadala';
+  String get targetLanguageLabel => 'Lugha ya Msingi';
+
+  @override
+  String get altLanguageLabel => 'Lugha ya Pili';
 
   @override
   String get appLanguageLabel => 'Lugha ya Programu';
@@ -139,8 +142,27 @@ class AppLocalizationsSw extends AppLocalizations {
   String get ocrSourceGallery => 'Picha';
 
   @override
-  String get sttLanguageLabel => 'Lugha ya Ingizo la Sauti';
+  String get sttLanguageLabel => 'Utambuzi wa Sauti (Maikrofoni)';
 
   @override
   String get sttLanguageAuto => 'Kiotomatiki (kutoka tafsiri ya mwisho)';
+
+  @override
+  String get translationLanguagesSection => 'Lugha za Tafsiri';
+
+  @override
+  String get translationInfoTitle => 'Jinsi inavyofanya kazi';
+
+  @override
+  String get translationInfoPart1 =>
+      'Maandishi yaliyoingizwa yatatafsirishwa kwa ';
+
+  @override
+  String get translationInfoPart2 => '. Ikiwa maandishi tayari ni ';
+
+  @override
+  String get translationInfoPart3 => ', yatatafsirishwa kwa ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }

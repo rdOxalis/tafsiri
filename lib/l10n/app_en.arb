@@ -1,132 +1,96 @@
 {
   "@@locale": "en",
-
   "appTitle": "Tafsiri",
-  "@appTitle": { "description": "The name of the app" },
-
+  "@appTitle": {"description": "The name of the app"},
   "translateButton": "Translate",
-  "@translateButton": { "description": "Label for the translate button" },
-
+  "@translateButton": {"description": "Label for the translate button"},
   "inputHint": "Enter text to translate…",
-  "@inputHint": { "description": "Hint text in the input field" },
-
+  "@inputHint": {"description": "Hint text in the input field"},
   "outputHint": "Translation will appear here",
-  "@outputHint": { "description": "Placeholder text in the output area" },
-
+  "@outputHint": {"description": "Placeholder text in the output area"},
   "clearButton": "Clear",
-  "@clearButton": { "description": "Tooltip/label for the clear input button" },
-
+  "@clearButton": {"description": "Tooltip/label for the clear input button"},
   "pasteButton": "Paste",
-  "@pasteButton": { "description": "Tooltip/label for the paste from clipboard button" },
-
+  "@pasteButton": {"description": "Tooltip/label for the paste from clipboard button"},
   "copyButton": "Copy",
-  "@copyButton": { "description": "Tooltip/label for the copy translation button" },
-
+  "@copyButton": {"description": "Tooltip/label for the copy translation button"},
   "microphoneButton": "Voice input",
-  "@microphoneButton": { "description": "Tooltip for the microphone/STT button" },
-
+  "@microphoneButton": {"description": "Tooltip for the microphone/STT button"},
   "imageButton": "Image input",
-  "@imageButton": { "description": "Tooltip for the image/OCR button" },
-
+  "@imageButton": {"description": "Tooltip for the image/OCR button"},
   "navTranslator": "Translator",
-  "@navTranslator": { "description": "Bottom nav label for the translator screen" },
-
+  "@navTranslator": {"description": "Bottom nav label for the translator screen"},
   "navHistory": "History",
-  "@navHistory": { "description": "Bottom nav label for the history screen" },
-
+  "@navHistory": {"description": "Bottom nav label for the history screen"},
   "navSettings": "Settings",
-  "@navSettings": { "description": "Bottom nav label for the settings screen" },
-
+  "@navSettings": {"description": "Bottom nav label for the settings screen"},
   "historyTitle": "History",
-  "@historyTitle": { "description": "Title of the history screen" },
-
+  "@historyTitle": {"description": "Title of the history screen"},
   "historyEmpty": "No translations yet",
-  "@historyEmpty": { "description": "Empty state message on the history screen" },
-
+  "@historyEmpty": {"description": "Empty state message on the history screen"},
   "historyReloadTitle": "Load translation",
-  "@historyReloadTitle": { "description": "Title of the reload-to-input confirmation dialog" },
-
+  "@historyReloadTitle": {"description": "Title of the reload-to-input confirmation dialog"},
   "historyReloadMessage": "Load this text back into the translator?",
-  "@historyReloadMessage": { "description": "Body of the reload-to-input confirmation dialog" },
-
+  "@historyReloadMessage": {"description": "Body of the reload-to-input confirmation dialog"},
   "historyReloadConfirm": "Load",
-  "@historyReloadConfirm": { "description": "Confirm button label in the reload dialog" },
-
+  "@historyReloadConfirm": {"description": "Confirm button label in the reload dialog"},
   "cancel": "Cancel",
-  "@cancel": { "description": "Generic cancel button label" },
-
+  "@cancel": {"description": "Generic cancel button label"},
   "delete": "Delete",
-  "@delete": { "description": "Generic delete action label" },
-
+  "@delete": {"description": "Generic delete action label"},
   "undoDelete": "Undo",
-  "@undoDelete": { "description": "Undo label in the delete snackbar" },
-
+  "@undoDelete": {"description": "Undo label in the delete snackbar"},
   "favouritesLabel": "Favourites",
-  "@favouritesLabel": { "description": "Label for the favourites filter" },
-
+  "@favouritesLabel": {"description": "Label for the favourites filter"},
   "allLabel": "All",
-  "@allLabel": { "description": "Label for the 'all entries' filter" },
-
+  "@allLabel": {"description": "Label for the 'all entries' filter"},
   "settingsTitle": "Settings",
-  "@settingsTitle": { "description": "Title of the settings screen" },
-
+  "@settingsTitle": {"description": "Title of the settings screen"},
   "apiKeyMistral": "Mistral API Key",
-  "@apiKeyMistral": { "description": "Label for the Mistral API key input field" },
-
+  "@apiKeyMistral": {"description": "Label for the Mistral API key input field"},
   "apiKeyClaude": "Claude API Key",
-  "@apiKeyClaude": { "description": "Label for the Claude API key input field" },
-
+  "@apiKeyClaude": {"description": "Label for the Claude API key input field"},
   "apiKeyOpenAI": "OpenAI API Key",
-  "@apiKeyOpenAI": { "description": "Label for the OpenAI API key input field" },
-
+  "@apiKeyOpenAI": {"description": "Label for the OpenAI API key input field"},
   "providerLabel": "AI Provider",
-  "@providerLabel": { "description": "Label for the AI provider selector" },
-
-  "targetLanguageLabel": "Target Language",
-  "@targetLanguageLabel": { "description": "Label for the target language input field" },
-
-  "altLanguageLabel": "Alternative Language",
-  "@altLanguageLabel": { "description": "Label for the alternative language input field" },
-
+  "providerSubtitle": "bring your own API-Key",
+  "@providerLabel": {"description": "Label for the AI provider selector"},
+  "targetLanguageLabel": "Primary Language",
+  "@targetLanguageLabel": {"description": "Label for the target language input field"},
+  "altLanguageLabel": "Secondary Language",
+  "@altLanguageLabel": {"description": "Label for the alternative language input field"},
   "appLanguageLabel": "App Language",
-  "@appLanguageLabel": { "description": "Label for the app UI language selector" },
-
+  "@appLanguageLabel": {"description": "Label for the app UI language selector"},
   "warningNoApiKey": "No API key set for the active provider. Please add your key below.",
-  "@warningNoApiKey": { "description": "Warning banner shown when the active provider has no API key" },
-
+  "@warningNoApiKey": {"description": "Warning banner shown when the active provider has no API key"},
   "donateButton": "Buy me a coffee",
-  "@donateButton": { "description": "Label for the PayPal donate button in settings" },
-
+  "@donateButton": {"description": "Label for the PayPal donate button in settings"},
   "errorNoApiKey": "No API key set. Please add your key in Settings.",
-  "@errorNoApiKey": { "description": "Snackbar error when no API key is configured" },
-
+  "@errorNoApiKey": {"description": "Snackbar error when no API key is configured"},
   "errorApiError": "Translation failed. Please try again.",
-  "@errorApiError": { "description": "Error message shown when the API returns an error" },
-
+  "@errorApiError": {"description": "Error message shown when the API returns an error"},
   "errorNetwork": "No connection. Please check your internet.",
-  "@errorNetwork": { "description": "Error message shown on network failure" },
-
+  "@errorNetwork": {"description": "Error message shown on network failure"},
   "errorOcrFailed": "Could not extract text from image.",
-  "@errorOcrFailed": { "description": "Error message shown when OCR fails" },
-
+  "@errorOcrFailed": {"description": "Error message shown when OCR fails"},
   "errorSttUnavailable": "Voice input is not available on this device.",
-  "@errorSttUnavailable": { "description": "Message shown when STT is not available" },
-
+  "@errorSttUnavailable": {"description": "Message shown when STT is not available"},
   "providerMistral": "Mistral",
-  "@providerMistral": { "description": "Display name for the Mistral provider" },
-
+  "@providerMistral": {"description": "Display name for the Mistral provider"},
   "providerClaude": "Claude",
-  "@providerClaude": { "description": "Display name for the Claude provider" },
-
+  "@providerClaude": {"description": "Display name for the Claude provider"},
   "providerOpenAI": "ChatGPT",
-  "@providerOpenAI": { "description": "Display name for the OpenAI provider" },
-
+  "@providerOpenAI": {"description": "Display name for the OpenAI provider"},
   "ocrSourceCamera": "Camera",
-  "@ocrSourceCamera": { "description": "Bottom sheet option to pick image from camera" },
-
+  "@ocrSourceCamera": {"description": "Bottom sheet option to pick image from camera"},
   "ocrSourceGallery": "Gallery",
-  "@ocrSourceGallery": { "description": "Bottom sheet option to pick image from gallery" },
-
-  "sttLanguageLabel": "Voice Input Language",
-  "sttLanguageAuto": "Auto (from last translation)"
+  "@ocrSourceGallery": {"description": "Bottom sheet option to pick image from gallery"},
+  "sttLanguageLabel": "Speech Recognition (Microphone)",
+  "sttLanguageAuto": "Auto (from last translation)",
+  "translationLanguagesSection": "Translation Languages",
+  "translationInfoTitle": "How translation works",
+  "translationInfoPart1": "Text you enter is translated to ",
+  "translationInfoPart2": ". If the text is already ",
+  "translationInfoPart3": ", it is translated to ",
+  "translationInfoPart4": "."
 }

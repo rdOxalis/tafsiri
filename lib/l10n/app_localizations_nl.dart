@@ -90,10 +90,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get providerLabel => 'AI-aanbieder';
 
   @override
-  String get targetLanguageLabel => 'Doeltaal';
+  String get providerSubtitle => 'gebruik je eigen API-sleutel';
 
   @override
-  String get altLanguageLabel => 'Alternatieve taal';
+  String get targetLanguageLabel => 'Primaire taal';
+
+  @override
+  String get altLanguageLabel => 'Secundaire taal';
 
   @override
   String get appLanguageLabel => 'App-taal';
@@ -138,8 +141,26 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ocrSourceGallery => 'Galerij';
 
   @override
-  String get sttLanguageLabel => 'Taal voor spraakinvoer';
+  String get sttLanguageLabel => 'Spraakherkenning (Microfoon)';
 
   @override
   String get sttLanguageAuto => 'Automatisch (van laatste vertaling)';
+
+  @override
+  String get translationLanguagesSection => 'Vertaaltalen';
+
+  @override
+  String get translationInfoTitle => 'Hoe het werkt';
+
+  @override
+  String get translationInfoPart1 => 'Ingevoerde tekst wordt vertaald naar ';
+
+  @override
+  String get translationInfoPart2 => '. Als de tekst al ';
+
+  @override
+  String get translationInfoPart3 => ' is, wordt het vertaald naar ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }

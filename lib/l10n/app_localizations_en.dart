@@ -90,10 +90,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providerLabel => 'AI Provider';
 
   @override
-  String get targetLanguageLabel => 'Target Language';
+  String get providerSubtitle => 'bring your own API-Key';
 
   @override
-  String get altLanguageLabel => 'Alternative Language';
+  String get targetLanguageLabel => 'Primary Language';
+
+  @override
+  String get altLanguageLabel => 'Secondary Language';
 
   @override
   String get appLanguageLabel => 'App Language';
@@ -138,10 +141,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ocrSourceGallery => 'Gallery';
 
   @override
-  String get sttLanguageLabel => 'Voice Input Language';
+  String get sttLanguageLabel => 'Speech Recognition (Microphone)';
 
   @override
   String get sttLanguageAuto => 'Auto (from last translation)';
+
+  @override
+  String get translationLanguagesSection => 'Translation Languages';
+
+  @override
+  String get translationInfoTitle => 'How translation works';
+
+  @override
+  String get translationInfoPart1 => 'Text you enter is translated to ';
+
+  @override
+  String get translationInfoPart2 => '. If the text is already ';
+
+  @override
+  String get translationInfoPart3 => ', it is translated to ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -230,10 +251,13 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get providerLabel => 'AI Provider';
 
   @override
-  String get targetLanguageLabel => 'Target Language';
+  String get providerSubtitle => 'bring your own API-Key';
 
   @override
-  String get altLanguageLabel => 'Alternative Language';
+  String get targetLanguageLabel => 'Primary Language';
+
+  @override
+  String get altLanguageLabel => 'Secondary Language';
 
   @override
   String get appLanguageLabel => 'App Language';
@@ -278,8 +302,26 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get ocrSourceGallery => 'Gallery';
 
   @override
-  String get sttLanguageLabel => 'Voice Input Language';
+  String get sttLanguageLabel => 'Speech Recognition (Microphone)';
 
   @override
   String get sttLanguageAuto => 'Auto (from last translation)';
+
+  @override
+  String get translationLanguagesSection => 'Translation Languages';
+
+  @override
+  String get translationInfoTitle => 'How translation works';
+
+  @override
+  String get translationInfoPart1 => 'Text you enter is translated to ';
+
+  @override
+  String get translationInfoPart2 => '. If the text is already ';
+
+  @override
+  String get translationInfoPart3 => ', it is translated to ';
+
+  @override
+  String get translationInfoPart4 => '.';
 }
