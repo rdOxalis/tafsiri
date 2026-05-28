@@ -1,15 +1,12 @@
-Categories:
-  - Internet
-
-License: MIT
-
 AntiFeatures:
   NonFreeNet:
-    en-US: Connects to third-party AI API services (Mistral, Claude, OpenAI). API keys are provided by the user — the app has no built-in credentials.
-
+    en-US: Connects to third-party AI API services (Mistral, Claude, OpenAI). API
+      keys are provided by the user — the app has no built-in credentials.
+Categories:
+  - Internet
+License: MIT
 AuthorName: rdOxalis
 AuthorWebSite: https://github.com/rdOxalis
-
 WebSite: https://github.com/rdOxalis/tafsiri
 SourceCode: https://github.com/rdOxalis/tafsiri
 IssueTracker: https://github.com/rdOxalis/tafsiri/issues
@@ -49,12 +46,12 @@ Builds:
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
-    scandelete:
-      - .pub-cache
     prebuild:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+    scandelete:
+      - .pub-cache
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter build apk --release
