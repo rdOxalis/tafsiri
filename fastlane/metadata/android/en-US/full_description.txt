@@ -1,0 +1,19 @@
+Tafsiri is an AI-powered translation app. "Tafsiri" is Swahili for "translation".
+
+Translate text using the AI provider of your choice: Mistral (free tier available), Anthropic Claude, or OpenAI ChatGPT. Bring your own API key — no account is needed in the app itself. The app talks directly to the provider; no intermediary server is involved.
+
+Features:
+* Bidirectional translation: detects the source language automatically and translates to your configured primary or secondary language — no manual direction toggle needed
+* Voice input (Speech-to-Text): speak your text, translation triggers automatically
+* Image input: photograph text and extract it with on-device OCR — no cloud required for the OCR step
+* Translation history: every result is saved locally, tap any entry to reload it
+* Favourites: star entries to keep them accessible via a filter
+* 10 UI languages: English, German, Swahili, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish
+* Light and dark theme, follows system preference
+
+How the translation direction works:
+You set a primary language (e.g. Swahili) and a secondary language (e.g. English) in Settings. If your input is already in the primary language, it is translated to the secondary. Otherwise it is always translated to the primary. No language selector needed — the app adapts to each input automatically.
+
+Mistral is the recommended starting point: it offers a generous free tier with no credit card required.
+
+Privacy: API keys are stored locally on your device and sent only to the AI provider you have selected. OCR and speech recognition run on-device. No data is collected by the app.

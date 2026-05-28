@@ -50,5 +50,7 @@
   "translationInfoPart1": "Innskrevet tekst oversettes til ",
   "translationInfoPart2": ". Hvis teksten allerede er ",
   "translationInfoPart3": ", oversettes den til ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "Hent API-nøkkel",
+  "mistralFreeHint": "Mistral tilbyr et gratis nivå – intet kredittkort nødvendig"
 }

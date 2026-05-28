@@ -50,5 +50,7 @@
   "translationInfoPart1": "Le texte saisi est traduit en ",
   "translationInfoPart2": ". S'il est déjà en ",
   "translationInfoPart3": ", il est traduit en ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "Obtenir la clé API",
+  "mistralFreeHint": "Mistral propose un forfait gratuit – aucune carte bancaire requise"
 }

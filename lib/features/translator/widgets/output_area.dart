@@ -58,10 +58,25 @@ class OutputArea extends ConsumerWidget {
     }
     if (state.error != null) {
       return Center(
-        child: Text(
-          _errorMessage(l10n, state.error!),
-          style: TextStyle(color: Theme.of(context).colorScheme.error),
-          textAlign: TextAlign.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              _errorMessage(l10n, state.error!),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+              textAlign: TextAlign.center,
+            ),
+            if (state.errorDetail != null) ...[
+              const SizedBox(height: 6),
+              Text(
+                state.errorDetail!,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ],
         ),
       );
     }

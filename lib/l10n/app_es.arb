@@ -50,5 +50,7 @@
   "translationInfoPart1": "El texto ingresado se traduce al ",
   "translationInfoPart2": ". Si el texto ya está en ",
   "translationInfoPart3": ", se traduce al ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "Obtener clave API",
+  "mistralFreeHint": "Mistral ofrece un nivel gratuito – sin tarjeta de crédito"
 }

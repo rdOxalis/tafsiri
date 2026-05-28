@@ -164,4 +164,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get translationInfoPart4 => '.';
+
+  @override
+  String get getApiKeyButton => 'Obtener clave API';
+
+  @override
+  String get mistralFreeHint =>
+      'Mistral ofrece un nivel gratuito – sin tarjeta de crédito';
 }

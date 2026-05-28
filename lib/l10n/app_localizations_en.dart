@@ -163,6 +163,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get translationInfoPart4 => '.';
+
+  @override
+  String get getApiKeyButton => 'Get API key';
+
+  @override
+  String get mistralFreeHint =>
+      'Mistral offers a free tier — no credit card required';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -324,4 +331,11 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get translationInfoPart4 => '.';
+
+  @override
+  String get getApiKeyButton => 'Get API key';
+
+  @override
+  String get mistralFreeHint =>
+      'Mistral offers a free tier — no credit card required';
 }

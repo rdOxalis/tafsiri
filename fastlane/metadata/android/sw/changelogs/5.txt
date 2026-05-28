@@ -1,0 +1,1 @@
+Toleo 1.0.5: toleo la programu linaonyeshwa katika Mipangilio, kiungo cha moja kwa moja cha dashibodi ya ufunguo wa API, kidokezo cha kiwango cha bure cha Mistral, ujumbe wa hitilafu ulioimarishwa.

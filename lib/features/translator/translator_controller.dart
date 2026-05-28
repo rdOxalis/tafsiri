@@ -20,6 +20,7 @@ class TranslatorState {
   final String? outputText;
   final bool isLoading;
   final TranslatorError? error;
+  final String? errorDetail;
   final String? lastSourceLang;
   final bool isSttAvailable;
   final bool isListening;
@@ -31,6 +32,7 @@ class TranslatorState {
     this.outputText,
     this.isLoading = false,
     this.error,
+    this.errorDetail,
     this.lastSourceLang,
     this.isSttAvailable = false,
     this.isListening = false,
@@ -44,6 +46,7 @@ class TranslatorState {
     bool clearOutput = false,
     bool? isLoading,
     TranslatorError? error,
+    String? errorDetail,
     bool clearError = false,
     String? lastSourceLang,
     bool? isSttAvailable,
@@ -56,6 +59,7 @@ class TranslatorState {
         outputText: clearOutput ? null : outputText ?? this.outputText,
         isLoading: isLoading ?? this.isLoading,
         error: clearError ? null : error ?? this.error,
+        errorDetail: clearError ? null : errorDetail ?? this.errorDetail,
         lastSourceLang: lastSourceLang ?? this.lastSourceLang,
         isSttAvailable: isSttAvailable ?? this.isSttAvailable,
         isListening: isListening ?? this.isListening,
@@ -228,16 +232,34 @@ class TranslatorController extends Notifier<TranslatorState> {
         debugPrint('[TranslatorController] db save failed: $e');
       }
     } on AiApiException catch (e) {
-      debugPrint('[TranslatorController] API error ${e.statusCode}');
-      state = state.copyWith(isLoading: false, error: TranslatorError.apiError);
+      debugPrint('[TranslatorController] API error ${e.statusCode}: ${e.body}');
+      state = state.copyWith(
+        isLoading: false,
+        error: TranslatorError.apiError,
+        errorDetail: _statusDetail(e.statusCode),
+      );
     } on SocketException {
       debugPrint('[TranslatorController] network error');
       state = state.copyWith(isLoading: false, error: TranslatorError.networkError);
     } catch (e) {
       debugPrint('[TranslatorController] unexpected error: $e');
-      state = state.copyWith(isLoading: false, error: TranslatorError.apiError);
+      final msg = e.toString();
+      state = state.copyWith(
+        isLoading: false,
+        error: TranslatorError.apiError,
+        errorDetail: msg.length > 120 ? '${msg.substring(0, 120)}…' : msg,
+      );
     }
   }
+
+  static String _statusDetail(int code) => switch (code) {
+        401 => 'HTTP 401 · Invalid API key',
+        403 => 'HTTP 403 · Access denied',
+        429 => 'HTTP 429 · Rate limit exceeded — try again later',
+        500 => 'HTTP 500 · Provider server error',
+        502 || 503 || 504 => 'HTTP $code · Provider unavailable',
+        _ => 'HTTP $code',
+      };
 
   /// Parses `LANG:xx` from the first line of [raw] (ADR-013).
   static String? _extractSourceLang(String raw) {

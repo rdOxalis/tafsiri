@@ -1,0 +1,19 @@
+Tafsiri ist eine KI-gestützte Übersetzungs-App. „Tafsiri" ist Suaheli für „Übersetzung".
+
+Übersetze Text mit dem KI-Anbieter deiner Wahl: Mistral (kostenloses Kontingent verfügbar), Anthropic Claude oder OpenAI ChatGPT. Eigener API-Schlüssel – kein Account in der App nötig. Die App kommuniziert direkt mit dem Anbieter, kein Zwischenserver.
+
+Funktionen:
+* Bidirektionale Übersetzung: erkennt die Quellsprache automatisch und übersetzt in die konfigurierte Primär- oder Sekundärsprache – kein manuelles Umschalten nötig
+* Spracheingabe (Spracherkennung): Text sprechen, Übersetzung startet automatisch
+* Bildeingabe: Text fotografieren und mit On-Device-Texterkennung (OCR) extrahieren – kein Cloud-Dienst für OCR
+* Übersetzungsverlauf: jedes Ergebnis wird lokal gespeichert, durch Antippen wieder laden
+* Favoriten: Einträge markieren und über Filter schnell wiederfinden
+* 10 App-Sprachen: Englisch, Deutsch, Suaheli, Französisch, Niederländisch, Spanisch, Dänisch, Norwegisch, Schwedisch, Polnisch
+* Helles und dunkles Design, folgt der Systemeinstellung
+
+Wie die Übersetzungsrichtung funktioniert:
+In den Einstellungen legst du eine Primärsprache (z. B. Suaheli) und eine Sekundärsprache (z. B. Englisch) fest. Ist der Eingabetext bereits in der Primärsprache, wird er in die Sekundärsprache übersetzt – sonst immer in die Primärsprache. Kein Sprachauswahl-Schalter nötig.
+
+Mistral ist der empfohlene Einstieg: kostenloses Kontingent, keine Kreditkarte nötig.
+
+Datenschutz: API-Schlüssel werden lokal gespeichert und nur an den gewählten Anbieter gesendet. OCR und Spracherkennung laufen auf dem Gerät. Die App sammelt keine Daten.

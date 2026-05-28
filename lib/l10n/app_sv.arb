@@ -50,5 +50,7 @@
   "translationInfoPart1": "Inmatad text översätts till ",
   "translationInfoPart2": ". Om texten redan är ",
   "translationInfoPart3": ", översätts den till ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "Hämta API-nyckel",
+  "mistralFreeHint": "Mistral erbjuder en gratisnivå – inget kreditkort krävs"
 }

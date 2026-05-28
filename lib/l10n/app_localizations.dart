@@ -420,6 +420,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'.'**
   String get translationInfoPart4;
+
+  /// Button label to open provider API key console
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Get API key'**
+  String get getApiKeyButton;
+
+  /// Hint shown below Mistral API key field about free tier
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Mistral offers a free tier — no credit card required'**
+  String get mistralFreeHint;
 }
 
 class _AppLocalizationsDelegate

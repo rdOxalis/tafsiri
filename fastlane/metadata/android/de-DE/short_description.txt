@@ -1,0 +1,1 @@
+KI-Übersetzung mit Sprach- und Bildeingabe – eigener API-Schlüssel

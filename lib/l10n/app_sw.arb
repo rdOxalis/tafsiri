@@ -50,5 +50,7 @@
   "translationInfoPart1": "Maandishi yaliyoingizwa yatatafsirishwa kwa ",
   "translationInfoPart2": ". Ikiwa maandishi tayari ni ",
   "translationInfoPart3": ", yatatafsirishwa kwa ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "Pata ufunguo wa API",
+  "mistralFreeHint": "Mistral inatoa kiwango cha bure – hakuna kadi ya mkopo inayohitajika"
 }

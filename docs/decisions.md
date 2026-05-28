@@ -207,6 +207,15 @@
 
 ---
 
+## ADR-025: API key console links and Mistral free-tier hint in Settings
+**Date:** 2026-05-28  
+**Status:** Accepted  
+**Context:** The "bring your own API key" model requires users to obtain keys from each provider's console. New users had no guidance on where to get a key or that a free option exists.  
+**Decision:** Add a "Get API key →" `TextButton` below the active provider's API key field. Each provider maps to its canonical key console URL (Mistral: `console.mistral.ai/api-keys`, Claude: `console.anthropic.com/settings/keys`, OpenAI: `platform.openai.com/api-keys`). For Mistral specifically, a hint text notes the free tier with no credit card required — Mistral is the default provider and the only one with a free offering. All text goes through ARB localisation (11 locales).  
+**Consequences:** Friction for new users is reduced significantly. URL constants centralised in `constants.dart`. If provider console URLs change they must be updated there.
+
+---
+
 ## ADR-020: ProGuard keep rules for google_mlkit_text_recognition release build
 **Date:** 2026-04-10  
 **Status:** Accepted  

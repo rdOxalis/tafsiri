@@ -8,7 +8,7 @@
 
 Tafsiri is a Flutter Android app that translates text using one of three AI backends (Mistral, Claude, OpenAI). Language detection is performed by the AI in the same prompt as translation (no local library, no second API call — see ADR-003). All translations are persisted locally in SQLite.
 
-**Package:** `ke.darkman.tafsiri` · **Min SDK:** 21 · **Target SDK:** 34 · **Version:** 1.0.0+1
+**Package:** `com.njerahouse.tafsiri` · **Min SDK:** 21 · **Target SDK:** 34 · **Version:** 1.0.5+5
 
 ---
 
@@ -297,4 +297,4 @@ Run: `flutter test`
 
 ---
 
-*Last updated: 2026-04-29 — v1.0.4*
+*Last updated: 2026-05-28 — v1.0.5*

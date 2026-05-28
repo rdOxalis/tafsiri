@@ -50,5 +50,7 @@
   "translationInfoPart1": "Wprowadzony tekst jest tłumaczony na ",
   "translationInfoPart2": ". Jeśli tekst jest już w języku ",
   "translationInfoPart3": ", zostanie przetłumaczony na ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "Pobierz klucz API",
+  "mistralFreeHint": "Mistral oferuje bezpłatny poziom – karta kredytowa nie jest wymagana"
 }

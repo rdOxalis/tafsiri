@@ -1,0 +1,1 @@
+Version 1.0.5: app version shown in Settings, direct link to API key console for each provider, Mistral free-tier hint, improved error messages with HTTP status codes.

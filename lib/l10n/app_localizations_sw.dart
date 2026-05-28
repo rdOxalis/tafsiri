@@ -165,4 +165,11 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get translationInfoPart4 => '.';
+
+  @override
+  String get getApiKeyButton => 'Pata ufunguo wa API';
+
+  @override
+  String get mistralFreeHint =>
+      'Mistral inatoa kiwango cha bure – hakuna kadi ya mkopo inayohitajika';
 }

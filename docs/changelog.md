@@ -9,6 +9,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.5] - 2026-05-28
+
+### Added
+- App version number displayed at the bottom of the Settings screen (loaded via `package_info_plus`, shows `v1.0.x`)
+- "Get API key →" link button below the active provider's API key field — opens the provider's API key console in the browser (ADR-025)
+- Mistral free-tier hint shown below the Mistral API key field — "Mistral offers a free tier — no credit card required" in all 11 locales (ADR-025)
+- `package_info_plus ^8.0.0` dependency added
+
+### Changed
+- Release signing config in `build.gradle.kts` is now conditional on `key.properties` existing — falls back to debug keystore gracefully when the file is absent
+- `pubspec.yaml` version bumped to `1.0.5+5`
+
+---
+
 ## [1.0.4] - 2026-04-29
 
 ### Added

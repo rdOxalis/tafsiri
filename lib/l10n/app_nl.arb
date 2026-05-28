@@ -50,5 +50,7 @@
   "translationInfoPart1": "Ingevoerde tekst wordt vertaald naar ",
   "translationInfoPart2": ". Als de tekst al ",
   "translationInfoPart3": " is, wordt het vertaald naar ",
-  "translationInfoPart4": "."
+  "translationInfoPart4": ".",
+  "getApiKeyButton": "API-sleutel ophalen",
+  "mistralFreeHint": "Mistral biedt een gratis niveau – geen creditcard vereist"
 }

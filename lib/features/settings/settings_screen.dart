@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants.dart';
 import '../../core/locale_notifier.dart';
@@ -24,6 +25,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _claudeVisible = false;
   bool _openAiVisible = false;
   bool _initialized = false;
+  String _appVersion = '';
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform().then((info) {
+      if (mounted) setState(() => _appVersion = info.version);
+    });
+  }
 
   @override
   void dispose() {
@@ -157,7 +167,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               const SizedBox(height: 8),
               // --- API Key for active provider only ---
-              if (settings.activeProvider == kProviderMistral)
+              if (settings.activeProvider == kProviderMistral) ...[
                 _ApiKeyField(
                   label: l10n.apiKeyMistral,
                   controller: _mistralController,
@@ -168,7 +178,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderMistral, v),
                 ),
-              if (settings.activeProvider == kProviderClaude)
+                const SizedBox(height: 2),
+                Text(
+                  l10n.mistralFreeHint,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                ),
+                _GetApiKeyButton(url: kMistralApiKeyUrl, label: l10n.getApiKeyButton),
+              ],
+              if (settings.activeProvider == kProviderClaude) ...[
                 _ApiKeyField(
                   label: l10n.apiKeyClaude,
                   controller: _claudeController,
@@ -179,7 +198,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderClaude, v),
                 ),
-              if (settings.activeProvider == kProviderOpenAI)
+                _GetApiKeyButton(url: kClaudeApiKeyUrl, label: l10n.getApiKeyButton),
+              ],
+              if (settings.activeProvider == kProviderOpenAI) ...[
                 _ApiKeyField(
                   label: l10n.apiKeyOpenAI,
                   controller: _openAiController,
@@ -190,6 +211,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       .read(settingsProvider.notifier)
                       .setApiKey(kProviderOpenAI, v),
                 ),
+                _GetApiKeyButton(url: kOpenAiApiKeyUrl, label: l10n.getApiKeyButton),
+              ],
 
               const Divider(height: 32),
 
@@ -201,6 +224,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => _showDonateDialog(context, l10n),
               ),
+              const SizedBox(height: 16),
+
+              // --- Version ---
+              if (_appVersion.isNotEmpty)
+                Center(
+                  child: Text(
+                    'v$_appVersion',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                        ),
+                  ),
+                ),
               const SizedBox(height: 8),
             ],
           );
@@ -312,6 +347,31 @@ class _ApiKeyField extends StatelessWidget {
         ),
       ),
       onChanged: onChanged,
+    );
+  }
+}
+
+class _GetApiKeyButton extends StatelessWidget {
+  final String url;
+  final String label;
+  const _GetApiKeyButton({required this.url, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton.icon(
+        icon: const Icon(Icons.open_in_new, size: 14),
+        label: Text(label),
+        style: TextButton.styleFrom(
+          textStyle: Theme.of(context).textTheme.bodySmall,
+          visualDensity: VisualDensity.compact,
+        ),
+        onPressed: () => launchUrl(
+          Uri.parse(url),
+          mode: LaunchMode.externalApplication,
+        ),
+      ),
     );
   }
 }

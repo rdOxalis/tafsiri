@@ -50,5 +50,7 @@
   "translationInfoPart1": "Eingegebener Text wird nach ",
   "translationInfoPart2": " übersetzt. Wenn der Text bereits ",
   "translationInfoPart3": " ist, wird er nach ",
-  "translationInfoPart4": " übersetzt."
+  "translationInfoPart4": " übersetzt.",
+  "getApiKeyButton": "API-Key holen",
+  "mistralFreeHint": "Mistral bietet einen kostenlosen Tarif – keine Kreditkarte nötig"
 }

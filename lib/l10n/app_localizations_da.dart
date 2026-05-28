@@ -164,4 +164,11 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get translationInfoPart4 => '.';
+
+  @override
+  String get getApiKeyButton => 'Hent API-nøgle';
+
+  @override
+  String get mistralFreeHint =>
+      'Mistral tilbyder et gratis niveau – intet kreditkort kræves';
 }
