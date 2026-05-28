@@ -297,4 +297,18 @@ Run: `flutter test`
 
 ---
 
+## F-Droid Distribution
+
+F-Droid builds the APK from source using its own signing keys. The build recipe is at `fdroid/metadata/com.njerahouse.tafsiri.yml`. Key requirements satisfied:
+- `dependenciesInfo { includeInApk = false; includeInBundle = false }` in `build.gradle.kts`
+- Java VERSION_17 source/target compatibility
+- No Google Play Services dependencies (MLKit uses unbundled Apache 2.0 version)
+- Anti-feature `NonFreeNet` declared (AI API connectivity)
+
+Auto-updates: push a git tag `vX.Y.Z` matching the `pubspec.yaml` version — F-Droid picks it up automatically.
+
+MR: https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249
+
+---
+
 *Last updated: 2026-05-28 — v1.0.5*

@@ -118,11 +118,18 @@
 
 ## Done
 
-- [x] v1.0.5 — Version display, API key links, Mistral free-tier hint (2026-05-28)
+- [x] v1.0.5 — Version display, API key links, error details, F-Droid submission (2026-05-28)
   - App version shown at bottom of Settings screen (package_info_plus)
   - "Get API key →" link button for each provider below the key field
   - Mistral free-tier hint below Mistral key field (all 11 locales)
+  - Detailed error messages with HTTP status codes (401, 429, 5xx)
   - Release signing config made conditional on key.properties existing
+  - build.gradle.kts: Java 17, dependenciesInfo block (F-Droid requirements)
+  - F-Droid metadata: fdroid/metadata/com.njerahouse.tafsiri.yml
+  - Fastlane store descriptions: en-US, de-DE, sw
+  - GitHub Actions release workflow (.github/workflows/release.yml)
+  - docs/FDROID.md: process documentation and lessons learned
+  - MR submitted: https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249
   - pubspec.yaml version bumped to 1.0.5+5
 
 - [x] v1.0.4 — Settings UX, info dialog, history fix (2026-04-29)

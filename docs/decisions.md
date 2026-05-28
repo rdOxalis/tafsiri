@@ -207,6 +207,15 @@
 
 ---
 
+## ADR-026: F-Droid submission
+**Date:** 2026-05-28  
+**Status:** Accepted  
+**Context:** Tafsiri should be available via F-Droid, the open-source Android app store, to reach users who prefer FOSS distribution over Google Play.  
+**Decision:** Prepare the app for F-Droid's source-based build model. Changes required: `dependenciesInfo { includeInApk = false; includeInBundle = false }` in `build.gradle.kts` (mandatory for F-Droid); Java compatibility raised to VERSION_17 (F-Droid builds with Java 21); fastlane store metadata in en-US, de-DE, sw; F-Droid build recipe at `fdroid/metadata/com.njerahouse.tafsiri.yml`; GitHub Actions release workflow with pinned Flutter version. Anti-feature `NonFreeNet` declared because the app connects to third-party AI APIs. MR submitted to `fdroid/fdroiddata`: https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249  
+**Consequences:** F-Droid builds the APK from source using its own signing keys — no pre-built APK is submitted. Auto-updates work via git tags (`v1.x.y`). The `NonFreeNet` anti-feature is displayed in the F-Droid store listing but does not block inclusion. The `google_mlkit_text_recognition` dependency uses the unbundled ML Kit (Apache 2.0) which does not require Google Play Services.
+
+---
+
 ## ADR-025: API key console links and Mistral free-tier hint in Settings
 **Date:** 2026-05-28  
 **Status:** Accepted  
