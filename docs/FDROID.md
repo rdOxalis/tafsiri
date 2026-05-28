@@ -54,7 +54,7 @@ F-Droid builds run on Debian Trixie with Java 21. Common issues:
 
 Repository: https://gitlab.com/fdroid/fdroiddata
 Fork: https://gitlab.com/ooocp/fdroiddata
-MR: (pending — to be added after submission)
+MR: https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249
 Metadata file: `metadata/com.njerahouse.tafsiri.yml`
 
 ### Submission Steps
