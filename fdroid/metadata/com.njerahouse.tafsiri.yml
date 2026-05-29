@@ -11,42 +11,20 @@ WebSite: https://github.com/rdOxalis/tafsiri
 SourceCode: https://github.com/rdOxalis/tafsiri
 IssueTracker: https://github.com/rdOxalis/tafsiri/issues
 
-Summary: AI-powered translation with voice and image input
-Description: |
-  Tafsiri is an AI translation app. "Tafsiri" is Swahili for "translation".
-
-  Translate text using the AI provider of your choice: Mistral (free tier
-  available), Anthropic Claude, or OpenAI ChatGPT. Bring your own API key —
-  no account is needed in the app itself. The app talks directly to the
-  provider; no intermediary server is involved.
-
-  Features:
-
-  * Bidirectional translation: detects the source language automatically and
-    translates to your configured primary or secondary language
-  * Voice input (Speech-to-Text): speak your text, translation triggers
-    automatically
-  * Image input: photograph text and extract it with on-device OCR — no cloud
-    required for the OCR step
-  * Translation history with favourites
-  * 10 UI languages: English, German, Swahili, French, Dutch, Spanish, Danish,
-    Norwegian, Swedish, Polish
-  * Light and dark theme, follows system preference
-
-  Privacy: API keys are stored locally and sent only to the AI provider you
-  have selected. OCR runs entirely on-device. No data is collected by the app.
-
 RepoType: git
 Repo: https://github.com/rdOxalis/tafsiri
 
 Builds:
   - versionName: 1.0.5
     versionCode: 5
-    commit: v1.0.5
+    commit: 18b1317ab4e6b56cfdf52b0e8bccfb52b75fbd91
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
     prebuild:
+      - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
+      - '[[ $flutterVersion ]]'
+      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
