@@ -19,7 +19,7 @@ Repo: https://github.com/rdOxalis/tafsiri
 Builds:
   - versionName: 1.0.5
     versionCode: 5
-    commit: ee2b338b1a02d7490bce28e7d2c5cf2f42c16cc5
+    commit: 18b1317ab4e6b56cfdf52b0e8bccfb52b75fbd91
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
@@ -27,6 +27,7 @@ Builds:
       - flutterVersion=$(sed -n -E "s/.*flutter-version:\ '(.*)'/\1/p" .github/workflows/release.yml)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
+      - echo 'android.newDsl=false' >> android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
