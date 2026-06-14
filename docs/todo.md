@@ -4,16 +4,16 @@
 
 <!-- Move items here when actively working on them -->
 
-- [ ] Confirm MR #39249 pipeline fully green for v1.0.7 (fdroid build + check apk), then it's ready for F-Droid reviewer merge. (ADR-028, ADR-029)
+- [ ] **Close F-Droid MR #39249** (needs your GitLab login — one click): https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249 (ADR-030)
 
 ---
 
 ## Backlog
 
-- [ ] **AGP 9 / new-DSL migration (deadline: before AGP 10, ~mid-2026).** The `android.newDsl=false` + `android.builtInKotlin=false` opt-out flags stop working at AGP 10 — migrate `android/` to the new Gradle DSL + built-in Kotlin. (ADR-027)
-- [ ] **(Optional) Re-add OCR via IzzyOnDroid distribution.** If image→text is wanted back, ship a parallel build through IzzyOnDroid (allows ML Kit / NonFree deps, builds from GitHub release APKs). (ADR-028)
+- [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] Abandon official F-Droid; restore image-to-text/OCR; released as 1.0.8. (2026-06-14, ADR-030)
 - [x] Exclude Google Play Core so the APK passes F-Droid's `check apk` scanner; released as 1.0.7. Verified 0 play.core class definitions via dexdump. (2026-06-14, ADR-029)
 - [x] Remove image-to-text/OCR (ML Kit) for official F-Droid compatibility; released as 1.0.6. Verified buildable under reproduced F-Droid AGP 9 toolchain. (2026-06-14, ADR-028)
 - [x] F-Droid AGP 9 build fix: `android.newDsl=false` + `android.builtInKotlin=false`. (2026-06-14, ADR-027)

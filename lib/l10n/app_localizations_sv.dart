@@ -33,6 +33,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get microphoneButton => 'Röstinmatning';
 
   @override
+  String get imageButton => 'Bildinmatning';
+
+  @override
   String get navTranslator => 'Översättare';
 
   @override
@@ -117,6 +120,9 @@ class AppLocalizationsSv extends AppLocalizations {
       'Ingen anslutning. Kontrollera din internetanslutning.';
 
   @override
+  String get errorOcrFailed => 'Kunde inte extrahera text från bilden.';
+
+  @override
   String get errorSttUnavailable =>
       'Röstinmatning är inte tillgänglig på den här enheten.';
 
@@ -128,6 +134,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
+
+  @override
+  String get ocrSourceCamera => 'Kamera';
+
+  @override
+  String get ocrSourceGallery => 'Galleri';
 
   @override
   String get sttLanguageLabel => 'Taligenkänning (Mikrofon)';

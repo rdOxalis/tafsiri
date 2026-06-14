@@ -207,6 +207,15 @@
 
 ---
 
+## ADR-030: Abandon official F-Droid; restore image-to-text (OCR)
+**Date:** 2026-06-14  
+**Status:** Accepted (supersedes ADR-028, ADR-029)  
+**Context:** After removing OCR (ADR-028) the `fdroid build` job passed, but the `check apk` scanner then rejected 6 proprietary `com.google.android.play.core.*` classes that Flutter's embedding bundles for Play Store deferred components (ADR-029). Excluding the dependency was a no-op locally (R8 strips the classes regardless), and F-Droid's build keeps them — a difference in R8 behaviour that could **not be reproduced or verified locally**, turning further fixes into blind tag-and-pray against F-Droid CI. Combined with the value already lost (OCR), the cost/benefit no longer justified chasing official F-Droid inclusion. This is a long-standing, unresolved Flutter limitation ([flutter#104219](https://github.com/flutter/flutter/issues/104219)).  
+**Decision:** Stop pursuing the official F-Droid repo. Close MR #39249. Restore the image-to-text/OCR feature (`google_mlkit_text_recognition` + `image_picker`, the image button + camera/gallery sheet, OCR controller logic/state, OCR ARB strings, CAMERA/READ_MEDIA_IMAGES/READ_EXTERNAL_STORAGE permissions, ML Kit ProGuard rules, store-description mentions). Remove the now-pointless Play Core exclusion from `build.gradle.kts`. Released as 1.0.8 (versionCode 8). The app is **not published to F-Droid**; distribution stays Play Store / direct APK / GitHub releases.  
+**Consequences:** Full feature set is back (photo→text translation restored). The `android.newDsl=false` / `android.builtInKotlin=false` flags are kept (harmless, and useful if the build toolchain ever moves to AGP 9). The `fdroid/` recipe and fastlane metadata remain as historical artifacts but are unused. If FOSS-store distribution is ever wanted again, IzzyOnDroid (builds from GitHub release APKs, allows NonFree deps) is the path that keeps OCR — not the official F-Droid repo.
+
+---
+
 ## ADR-029: Exclude Google Play Core to pass F-Droid's APK scanner
 **Date:** 2026-06-14  
 **Status:** Accepted  

@@ -1,1 +1,0 @@
-Version 1.0.6: removed the image-to-text (OCR) feature so the app can be built from free software only (it relied on proprietary ML Kit). Voice input, AI translation, history and all other features are unchanged.

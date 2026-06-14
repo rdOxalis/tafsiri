@@ -73,13 +73,3 @@ android {
 flutter {
     source = "../.."
 }
-
-// Flutter's embedding pulls in Google Play Core (com.google.android.play) for
-// Play Store "deferred components" / dynamic feature delivery. That code is
-// proprietary, so F-Droid's APK scanner rejects the resulting binary. This app
-// does not use deferred components, so exclude the dependency entirely. The
-// -dontwarn rules in proguard-rules.pro keep R8 happy about the now-absent
-// classes referenced by PlayStoreDeferredComponentManager.
-configurations.all {
-    exclude(group = "com.google.android.play")
-}

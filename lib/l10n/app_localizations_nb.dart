@@ -33,6 +33,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get microphoneButton => 'Taleinntasting';
 
   @override
+  String get imageButton => 'Bildeinntasting';
+
+  @override
   String get navTranslator => 'Oversetter';
 
   @override
@@ -117,6 +120,9 @@ class AppLocalizationsNb extends AppLocalizations {
       'Ingen tilkobling. Kontroller internettilkoblingen din.';
 
   @override
+  String get errorOcrFailed => 'Kunne ikke hente ut tekst fra bildet.';
+
+  @override
   String get errorSttUnavailable =>
       'Taleinntasting er ikke tilgjengelig på denne enheten.';
 
@@ -128,6 +134,12 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
+
+  @override
+  String get ocrSourceCamera => 'Kamera';
+
+  @override
+  String get ocrSourceGallery => 'Galleri';
 
   @override
   String get sttLanguageLabel => 'Talegjenkjenning (Mikrofon)';

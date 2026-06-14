@@ -9,6 +9,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.8] - 2026-06-14
+
+### Added
+- **Image-to-text (OCR) restored.** Re-added `google_mlkit_text_recognition` + `image_picker`, the image button + camera/gallery sheet, the OCR controller logic and `ocr*`/`imageButton`/`errorOcrFailed` strings, the CAMERA/READ_MEDIA_IMAGES/READ_EXTERNAL_STORAGE permissions, and the ML Kit ProGuard rules. Reverses the 1.0.6 removal.
+
+### Removed
+- The Google Play Core exclusion in `build.gradle.kts` (was only needed for F-Droid's APK scanner).
+
+### Changed (build)
+- Android Gradle Plugin bumped 8.7.3 → 8.9.1: the current `image_picker` transitive dependencies (androidx.activity/core 1.18.x) require AGP ≥ 8.9.1. Gradle wrapper 8.12 already supports it. Verified `flutter build apk --release` succeeds (84.5 MB APK).
+
+### Changed
+- **Official F-Droid submission abandoned** (ADR-030). The `check apk` scanner rejects Flutter's bundled Play Core classes in a way that can't be reproduced/verified locally. MR #39249 closed. The app is not published to F-Droid; distribution remains Play Store / direct APK. (1.0.6 and 1.0.7 were tagged during the F-Droid attempt but never published.)
+
+---
+
 ## [1.0.7] - 2026-06-14
 
 ### Fixed

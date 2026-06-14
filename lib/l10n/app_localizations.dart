@@ -163,6 +163,12 @@ abstract class AppLocalizations {
   /// **'Voice input'**
   String get microphoneButton;
 
+  /// Tooltip for the image/OCR button
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Image input'**
+  String get imageButton;
+
   /// Bottom nav label for the translator screen
   ///
   /// In en_GB, this message translates to:
@@ -325,6 +331,12 @@ abstract class AppLocalizations {
   /// **'No connection. Please check your internet.'**
   String get errorNetwork;
 
+  /// Error message shown when OCR fails
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Could not extract text from image.'**
+  String get errorOcrFailed;
+
   /// Message shown when STT is not available
   ///
   /// In en_GB, this message translates to:
@@ -348,6 +360,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'ChatGPT'**
   String get providerOpenAI;
+
+  /// Bottom sheet option to pick image from camera
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Camera'**
+  String get ocrSourceCamera;
+
+  /// Bottom sheet option to pick image from gallery
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Gallery'**
+  String get ocrSourceGallery;
 
   /// Label for the STT language selector in settings
   ///

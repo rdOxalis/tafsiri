@@ -1,5 +1,12 @@
 # F-Droid Release Process
 
+> **⚠️ ABANDONED (2026-06-14, ADR-030).** Official F-Droid inclusion was given up:
+> F-Droid's `check apk` scanner rejects the `com.google.android.play.core.*`
+> classes that Flutter's embedding bundles, in a way that can't be reproduced or
+> verified locally. MR #39249 was closed and OCR was restored (1.0.8). This
+> document is kept for historical reference. For a FOSS-store presence that keeps
+> ML Kit/OCR, use IzzyOnDroid (builds from GitHub release APKs), not this repo.
+
 ## How Auto-Updates Work
 
 Once the app is merged into fdroiddata, new releases are picked up automatically:
