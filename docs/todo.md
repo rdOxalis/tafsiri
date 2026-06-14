@@ -4,7 +4,7 @@
 
 <!-- Move items here when actively working on them -->
 
-- [ ] Tag `v1.0.6` + push the v1.0.6 recipe to the fdroiddata fork branch `com.njerahouse.tafsiri` to re-trigger MR #39249 CI (now builds with OCR removed). (ADR-028)
+- [ ] Confirm MR #39249 pipeline fully green for v1.0.7 (fdroid build + check apk), then it's ready for F-Droid reviewer merge. (ADR-028, ADR-029)
 
 ---
 
@@ -14,6 +14,7 @@
 - [ ] **(Optional) Re-add OCR via IzzyOnDroid distribution.** If image→text is wanted back, ship a parallel build through IzzyOnDroid (allows ML Kit / NonFree deps, builds from GitHub release APKs). (ADR-028)
 
 ### Done
+- [x] Exclude Google Play Core so the APK passes F-Droid's `check apk` scanner; released as 1.0.7. Verified 0 play.core class definitions via dexdump. (2026-06-14, ADR-029)
 - [x] Remove image-to-text/OCR (ML Kit) for official F-Droid compatibility; released as 1.0.6. Verified buildable under reproduced F-Droid AGP 9 toolchain. (2026-06-14, ADR-028)
 - [x] F-Droid AGP 9 build fix: `android.newDsl=false` + `android.builtInKotlin=false`. (2026-06-14, ADR-027)
 - [x] Add store screenshots (en-US 1–3) under `fastlane/.../images/phoneScreenshots/`. (2026-06-14)

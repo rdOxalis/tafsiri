@@ -1,0 +1,1 @@
+Version 1.0.6: Bild-zu-Text-Funktion (OCR) entfernt, damit die App rein aus freier Software gebaut werden kann (sie nutzte das proprietäre ML Kit). Spracheingabe, KI-Übersetzung, Verlauf und alle übrigen Funktionen bleiben unverändert.

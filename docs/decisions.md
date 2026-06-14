@@ -207,6 +207,15 @@
 
 ---
 
+## ADR-029: Exclude Google Play Core to pass F-Droid's APK scanner
+**Date:** 2026-06-14  
+**Status:** Accepted  
+**Context:** After removing ML Kit (ADR-028), the `fdroid build` job finally succeeded — but the pipeline's `check apk` job (which only runs once a build exists, hence never seen before) failed: the scanner found 6 proprietary classes in the APK — `com.google.android.play.core.splitcompat.SplitCompatApplication`, `…splitinstall.SplitInstallManager`/`SplitInstallSessionState`/`SplitInstallStateUpdatedListener`, `…tasks.OnSuccessListener`/`OnFailureListener`. These come from Google Play Core, which Flutter's embedding pulls in for Play Store "deferred components" / dynamic feature delivery. Tafsiri does not use deferred components. (Note: these are the same classes the `-dontwarn` rules reference — they are referenced by Flutter's `PlayStoreDeferredComponentManager` but the app never instantiates it.)  
+**Decision:** Add `configurations.all { exclude(group = "com.google.android.play") }` to `android/app/build.gradle.kts`. The `-dontwarn com.google.android.play.core.**` ProGuard rules remain so R8 does not fail on the now-absent classes. Released as 1.0.7 (versionCode 7); F-Droid recipe pinned to tag `v1.0.7` (1.0.6 was tagged but never published — its APK failed `check apk`).  
+**Consequences:** The APK no longer contains any `com.google.android.play.core` classes — verified locally with `dexdump` (0 class definitions) under the reproduced F-Droid AGP 9 toolchain. Deferred components remain unavailable (unused anyway). This exclusion is harmless for any other distribution channel.
+
+---
+
 ## ADR-028: Remove image-to-text (OCR) for F-Droid compatibility
 **Date:** 2026-06-14  
 **Status:** Accepted  

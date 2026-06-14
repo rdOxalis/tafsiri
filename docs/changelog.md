@@ -9,6 +9,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.7] - 2026-06-14
+
+### Fixed
+- **F-Droid APK scanner (`check apk`):** excluded the `com.google.android.play` (Play Core) dependency in `android/app/build.gradle.kts`. With OCR gone the `fdroid build` job passed, but the scanner then flagged 6 proprietary `com.google.android.play.core.*` classes that Flutter's embedding bundles for Play Store deferred components (which this app does not use). Verified with `dexdump` that the built APK contains zero `com.google.android.play.core` class definitions (ADR-029). Supersedes the never-published 1.0.6.
+
+---
+
 ## [1.0.6] - 2026-06-14
 
 ### Removed

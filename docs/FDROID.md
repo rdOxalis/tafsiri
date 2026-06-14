@@ -118,6 +118,10 @@ release APKs, allows NonFree deps), not the official F-Droid repo.
 
 - `speech_to_text` — uses Android's SpeechRecognizer API (device-level, not
   tied to Google specifically); F-Droid-clean (no proprietary Maven dependency)
-- The Play Core `-dontwarn` rules in `proguard-rules.pro` are required by
-  Flutter's `PlayStoreDeferredComponentManager` (not ML Kit) — keep them, or R8
-  minification fails with "Missing class com.google.android.play.core.*"
+- Google Play Core (`com.google.android.play`) is **excluded** in
+  `android/app/build.gradle.kts` (`configurations.all { exclude(...) }`). Flutter's
+  embedding pulls it in for deferred components (unused here); its
+  `com.google.android.play.core.*` classes are proprietary and make F-Droid's
+  `check apk` scanner fail. The `-dontwarn com.google.android.play.core.**`
+  ProGuard rules are kept so R8 does not fail on the now-absent classes
+  referenced by Flutter's `PlayStoreDeferredComponentManager`. (ADR-029)
