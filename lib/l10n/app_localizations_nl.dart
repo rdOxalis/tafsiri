@@ -33,9 +33,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get microphoneButton => 'Spraakinvoer';
 
   @override
-  String get imageButton => 'Afbeeldingsinvoer';
-
-  @override
   String get navTranslator => 'Vertaler';
 
   @override
@@ -119,9 +116,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get errorNetwork => 'Geen verbinding. Controleer uw internet.';
 
   @override
-  String get errorOcrFailed => 'Kon geen tekst uit de afbeelding halen.';
-
-  @override
   String get errorSttUnavailable =>
       'Spraakinvoer is niet beschikbaar op dit apparaat.';
 
@@ -133,12 +127,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
-
-  @override
-  String get ocrSourceCamera => 'Camera';
-
-  @override
-  String get ocrSourceGallery => 'Galerij';
 
   @override
   String get sttLanguageLabel => 'Spraakherkenning (Microfoon)';

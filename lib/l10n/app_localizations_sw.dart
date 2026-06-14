@@ -33,9 +33,6 @@ class AppLocalizationsSw extends AppLocalizations {
   String get microphoneButton => 'Ingizo la sauti';
 
   @override
-  String get imageButton => 'Ingizo la picha';
-
-  @override
   String get navTranslator => 'Kutafsiri';
 
   @override
@@ -120,9 +117,6 @@ class AppLocalizationsSw extends AppLocalizations {
       'Hakuna muunganisho. Tafadhali angalia intaneti yako.';
 
   @override
-  String get errorOcrFailed => 'Haikuweza kutoa maandishi kutoka kwa picha.';
-
-  @override
   String get errorSttUnavailable =>
       'Ingizo la sauti halipatikani kwenye kifaa hiki.';
 
@@ -134,12 +128,6 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
-
-  @override
-  String get ocrSourceCamera => 'Kamera';
-
-  @override
-  String get ocrSourceGallery => 'Picha';
 
   @override
   String get sttLanguageLabel => 'Utambuzi wa Sauti (Maikrofoni)';

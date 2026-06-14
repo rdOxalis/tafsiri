@@ -102,10 +102,22 @@ Metadata file: `metadata/com.njerahouse.tafsiri.yml`
 Tafsiri has `NonFreeNet` because it connects to proprietary AI API services.
 The user provides their own API key. The app itself is fully FOSS.
 
+### Why there is no image-to-text (OCR) — removed in 1.0.6
+
+ML Kit (`google_mlkit_text_recognition`) was **removed** because it pulls
+proprietary `com.google.mlkit:*` artifacts from Google's Maven. F-Droid's
+scanner strips every `com.google.mlkit` dependency (`Removing usual suspect
+'com.google.mlkit'` in the build log; it's on F-Droid's `suss.json` non-free
+list), after which the ML Kit plugin code no longer compiles (`package
+com.google.mlkit.* does not exist`). This is a licensing incompatibility, not a
+build-config bug — no Gradle flag or plugin bump fixes it. See ADR-028.
+If OCR is ever wanted back, distribute via **IzzyOnDroid** (builds from GitHub
+release APKs, allows NonFree deps), not the official F-Droid repo.
+
 ### Notes on Dependencies
 
-- `google_mlkit_text_recognition` — uses the unbundled ML Kit (Apache 2.0),
-  does NOT require Google Play Services; proguard-rules.pro has `-dontwarn` rules
-  for unreferenced Play Core classes (dead code in the MLKit library)
 - `speech_to_text` — uses Android's SpeechRecognizer API (device-level, not
-  tied to Google specifically)
+  tied to Google specifically); F-Droid-clean (no proprietary Maven dependency)
+- The Play Core `-dontwarn` rules in `proguard-rules.pro` are required by
+  Flutter's `PlayStoreDeferredComponentManager` (not ML Kit) — keep them, or R8
+  minification fails with "Missing class com.google.android.play.core.*"

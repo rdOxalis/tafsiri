@@ -33,9 +33,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get microphoneButton => 'Voice input';
 
   @override
-  String get imageButton => 'Image input';
-
-  @override
   String get navTranslator => 'Translator';
 
   @override
@@ -119,9 +116,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorNetwork => 'No connection. Please check your internet.';
 
   @override
-  String get errorOcrFailed => 'Could not extract text from image.';
-
-  @override
   String get errorSttUnavailable =>
       'Voice input is not available on this device.';
 
@@ -133,12 +127,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
-
-  @override
-  String get ocrSourceCamera => 'Camera';
-
-  @override
-  String get ocrSourceGallery => 'Gallery';
 
   @override
   String get sttLanguageLabel => 'Speech Recognition (Microphone)';
@@ -201,9 +189,6 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get microphoneButton => 'Voice input';
 
   @override
-  String get imageButton => 'Image input';
-
-  @override
   String get navTranslator => 'Translator';
 
   @override
@@ -287,9 +272,6 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get errorNetwork => 'No connection. Please check your internet.';
 
   @override
-  String get errorOcrFailed => 'Could not extract text from image.';
-
-  @override
   String get errorSttUnavailable =>
       'Voice input is not available on this device.';
 
@@ -301,12 +283,6 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get providerOpenAI => 'ChatGPT';
-
-  @override
-  String get ocrSourceCamera => 'Camera';
-
-  @override
-  String get ocrSourceGallery => 'Gallery';
 
   @override
   String get sttLanguageLabel => 'Speech Recognition (Microphone)';

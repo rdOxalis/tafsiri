@@ -32,10 +32,6 @@
   "@microphoneButton": {
     "description": "Tooltip for the microphone/STT button"
   },
-  "imageButton": "Image input",
-  "@imageButton": {
-    "description": "Tooltip for the image/OCR button"
-  },
   "navTranslator": "Translator",
   "@navTranslator": {
     "description": "Bottom nav label for the translator screen"
@@ -144,10 +140,6 @@
   "@errorNetwork": {
     "description": "Error message shown on network failure"
   },
-  "errorOcrFailed": "Could not extract text from image.",
-  "@errorOcrFailed": {
-    "description": "Error message shown when OCR fails"
-  },
   "errorSttUnavailable": "Voice input is not available on this device.",
   "@errorSttUnavailable": {
     "description": "Message shown when STT is not available"
@@ -163,14 +155,6 @@
   "providerOpenAI": "ChatGPT",
   "@providerOpenAI": {
     "description": "Display name for the OpenAI provider"
-  },
-  "ocrSourceCamera": "Camera",
-  "@ocrSourceCamera": {
-    "description": "Bottom sheet option to pick image from camera"
-  },
-  "ocrSourceGallery": "Gallery",
-  "@ocrSourceGallery": {
-    "description": "Bottom sheet option to pick image from gallery"
   },
   "sttLanguageLabel": "Speech Recognition (Microphone)",
   "@sttLanguageLabel": {

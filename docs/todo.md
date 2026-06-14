@@ -4,13 +4,19 @@
 
 <!-- Move items here when actively working on them -->
 
-- [ ] Push the updated `fdroid/metadata/com.njerahouse.tafsiri.yml` (prebuild now echoes `android.builtInKotlin=false` too) to the fdroiddata fork branch `com.njerahouse.tafsiri` to re-trigger MR #39249 CI. No retag needed — only the prebuild changed. (ADR-027)
+- [ ] Tag `v1.0.6` + push the v1.0.6 recipe to the fdroiddata fork branch `com.njerahouse.tafsiri` to re-trigger MR #39249 CI (now builds with OCR removed). (ADR-028)
 
 ---
 
 ## Backlog
 
-- [ ] **AGP 9 / new-DSL migration (deadline: before AGP 10, ~mid-2026).** The `android.newDsl=false` + `android.builtInKotlin=false` opt-out flags stop working at AGP 10. Migrate `android/` to the new Gradle DSL + built-in Kotlin, and upgrade `google_mlkit_text_recognition` to a version whose `build.gradle` is AGP-9-compatible. (ADR-027)
+- [ ] **AGP 9 / new-DSL migration (deadline: before AGP 10, ~mid-2026).** The `android.newDsl=false` + `android.builtInKotlin=false` opt-out flags stop working at AGP 10 — migrate `android/` to the new Gradle DSL + built-in Kotlin. (ADR-027)
+- [ ] **(Optional) Re-add OCR via IzzyOnDroid distribution.** If image→text is wanted back, ship a parallel build through IzzyOnDroid (allows ML Kit / NonFree deps, builds from GitHub release APKs). (ADR-028)
+
+### Done
+- [x] Remove image-to-text/OCR (ML Kit) for official F-Droid compatibility; released as 1.0.6. Verified buildable under reproduced F-Droid AGP 9 toolchain. (2026-06-14, ADR-028)
+- [x] F-Droid AGP 9 build fix: `android.newDsl=false` + `android.builtInKotlin=false`. (2026-06-14, ADR-027)
+- [x] Add store screenshots (en-US 1–3) under `fastlane/.../images/phoneScreenshots/`. (2026-06-14)
 
 
 ### Phase 1 — Foundation

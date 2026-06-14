@@ -33,9 +33,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get microphoneButton => 'Saisie vocale';
 
   @override
-  String get imageButton => 'Saisie par image';
-
-  @override
   String get navTranslator => 'Traducteur';
 
   @override
@@ -120,9 +117,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Pas de connexion. Veuillez vérifier votre internet.';
 
   @override
-  String get errorOcrFailed => 'Impossible d\'extraire le texte de l\'image.';
-
-  @override
   String get errorSttUnavailable =>
       'La saisie vocale n\'est pas disponible sur cet appareil.';
 
@@ -134,12 +128,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get providerOpenAI => 'ChatGPT';
-
-  @override
-  String get ocrSourceCamera => 'Appareil photo';
-
-  @override
-  String get ocrSourceGallery => 'Galerie';
 
   @override
   String get sttLanguageLabel => 'Reconnaissance vocale (Microphone)';

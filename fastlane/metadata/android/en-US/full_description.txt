@@ -5,7 +5,6 @@ Translate text using the AI provider of your choice: Mistral (free tier availabl
 Features:
 * Bidirectional translation: detects the source language automatically and translates to your configured primary or secondary language — no manual direction toggle needed
 * Voice input (Speech-to-Text): speak your text, translation triggers automatically
-* Image input: photograph text and extract it with on-device OCR — no cloud required for the OCR step
 * Translation history: every result is saved locally, tap any entry to reload it
 * Favourites: star entries to keep them accessible via a filter
 * 10 UI languages: English, German, Swahili, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish
@@ -16,4 +15,4 @@ You set a primary language (e.g. Swahili) and a secondary language (e.g. English
 
 Mistral is the recommended starting point: it offers a generous free tier with no credit card required.
 
-Privacy: API keys are stored locally on your device and sent only to the AI provider you have selected. OCR and speech recognition run on-device. No data is collected by the app.
+Privacy: API keys are stored locally on your device and sent only to the AI provider you have selected. Speech recognition runs on-device. No data is collected by the app.

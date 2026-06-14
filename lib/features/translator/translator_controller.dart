@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../../core/constants.dart';
@@ -24,8 +22,6 @@ class TranslatorState {
   final String? lastSourceLang;
   final bool isSttAvailable;
   final bool isListening;
-  final bool isOcrProcessing;
-  final bool ocrError;
 
   const TranslatorState({
     this.inputText = '',
@@ -36,8 +32,6 @@ class TranslatorState {
     this.lastSourceLang,
     this.isSttAvailable = false,
     this.isListening = false,
-    this.isOcrProcessing = false,
-    this.ocrError = false,
   });
 
   TranslatorState copyWith({
@@ -51,8 +45,6 @@ class TranslatorState {
     String? lastSourceLang,
     bool? isSttAvailable,
     bool? isListening,
-    bool? isOcrProcessing,
-    bool? ocrError,
   }) =>
       TranslatorState(
         inputText: inputText ?? this.inputText,
@@ -63,8 +55,6 @@ class TranslatorState {
         lastSourceLang: lastSourceLang ?? this.lastSourceLang,
         isSttAvailable: isSttAvailable ?? this.isSttAvailable,
         isListening: isListening ?? this.isListening,
-        isOcrProcessing: isOcrProcessing ?? this.isOcrProcessing,
-        ocrError: ocrError ?? this.ocrError,
       );
 }
 
@@ -123,39 +113,6 @@ class TranslatorController extends Notifier<TranslatorState> {
       state = state.copyWith(isListening: false);
       translate();
     }
-  }
-
-  Future<void> pickImageAndRecognize({required ImageSource source}) async {
-    state = state.copyWith(isOcrProcessing: true);
-    try {
-      final file = await ImagePicker().pickImage(source: source);
-      if (file == null) {
-        state = state.copyWith(isOcrProcessing: false);
-        return;
-      }
-      final recognizer = TextRecognizer();
-      final result =
-          await recognizer.processImage(InputImage.fromFilePath(file.path));
-      await recognizer.close();
-      final text = result.text.trim();
-      if (text.isEmpty) {
-        state = state.copyWith(isOcrProcessing: false, ocrError: true);
-        return;
-      }
-      state = state.copyWith(
-        inputText: text,
-        isOcrProcessing: false,
-        clearOutput: true,
-        clearError: true,
-      );
-    } catch (e) {
-      debugPrint('[OCR] error: $e');
-      state = state.copyWith(isOcrProcessing: false, ocrError: true);
-    }
-  }
-
-  void clearOcrError() {
-    state = state.copyWith(ocrError: false);
   }
 
   void setInputText(String text) {

@@ -1,0 +1,1 @@
+Toleo 1.0.6: kipengele cha picha-kwa-maandishi (OCR) kimeondolewa ili programu ijengwe kwa programu huria pekee (kilitumia ML Kit ya umiliki). Ingizo la sauti, tafsiri ya AI, historia na vipengele vingine vyote havijabadilika.

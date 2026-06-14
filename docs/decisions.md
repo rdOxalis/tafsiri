@@ -207,6 +207,15 @@
 
 ---
 
+## ADR-028: Remove image-to-text (OCR) for F-Droid compatibility
+**Date:** 2026-06-14  
+**Status:** Accepted  
+**Context:** Even after fixing the AGP 9 / built-in-Kotlin opt-out (ADR-027), the F-Droid build kept failing while configuring `:google_mlkit_commons`. The F-Droid job log revealed the real cause: F-Droid's scanner logs `Removing usual suspect 'com.google.mlkit'` and **strips every `com.google.mlkit:*` dependency** from the ML Kit plugins' `build.gradle` (ML Kit is proprietary Google software pulled from Google's Maven; it is on F-Droid's `suss.json` non-free signature list). Proven locally: replicating the strip produces 23 compile errors (`package com.google.mlkit.* does not exist`). No Gradle flag or plugin-version bump can fix this — it is a licensing/policy incompatibility. ML Kit was the **only** non-free dependency flagged; everything else (speech_to_text via the system SpeechRecognizer, the AI HTTP calls, sqflite, etc.) is F-Droid-clean. Options considered: ship via IzzyOnDroid (keeps ML Kit, builds from GitHub release APKs); replace ML Kit with FOSS Tesseract (heavy — the Flutter plugins pull a prebuilt tesseract4android AAR that F-Droid also rejects, plus photo-OCR quality regression); or remove the OCR feature.  
+**Decision:** Remove the image-to-text/OCR feature for the official F-Droid distribution: drop `google_mlkit_text_recognition` and `image_picker`, the image button + camera/gallery sheet, the OCR controller code/state, the OCR ARB strings, the CAMERA/READ_MEDIA_IMAGES/READ_EXTERNAL_STORAGE permissions, and the ML Kit ProGuard rules. The Google Play Core `-dontwarn` rules are kept — they belong to Flutter's `PlayStoreDeferredComponentManager`, not ML Kit. Released as 1.0.6 (versionCode 6), F-Droid recipe pinned to tag `v1.0.6`.  
+**Consequences:** The app loses photo→text translation; voice, paste, typing, AI translation, history, favourites and 10-language UI remain. APK ~84 MB → ~53 MB. Verified buildable under the reproduced F-Droid AGP 9 toolchain. If OCR is wanted back later, the cleanest path is a separate IzzyOnDroid distribution that keeps ML Kit (no source build, no stripping). The opt-out Gradle flags from ADR-027 are still required (the kotlin-android conflict is a project-level AGP 9 issue, independent of ML Kit).
+
+---
+
 ## ADR-027: F-Droid build fix — opt out of both AGP 9 new DSL and built-in Kotlin
 **Date:** 2026-06-14  
 **Status:** Accepted  

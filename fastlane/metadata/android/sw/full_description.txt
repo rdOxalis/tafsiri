@@ -5,7 +5,6 @@ Tafsiri maandishi kwa kutumia mtoa huduma wa AI unayouchagua: Mistral (kiwango c
 Vipengele:
 * Tafsiri ya pande mbili: hugundua lugha chanzo kiotomatiki na kutafsiri kwa lugha yako ya msingi au ya pili – hakuna kubonyeza kubadilisha mwelekeo
 * Ingizo la sauti (Utambuzi wa Hotuba): sema maandishi yako, tafsiri inaanza kiotomatiki
-* Ingizo la picha: piga picha ya maandishi na kutoa maandishi kwa OCR inayofanya kazi kwenye kifaa – hakuna wingu kwa OCR
 * Historia ya tafsiri: kila matokeo yanahifadhiwa ndani ya kifaa, gonga ingizo lolote kulirudisha
 * Vipendwa: weka nyota kwenye ingizo na uzipate haraka kwa kichujio
 * Lugha 10 za programu: Kiingereza, Kijerumani, Kiswahili, Kifaransa, Kiholanzi, Kihispania, Kidenmaki, Kinorwe, Kiswidi, Kipolandi
@@ -14,4 +13,4 @@ Vipengele:
 Jinsi mwelekeo wa tafsiri unavyofanya kazi:
 Katika Mipangilio, unabainisha lugha ya msingi (k.m. Kiswahili) na lugha ya pili (k.m. Kiingereza). Ikiwa ingizo lako liko tayari katika lugha ya msingi, litatafsiriwa kwa lugha ya pili – vinginevyo litatafsiriwa daima kwa lugha ya msingi.
 
-Faragha: Funguo za API zinahifadhiwa ndani ya kifaa chako na kutumwa tu kwa mtoa huduma uliyochagua. OCR na utambuzi wa hotuba vinafanya kazi kwenye kifaa. Programu haikusanyi data yoyote.
+Faragha: Funguo za API zinahifadhiwa ndani ya kifaa chako na kutumwa tu kwa mtoa huduma uliyochagua. Utambuzi wa hotuba unafanya kazi kwenye kifaa. Programu haikusanyi data yoyote.
