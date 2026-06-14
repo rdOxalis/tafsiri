@@ -6,6 +6,7 @@
 > verified locally. MR #39249 was closed and OCR was restored (1.0.8). This
 > document is kept for historical reference. For a FOSS-store presence that keeps
 > ML Kit/OCR, use IzzyOnDroid (builds from GitHub release APKs), not this repo.
+> Full story: [`docs/fdroid-postmortem.md`](fdroid-postmortem.md).
 
 ## How Auto-Updates Work
 
