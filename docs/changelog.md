@@ -7,6 +7,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **F-Droid build failure (MR #39249):** added `android.builtInKotlin=false` alongside the existing `android.newDsl=false` in `android/gradle.properties` (and in the F-Droid recipe prebuild). F-Droid's buildserver uses a bleeding-edge AGP 9 / Gradle 9 toolchain where opting out of the new DSL alone is insufficient — it left a `kotlin-android` "extension already registered" error and a `google_mlkit_commons` configuration `NullPointerException`. Root cause proven by reproducing the AGP 9 toolchain locally (ADR-027).
+
+### Changed
+- `docs/FDROID.md`: corrected the misleading claim that the `fdroid build` CI job "fails for Flutter apps (expected)"; added an AGP 9 / built-in-Kotlin troubleshooting entry and a local-reproduction guide.
+
 ---
 
 ## [1.0.5] - 2026-05-28

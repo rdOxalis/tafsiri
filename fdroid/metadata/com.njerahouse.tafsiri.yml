@@ -28,6 +28,7 @@ Builds:
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
       - echo 'android.newDsl=false' >> android/gradle.properties
+      - echo 'android.builtInKotlin=false' >> android/gradle.properties
       - export PUB_CACHE=$(pwd)/.pub-cache
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get

@@ -4,9 +4,14 @@
 
 <!-- Move items here when actively working on them -->
 
+- [ ] Push the updated `fdroid/metadata/com.njerahouse.tafsiri.yml` (prebuild now echoes `android.builtInKotlin=false` too) to the fdroiddata fork branch `com.njerahouse.tafsiri` to re-trigger MR #39249 CI. No retag needed — only the prebuild changed. (ADR-027)
+
 ---
 
 ## Backlog
+
+- [ ] **AGP 9 / new-DSL migration (deadline: before AGP 10, ~mid-2026).** The `android.newDsl=false` + `android.builtInKotlin=false` opt-out flags stop working at AGP 10. Migrate `android/` to the new Gradle DSL + built-in Kotlin, and upgrade `google_mlkit_text_recognition` to a version whose `build.gradle` is AGP-9-compatible. (ADR-027)
+
 
 ### Phase 1 — Foundation
 - [x] [1.1] S  `flutter create --org ke.darkman --project-name tafsiri .` — `applicationId = ke.darkman.tafsiri` ✓ (2026-04-10)

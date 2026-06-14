@@ -30,13 +30,26 @@ No manual fdroiddata edits needed for regular releases.
 
 ## If Something Breaks
 
-F-Droid builds run on Debian Trixie with Java 21. Common issues:
+F-Droid builds run on Debian Trixie with Java 21, and the buildserver uses a
+**bleeding-edge toolchain (AGP 9 / Gradle 9)** because `fdroidserver` is fetched
+from `master`. This activates the new Gradle DSL + built-in Kotlin, which an
+unmigrated Flutter project (and old plugins like `google_mlkit_commons`) cannot
+handle. Common issues:
 
 | Problem | Fix |
 |---------|-----|
+| NPE configuring `:google_mlkit_commons` / "Failed to notify project evaluation listener" | Opt out of the new DSL **and** built-in Kotlin: set BOTH `android.newDsl=false` and `android.builtInKotlin=false` in `android/gradle.properties`. `newDsl` alone is not enough — it leaves a `kotlin-android` "extension already registered" failure. |
+| `kotlin-android` "Cannot add extension with name 'kotlin'" | Add `android.builtInKotlin=false`. |
 | Gradle/Java incompatibility | Upgrade Gradle + AGP in `android/` |
 | JdkImageTransform/jlink error | AGP must be 8.3.0+ for Java 21 |
 | Scanner finds binaries in .pub-cache | `scandelete: - .pub-cache` in YAML handles this |
+
+**Debugging tip — reproduce locally instead of tag-and-pray.** Fetch the failed
+job trace from the public GitLab API (no auth needed):
+`curl -sL https://gitlab.com/ooocp/fdroiddata/-/jobs/<JOB_ID>/raw`. To reproduce
+the AGP 9 environment locally, build with a full JDK 21, bump
+`com.android.application` to `9.0.1` + the Gradle wrapper to `9.1.0`, and run
+`flutter build apk --release`.
 
 ## Key Files
 
@@ -79,8 +92,10 @@ Metadata file: `metadata/com.njerahouse.tafsiri.yml`
 - Java 17 in `build.gradle.kts` is required — F-Droid builds with Java 21, and
   `sourceCompatibility = JavaVersion.VERSION_11` is fine too but 17 is safer
 - `dependenciesInfo { includeInApk = false; includeInBundle = false }` is mandatory
-- F-Droid CI: `fdroid build` step will fail for Flutter apps (expected) — only
-  the lint/schema/rewritemeta steps need to pass before human review
+- **The `fdroid build` CI job must pass** — it is a real build. (An earlier note
+  here wrongly claimed it "fails for Flutter apps (expected)"; that misconception
+  cost several wasted submit-and-fail cycles. Only treat a red `fdroid build` as
+  acceptable if you have independently confirmed the failure is environmental.)
 
 ### Anti-Features
 

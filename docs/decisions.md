@@ -207,6 +207,15 @@
 
 ---
 
+## ADR-027: F-Droid build fix — opt out of both AGP 9 new DSL and built-in Kotlin
+**Date:** 2026-06-14  
+**Status:** Accepted  
+**Context:** The F-Droid `fdroid build` job for MR #39249 kept failing with a `NullPointerException` while configuring `:google_mlkit_commons` ("Failed to notify project evaluation listener") plus a Flutter Fix hint "Starting AGP 9+, only the new DSL interface will be read". Three prior commits (ee2b338, 28eed06, d2afa69) only varied *how* `android.newDsl=false` was applied and never fixed it. Root cause was established by reproducing the build locally: the project pins AGP 8.7.3 + Gradle 8.12 and builds fine under that toolchain (Java 17 *and* full JDK 21), but F-Droid's buildserver pulls `fdroidserver` from `master` and builds with a **bleeding-edge AGP 9 / Gradle 9** toolchain that activates the new Gradle DSL and built-in Kotlin. Under AGP 9, `android.newDsl=false` alone is insufficient — it leaves a `kotlin-android` "Cannot add extension with name 'kotlin'" failure. The old `google_mlkit_commons` 0.8.1 (legacy embedded `buildscript { classpath 'com.android.tools.build:gradle:7.4.2' }`) is the component that NPEs first on F-Droid's exact version mix.  
+**Decision:** Set BOTH `android.newDsl=false` and `android.builtInKotlin=false` in `android/gradle.properties`, and append both in the F-Droid recipe prebuild (the recipe builds the v1.0.5 tag, whose committed file predates these flags). Verified locally: AGP 9.0.1 + Gradle 9.1.0 + JDK 21 + the unchanged old plugin builds a clean ~84 MB APK with both flags, and fails with only `newDsl=false`. The flags are no-ops under AGP 8.7.3, so they are safe regardless of which toolchain F-Droid uses on a given day.  
+**Consequences:** No retag needed — only the prebuild changed, so updating the fdroiddata MR YAML is enough to re-trigger CI. A proper migration to the AGP 9 / new-DSL world (and newer MLKit plugins) is deferred; the opt-out flags will stop working at AGP 10 (mid-2026), tracked in todo. The misleading note in `docs/FDROID.md` claiming `fdroid build` "fails for Flutter apps (expected)" was corrected — it must pass.
+
+---
+
 ## ADR-026: F-Droid submission
 **Date:** 2026-05-28  
 **Status:** Accepted  
