@@ -7,6 +7,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Linux desktop build** (ADR-031). `flutter build linux --release` now produces a working bundle. sqflite is routed through `sqflite_common_ffi` on desktop via the new `lib/core/database/sqflite_desktop.dart`, with a `sqlite3` loader override that falls back from `libsqlite3.so` to `libsqlite3.so.0` so no `libsqlite3-dev` is required at runtime. `DbHelper` stores the database under `getApplicationSupportDirectory()` on desktop.
+- `test/database/sqflite_desktop_test.dart` — guards the desktop FFI/loader wiring by opening a real on-disk database.
+- **`install.sh`** (ADR-032) — builds the release bundle and installs it per-user into `~/.local` with icons and a desktop entry, so Tafsiri appears in the application menu. Supports `--rebuild` and `--uninstall`. Requires no root.
+
+### Fixed
+- The 8 `translation_dao_test` cases that had always failed on Linux with `Failed to load dynamic library 'libsqlite3.so'`. Suite is now 45/45 green.
+
+### Changed
+- `sqflite_common_ffi` promoted from dev- to regular dependency; `sqlite3` added as a direct dependency. Both are pure-Dart FFI packages — the release APK's native libraries are unchanged.
+
+### Known limitations (Linux)
+- Voice input is unavailable (`speech_to_text` has no Linux implementation); the mic button is disabled.
+- OCR is unavailable (`google_mlkit_text_recognition` is Android/iOS only); picking an image works but recognition reports the localised OCR error.
+- Requires `libgtk-3-dev` to build and `libsqlite3-0` at runtime.
+
 ---
 
 ## [1.0.8] - 2026-06-14

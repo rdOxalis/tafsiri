@@ -10,9 +10,15 @@
 
 ## Backlog
 
+- [ ] **(Linux) Hide camera as an image source on desktop.** The camera entry in the image-source sheet is meaningless on Linux; `image_picker_linux` only does file selection. Low priority — OCR itself is unavailable there anyway. (ADR-031)
+- [ ] **(Linux, optional) Distributable packaging.** `install.sh` covers per-user installation from source; a redistributable format (AppImage / Flatpak / .deb) for users without a Flutter SDK is still open. BluesoundPlayer's `flutter/package-linux.sh` is a starting point. (ADR-032)
+- [ ] **(Linux, optional) FOSS OCR/STT alternatives.** ML Kit and `speech_to_text` have no Linux support; if desktop parity is ever wanted, this needs different engines. (ADR-031)
+
 - [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] `install.sh`: per-user install into `~/.local` with icons + desktop entry, named after the Wayland `app_id`. Verified end-to-end (menu launch, icon sizes, uninstall). (2026-07-29, ADR-032)
+- [x] Linux desktop build: GTK toolchain, sqflite→FFI against system SQLite, fixed the 8 always-failing DAO tests. Verified the Android release APK is unaffected. (2026-07-29, ADR-031)
 - [x] Abandon official F-Droid; restore image-to-text/OCR; released as 1.0.8. (2026-06-14, ADR-030)
 - [x] Exclude Google Play Core so the APK passes F-Droid's `check apk` scanner; released as 1.0.7. Verified 0 play.core class definitions via dexdump. (2026-06-14, ADR-029)
 - [x] Remove image-to-text/OCR (ML Kit) for official F-Droid compatibility; released as 1.0.6. Verified buildable under reproduced F-Droid AGP 9 toolchain. (2026-06-14, ADR-028)

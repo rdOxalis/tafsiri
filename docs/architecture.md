@@ -108,6 +108,48 @@ CREATE TABLE translation_entry (
 - `source_lang` is the 2-letter ISO 639-1 code extracted from the AI response `LANG:xx` prefix.
 - Schema version: 1. Migration stubs in `db_helper.dart` `onUpgrade` — see ADR-014.
 
+### Platform backends (ADR-031)
+
+`sqflite` only ships native implementations for Android and iOS, so desktop goes through FFI:
+
+| | Factory | Database location |
+|---|---|---|
+| Android / iOS | native `sqflite` | `getDatabasesPath()` |
+| Linux / Windows / macOS | `sqflite_common_ffi` | `getApplicationSupportDirectory()` |
+
+`main()` calls `initSqfliteForDesktop()` (`lib/core/database/sqflite_desktop.dart`), which is a no-op unless `defaultTargetPlatform` is a desktop platform. On desktop it installs `createDatabaseFactoryFfi(ffiInit: useSystemSqlite)`.
+
+`useSystemSqlite` must be a **top-level** function passed as `ffiInit`, because `sqflite_common_ffi` executes SQLite in a worker isolate — a `sqlite3` loader override registered on the main isolate has no effect there. On Linux it tries `libsqlite3.so` (only present with `libsqlite3-dev`) and then `libsqlite3.so.0` (the runtime package), so no development package is needed on end-user machines.
+
+---
+
+## Platform Support
+
+| Feature | Android | Linux desktop |
+|---|---|---|
+| Translation (all 3 providers) | ✅ | ✅ |
+| History / favourites (SQLite) | ✅ native | ✅ via FFI (ADR-031) |
+| Settings, localisation, donate link | ✅ | ✅ |
+| Image picking | ✅ camera + gallery | ⚠️ file selection only |
+| OCR (`google_mlkit_text_recognition`) | ✅ | ❌ no Linux implementation — reports the localised OCR error |
+| Voice input (`speech_to_text`) | ✅ | ❌ no Linux implementation — mic button disabled |
+
+Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime.
+
+### Linux installation (ADR-032)
+
+`./install.sh` builds the release bundle and installs it for the current user — no root:
+
+| Artefact | Location |
+|---|---|
+| App bundle | `~/.local/share/tafsiri/` |
+| Launcher symlink | `~/.local/bin/tafsiri` |
+| Desktop entry | `~/.local/share/applications/ke.darkman.tafsiri.desktop` |
+| Icons | `~/.local/share/icons/hicolor/{16…512}/apps/` + `scalable/` |
+| Settings + history | `~/.local/share/ke.darkman.tafsiri/` (**not** removed by `--uninstall`) |
+
+The desktop entry, the icon name and `StartupWMClass` must all be `ke.darkman.tafsiri` — the runner sets `g_set_prgname(APPLICATION_ID)`, which is what Wayland reports as the window `app_id`, and the compositor matches that against the `.desktop` basename to find the icon. Naming any of them after the binary (`tafsiri`) yields a generic placeholder icon.
+
 ---
 
 ## External API Integration

@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:tafsiri/core/database/sqflite_desktop.dart';
 import 'package:tafsiri/core/database/translation_dao.dart';
 import 'package:tafsiri/shared/models/translation_entry.dart';
 
 Future<Database> _openInMemory() async {
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  databaseFactory = createDesktopDatabaseFactory();
   final db = await databaseFactory.openDatabase(
     inMemoryDatabasePath,
     options: OpenDatabaseOptions(

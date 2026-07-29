@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DbHelper {
   DbHelper._();
@@ -12,8 +13,21 @@ class DbHelper {
     return _db!;
   }
 
+  /// On mobile sqflite knows its own databases directory. On desktop the FFI
+  /// factory would fall back to a working-directory path, so use the platform
+  /// application support directory instead (ADR-031).
+  static Future<String> _databasesDirectory() async {
+    if (!kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.linux ||
+            defaultTargetPlatform == TargetPlatform.windows ||
+            defaultTargetPlatform == TargetPlatform.macOS)) {
+      return (await getApplicationSupportDirectory()).path;
+    }
+    return getDatabasesPath();
+  }
+
   static Future<Database> _open() async {
-    final path = join(await getDatabasesPath(), 'tafsiri.db');
+    final path = join(await _databasesDirectory(), 'tafsiri.db');
     debugPrint('[DbHelper] opening database at $path');
     return openDatabase(
       path,
