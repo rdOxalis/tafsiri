@@ -73,6 +73,7 @@ The free tier has a monthly token limit that resets each month. For typical tran
 - **Translation history** — every translation is saved locally in SQLite; tap any entry to reload it
 - **Favourites** — star entries to keep them accessible
 - **10 UI languages** — Swahili, German, English, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish
+- **Correction Mode** - For learners. Switch to that mode and your message in (mostly) primary language will be improved. 
 
 ---
 
