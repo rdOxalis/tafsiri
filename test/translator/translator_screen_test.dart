@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tafsiri/core/constants.dart';
 import 'package:tafsiri/features/translator/translator_controller.dart';
 import 'package:tafsiri/features/translator/translator_screen.dart';
 import 'package:tafsiri/l10n/app_localizations.dart';
@@ -98,6 +99,116 @@ void main() {
 
       expect(find.byIcon(Icons.mic_none), findsOneWidget);
       expect(find.byIcon(Icons.image), findsOneWidget);
+    });
+  });
+
+  group('TranslatorScreen correction mode', () {
+    testWidgets('toggle is off by default', (tester) async {
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pumpAndSettle();
+
+      // The state is spelled out, not only signalled by the fill colour.
+      expect(
+        find.widgetWithText(FilterChip, 'Correction mode (off)'),
+        findsOneWidget,
+      );
+      expect(
+        tester.widget<FilterChip>(find.byType(FilterChip)).selected,
+        isFalse,
+      );
+      expect(find.text('Translate'), findsOneWidget);
+    });
+
+    testWidgets('tapping the toggle persists the setting', (tester) async {
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(FilterChip));
+      await tester.pumpAndSettle();
+
+      final chip = tester.widget<FilterChip>(find.byType(FilterChip));
+      expect(chip.selected, isTrue);
+      expect(
+        find.widgetWithText(FilterChip, 'Correction mode (on)'),
+        findsOneWidget,
+      );
+      // Selected chip is filled with the primary colour, not the near-invisible
+      // default container tint.
+      final scheme = Theme.of(tester.element(find.byType(FilterChip)))
+          .colorScheme;
+      expect(chip.selectedColor, scheme.primary);
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool(kPrefCorrectionMode), isTrue);
+    });
+
+    testWidgets('action button and output hint switch to correction wording',
+        (tester) async {
+      SharedPreferences.setMockInitialValues({kPrefCorrectionMode: true});
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Improve'), findsOneWidget);
+      expect(find.text('Translate'), findsNothing);
+      expect(
+        find.text('Corrections and suggestions will appear here'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('the mode toggle and the action button use different icons',
+        (tester) async {
+      SharedPreferences.setMockInitialValues({kPrefCorrectionMode: true});
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pumpAndSettle();
+
+      // The state is marked by spellcheck, the action by the wand — sharing an
+      // icon made the two read as the same control.
+      expect(
+        find.descendant(
+          of: find.byType(FilterChip),
+          matching: find.byIcon(Icons.spellcheck),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byType(FilledButton),
+          matching: find.byIcon(Icons.auto_fix_high),
+        ),
+        findsOneWidget,
+      );
+      expect(find.byIcon(Icons.spellcheck), findsOneWidget);
+    });
+
+    testWidgets('renders correction notes below the corrected text',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        const TranslatorScreen(),
+        state: const TranslatorState(
+          outputText: 'Tafadhali nipe siagi.',
+          correctionNotes: '- Butter → siagi: German for "butter".',
+          isCorrectionResult: true,
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Tafadhali nipe siagi.'), findsOneWidget);
+      expect(find.text('Suggestions'), findsOneWidget);
+      expect(
+        find.text('- Butter → siagi: German for "butter".'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('hides notes for a plain translation', (tester) async {
+      await tester.pumpWidget(_wrap(
+        const TranslatorScreen(),
+        state: const TranslatorState(outputText: 'Habari'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Suggestions'), findsNothing);
     });
   });
 }

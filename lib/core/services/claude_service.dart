@@ -19,8 +19,10 @@ class ClaudeService implements AiService {
     required String targetLanguage,
     required String altLanguage,
     required String apiKey,
+    bool correctionMode = false,
   }) async {
-    debugPrint('[ClaudeService] translate — key=${maskApiKey(apiKey)}');
+    debugPrint('[ClaudeService] translate — key=${maskApiKey(apiKey)}, '
+        'correction=$correctionMode');
 
     final response = await _client.post(
       Uri.parse(_endpoint),
@@ -32,7 +34,11 @@ class ClaudeService implements AiService {
       body: jsonEncode({
         'model': _model,
         'max_tokens': 4096,
-        'system': AiService.buildSystemPrompt(targetLanguage, altLanguage),
+        'system': AiService.systemPromptFor(
+          targetLanguage: targetLanguage,
+          altLanguage: altLanguage,
+          correctionMode: correctionMode,
+        ),
         'messages': [
           {
             'role': 'user',

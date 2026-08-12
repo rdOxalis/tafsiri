@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/translation_entry.dart';
 
 final _dateFmt = DateFormat('d MMM yyyy HH:mm');
@@ -50,10 +51,24 @@ class HistoryListItem extends StatelessWidget {
                 children: [
                   _ProviderBadge(provider: entry.aiProvider),
                   const SizedBox(width: 8),
-                  Text(
-                    entry.targetLang,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
+                  if (entry.isCorrection) ...[
+                    Icon(
+                      Icons.spellcheck,
+                      size: 14,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      AppLocalizations.of(context)!.historyBadgeCorrection,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ] else
+                    Text(
+                      entry.targetLang,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
                   const Spacer(),
                   Text(
                     _dateFmt.format(entry.createdAt.toLocal()),

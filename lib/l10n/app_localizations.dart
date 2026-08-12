@@ -432,6 +432,54 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'Mistral offers a free tier — no credit card required'**
   String get mistralFreeHint;
+
+  /// Label of the correction mode toggle on the translator screen
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Correction mode'**
+  String get correctionModeLabel;
+
+  /// Label of the action button while correction mode is on
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Improve'**
+  String get correctionButton;
+
+  /// Heading above the improvement notes in the output area
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Suggestions'**
+  String get correctionNotesTitle;
+
+  /// Placeholder in the output area while correction mode is on
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Corrections and suggestions will appear here'**
+  String get correctionOutputHint;
+
+  /// Explanation of correction mode; {language} is the primary language
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Text in {language} is corrected and improved instead of translated. Words you wrote in another language are replaced with the correct {language} word.'**
+  String correctionModeInfo(String language);
+
+  /// Badge on a history entry produced in correction mode
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Correction'**
+  String get historyBadgeCorrection;
+
+  /// Word for the enabled state, shown in brackets on the correction mode chip
+  ///
+  /// In en_GB, this message translates to:
+  /// **'on'**
+  String get stateOn;
+
+  /// Word for the disabled state, shown in brackets on the correction mode chip
+  ///
+  /// In en_GB, this message translates to:
+  /// **'off'**
+  String get stateOff;
 }
 
 class _AppLocalizationsDelegate

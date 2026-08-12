@@ -45,16 +45,28 @@ flowchart TD
     C -->|recognizedWords| B
     D -->|extracted text| B
     B --> E[TranslatorController.translate]
-    E --> F{AiServiceFactory}
+    E --> CM{correction mode?}
+    CM -->|off| F{AiServiceFactory}
+    CM -->|on| F
     F --> G[ClaudeService]
     F --> H[OpenAiService]
     F --> I[MistralService]
-    G & H & I --> J[Raw response\nLANG:xx + translated text]
-    J --> E
-    E -->|strip LANG prefix| K[OutputArea]
-    E -->|save| L[TranslationDao → SQLite]
+    G & H & I --> J[Raw response\nLANG:xx + MODE + body + NOTES]
+    J --> P[AiResult.parse]
+    P --> E
+    E -->|body| K[OutputArea]
+    E -->|notes, correction only| K
+    E -->|save with mode/notes| L[TranslationDao → SQLite]
     E -->|store lastSourceLang| M[STT locale for next session]
 ```
+
+The system prompt — and with it the branch the model takes — is chosen by the
+`correctionMode` flag (ADR-033):
+
+| Correction mode | Input predominantly in primary language | Input in any other language |
+|---|---|---|
+| off | translate → secondary language | translate → primary language |
+| on  | **correct and improve, stay in the primary language** | translate → primary language |
 
 ---
 
@@ -63,12 +75,18 @@ flowchart TD
 ```mermaid
 flowchart LR
     S[SettingsScreen] --> SC[SettingsController]
+    CT[Correction toggle\nTranslatorScreen header] --> SC
     SC --> SP[(SharedPreferences)]
     SP --> SC
     SC --> ASF[aiServiceProvider]
+    SC --> TC[TranslatorController.translate\ncorrectionMode]
     SC --> LN[LocaleNotifier]
     LN --> MA[MaterialApp locale]
 ```
+
+`correction_mode` (ADR-033) is a setting like any other — persisted by
+`SettingsController` — but its only control lives in the translator header, since
+it is toggled per input session rather than configured once.
 
 ---
 
@@ -99,14 +117,16 @@ CREATE TABLE translation_entry (
   target_lang  TEXT    NOT NULL,   -- actually used target language
   ai_provider  TEXT    NOT NULL,   -- 'mistral' | 'claude' | 'openai'
   is_favourite INTEGER NOT NULL DEFAULT 0,
-  created_at   TEXT    NOT NULL    -- ISO 8601 UTC
+  created_at   TEXT    NOT NULL,   -- ISO 8601 UTC
+  mode         TEXT    NOT NULL DEFAULT 'translate',  -- 'translate' | 'correct'
+  notes        TEXT                -- improvement notes, correction entries only
 );
 ```
 
 **Notes:**
 - `created_at` stored as `DateTime.now().toUtc().toIso8601String()` for consistent sorting.
 - `source_lang` is the 2-letter ISO 639-1 code extracted from the AI response `LANG:xx` prefix.
-- Schema version: 1. Migration stubs in `db_helper.dart` `onUpgrade` — see ADR-014.
+- Schema version: 2. `mode` and `notes` were added in v2 (ADR-033); the v1→v2 `ALTER TABLE` defaults existing rows to `'translate'`. The DDL and the migration live in `DbHelper.createTableSql` / `DbHelper.migrate` and are shared with the tests — see ADR-014.
 
 ### Platform backends (ADR-031)
 
@@ -187,7 +207,46 @@ LANG:[ISO-639-1 code of the detected source language]
 
 **User message** (`buildUserMessage(text)`): the raw input text only.
 
-The `LANG:xx` prefix is stripped by `TranslatorController._extractTranslation()` before display. The code is stored as `lastSourceLang` for STT locale mapping (see ADR-013, ADR-021).
+The `LANG:xx` prefix is stripped by `AiResult.parse()` before display. The code is stored as `lastSourceLang` for STT locale mapping (see ADR-013, ADR-021).
+
+### Correction prompt (ADR-033)
+
+`AiService.systemPromptFor(correctionMode: true)` sends `buildCorrectionSystemPrompt(targetLanguage, altLanguage)` instead. It makes the model choose the branch itself:
+
+```
+You are a [TARGET_LANG] writing coach for a learner whose stronger language is [ALT_LANG]. …
+
+Step 1 — choose the mode:
+- If the input is written predominantly in [TARGET_LANG] → mode "correct". This still applies
+  when the text contains mistakes, or when single words from [ALT_LANG] or any other language
+  are mixed in because the learner did not know the [TARGET_LANG] word.
+- Otherwise → mode "translate".
+
+Mode "correct" — do NOT translate the text to [ALT_LANG]. Instead: rewrite it as a native
+speaker would; replace every non-[TARGET_LANG] word with the correct [TARGET_LANG] word;
+fix spelling, grammar, noun classes, agreement, word order; then write a NOTES: section in
+[ALT_LANG], one "- <original> → <correction>: <reason>" bullet per change.
+
+Mode "translate" — translate the ENTIRE text to [TARGET_LANG] … no NOTES: section.
+
+LANG:[ISO-639-1 code of the detected input language]
+MODE:[correct or translate]
+[the corrected text, or the translation]
+NOTES:
+[the bullets — only in mode "correct"]
+```
+
+Worked example — input `Tafadhali nipe Butter.` with primary Swahili, secondary English:
+
+```
+LANG:sw
+MODE:correct
+Tafadhali nipe siagi.
+NOTES:
+- Butter → siagi: "Butter" is German/English; the Swahili word is "siagi".
+```
+
+`AiResult.parse()` splits this into `sourceLang`, `mode`, `body` and `notes`. Both header lines and the `NOTES:` section are optional, so a plain `LANG:xx\n<translation>` response — everything the app produced before v2 — still parses, and the mode falls back to `translate`.
 
 ---
 
@@ -235,7 +294,7 @@ STT locale map (ISO 639-1 → BCP-47):
 
 ## Localisation
 
-11 ARB files in `lib/l10n/`, 45 user-facing strings each:
+11 ARB files in `lib/l10n/`, 61 user-facing strings each (8 of them for correction mode, ADR-033):
 
 | Locale | File |
 |--------|------|
@@ -326,14 +385,17 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 
 | Test suite | File | Tests |
 |------------|------|-------|
-| SettingsController | `test/settings_controller_test.dart` | 8 |
-| TranslatorController | `test/translator/translator_controller_test.dart` | 10 |
-| TranslatorScreen widgets | `test/translator/translator_screen_test.dart` | 6 |
+| SettingsController | `test/settings_controller_test.dart` | 10 |
+| TranslatorController + `AiResult.parse` | `test/translator/translator_controller_test.dart` | 20 |
+| TranslatorScreen widgets | `test/translator/translator_screen_test.dart` | 12 |
+| Correction prompt routing (ADR-033) | `test/services/correction_prompt_test.dart` | 6 |
 | ClaudeService | `test/services/claude_service_test.dart` | 4 |
 | OpenAiService | `test/services/openai_service_test.dart` | 4 |
 | MistralService | `test/services/mistral_service_test.dart` | 4 |
 | TranslationDao (SQLite) | `test/database/translation_dao_test.dart` | 8 |
-| **Total** | | **44** |
+| Schema migration v1→v2 | `test/database/db_migration_test.dart` | 1 |
+| Desktop sqflite FFI wiring | `test/database/sqflite_desktop_test.dart` | 1 |
+| **Total** | | **70** |
 
 Run: `flutter test`
 

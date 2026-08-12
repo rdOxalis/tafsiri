@@ -148,7 +148,9 @@ CREATE TABLE translation_entry (
   target_lang  TEXT    NOT NULL,   -- actually used target language
   ai_provider  TEXT    NOT NULL,   -- 'mistral' | 'claude' | 'openai'
   is_favourite INTEGER NOT NULL DEFAULT 0,
-  created_at   TEXT    NOT NULL    -- ISO 8601
+  created_at   TEXT    NOT NULL,   -- ISO 8601
+  mode         TEXT    NOT NULL DEFAULT 'translate',  -- 'translate' | 'correct'
+  notes        TEXT               -- improvement notes, correction entries only
 );
 ```
 
@@ -164,6 +166,8 @@ class TranslationEntry {
   final String aiProvider;
   final bool isFavourite;
   final DateTime createdAt;
+  final String mode;    // 'translate' | 'correct'
+  final String? notes;  // improvement notes, correction entries only
 }
 ```
 
@@ -182,6 +186,7 @@ Stored via `shared_preferences`.
 | `target_language` | String | Primary target language, e.g. `'Swahili'` |
 | `alt_language` | String | Fallback target language, e.g. `'English'` |
 | `app_locale` | String | UI locale, e.g. `'sw'`, `'de'`, `'en_GB'` |
+| `correction_mode` | bool | Correction mode on/off (toggle lives in the translator header) |
 
 API keys are **never logged in plain text**. Always mask in logs: `sk-****`.
 
@@ -199,6 +204,25 @@ Input text
     → Entry saved to SQLite
 ```
 
+### Correction Mode (ADR-033)
+
+Toggled by a chip in the translator header, persisted as `correction_mode`.
+
+```
+Correction mode ON
+    → Input predominantly in target_language?
+        YES  → NOT translated. AI corrects and improves the text, staying in
+               target_language. Words the user wrote in another language because
+               they did not know them (e.g. "Tafadhali nipe Butter.") are
+               replaced with the correct word ("siagi") and explained.
+               Improvement notes are shown below the result, written in alt_language.
+        NO   → translate to target_language (unchanged)
+```
+
+Implemented as a separate system prompt (`AiService.buildCorrectionSystemPrompt`) — one
+API call, the model picks the branch. Response protocol:
+`LANG:xx` / `MODE:correct|translate` / body / `NOTES:` bullets, parsed by `AiResult.parse()`.
+
 ### AI Service Interface
 
 ```dart
@@ -206,7 +230,9 @@ abstract class AiService {
   Future<String> translate({
     required String text,
     required String targetLanguage,
+    required String altLanguage,
     required String apiKey,
+    bool correctionMode = false,
   });
 }
 ```

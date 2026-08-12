@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:tafsiri/core/database/db_helper.dart';
 import 'package:tafsiri/core/database/sqflite_desktop.dart';
 import 'package:tafsiri/core/database/translation_dao.dart';
 import 'package:tafsiri/shared/models/translation_entry.dart';
@@ -31,19 +32,8 @@ void main() {
     final db = await factory.openDatabase(
       path,
       options: OpenDatabaseOptions(
-        version: 1,
-        onCreate: (db, _) => db.execute('''
-          CREATE TABLE translation_entry (
-            id           INTEGER PRIMARY KEY AUTOINCREMENT,
-            source_text  TEXT    NOT NULL,
-            result_text  TEXT    NOT NULL,
-            source_lang  TEXT    NOT NULL,
-            target_lang  TEXT    NOT NULL,
-            ai_provider  TEXT    NOT NULL,
-            is_favourite INTEGER NOT NULL DEFAULT 0,
-            created_at   TEXT    NOT NULL
-          )
-        '''),
+        version: DbHelper.schemaVersion,
+        onCreate: (db, _) => db.execute(DbHelper.createTableSql),
       ),
     );
     addTearDown(db.close);

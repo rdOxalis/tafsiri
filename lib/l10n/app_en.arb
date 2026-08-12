@@ -178,5 +178,43 @@
   "translationInfoPart3": ", it is translated to ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "Get API key",
-  "mistralFreeHint": "Mistral offers a free tier — no credit card required"
+  "mistralFreeHint": "Mistral offers a free tier — no credit card required",
+  "correctionModeLabel": "Correction mode",
+  "@correctionModeLabel": {
+    "description": "Label of the correction mode toggle on the translator screen"
+  },
+  "correctionButton": "Improve",
+  "@correctionButton": {
+    "description": "Label of the action button while correction mode is on"
+  },
+  "correctionNotesTitle": "Suggestions",
+  "@correctionNotesTitle": {
+    "description": "Heading above the improvement notes in the output area"
+  },
+  "correctionOutputHint": "Corrections and suggestions will appear here",
+  "@correctionOutputHint": {
+    "description": "Placeholder in the output area while correction mode is on"
+  },
+  "correctionModeInfo": "Text in {language} is corrected and improved instead of translated. Words you wrote in another language are replaced with the correct {language} word.",
+  "@correctionModeInfo": {
+    "description": "Explanation of correction mode; {language} is the primary language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Swahili"
+      }
+    }
+  },
+  "historyBadgeCorrection": "Correction",
+  "@historyBadgeCorrection": {
+    "description": "Badge on a history entry produced in correction mode"
+  },
+  "stateOn": "on",
+  "@stateOn": {
+    "description": "Word for the enabled state, shown in brackets on the correction mode chip"
+  },
+  "stateOff": "off",
+  "@stateOff": {
+    "description": "Word for the disabled state, shown in brackets on the correction mode chip"
+  }
 }

@@ -171,4 +171,31 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get mistralFreeHint =>
       'Mistral propose un forfait gratuit – aucune carte bancaire requise';
+
+  @override
+  String get correctionModeLabel => 'Mode correction';
+
+  @override
+  String get correctionButton => 'Améliorer';
+
+  @override
+  String get correctionNotesTitle => 'Suggestions';
+
+  @override
+  String get correctionOutputHint =>
+      'Les corrections et suggestions apparaîtront ici';
+
+  @override
+  String correctionModeInfo(String language) {
+    return 'Le texte en $language est corrigé et amélioré au lieu d’être traduit. Les mots écrits dans une autre langue sont remplacés par le mot juste en $language.';
+  }
+
+  @override
+  String get historyBadgeCorrection => 'Correction';
+
+  @override
+  String get stateOn => 'activé';
+
+  @override
+  String get stateOff => 'désactivé';
 }

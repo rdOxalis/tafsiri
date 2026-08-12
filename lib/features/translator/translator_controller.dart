@@ -18,6 +18,12 @@ enum TranslatorError { noApiKey, apiError, networkError }
 class TranslatorState {
   final String inputText;
   final String? outputText;
+
+  /// Improvement notes returned in correction mode (ADR-033), `null` otherwise.
+  final String? correctionNotes;
+
+  /// True when the last result was a correction rather than a translation.
+  final bool isCorrectionResult;
   final bool isLoading;
   final TranslatorError? error;
   final String? errorDetail;
@@ -30,6 +36,8 @@ class TranslatorState {
   const TranslatorState({
     this.inputText = '',
     this.outputText,
+    this.correctionNotes,
+    this.isCorrectionResult = false,
     this.isLoading = false,
     this.error,
     this.errorDetail,
@@ -43,6 +51,8 @@ class TranslatorState {
   TranslatorState copyWith({
     String? inputText,
     String? outputText,
+    String? correctionNotes,
+    bool? isCorrectionResult,
     bool clearOutput = false,
     bool? isLoading,
     TranslatorError? error,
@@ -57,6 +67,11 @@ class TranslatorState {
       TranslatorState(
         inputText: inputText ?? this.inputText,
         outputText: clearOutput ? null : outputText ?? this.outputText,
+        correctionNotes:
+            clearOutput ? null : correctionNotes ?? this.correctionNotes,
+        isCorrectionResult: clearOutput
+            ? false
+            : isCorrectionResult ?? this.isCorrectionResult,
         isLoading: isLoading ?? this.isLoading,
         error: clearError ? null : error ?? this.error,
         errorDetail: clearError ? null : errorDetail ?? this.errorDetail,
@@ -162,11 +177,20 @@ class TranslatorController extends Notifier<TranslatorState> {
     state = state.copyWith(inputText: text, clearOutput: true, clearError: true);
   }
 
-  void loadHistoryEntry(String sourceText, String resultText) {
+  void loadHistoryEntry(
+    String sourceText,
+    String resultText, {
+    String mode = kModeTranslate,
+    String? notes,
+  }) {
     state = state.copyWith(
       inputText: sourceText,
-      outputText: resultText,
+      clearOutput: true,
       clearError: true,
+    ).copyWith(
+      outputText: resultText,
+      correctionNotes: notes,
+      isCorrectionResult: mode == kModeCorrect,
     );
   }
 
@@ -200,16 +224,21 @@ class TranslatorController extends Notifier<TranslatorState> {
         targetLanguage: settings.targetLanguage,
         altLanguage: settings.altLanguage,
         apiKey: settings.activeApiKey,
+        correctionMode: settings.correctionMode,
       );
 
-      final sourceLang = _extractSourceLang(raw);
-      final translation = _extractTranslation(raw);
+      final result = AiResult.parse(raw);
+      final sourceLang = result.sourceLang;
+      final translation = result.body;
 
-      debugPrint('[TranslatorController] source=$sourceLang');
+      debugPrint('[TranslatorController] source=$sourceLang '
+          'mode=${result.mode}');
 
       state = state.copyWith(
         isLoading: false,
         outputText: translation,
+        correctionNotes: result.notes,
+        isCorrectionResult: result.isCorrection,
         lastSourceLang: sourceLang ?? state.lastSourceLang,
         clearError: true,
       );
@@ -225,6 +254,8 @@ class TranslatorController extends Notifier<TranslatorState> {
             targetLang: settings.targetLanguage,
             aiProvider: settings.activeProvider,
             createdAt: DateTime.now().toUtc(),
+            mode: result.mode,
+            notes: result.notes,
           ),
         );
         ref.invalidate(historyProvider);
@@ -261,20 +292,61 @@ class TranslatorController extends Notifier<TranslatorState> {
         _ => 'HTTP $code',
       };
 
-  /// Parses `LANG:xx` from the first line of [raw] (ADR-013).
-  static String? _extractSourceLang(String raw) {
-    final first = raw.split('\n').first.trim();
-    if (first.startsWith('LANG:')) return first.substring(5).trim();
-    return null;
-  }
+}
 
-  /// Returns the translation text, stripping the `LANG:xx` prefix line.
-  static String _extractTranslation(String raw) {
-    final lines = raw.split('\n');
-    if (lines.first.trim().startsWith('LANG:')) {
-      return lines.skip(1).join('\n').trim();
+/// Parsed AI response — `LANG:` / `MODE:` header lines plus an optional
+/// `NOTES:` section (ADR-013, extended by ADR-033).
+class AiResult {
+  final String? sourceLang;
+  final String mode;
+  final String body;
+  final String? notes;
+
+  const AiResult({
+    this.sourceLang,
+    this.mode = kModeTranslate,
+    required this.body,
+    this.notes,
+  });
+
+  bool get isCorrection => mode == kModeCorrect;
+
+  static AiResult parse(String raw) {
+    final lines = raw.trim().split('\n');
+    String? sourceLang;
+    var mode = kModeTranslate;
+
+    // Header lines may arrive in either order; both are optional.
+    while (lines.isNotEmpty) {
+      final first = lines.first.trim();
+      if (sourceLang == null && first.startsWith('LANG:')) {
+        sourceLang = first.substring(5).trim();
+      } else if (first.startsWith('MODE:')) {
+        final value = first.substring(5).trim().toLowerCase();
+        mode = value.startsWith(kModeCorrect) ? kModeCorrect : kModeTranslate;
+      } else {
+        break;
+      }
+      lines.removeAt(0);
     }
-    return raw.trim();
+
+    final notesIndex =
+        lines.indexWhere((l) => l.trim().toUpperCase() == 'NOTES:');
+    if (notesIndex < 0) {
+      return AiResult(
+        sourceLang: sourceLang,
+        mode: mode,
+        body: lines.join('\n').trim(),
+      );
+    }
+
+    final notes = lines.skip(notesIndex + 1).join('\n').trim();
+    return AiResult(
+      sourceLang: sourceLang,
+      mode: mode,
+      body: lines.take(notesIndex).join('\n').trim(),
+      notes: notes.isEmpty ? null : notes,
+    );
   }
 }
 

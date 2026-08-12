@@ -18,8 +18,10 @@ class MistralService implements AiService {
     required String targetLanguage,
     required String altLanguage,
     required String apiKey,
+    bool correctionMode = false,
   }) async {
-    debugPrint('[MistralService] translate — key=${maskApiKey(apiKey)}');
+    debugPrint('[MistralService] translate — key=${maskApiKey(apiKey)}, '
+        'correction=$correctionMode');
 
     final response = await _client.post(
       Uri.parse(_endpoint),
@@ -33,7 +35,11 @@ class MistralService implements AiService {
         'messages': [
           {
             'role': 'system',
-            'content': AiService.buildSystemPrompt(targetLanguage, altLanguage),
+            'content': AiService.systemPromptFor(
+              targetLanguage: targetLanguage,
+              altLanguage: altLanguage,
+              correctionMode: correctionMode,
+            ),
           },
           {
             'role': 'user',

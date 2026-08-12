@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../settings/settings_controller.dart';
 import '../translator_controller.dart';
 
 class OutputArea extends ConsumerWidget {
@@ -11,6 +12,9 @@ class OutputArea extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(translatorProvider);
+    final correctionMode = ref.watch(
+      settingsProvider.select((s) => s.valueOrNull?.correctionMode ?? false),
+    );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -24,7 +28,7 @@ class OutputArea extends ConsumerWidget {
             Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 48, 12),
-                child: _buildBody(context, l10n, state),
+                child: _buildBody(context, l10n, state, correctionMode),
               ),
             ),
             if (state.outputText != null && !state.isLoading)
@@ -52,7 +56,11 @@ class OutputArea extends ConsumerWidget {
   }
 
   Widget _buildBody(
-      BuildContext context, AppLocalizations l10n, TranslatorState state) {
+    BuildContext context,
+    AppLocalizations l10n,
+    TranslatorState state,
+    bool correctionMode,
+  ) {
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -81,14 +89,43 @@ class OutputArea extends ConsumerWidget {
       );
     }
     if (state.outputText != null) {
+      final notes = state.correctionNotes;
       return SingleChildScrollView(
-        child: Text(state.outputText!,
-            style: Theme.of(context).textTheme.bodyLarge),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(state.outputText!,
+                style: Theme.of(context).textTheme.bodyLarge),
+            if (state.isCorrectionResult && notes != null) ...[
+              const SizedBox(height: 12),
+              const Divider(height: 1),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.correctionNotesTitle,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(notes, style: Theme.of(context).textTheme.bodyMedium),
+            ],
+          ],
+        ),
       );
     }
     return Center(
       child: Text(
-        l10n.outputHint,
+        correctionMode ? l10n.correctionOutputHint : l10n.outputHint,
         style: Theme.of(context)
             .textTheme
             .bodyMedium

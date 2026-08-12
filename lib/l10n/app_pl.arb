@@ -52,5 +52,13 @@
   "translationInfoPart3": ", zostanie przetłumaczony na ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "Pobierz klucz API",
-  "mistralFreeHint": "Mistral oferuje bezpłatny poziom – karta kredytowa nie jest wymagana"
+  "mistralFreeHint": "Mistral oferuje bezpłatny poziom – karta kredytowa nie jest wymagana",
+  "correctionModeLabel": "Tryb korekty",
+  "correctionButton": "Popraw",
+  "correctionNotesTitle": "Sugestie",
+  "correctionOutputHint": "Poprawki i sugestie pojawią się tutaj",
+  "correctionModeInfo": "Tekst w języku {language} jest poprawiany i ulepszany zamiast tłumaczony. Słowa napisane w innym języku są zastępowane właściwym słowem w języku {language}.",
+  "historyBadgeCorrection": "Korekta",
+  "stateOn": "wł.",
+  "stateOff": "wył."
 }

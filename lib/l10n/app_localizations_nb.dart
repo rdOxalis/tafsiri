@@ -171,4 +171,30 @@ class AppLocalizationsNb extends AppLocalizations {
   @override
   String get mistralFreeHint =>
       'Mistral tilbyr et gratis nivå – intet kredittkort nødvendig';
+
+  @override
+  String get correctionModeLabel => 'Korrekturmodus';
+
+  @override
+  String get correctionButton => 'Forbedre';
+
+  @override
+  String get correctionNotesTitle => 'Forslag';
+
+  @override
+  String get correctionOutputHint => 'Rettelser og forslag vises her';
+
+  @override
+  String correctionModeInfo(String language) {
+    return 'Tekst på $language blir rettet og forbedret i stedet for oversatt. Ord du har skrevet på et annet språk, erstattes med det riktige ordet på $language.';
+  }
+
+  @override
+  String get historyBadgeCorrection => 'Retting';
+
+  @override
+  String get stateOn => 'på';
+
+  @override
+  String get stateOff => 'av';
 }

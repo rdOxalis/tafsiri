@@ -7,7 +7,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.9] - 2026-08-12
+
 ### Added
+- **Correction mode** (ADR-033). A toggle in the translator header switches the app from translating to coaching: text written predominantly in the primary language is no longer translated to the secondary language but corrected and improved, with a "Suggestions" section listing each change. Words the learner slipped in from another language because they did not know the word (e.g. *"Tafadhali nipe **Butter**."*) are replaced with the correct primary-language word (*siagi*) and explained. Input in any other language is still translated to the primary language as before. The setting persists across restarts; the action button switches to "Improve".
+- `mode` and `notes` columns on `translation_entry` (schema v2, migrated in place) so corrections are kept in the history and marked with a spellcheck badge; reloading a correction restores its suggestions.
+- `AiResult.parse()` — the response parser is now a named, tested unit and understands the extended `LANG:` / `MODE:` / `NOTES:` protocol.
+- 26 new tests: correction prompt routing for all three providers, response parsing, controller state, DB migration, and the correction-mode UI (70 total, was 44).
 - **Linux desktop build** (ADR-031). `flutter build linux --release` now produces a working bundle. sqflite is routed through `sqflite_common_ffi` on desktop via the new `lib/core/database/sqflite_desktop.dart`, with a `sqlite3` loader override that falls back from `libsqlite3.so` to `libsqlite3.so.0` so no `libsqlite3-dev` is required at runtime. `DbHelper` stores the database under `getApplicationSupportDirectory()` on desktop.
 - `test/database/sqflite_desktop_test.dart` — guards the desktop FFI/loader wiring by opening a real on-disk database.
 - **`install.sh`** (ADR-032) — builds the release bundle and installs it per-user into `~/.local` with icons and a desktop entry, so Tafsiri appears in the application menu. Supports `--rebuild` and `--uninstall`. Requires no root.
@@ -16,6 +24,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The 8 `translation_dao_test` cases that had always failed on Linux with `Failed to load dynamic library 'libsqlite3.so'`. Suite is now 45/45 green.
 
 ### Changed
+- `DbHelper.createTableSql` and `DbHelper.migrate` are public and shared with the database tests, which previously carried their own copy of the schema.
+- Eight new localised strings in all 10 languages for correction mode, including the on/off state words shown on the toggle.
 - `sqflite_common_ffi` promoted from dev- to regular dependency; `sqlite3` added as a direct dependency. Both are pure-Dart FFI packages — the release APK's native libraries are unchanged.
 
 ### Known limitations (Linux)

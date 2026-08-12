@@ -154,8 +154,12 @@ class HistoryScreen extends ConsumerWidget {
     );
 
     if (confirmed != true || !context.mounted) return;
-    ref.read(translatorProvider.notifier)
-        .loadHistoryEntry(entry.sourceText, entry.resultText);
+    ref.read(translatorProvider.notifier).loadHistoryEntry(
+          entry.sourceText,
+          entry.resultText,
+          mode: entry.mode,
+          notes: entry.notes,
+        );
     ref.read(selectedTabProvider.notifier).state = 0;
   }
 }

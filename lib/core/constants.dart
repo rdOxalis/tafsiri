@@ -11,11 +11,16 @@ const kPrefActiveProvider = 'active_provider';
 const kPrefTargetLanguage = 'target_language';
 const kPrefAltLanguage = 'alt_language';
 const kPrefAppLocale = 'app_locale';
+const kPrefCorrectionMode = 'correction_mode';
 
 // Default setting values
 const kDefaultTargetLanguage = 'Swahili';
 const kDefaultAltLanguage = 'English';
 const kDefaultProvider = kProviderMistral;
+
+// Result modes (ADR-033) — how the AI handled the input.
+const kModeTranslate = 'translate';
+const kModeCorrect = 'correct';
 
 // External URLs
 const kPayPalDonateUrl = 'https://paypal.me/CarlDarkman';

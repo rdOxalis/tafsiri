@@ -52,5 +52,13 @@
   "translationInfoPart3": " is, wordt het vertaald naar ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "API-sleutel ophalen",
-  "mistralFreeHint": "Mistral biedt een gratis niveau – geen creditcard vereist"
+  "mistralFreeHint": "Mistral biedt een gratis niveau – geen creditcard vereist",
+  "correctionModeLabel": "Correctiemodus",
+  "correctionButton": "Verbeteren",
+  "correctionNotesTitle": "Suggesties",
+  "correctionOutputHint": "Correcties en suggesties verschijnen hier",
+  "correctionModeInfo": "Tekst in het {language} wordt gecorrigeerd en verbeterd in plaats van vertaald. Woorden die je in een andere taal schreef, worden vervangen door het juiste {language} woord.",
+  "historyBadgeCorrection": "Correctie",
+  "stateOn": "aan",
+  "stateOff": "uit"
 }

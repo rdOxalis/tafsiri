@@ -10,6 +10,7 @@ class SettingsState {
   final String targetLanguage;
   final String altLanguage;
   final String sttLanguage; // ISO-639-1 code, empty = auto
+  final bool correctionMode; // ADR-033
 
   const SettingsState({
     required this.apiKeyMistral,
@@ -19,6 +20,7 @@ class SettingsState {
     required this.targetLanguage,
     required this.altLanguage,
     required this.sttLanguage,
+    this.correctionMode = false,
   });
 
   const SettingsState.defaults()
@@ -28,7 +30,8 @@ class SettingsState {
         activeProvider = kDefaultProvider,
         targetLanguage = kDefaultTargetLanguage,
         altLanguage = kDefaultAltLanguage,
-        sttLanguage = '';
+        sttLanguage = '',
+        correctionMode = false;
 
   bool get hasApiKeyForActiveProvider {
     switch (activeProvider) {
@@ -64,6 +67,7 @@ class SettingsState {
     String? targetLanguage,
     String? altLanguage,
     String? sttLanguage,
+    bool? correctionMode,
   }) {
     return SettingsState(
       apiKeyMistral: apiKeyMistral ?? this.apiKeyMistral,
@@ -73,6 +77,7 @@ class SettingsState {
       targetLanguage: targetLanguage ?? this.targetLanguage,
       altLanguage: altLanguage ?? this.altLanguage,
       sttLanguage: sttLanguage ?? this.sttLanguage,
+      correctionMode: correctionMode ?? this.correctionMode,
     );
   }
 }
@@ -90,6 +95,7 @@ class SettingsController extends AsyncNotifier<SettingsState> {
           prefs.getString(kPrefTargetLanguage) ?? kDefaultTargetLanguage,
       altLanguage: prefs.getString(kPrefAltLanguage) ?? kDefaultAltLanguage,
       sttLanguage: prefs.getString(kPrefSttLanguage) ?? '',
+      correctionMode: prefs.getBool(kPrefCorrectionMode) ?? false,
     );
   }
 
@@ -131,6 +137,12 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(kPrefSttLanguage, code);
     state = AsyncData(state.requireValue.copyWith(sttLanguage: code));
+  }
+
+  Future<void> setCorrectionMode(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(kPrefCorrectionMode, enabled);
+    state = AsyncData(state.requireValue.copyWith(correctionMode: enabled));
   }
 }
 

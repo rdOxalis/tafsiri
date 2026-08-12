@@ -1,3 +1,5 @@
+import '../../core/constants.dart';
+
 class TranslationEntry {
   final int? id;
   final String sourceText;
@@ -8,6 +10,12 @@ class TranslationEntry {
   final bool isFavourite;
   final DateTime createdAt;
 
+  /// How the entry was produced (ADR-033): [kModeTranslate] or [kModeCorrect].
+  final String mode;
+
+  /// Improvement notes — only set for [kModeCorrect] entries.
+  final String? notes;
+
   const TranslationEntry({
     this.id,
     required this.sourceText,
@@ -17,7 +25,11 @@ class TranslationEntry {
     required this.aiProvider,
     this.isFavourite = false,
     required this.createdAt,
+    this.mode = kModeTranslate,
+    this.notes,
   });
+
+  bool get isCorrection => mode == kModeCorrect;
 
   Map<String, dynamic> toMap() => {
         if (id != null) 'id': id,
@@ -28,6 +40,8 @@ class TranslationEntry {
         'ai_provider': aiProvider,
         'is_favourite': isFavourite ? 1 : 0,
         'created_at': createdAt.toUtc().toIso8601String(),
+        'mode': mode,
+        'notes': notes,
       };
 
   factory TranslationEntry.fromMap(Map<String, dynamic> map) =>
@@ -40,6 +54,8 @@ class TranslationEntry {
         aiProvider: map['ai_provider'] as String,
         isFavourite: (map['is_favourite'] as int) == 1,
         createdAt: DateTime.parse(map['created_at'] as String),
+        mode: map['mode'] as String? ?? kModeTranslate,
+        notes: map['notes'] as String?,
       );
 
   TranslationEntry copyWith({bool? isFavourite}) => TranslationEntry(
@@ -51,5 +67,7 @@ class TranslationEntry {
         aiProvider: aiProvider,
         isFavourite: isFavourite ?? this.isFavourite,
         createdAt: createdAt,
+        mode: mode,
+        notes: notes,
       );
 }

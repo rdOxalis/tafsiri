@@ -126,5 +126,28 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString(kPrefAltLanguage), 'English');
     });
+
+    test('correctionMode defaults to false', () async {
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      final settings = await container.read(settingsProvider.future);
+      expect(settings.correctionMode, isFalse);
+    });
+
+    test('setCorrectionMode persists correctly', () async {
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(settingsProvider.future);
+      await container.read(settingsProvider.notifier).setCorrectionMode(true);
+
+      expect(
+        container.read(settingsProvider).requireValue.correctionMode,
+        isTrue,
+      );
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool(kPrefCorrectionMode), isTrue);
+    });
   });
 }

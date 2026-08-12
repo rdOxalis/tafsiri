@@ -52,5 +52,13 @@
   "translationInfoPart3": ", översätts den till ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "Hämta API-nyckel",
-  "mistralFreeHint": "Mistral erbjuder en gratisnivå – inget kreditkort krävs"
+  "mistralFreeHint": "Mistral erbjuder en gratisnivå – inget kreditkort krävs",
+  "correctionModeLabel": "Korrekturläge",
+  "correctionButton": "Förbättra",
+  "correctionNotesTitle": "Förslag",
+  "correctionOutputHint": "Rättelser och förslag visas här",
+  "correctionModeInfo": "Text på {language} rättas och förbättras i stället för att översättas. Ord du skrivit på ett annat språk ersätts med rätt ord på {language}.",
+  "historyBadgeCorrection": "Rättelse",
+  "stateOn": "på",
+  "stateOff": "av"
 }

@@ -52,5 +52,13 @@
   "translationInfoPart3": ", se traduce al ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "Obtener clave API",
-  "mistralFreeHint": "Mistral ofrece un nivel gratuito – sin tarjeta de crédito"
+  "mistralFreeHint": "Mistral ofrece un nivel gratuito – sin tarjeta de crédito",
+  "correctionModeLabel": "Modo corrección",
+  "correctionButton": "Mejorar",
+  "correctionNotesTitle": "Sugerencias",
+  "correctionOutputHint": "Las correcciones y sugerencias aparecerán aquí",
+  "correctionModeInfo": "El texto en {language} se corrige y mejora en lugar de traducirse. Las palabras que escribiste en otro idioma se sustituyen por la palabra correcta en {language}.",
+  "historyBadgeCorrection": "Corrección",
+  "stateOn": "activado",
+  "stateOff": "desactivado"
 }

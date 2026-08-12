@@ -52,5 +52,13 @@
   "translationInfoPart3": ", il est traduit en ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "Obtenir la clé API",
-  "mistralFreeHint": "Mistral propose un forfait gratuit – aucune carte bancaire requise"
+  "mistralFreeHint": "Mistral propose un forfait gratuit – aucune carte bancaire requise",
+  "correctionModeLabel": "Mode correction",
+  "correctionButton": "Améliorer",
+  "correctionNotesTitle": "Suggestions",
+  "correctionOutputHint": "Les corrections et suggestions apparaîtront ici",
+  "correctionModeInfo": "Le texte en {language} est corrigé et amélioré au lieu d’être traduit. Les mots écrits dans une autre langue sont remplacés par le mot juste en {language}.",
+  "historyBadgeCorrection": "Correction",
+  "stateOn": "activé",
+  "stateOff": "désactivé"
 }

@@ -172,4 +172,31 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get mistralFreeHint =>
       'Mistral inatoa kiwango cha bure – hakuna kadi ya mkopo inayohitajika';
+
+  @override
+  String get correctionModeLabel => 'Hali ya kusahihisha';
+
+  @override
+  String get correctionButton => 'Sahihisha';
+
+  @override
+  String get correctionNotesTitle => 'Mapendekezo';
+
+  @override
+  String get correctionOutputHint =>
+      'Masahihisho na mapendekezo yataonekana hapa';
+
+  @override
+  String correctionModeInfo(String language) {
+    return 'Maandishi ya $language husahihishwa na kuboreshwa badala ya kutafsiriwa. Maneno uliyoandika kwa lugha nyingine hubadilishwa na neno sahihi la $language.';
+  }
+
+  @override
+  String get historyBadgeCorrection => 'Sahihisho';
+
+  @override
+  String get stateOn => 'imewashwa';
+
+  @override
+  String get stateOff => 'imezimwa';
 }

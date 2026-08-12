@@ -8,6 +8,43 @@ class DbHelper {
 
   static Database? _db;
 
+  /// Current schema version. 2 adds `mode` and `notes` (ADR-033).
+  static const schemaVersion = 2;
+
+  /// Schema of the current version — shared with the tests so the two cannot
+  /// drift apart.
+  static const createTableSql = '''
+          CREATE TABLE translation_entry (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            source_text  TEXT    NOT NULL,
+            result_text  TEXT    NOT NULL,
+            source_lang  TEXT    NOT NULL,
+            target_lang  TEXT    NOT NULL,
+            ai_provider  TEXT    NOT NULL,
+            is_favourite INTEGER NOT NULL DEFAULT 0,
+            created_at   TEXT    NOT NULL,
+            mode         TEXT    NOT NULL DEFAULT 'translate',
+            notes        TEXT
+          )
+        ''';
+
+  /// ADR-014: add migration steps here when the schema version increments.
+  static Future<void> migrate(
+    Database db,
+    int oldVersion,
+    int newVersion,
+  ) async {
+    debugPrint('[DbHelper] onUpgrade $oldVersion → $newVersion');
+    if (oldVersion < 2) {
+      // ADR-033: correction mode records how the entry was produced.
+      await db.execute(
+        "ALTER TABLE translation_entry "
+        "ADD COLUMN mode TEXT NOT NULL DEFAULT 'translate'",
+      );
+      await db.execute('ALTER TABLE translation_entry ADD COLUMN notes TEXT');
+    }
+  }
+
   static Future<Database> get database async {
     _db ??= await _open();
     return _db!;
@@ -31,25 +68,9 @@ class DbHelper {
     debugPrint('[DbHelper] opening database at $path');
     return openDatabase(
       path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE translation_entry (
-            id           INTEGER PRIMARY KEY AUTOINCREMENT,
-            source_text  TEXT    NOT NULL,
-            result_text  TEXT    NOT NULL,
-            source_lang  TEXT    NOT NULL,
-            target_lang  TEXT    NOT NULL,
-            ai_provider  TEXT    NOT NULL,
-            is_favourite INTEGER NOT NULL DEFAULT 0,
-            created_at   TEXT    NOT NULL
-          )
-        ''');
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        // ADR-014: add migration steps here when schema version increments
-        debugPrint('[DbHelper] onUpgrade $oldVersion → $newVersion');
-      },
+      version: schemaVersion,
+      onCreate: (db, version) => db.execute(createTableSql),
+      onUpgrade: migrate,
     );
   }
 

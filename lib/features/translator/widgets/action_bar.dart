@@ -28,6 +28,7 @@ class ActionBar extends ConsumerWidget {
     final secondaryLang = settings?.altLanguage.isNotEmpty == true
         ? settings!.altLanguage
         : '…';
+    final correctionMode = settings?.correctionMode ?? false;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -37,7 +38,14 @@ class ActionBar extends ConsumerWidget {
           IconButton(
             tooltip: l10n.translationInfoTitle,
             icon: const Icon(Icons.info_outline),
-            onPressed: () => _showInfoDialog(context, ref, l10n, primaryLang, secondaryLang),
+            onPressed: () => _showInfoDialog(
+              context,
+              ref,
+              l10n,
+              primaryLang,
+              secondaryLang,
+              correctionMode: correctionMode,
+            ),
           ),
           // Microphone
           IconButton(
@@ -91,8 +99,12 @@ class ActionBar extends ConsumerWidget {
                     child: CircularProgressIndicator(
                         strokeWidth: 2, color: Colors.white),
                   )
-                : const Icon(Icons.translate),
-            label: Text(l10n.translateButton),
+                // Deliberately not the spellcheck icon: that one marks the
+                // correction-mode toggle (a state), this button is the action.
+                : Icon(correctionMode ? Icons.auto_fix_high : Icons.translate),
+            label: Text(
+              correctionMode ? l10n.correctionButton : l10n.translateButton,
+            ),
             onPressed: isLoading
                 ? null
                 : () => ref.read(translatorProvider.notifier).translate(),
@@ -107,8 +119,9 @@ class ActionBar extends ConsumerWidget {
     WidgetRef ref,
     AppLocalizations l10n,
     String primaryLang,
-    String secondaryLang,
-  ) {
+    String secondaryLang, {
+    required bool correctionMode,
+  }) {
     void goToSettings() {
       ref.read(selectedTabProvider.notifier).state = 2;
     }
@@ -121,26 +134,43 @@ class ActionBar extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        icon: const Icon(Icons.translate, size: 28),
+        icon: Icon(correctionMode ? Icons.spellcheck : Icons.translate, size: 28),
         title: Text(l10n.translationInfoTitle),
-        content: Wrap(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.translationInfoPart1),
-            GestureDetector(
-              onTap: () { Navigator.pop(ctx); goToSettings(); },
-              child: Text(primaryLang, style: linkStyle),
+            Wrap(
+              children: [
+                Text(l10n.translationInfoPart1),
+                GestureDetector(
+                  onTap: () { Navigator.pop(ctx); goToSettings(); },
+                  child: Text(primaryLang, style: linkStyle),
+                ),
+                Text(l10n.translationInfoPart2),
+                GestureDetector(
+                  onTap: () { Navigator.pop(ctx); goToSettings(); },
+                  child: Text(primaryLang, style: linkStyle),
+                ),
+                Text(l10n.translationInfoPart3),
+                GestureDetector(
+                  onTap: () { Navigator.pop(ctx); goToSettings(); },
+                  child: Text(secondaryLang, style: linkStyle),
+                ),
+                Text(l10n.translationInfoPart4),
+              ],
             ),
-            Text(l10n.translationInfoPart2),
-            GestureDetector(
-              onTap: () { Navigator.pop(ctx); goToSettings(); },
-              child: Text(primaryLang, style: linkStyle),
-            ),
-            Text(l10n.translationInfoPart3),
-            GestureDetector(
-              onTap: () { Navigator.pop(ctx); goToSettings(); },
-              child: Text(secondaryLang, style: linkStyle),
-            ),
-            Text(l10n.translationInfoPart4),
+            if (correctionMode) ...[
+              const SizedBox(height: 12),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.spellcheck, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(l10n.correctionModeInfo(primaryLang))),
+                ],
+              ),
+            ],
           ],
         ),
         actions: [

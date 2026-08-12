@@ -170,6 +170,33 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mistralFreeHint =>
       'Mistral offers a free tier — no credit card required';
+
+  @override
+  String get correctionModeLabel => 'Correction mode';
+
+  @override
+  String get correctionButton => 'Improve';
+
+  @override
+  String get correctionNotesTitle => 'Suggestions';
+
+  @override
+  String get correctionOutputHint =>
+      'Corrections and suggestions will appear here';
+
+  @override
+  String correctionModeInfo(String language) {
+    return 'Text in $language is corrected and improved instead of translated. Words you wrote in another language are replaced with the correct $language word.';
+  }
+
+  @override
+  String get historyBadgeCorrection => 'Correction';
+
+  @override
+  String get stateOn => 'on';
+
+  @override
+  String get stateOff => 'off';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -338,4 +365,31 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   @override
   String get mistralFreeHint =>
       'Mistral offers a free tier — no credit card required';
+
+  @override
+  String get correctionModeLabel => 'Correction mode';
+
+  @override
+  String get correctionButton => 'Improve';
+
+  @override
+  String get correctionNotesTitle => 'Suggestions';
+
+  @override
+  String get correctionOutputHint =>
+      'Corrections and suggestions will appear here';
+
+  @override
+  String correctionModeInfo(String language) {
+    return 'Text in $language is corrected and improved instead of translated. Words you wrote in another language are replaced with the correct $language word.';
+  }
+
+  @override
+  String get historyBadgeCorrection => 'Correction';
+
+  @override
+  String get stateOn => 'on';
+
+  @override
+  String get stateOff => 'off';
 }

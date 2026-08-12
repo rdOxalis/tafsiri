@@ -52,5 +52,13 @@
   "translationInfoPart3": ", yatatafsirishwa kwa ",
   "translationInfoPart4": ".",
   "getApiKeyButton": "Pata ufunguo wa API",
-  "mistralFreeHint": "Mistral inatoa kiwango cha bure – hakuna kadi ya mkopo inayohitajika"
+  "mistralFreeHint": "Mistral inatoa kiwango cha bure – hakuna kadi ya mkopo inayohitajika",
+  "correctionModeLabel": "Hali ya kusahihisha",
+  "correctionButton": "Sahihisha",
+  "correctionNotesTitle": "Mapendekezo",
+  "correctionOutputHint": "Masahihisho na mapendekezo yataonekana hapa",
+  "correctionModeInfo": "Maandishi ya {language} husahihishwa na kuboreshwa badala ya kutafsiriwa. Maneno uliyoandika kwa lugha nyingine hubadilishwa na neno sahihi la {language}.",
+  "historyBadgeCorrection": "Sahihisho",
+  "stateOn": "imewashwa",
+  "stateOff": "imezimwa"
 }
