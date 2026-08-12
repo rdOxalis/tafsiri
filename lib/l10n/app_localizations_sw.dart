@@ -199,4 +199,78 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get stateOff => 'imezimwa';
+
+  @override
+  String get backupSection => 'Nakala rudufu';
+
+  @override
+  String get backupExportButton => 'Hifadhi nakala';
+
+  @override
+  String get backupImportButton => 'Rejesha nakala';
+
+  @override
+  String get backupExplain =>
+      'Huandika mipangilio na historia ya tafsiri kwenye faili. Iweke nje ya programu — data ya programu hufutwa unapoiondoa.';
+
+  @override
+  String get backupIncludeKeys => 'Jumuisha funguo za API';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'Funguo huhifadhiwa bila usimbaji kwenye faili. Fanya hivi tu ikiwa utaiweka faili mahali salama.';
+
+  @override
+  String get backupImportConfirmTitle => 'Rejesha nakala?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Mipangilio yako ya sasa itabadilishwa na ile ya faili. Tafsiri kutoka kwenye nakala zitaongezwa kwenye historia; zilizopo zitabaki.';
+
+  @override
+  String get backupImportConfirmButton => 'Rejesha';
+
+  @override
+  String get backupExported => 'Nakala imehifadhiwa';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Nakala imehifadhiwa — ina funguo zako za API';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return 'Tafsiri $added zimerejeshwa, $skipped zilikuwepo tayari';
+  }
+
+  @override
+  String get backupImportedKeys => 'Funguo za API pia zimerejeshwa';
+
+  @override
+  String get backupErrorNotBackup => 'Faili hiyo si nakala rudufu ya Tafsiri.';
+
+  @override
+  String get backupErrorUnreadable => 'Faili haikuweza kusomwa.';
+
+  @override
+  String get backupErrorTooNew =>
+      'Nakala hii iliandikwa na toleo jipya zaidi la Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Kuhifadhi nakala kumeshindikana.';
+
+  @override
+  String get backupReplaceHistory => 'Badilisha historia';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Historia yako ya sasa ya tafsiri itafutwa na kubadilishwa na ile ya faili, badala ya kuunganishwa.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Mipangilio yako ya sasa itabadilishwa na ile ya faili, na historia yako yote ya tafsiri itafutwa na kubadilishwa na ile ya nakala. Hatua hii haiwezi kutenduliwa.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Historia imebadilishwa — tafsiri $added zimerejeshwa';
+  }
 }

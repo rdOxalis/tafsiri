@@ -198,4 +198,79 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stateOff => 'désactivé';
+
+  @override
+  String get backupSection => 'Sauvegarde';
+
+  @override
+  String get backupExportButton => 'Enregistrer la sauvegarde';
+
+  @override
+  String get backupImportButton => 'Restaurer la sauvegarde';
+
+  @override
+  String get backupExplain =>
+      'Écrit vos réglages et votre historique de traduction dans un fichier. Conservez-le hors de l’application — les données de l’application sont supprimées à la désinstallation.';
+
+  @override
+  String get backupIncludeKeys => 'Inclure les clés API';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'Les clés sont enregistrées en clair dans le fichier. À ne faire que si vous le conservez en lieu sûr.';
+
+  @override
+  String get backupImportConfirmTitle => 'Restaurer la sauvegarde ?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Vos réglages actuels seront remplacés par ceux du fichier. Les traductions de la sauvegarde s’ajoutent à votre historique ; les entrées existantes sont conservées.';
+
+  @override
+  String get backupImportConfirmButton => 'Restaurer';
+
+  @override
+  String get backupExported => 'Sauvegarde enregistrée';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Sauvegarde enregistrée — elle contient vos clés API';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added traductions restaurées, $skipped déjà présentes';
+  }
+
+  @override
+  String get backupImportedKeys => 'Clés API également restaurées';
+
+  @override
+  String get backupErrorNotBackup =>
+      'Ce fichier n’est pas une sauvegarde Tafsiri.';
+
+  @override
+  String get backupErrorUnreadable => 'Le fichier n’a pas pu être lu.';
+
+  @override
+  String get backupErrorTooNew =>
+      'Cette sauvegarde provient d’une version plus récente de Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Échec de la sauvegarde.';
+
+  @override
+  String get backupReplaceHistory => 'Remplacer l’historique';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Votre historique de traduction actuel est supprimé et remplacé par celui du fichier, au lieu d’être fusionné.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Vos réglages actuels seront remplacés par ceux du fichier, et tout votre historique de traduction sera supprimé et remplacé par celui de la sauvegarde. Cette action est irréversible.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Historique remplacé — $added traductions restaurées';
+  }
 }

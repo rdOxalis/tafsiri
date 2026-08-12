@@ -216,5 +216,105 @@
   "stateOff": "off",
   "@stateOff": {
     "description": "Word for the disabled state, shown in brackets on the correction mode chip"
+  },
+  "backupSection": "Backup",
+  "@backupSection": {
+    "description": "Heading of the backup section in Settings"
+  },
+  "backupExportButton": "Save backup",
+  "@backupExportButton": {
+    "description": "Button that writes a backup file"
+  },
+  "backupImportButton": "Restore backup",
+  "@backupImportButton": {
+    "description": "Button that reads a backup file back in"
+  },
+  "backupExplain": "Writes your settings and translation history to a file. Keep it somewhere outside the app — app data is deleted when you uninstall.",
+  "@backupExplain": {
+    "description": "Explains what the backup contains and why it lives outside the app"
+  },
+  "backupIncludeKeys": "Include API keys",
+  "@backupIncludeKeys": {
+    "description": "Switch label for including API keys in the backup"
+  },
+  "backupIncludeKeysWarning": "The keys are stored unencrypted in the file. Only do this if you keep the file somewhere safe.",
+  "@backupIncludeKeysWarning": {
+    "description": "Warning shown next to the include-API-keys switch"
+  },
+  "backupImportConfirmTitle": "Restore backup?",
+  "@backupImportConfirmTitle": {
+    "description": "Title of the restore confirmation dialog"
+  },
+  "backupImportConfirmMessage": "Your current settings will be replaced by the ones in the file. Translations from the backup are added to your history; existing entries are kept.",
+  "@backupImportConfirmMessage": {
+    "description": "Body of the restore confirmation dialog"
+  },
+  "backupImportConfirmButton": "Restore",
+  "@backupImportConfirmButton": {
+    "description": "Confirm button of the restore dialog"
+  },
+  "backupExported": "Backup saved",
+  "@backupExported": {
+    "description": "Snackbar after a successful export without keys"
+  },
+  "backupExportedWithKeys": "Backup saved — it contains your API keys",
+  "@backupExportedWithKeys": {
+    "description": "Snackbar after a successful export that contains API keys"
+  },
+  "backupImported": "{added} translations restored, {skipped} already present",
+  "@backupImported": {
+    "description": "Snackbar after a successful import; {added} and {skipped} are counts",
+    "placeholders": {
+      "added": {
+        "type": "int",
+        "example": "12"
+      },
+      "skipped": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "backupImportedKeys": "API keys restored as well",
+  "@backupImportedKeys": {
+    "description": "Appended to the import snackbar when API keys came back too"
+  },
+  "backupErrorNotBackup": "That file is not a Tafsiri backup.",
+  "@backupErrorNotBackup": {
+    "description": "Error when the chosen file is not a Tafsiri backup"
+  },
+  "backupErrorUnreadable": "The file could not be read.",
+  "@backupErrorUnreadable": {
+    "description": "Error when the file could not be parsed at all"
+  },
+  "backupErrorTooNew": "This backup was written by a newer version of Tafsiri.",
+  "@backupErrorTooNew": {
+    "description": "Error when the backup format is newer than this app"
+  },
+  "backupErrorFailed": "Backup failed.",
+  "@backupErrorFailed": {
+    "description": "Generic backup failure message"
+  },
+  "backupReplaceHistory": "Replace history",
+  "@backupReplaceHistory": {
+    "description": "Switch label: replace the history on restore instead of merging"
+  },
+  "backupReplaceHistoryWarning": "Your current translation history is deleted and replaced by the one from the file, instead of the two being merged.",
+  "@backupReplaceHistoryWarning": {
+    "description": "Warning shown when the replace-history switch is on"
+  },
+  "backupImportConfirmMessageReplace": "Your current settings will be replaced by the ones in the file, and your entire translation history will be deleted and replaced by the backup’s. This cannot be undone.",
+  "@backupImportConfirmMessageReplace": {
+    "description": "Body of the restore dialog when the history will be replaced"
+  },
+  "backupImportedReplaced": "History replaced — {added} translations restored",
+  "@backupImportedReplaced": {
+    "description": "Snackbar after a restore that replaced the history; {added} is a count",
+    "placeholders": {
+      "added": {
+        "type": "int",
+        "example": "12"
+      }
+    }
   }
 }

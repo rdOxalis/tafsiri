@@ -480,6 +480,132 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'off'**
   String get stateOff;
+
+  /// Heading of the backup section in Settings
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Backup'**
+  String get backupSection;
+
+  /// Button that writes a backup file
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Save backup'**
+  String get backupExportButton;
+
+  /// Button that reads a backup file back in
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Restore backup'**
+  String get backupImportButton;
+
+  /// Explains what the backup contains and why it lives outside the app
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Writes your settings and translation history to a file. Keep it somewhere outside the app — app data is deleted when you uninstall.'**
+  String get backupExplain;
+
+  /// Switch label for including API keys in the backup
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Include API keys'**
+  String get backupIncludeKeys;
+
+  /// Warning shown next to the include-API-keys switch
+  ///
+  /// In en_GB, this message translates to:
+  /// **'The keys are stored unencrypted in the file. Only do this if you keep the file somewhere safe.'**
+  String get backupIncludeKeysWarning;
+
+  /// Title of the restore confirmation dialog
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Restore backup?'**
+  String get backupImportConfirmTitle;
+
+  /// Body of the restore confirmation dialog
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Your current settings will be replaced by the ones in the file. Translations from the backup are added to your history; existing entries are kept.'**
+  String get backupImportConfirmMessage;
+
+  /// Confirm button of the restore dialog
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Restore'**
+  String get backupImportConfirmButton;
+
+  /// Snackbar after a successful export without keys
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Backup saved'**
+  String get backupExported;
+
+  /// Snackbar after a successful export that contains API keys
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Backup saved — it contains your API keys'**
+  String get backupExportedWithKeys;
+
+  /// Snackbar after a successful import; {added} and {skipped} are counts
+  ///
+  /// In en_GB, this message translates to:
+  /// **'{added} translations restored, {skipped} already present'**
+  String backupImported(int added, int skipped);
+
+  /// Appended to the import snackbar when API keys came back too
+  ///
+  /// In en_GB, this message translates to:
+  /// **'API keys restored as well'**
+  String get backupImportedKeys;
+
+  /// Error when the chosen file is not a Tafsiri backup
+  ///
+  /// In en_GB, this message translates to:
+  /// **'That file is not a Tafsiri backup.'**
+  String get backupErrorNotBackup;
+
+  /// Error when the file could not be parsed at all
+  ///
+  /// In en_GB, this message translates to:
+  /// **'The file could not be read.'**
+  String get backupErrorUnreadable;
+
+  /// Error when the backup format is newer than this app
+  ///
+  /// In en_GB, this message translates to:
+  /// **'This backup was written by a newer version of Tafsiri.'**
+  String get backupErrorTooNew;
+
+  /// Generic backup failure message
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Backup failed.'**
+  String get backupErrorFailed;
+
+  /// Switch label: replace the history on restore instead of merging
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Replace history'**
+  String get backupReplaceHistory;
+
+  /// Warning shown when the replace-history switch is on
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Your current translation history is deleted and replaced by the one from the file, instead of the two being merged.'**
+  String get backupReplaceHistoryWarning;
+
+  /// Body of the restore dialog when the history will be replaced
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Your current settings will be replaced by the ones in the file, and your entire translation history will be deleted and replaced by the backup’s. This cannot be undone.'**
+  String get backupImportConfirmMessageReplace;
+
+  /// Snackbar after a restore that replaced the history; {added} is a count
+  ///
+  /// In en_GB, this message translates to:
+  /// **'History replaced — {added} translations restored'**
+  String backupImportedReplaced(int added);
 }
 
 class _AppLocalizationsDelegate

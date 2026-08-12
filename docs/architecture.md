@@ -90,6 +90,63 @@ it is toggled per input session rather than configured once.
 
 ---
 
+## Backup / Restore (ADR-034)
+
+App data lives in the sandbox and dies with an uninstall on Android. The backup
+writes a JSON file *outside* it, which is the entire point.
+
+```mermaid
+flowchart TD
+    B[Settings → Backup] --> BC[BackupController]
+    BC -->|export| SC[SettingsController]
+    BC -->|export| DAO[TranslationDao.getAll]
+    SC & DAO --> BS[BackupService.buildJson]
+    BS --> IO[BackupFileIo.save]
+    IO -->|Linux| FS[file_selector · native GTK]
+    IO -->|Android| FP[file_picker · SAF]
+
+    IO2[BackupFileIo.open] --> BP[BackupService.parse]
+    BP -->|settings| SCR[SettingsController.restore]
+    BP -->|history| RM{replace history?}
+    RM -->|no · default| DM[TranslationDao.insertMissing]
+    RM -->|yes| DR[TranslationDao.replaceAllWith]
+    DM & DR --> HP[invalidate historyProvider]
+```
+
+Document shape:
+
+```json
+{
+  "app": "tafsiri-backup",
+  "formatVersion": 1,
+  "createdAt": "2026-08-12T08:00:00.000Z",
+  "appVersion": "1.0.9+9",
+  "settings": { "active_provider": "…", "target_language": "…",
+                "alt_language": "…", "stt_language": "…",
+                "correction_mode": true },
+  "includesApiKeys": false,
+  "apiKeys": { "mistral": "…", "claude": "…", "openai": "…" },
+  "history": [ { "sourceText": "…", "resultText": "…", "mode": "correct",
+                 "notes": "…", "createdAt": "…", "isFavourite": false } ]
+}
+```
+
+- `apiKeys` is **absent** unless the user opts in — the secrets are not written
+  blank, they are not written at all.
+- Restore always **replaces** settings. For the history the user chooses:
+  **merge** (default) adds what is missing — identity is source text + result
+  text + timestamp, so a repeated import adds nothing — or **replace**, which
+  wipes and re-inserts in one transaction. Replace is destructive, so it has a
+  separate dialog and its switch resets to off after every use.
+- A file without `"app": "tafsiri-backup"`, or with a higher `formatVersion`, is
+  rejected. Missing settings fall back to defaults and unusable history rows are
+  skipped, so a hand-edited or truncated backup still restores what it can.
+- The two plugins are split by platform out of necessity: `file_selector` has no
+  save dialog on Android, and `file_picker` needs `zenity`/`qarma` on Linux,
+  which many desktops (KDE) do not have. See ADR-034.
+
+---
+
 ## History Data Flow
 
 ```mermaid
@@ -294,7 +351,7 @@ STT locale map (ISO 639-1 → BCP-47):
 
 ## Localisation
 
-11 ARB files in `lib/l10n/`, 61 user-facing strings each (8 of them for correction mode, ADR-033):
+11 ARB files in `lib/l10n/`, 82 user-facing strings each (8 for correction mode, ADR-033; 21 for backup/restore, ADR-034):
 
 | Locale | File |
 |--------|------|
@@ -389,13 +446,15 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | TranslatorController + `AiResult.parse` | `test/translator/translator_controller_test.dart` | 20 |
 | TranslatorScreen widgets | `test/translator/translator_screen_test.dart` | 12 |
 | Correction prompt routing (ADR-033) | `test/services/correction_prompt_test.dart` | 6 |
+| Backup format (ADR-034) | `test/services/backup_service_test.dart` | 12 |
+| Backup export/import cycle (ADR-034) | `test/settings/backup_controller_test.dart` | 13 |
 | ClaudeService | `test/services/claude_service_test.dart` | 4 |
 | OpenAiService | `test/services/openai_service_test.dart` | 4 |
 | MistralService | `test/services/mistral_service_test.dart` | 4 |
 | TranslationDao (SQLite) | `test/database/translation_dao_test.dart` | 8 |
 | Schema migration v1→v2 | `test/database/db_migration_test.dart` | 1 |
 | Desktop sqflite FFI wiring | `test/database/sqflite_desktop_test.dart` | 1 |
-| **Total** | | **70** |
+| **Total** | | **95** |
 
 Run: `flutter test`
 

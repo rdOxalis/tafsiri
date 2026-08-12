@@ -4,7 +4,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants.dart';
 import '../../core/locale_notifier.dart';
+import '../../core/services/backup_service.dart';
 import '../../l10n/app_localizations.dart';
+import 'backup_controller.dart';
 import 'settings_controller.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -216,6 +218,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
               const Divider(height: 32),
 
+              // --- Backup (ADR-034) ---
+              _SectionHeader(l10n.backupSection),
+              const _BackupPanel(),
+
+              const Divider(height: 32),
+
               // --- Donate ---
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -399,6 +407,211 @@ class _LocaleDropdown extends ConsumerWidget {
           ref.read(localeProvider.notifier).setLocale(code);
         }
       },
+    );
+  }
+}
+
+/// Backup export/import (ADR-034).
+///
+/// Lives in Settings but writes outside the app sandbox — data inside the
+/// sandbox is deleted on uninstall, which is exactly what this guards against.
+class _BackupPanel extends ConsumerStatefulWidget {
+  const _BackupPanel();
+
+  @override
+  ConsumerState<_BackupPanel> createState() => _BackupPanelState();
+}
+
+class _BackupPanelState extends ConsumerState<_BackupPanel> {
+  /// Both default to off and are deliberately not persisted: each is the
+  /// riskier choice of its pair, so it has to be asked for every time rather
+  /// than happening because a switch remembered.
+  bool _includeApiKeys = false;
+  bool _replaceHistory = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final busy = ref.watch(backupProvider);
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.backupExplain,
+          style: theme.textTheme.bodySmall
+              ?.copyWith(color: theme.colorScheme.outline),
+        ),
+        const SizedBox(height: 8),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          value: _includeApiKeys,
+          title: Text(l10n.backupIncludeKeys),
+          subtitle: _includeApiKeys
+              ? Text(
+                  l10n.backupIncludeKeysWarning,
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(color: theme.colorScheme.error),
+                )
+              : null,
+          onChanged: busy ? null : (v) => setState(() => _includeApiKeys = v),
+          secondary: Icon(
+            Icons.save_alt,
+            size: 18,
+            color: theme.colorScheme.outline,
+          ),
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          value: _replaceHistory,
+          title: Text(l10n.backupReplaceHistory),
+          subtitle: _replaceHistory
+              ? Text(
+                  l10n.backupReplaceHistoryWarning,
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(color: theme.colorScheme.error),
+                )
+              : null,
+          onChanged: busy ? null : (v) => setState(() => _replaceHistory = v),
+          secondary: Icon(
+            Icons.settings_backup_restore,
+            size: 18,
+            color: theme.colorScheme.outline,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Expanded(
+              child: FilledButton.tonalIcon(
+                icon: busy
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.save_alt),
+                label: Text(l10n.backupExportButton),
+                onPressed: busy ? null : _export,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.settings_backup_restore),
+                label: Text(l10n.backupImportButton),
+                onPressed: busy ? null : _import,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Future<void> _export() async {
+    final result = await ref
+        .read(backupProvider.notifier)
+        .export(includeApiKeys: _includeApiKeys);
+    if (!mounted) return;
+    _report(result);
+  }
+
+  Future<void> _import() async {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    // Replacing is destructive and irreversible, so it gets its own wording
+    // and a red confirm button rather than the neutral merge dialog.
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        icon: Icon(
+          _replaceHistory
+              ? Icons.warning_amber_rounded
+              : Icons.settings_backup_restore,
+          size: 28,
+          color: _replaceHistory ? theme.colorScheme.error : null,
+        ),
+        title: Text(l10n.backupImportConfirmTitle),
+        content: Text(_replaceHistory
+            ? l10n.backupImportConfirmMessageReplace
+            : l10n.backupImportConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            style: _replaceHistory
+                ? FilledButton.styleFrom(
+                    backgroundColor: theme.colorScheme.error,
+                    foregroundColor: theme.colorScheme.onError,
+                  )
+                : null,
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.backupImportConfirmButton),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final result = await ref
+        .read(backupProvider.notifier)
+        .import(replaceHistory: _replaceHistory);
+    if (!mounted) return;
+    _report(result);
+  }
+
+  void _report(BackupResult result) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
+    final (String message, bool isError) = switch (result) {
+      BackupCancelled() => ('', false),
+      BackupExported(withApiKeys: final withKeys) => (
+          withKeys ? l10n.backupExportedWithKeys : l10n.backupExported,
+          false,
+        ),
+      BackupImported(
+        entriesAdded: final added,
+        entriesSkipped: final skipped,
+        apiKeysRestored: final keys,
+        historyReplaced: final replaced,
+      ) =>
+        (
+          [
+            if (replaced)
+              l10n.backupImportedReplaced(added)
+            else
+              l10n.backupImported(added, skipped),
+            if (keys) l10n.backupImportedKeys,
+          ].join(' · '),
+          false,
+        ),
+      BackupFailed(formatError: final error, detail: final detail) => (
+          switch (error) {
+            BackupError.notATafsiriBackup => l10n.backupErrorNotBackup,
+            BackupError.notJson => l10n.backupErrorUnreadable,
+            BackupError.unsupportedVersion => l10n.backupErrorTooNew,
+            null => detail == null
+                ? l10n.backupErrorFailed
+                : '${l10n.backupErrorFailed} $detail',
+          },
+          true,
+        ),
+    };
+
+    if (message.isEmpty) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 4),
+        backgroundColor: isError ? theme.colorScheme.errorContainer : null,
+      ),
     );
   }
 }

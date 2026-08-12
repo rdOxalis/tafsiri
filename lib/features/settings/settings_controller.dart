@@ -144,6 +144,36 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     await prefs.setBool(kPrefCorrectionMode, enabled);
     state = AsyncData(state.requireValue.copyWith(correctionMode: enabled));
   }
+
+  /// Applies settings from a backup (ADR-034).
+  ///
+  /// [restoreApiKeys] is false when the backup was written without keys — the
+  /// existing keys must survive the restore rather than be wiped by empties.
+  Future<void> restore(
+    SettingsState restored, {
+    required bool restoreApiKeys,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final current = state.requireValue;
+
+    await prefs.setString(kPrefActiveProvider, restored.activeProvider);
+    await prefs.setString(kPrefTargetLanguage, restored.targetLanguage);
+    await prefs.setString(kPrefAltLanguage, restored.altLanguage);
+    await prefs.setString(kPrefSttLanguage, restored.sttLanguage);
+    await prefs.setBool(kPrefCorrectionMode, restored.correctionMode);
+
+    if (restoreApiKeys) {
+      await prefs.setString(kPrefApiKeyMistral, restored.apiKeyMistral);
+      await prefs.setString(kPrefApiKeyClaude, restored.apiKeyClaude);
+      await prefs.setString(kPrefApiKeyOpenAI, restored.apiKeyOpenAI);
+    }
+
+    state = AsyncData(restored.copyWith(
+      apiKeyMistral: restoreApiKeys ? null : current.apiKeyMistral,
+      apiKeyClaude: restoreApiKeys ? null : current.apiKeyClaude,
+      apiKeyOpenAI: restoreApiKeys ? null : current.apiKeyOpenAI,
+    ));
+  }
 }
 
 final settingsProvider =

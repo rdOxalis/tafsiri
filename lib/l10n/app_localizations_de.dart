@@ -200,4 +200,78 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stateOff => 'aus';
+
+  @override
+  String get backupSection => 'Sicherung';
+
+  @override
+  String get backupExportButton => 'Sicherung speichern';
+
+  @override
+  String get backupImportButton => 'Sicherung einlesen';
+
+  @override
+  String get backupExplain =>
+      'Schreibt Einstellungen und Übersetzungsverlauf in eine Datei. Bewahre sie außerhalb der App auf — App-Daten werden beim Deinstallieren gelöscht.';
+
+  @override
+  String get backupIncludeKeys => 'API-Schlüssel mitsichern';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'Die Schlüssel stehen unverschlüsselt in der Datei. Nur machen, wenn du die Datei sicher aufbewahrst.';
+
+  @override
+  String get backupImportConfirmTitle => 'Sicherung einlesen?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Deine aktuellen Einstellungen werden durch die aus der Datei ersetzt. Übersetzungen aus der Sicherung kommen zum Verlauf hinzu, vorhandene bleiben erhalten.';
+
+  @override
+  String get backupImportConfirmButton => 'Einlesen';
+
+  @override
+  String get backupExported => 'Sicherung gespeichert';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Sicherung gespeichert — sie enthält deine API-Schlüssel';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added Übersetzungen wiederhergestellt, $skipped bereits vorhanden';
+  }
+
+  @override
+  String get backupImportedKeys => 'API-Schlüssel ebenfalls wiederhergestellt';
+
+  @override
+  String get backupErrorNotBackup => 'Diese Datei ist keine Tafsiri-Sicherung.';
+
+  @override
+  String get backupErrorUnreadable => 'Die Datei konnte nicht gelesen werden.';
+
+  @override
+  String get backupErrorTooNew =>
+      'Diese Sicherung stammt aus einer neueren Tafsiri-Version.';
+
+  @override
+  String get backupErrorFailed => 'Sicherung fehlgeschlagen.';
+
+  @override
+  String get backupReplaceHistory => 'Historie ersetzen';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Dein aktueller Übersetzungsverlauf wird gelöscht und durch den aus der Datei ersetzt, statt beide zusammenzuführen.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Deine aktuellen Einstellungen werden durch die aus der Datei ersetzt, und dein gesamter Übersetzungsverlauf wird gelöscht und durch den der Sicherung ersetzt. Das lässt sich nicht rückgängig machen.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Verlauf ersetzt — $added Übersetzungen wiederhergestellt';
+  }
 }

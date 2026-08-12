@@ -9,6 +9,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.10] - 2026-08-12
+
+### Added
+- **Backup and restore** (ADR-034). Settings → Backup writes your settings and the complete translation history to a JSON file of your choosing, and reads it back. The file is written outside the app sandbox, so it survives an uninstall — on Android, app data is otherwise gone for good. API keys are included only when you switch it on; the switch defaults to off and warns that the file then holds them unencrypted.
+- Restoring replaces the settings; for the history you choose. **Merge** (the default) adds the backup's translations to what is already there and skips ones that are already present, so importing the same file twice changes nothing — this is what you want when pulling in another device's translations. **Replace history** wipes the current history and puts the backup's in its place; it is irreversible, so it has its own warning dialog and a red confirm button, and the switch never stays on.
+- A backup written without keys leaves existing keys untouched instead of blanking them.
+- Doubles as the way to move a setup between Android and Linux.
+- 25 new tests (95 total, was 70): the backup format and its round-trip, rejection of foreign or too-new files, tolerance of truncated ones, and the full export→import cycle against a real database in both merge and replace mode.
+
+### Changed
+- New dependencies `file_selector` (Linux save/open dialog, native GTK) and `file_picker` (Android Storage Access Framework). Split by platform because neither covers both — see ADR-034.
+
+---
+
 ## [1.0.9] - 2026-08-12
 
 ### Added

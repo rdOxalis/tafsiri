@@ -39,6 +39,7 @@ ARB files live in `lib/l10n/`. The Flutter tool generates `AppLocalizations` fro
 - **Image input / OCR:** `image_picker` + `google_mlkit_text_recognition` (on-device, no extra API call)
 - **Language detection:** via AI prompt (more reliable for Swahili and lesser-supported languages than local libraries)
 - **Settings persistence:** `shared_preferences`
+- **Backup/restore file dialogs:** `file_selector` (Linux — native GTK) + `file_picker` (Android — Storage Access Framework). Split by platform: `file_selector` has no save dialog on Android, `file_picker` needs `zenity` on Linux. See ADR-034.
 - **State management:** `riverpod` / `flutter_riverpod`
 - **HTTP:** `http`
 - **Localisation:** `flutter_localizations` + `intl` + ARB files
@@ -310,6 +311,7 @@ const _sttLocaleMap = {
 - Target language + alternative language: free text input (e.g. "Swahili", "English")
 - App language selector: dropdown with the 10 supported locales
 - Validation: warning banner if active provider has no API key set
+- **Backup section** (ADR-034): "Save backup" / "Restore backup". Writes settings + full history as JSON to a location the user picks — deliberately outside the app sandbox, since sandbox data is deleted on uninstall. API keys are included only when the user enables the switch (default off, warns that the file then holds them unencrypted). Restore always replaces the settings; for the history a second switch chooses between **merge** (default, adds only what is missing — no duplicates) and **replace** (wipes the current history first; destructive, so it gets its own warning dialog).
 - **"Buy me a coffee" button** (PayPal donate): displayed at the bottom of the settings screen, opens the PayPal donate URL via `url_launcher`. Use the same PayPal link as in the BluesoundPlayer app. Button label is localised via ARB.
 
 ---
@@ -357,6 +359,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   intl: ^0.19.0
   url_launcher: ^6.3.0
+  file_selector: ^1.1.0
+  file_picker: ^11.0.3
 
 dev_dependencies:
   flutter_test:

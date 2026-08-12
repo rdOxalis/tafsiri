@@ -197,4 +197,79 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get stateOff => 'av';
+
+  @override
+  String get backupSection => 'Säkerhetskopia';
+
+  @override
+  String get backupExportButton => 'Spara säkerhetskopia';
+
+  @override
+  String get backupImportButton => 'Återställ säkerhetskopia';
+
+  @override
+  String get backupExplain =>
+      'Skriver dina inställningar och din översättningshistorik till en fil. Förvara den utanför appen — appdata raderas när du avinstallerar.';
+
+  @override
+  String get backupIncludeKeys => 'Ta med API-nycklar';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'Nycklarna sparas okrypterade i filen. Gör detta bara om du förvarar filen säkert.';
+
+  @override
+  String get backupImportConfirmTitle => 'Återställa säkerhetskopia?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Dina nuvarande inställningar ersätts med dem i filen. Översättningar från säkerhetskopian läggs till i historiken; befintliga behålls.';
+
+  @override
+  String get backupImportConfirmButton => 'Återställ';
+
+  @override
+  String get backupExported => 'Säkerhetskopia sparad';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Säkerhetskopia sparad — den innehåller dina API-nycklar';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added översättningar återställda, $skipped fanns redan';
+  }
+
+  @override
+  String get backupImportedKeys => 'API-nycklar återställdes också';
+
+  @override
+  String get backupErrorNotBackup =>
+      'Den filen är inte en Tafsiri-säkerhetskopia.';
+
+  @override
+  String get backupErrorUnreadable => 'Filen kunde inte läsas.';
+
+  @override
+  String get backupErrorTooNew =>
+      'Den här säkerhetskopian skrevs av en nyare version av Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Säkerhetskopieringen misslyckades.';
+
+  @override
+  String get backupReplaceHistory => 'Ersätt historik';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Din nuvarande översättningshistorik raderas och ersätts av den från filen i stället för att slås ihop.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Dina nuvarande inställningar ersätts med dem i filen, och hela din översättningshistorik raderas och ersätts med säkerhetskopians. Detta går inte att ångra.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Historik ersatt — $added översättningar återställda';
+  }
 }

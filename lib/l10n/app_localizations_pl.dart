@@ -197,4 +197,78 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get stateOff => 'wył.';
+
+  @override
+  String get backupSection => 'Kopia zapasowa';
+
+  @override
+  String get backupExportButton => 'Zapisz kopię';
+
+  @override
+  String get backupImportButton => 'Przywróć kopię';
+
+  @override
+  String get backupExplain =>
+      'Zapisuje ustawienia i historię tłumaczeń do pliku. Trzymaj go poza aplikacją — dane aplikacji znikają przy odinstalowaniu.';
+
+  @override
+  String get backupIncludeKeys => 'Dołącz klucze API';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'Klucze są zapisywane w pliku bez szyfrowania. Rób to tylko, jeśli przechowujesz plik bezpiecznie.';
+
+  @override
+  String get backupImportConfirmTitle => 'Przywrócić kopię?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Bieżące ustawienia zostaną zastąpione tymi z pliku. Tłumaczenia z kopii zostaną dodane do historii; istniejące pozostaną.';
+
+  @override
+  String get backupImportConfirmButton => 'Przywróć';
+
+  @override
+  String get backupExported => 'Kopia zapisana';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Kopia zapisana — zawiera Twoje klucze API';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return 'Przywrócono $added tłumaczeń, $skipped już istniało';
+  }
+
+  @override
+  String get backupImportedKeys => 'Klucze API również przywrócone';
+
+  @override
+  String get backupErrorNotBackup =>
+      'Ten plik nie jest kopią zapasową Tafsiri.';
+
+  @override
+  String get backupErrorUnreadable => 'Nie udało się odczytać pliku.';
+
+  @override
+  String get backupErrorTooNew => 'Ta kopia pochodzi z nowszej wersji Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Tworzenie kopii nie powiodło się.';
+
+  @override
+  String get backupReplaceHistory => 'Zastąp historię';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Bieżąca historia tłumaczeń zostanie usunięta i zastąpiona tą z pliku, zamiast połączenia obu.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Bieżące ustawienia zostaną zastąpione tymi z pliku, a cała historia tłumaczeń zostanie usunięta i zastąpiona tą z kopii. Tej operacji nie można cofnąć.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Historia zastąpiona — przywrócono $added tłumaczeń';
+  }
 }

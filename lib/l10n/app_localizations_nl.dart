@@ -197,4 +197,78 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stateOff => 'uit';
+
+  @override
+  String get backupSection => 'Back-up';
+
+  @override
+  String get backupExportButton => 'Back-up opslaan';
+
+  @override
+  String get backupImportButton => 'Back-up terugzetten';
+
+  @override
+  String get backupExplain =>
+      'Schrijft je instellingen en vertaalgeschiedenis naar een bestand. Bewaar het buiten de app — app-gegevens worden bij verwijderen gewist.';
+
+  @override
+  String get backupIncludeKeys => 'API-sleutels meenemen';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'De sleutels staan onversleuteld in het bestand. Doe dit alleen als je het bestand veilig bewaart.';
+
+  @override
+  String get backupImportConfirmTitle => 'Back-up terugzetten?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Je huidige instellingen worden vervangen door die uit het bestand. Vertalingen uit de back-up worden aan je geschiedenis toegevoegd; bestaande blijven behouden.';
+
+  @override
+  String get backupImportConfirmButton => 'Terugzetten';
+
+  @override
+  String get backupExported => 'Back-up opgeslagen';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Back-up opgeslagen — het bevat je API-sleutels';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added vertalingen teruggezet, $skipped al aanwezig';
+  }
+
+  @override
+  String get backupImportedKeys => 'API-sleutels ook teruggezet';
+
+  @override
+  String get backupErrorNotBackup => 'Dat bestand is geen Tafsiri-back-up.';
+
+  @override
+  String get backupErrorUnreadable => 'Het bestand kon niet worden gelezen.';
+
+  @override
+  String get backupErrorTooNew =>
+      'Deze back-up komt uit een nieuwere versie van Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Back-up mislukt.';
+
+  @override
+  String get backupReplaceHistory => 'Geschiedenis vervangen';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Je huidige vertaalgeschiedenis wordt verwijderd en vervangen door die uit het bestand, in plaats van samengevoegd.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Je huidige instellingen worden vervangen door die uit het bestand, en je volledige vertaalgeschiedenis wordt verwijderd en vervangen door die van de back-up. Dit kan niet ongedaan worden gemaakt.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Geschiedenis vervangen — $added vertalingen teruggezet';
+  }
 }

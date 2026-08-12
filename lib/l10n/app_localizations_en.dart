@@ -197,6 +197,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stateOff => 'off';
+
+  @override
+  String get backupSection => 'Backup';
+
+  @override
+  String get backupExportButton => 'Save backup';
+
+  @override
+  String get backupImportButton => 'Restore backup';
+
+  @override
+  String get backupExplain =>
+      'Writes your settings and translation history to a file. Keep it somewhere outside the app — app data is deleted when you uninstall.';
+
+  @override
+  String get backupIncludeKeys => 'Include API keys';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'The keys are stored unencrypted in the file. Only do this if you keep the file somewhere safe.';
+
+  @override
+  String get backupImportConfirmTitle => 'Restore backup?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Your current settings will be replaced by the ones in the file. Translations from the backup are added to your history; existing entries are kept.';
+
+  @override
+  String get backupImportConfirmButton => 'Restore';
+
+  @override
+  String get backupExported => 'Backup saved';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Backup saved — it contains your API keys';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added translations restored, $skipped already present';
+  }
+
+  @override
+  String get backupImportedKeys => 'API keys restored as well';
+
+  @override
+  String get backupErrorNotBackup => 'That file is not a Tafsiri backup.';
+
+  @override
+  String get backupErrorUnreadable => 'The file could not be read.';
+
+  @override
+  String get backupErrorTooNew =>
+      'This backup was written by a newer version of Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Backup failed.';
+
+  @override
+  String get backupReplaceHistory => 'Replace history';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Your current translation history is deleted and replaced by the one from the file, instead of the two being merged.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Your current settings will be replaced by the ones in the file, and your entire translation history will be deleted and replaced by the backup’s. This cannot be undone.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'History replaced — $added translations restored';
+  }
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -392,4 +466,78 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get stateOff => 'off';
+
+  @override
+  String get backupSection => 'Backup';
+
+  @override
+  String get backupExportButton => 'Save backup';
+
+  @override
+  String get backupImportButton => 'Restore backup';
+
+  @override
+  String get backupExplain =>
+      'Writes your settings and translation history to a file. Keep it somewhere outside the app — app data is deleted when you uninstall.';
+
+  @override
+  String get backupIncludeKeys => 'Include API keys';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'The keys are stored unencrypted in the file. Only do this if you keep the file somewhere safe.';
+
+  @override
+  String get backupImportConfirmTitle => 'Restore backup?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Your current settings will be replaced by the ones in the file. Translations from the backup are added to your history; existing entries are kept.';
+
+  @override
+  String get backupImportConfirmButton => 'Restore';
+
+  @override
+  String get backupExported => 'Backup saved';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Backup saved — it contains your API keys';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added translations restored, $skipped already present';
+  }
+
+  @override
+  String get backupImportedKeys => 'API keys restored as well';
+
+  @override
+  String get backupErrorNotBackup => 'That file is not a Tafsiri backup.';
+
+  @override
+  String get backupErrorUnreadable => 'The file could not be read.';
+
+  @override
+  String get backupErrorTooNew =>
+      'This backup was written by a newer version of Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Backup failed.';
+
+  @override
+  String get backupReplaceHistory => 'Replace history';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Your current translation history is deleted and replaced by the one from the file, instead of the two being merged.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Your current settings will be replaced by the ones in the file, and your entire translation history will be deleted and replaced by the backup’s. This cannot be undone.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'History replaced — $added translations restored';
+  }
 }

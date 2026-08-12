@@ -197,4 +197,79 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get stateOff => 'fra';
+
+  @override
+  String get backupSection => 'Sikkerhedskopi';
+
+  @override
+  String get backupExportButton => 'Gem sikkerhedskopi';
+
+  @override
+  String get backupImportButton => 'Gendan sikkerhedskopi';
+
+  @override
+  String get backupExplain =>
+      'Skriver dine indstillinger og din oversættelseshistorik til en fil. Gem den uden for appen — appdata slettes, når du afinstallerer.';
+
+  @override
+  String get backupIncludeKeys => 'Tag API-nøgler med';
+
+  @override
+  String get backupIncludeKeysWarning =>
+      'Nøglerne gemmes ukrypteret i filen. Gør det kun, hvis du opbevarer filen sikkert.';
+
+  @override
+  String get backupImportConfirmTitle => 'Gendan sikkerhedskopi?';
+
+  @override
+  String get backupImportConfirmMessage =>
+      'Dine nuværende indstillinger erstattes af dem i filen. Oversættelser fra sikkerhedskopien føjes til din historik; eksisterende bevares.';
+
+  @override
+  String get backupImportConfirmButton => 'Gendan';
+
+  @override
+  String get backupExported => 'Sikkerhedskopi gemt';
+
+  @override
+  String get backupExportedWithKeys =>
+      'Sikkerhedskopi gemt — den indeholder dine API-nøgler';
+
+  @override
+  String backupImported(int added, int skipped) {
+    return '$added oversættelser gendannet, $skipped fandtes allerede';
+  }
+
+  @override
+  String get backupImportedKeys => 'API-nøgler blev også gendannet';
+
+  @override
+  String get backupErrorNotBackup =>
+      'Den fil er ikke en Tafsiri-sikkerhedskopi.';
+
+  @override
+  String get backupErrorUnreadable => 'Filen kunne ikke læses.';
+
+  @override
+  String get backupErrorTooNew =>
+      'Denne sikkerhedskopi er skrevet af en nyere version af Tafsiri.';
+
+  @override
+  String get backupErrorFailed => 'Sikkerhedskopiering mislykkedes.';
+
+  @override
+  String get backupReplaceHistory => 'Erstat historik';
+
+  @override
+  String get backupReplaceHistoryWarning =>
+      'Din nuværende oversættelseshistorik slettes og erstattes af den fra filen i stedet for at blive slået sammen.';
+
+  @override
+  String get backupImportConfirmMessageReplace =>
+      'Dine nuværende indstillinger erstattes af dem i filen, og hele din oversættelseshistorik slettes og erstattes af sikkerhedskopiens. Det kan ikke fortrydes.';
+
+  @override
+  String backupImportedReplaced(int added) {
+    return 'Historik erstattet — $added oversættelser gendannet';
+  }
 }
