@@ -100,9 +100,9 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 ## Desktop (Linux and Windows)
 
-Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there. Voice input does not — `speech_to_text` has no desktop implementation, so the microphone button stays disabled. Image-to-text works on Linux through Tesseract; on Windows the engine is not bundled yet.
+Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there, and so does image-to-text once Tesseract is installed (see below). Pasting a screenshot with **Ctrl+V** works on Linux and Windows. Voice input is the one gap on Linux — `speech_to_text` has no implementation there, so the microphone button is not shown at all; on Windows and macOS it is.
 
-**Linux** — needs the Flutter SDK and `libgtk-3-dev`. For image-to-text also `sudo apt install tesseract-ocr tesseract-ocr-swa` (add the trained data for whichever languages you translate):
+**Linux** — needs the Flutter SDK and `libgtk-3-dev`:
 
 ```bash
 ./install.sh          # builds and installs into ~/.local, no root required
@@ -119,9 +119,63 @@ This produces `build\windows\installer\tafsiri-<version>-windows-x64.exe`. It in
 
 ---
 
+## Text recognition on the desktop
+
+Image-to-text runs entirely on your machine through [Tesseract](https://github.com/tesseract-ocr/tesseract), which Tafsiri does not bundle — install it once and the image button starts working.
+
+**Which data you need.** Tafsiri loads the trained data for the two languages you set in Settings. When it detects a script none of those is written in — you photograph a Bulgarian sign while translating between Swahili and German — it reaches for that *script's* data instead. So: a **language** pack for what you translate, a **script** pack for what you photograph.
+
+### Linux
+
+```bash
+sudo apt install tesseract-ocr                      # the engine
+sudo apt install tesseract-ocr-deu tesseract-ocr-swa  # what you translate
+sudo apt install tesseract-ocr-script-cyrl          # what you photograph (~28 MB)
+```
+
+Or simply everything — 123 languages and 37 scripts, about 393 MB to download:
+
+```bash
+sudo apt install tesseract-ocr-all
+```
+
+### Windows
+
+```powershell
+winget install UB-Mannheim.TesseractOCR
+```
+
+In the installer, expand **Additional language data (download)** and **Additional script data (download)** and tick what you need — or the top-level box of each for all of it. You can also add data later by dropping `.traineddata` files from [tessdata_fast](https://github.com/tesseract-ocr/tessdata_fast) into `C:\Program Files\Tesseract-OCR\tessdata\` (script data goes in the `script\` subfolder).
+
+Then make sure the install directory is on `PATH`. The installer offers a checkbox for it that is easy to miss:
+
+```powershell
+$dir = 'C:\Program Files\Tesseract-OCR'
+$old = [Environment]::GetEnvironmentVariable('Path','User')
+if ($old -notlike "*$dir*") {
+    [Environment]::SetEnvironmentVariable('Path', ($old.TrimEnd(';') + ';' + $dir), 'User')
+}
+```
+
+A program inherits `PATH` from whatever started it, and Explorer reads it once at login — so **sign out and back in** before launching Tafsiri from the Start menu, or start it from a fresh terminal to test straight away.
+
+### Checking and troubleshooting
+
+```
+tesseract --list-langs
+```
+
+Languages appear as ISO 639-2 codes (`deu`, `swa`, `bul`); script data appears as `script/Cyrillic` on Linux and `script\Cyrillic` on Windows. Both spellings are understood.
+
+When recognition does something unexpected, Tafsiri writes what it did to **`tafsiri-ocr.log`** in your temp directory — `%TEMP%` on Windows, `/tmp` on Linux. It records which languages were found, which script was detected and how sure it was, the exact command run, and how much text came back at what confidence.
+
+One practical tip: **a cropped photo reads far better than a full screenshot.** Script detection on a whole window of Latin interface with a little Cyrillic in it is close to a coin toss — measured at 1.76 confidence against 10.0 for the same text cropped — and the recognition follows that guess.
+
+---
+
 ## Privacy
 
-Camera and microphone are used entirely on-device — Google ML Kit OCR and Android STT on the phone, Tesseract on the Linux desktop. No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
+Camera and microphone are used entirely on-device — Google ML Kit OCR and Android STT on the phone, Tesseract on the desktop. Reading the clipboard is local too. No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
 
 Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md)
 

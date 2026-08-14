@@ -5,11 +5,10 @@
 <!-- Move items here when actively working on them -->
 
 - [ ] **(Android) Clipboard images for paste.** Ctrl+V / the paste button read images on Linux (ADR-040) and Windows (ADR-047); Android is the one left. Android carries images on the clipboard as `content://` URIs, which needs a small platform channel into `ClipboardManager` — the `ClipboardImageService` interface is already the seam. Worth doing: on a phone a screenshot is the most likely way an image arrives at all.
-- [ ] **Confirm Windows clipboard paste on Windows.** Implemented and covered by eight tests, but those run on Linux by standing in for PowerShell — whether the real `Clipboard.GetImage()` returns an image from a real clipboard can only be answered there. Copy a screenshot, press Ctrl+V in the translator. (ADR-047)
 
 - [ ] **Close F-Droid MR #39249** (needs your GitLab login — one click): https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249 (ADR-030)
 
-- [ ] **Finish the Windows pass.** The build itself is done and was produced by hand on Windows for the 1.0.11 release; image-to-text and the Cyrillic script path are verified end to end there (ADR-045, ADR-046), reading a full screenshot as well as a cropped phrase. Still unchecked on that machine: **the microphone**, which has a real chance of misbehaving because `speech_to_text_windows` is beta and has never been exercised (ADR-039); **clipboard paste with Ctrl+V** (ADR-047); the history surviving a restart, which is the bundled `sqlite3.dll` working; backup save/restore opening the Windows file dialogs; and install → Start menu → uninstall including the keep-your-data prompt. (ADR-035)
+- [ ] **Finish the Windows pass.** The build itself is done and was produced by hand on Windows for the 1.0.11 release; image-to-text and the Cyrillic script path are verified end to end there (ADR-045, ADR-046), reading a full screenshot as well as a cropped phrase. Still unchecked on that machine: **the microphone**, which has a real chance of misbehaving because `speech_to_text_windows` is beta and has never been exercised (ADR-039); the history surviving a restart, which is the bundled `sqlite3.dll` working; backup save/restore opening the Windows file dialogs; and install → Start menu → uninstall including the keep-your-data prompt. (ADR-035)
 
 ---
 
@@ -33,6 +32,8 @@
 - [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] Clipboard paste on Windows via PowerShell, confirmed by hand on Windows against a real clipboard. (2026-08-14, ADR-047)
+- [x] Image-to-text on Windows: five bugs, one message. TSV requested as a config file that need not exist, a script name compared across platform path separators, a TSV parser that could not read CRLF, an error naming a cause it never checked, and subprocess output decoded with the ANSI code page instead of UTF-8. Verified end to end on Windows with a user-installed Tesseract, on both a full screenshot and a cropped phrase. (2026-08-14, ADR-043 to ADR-046)
 - [x] Build stamp: commit baked into the binary and shown under Settings; `install.sh` rebuilds a bundle that came from a different commit instead of reusing it. (2026-08-14)
 - [x] Script detection as a second attempt: a rejected read asks the image which script it is, retries with script-level trained data, and names the package when that is missing. Closes the case the settings cannot cover — photographing a script you never configured. (2026-08-14, ADR-037)
 - [x] Ctrl+V (and the paste button) accept a clipboard image and run OCR on it, with text pasting unchanged when there is no image. Linux via `wl-paste`/`xclip`, no new dependency. 12 new tests. (2026-08-14, ADR-040)
