@@ -90,9 +90,23 @@ String scriptPackageSuffix(String script) =>
 /// from the package being absent, so an installed script package still produced
 /// "install tesseract-ocr-script-cyrl" and no way to act on it. Taking the name
 /// from `--list-langs` instead makes both layouts work (ADR-038).
+///
+/// The separator is not a convention either: `--list-langs` reports the name
+/// the way the platform spells paths, so the same data is `script/Cyrillic` on
+/// Linux and `script\Cyrillic` on Windows. Comparing literally matched neither
+/// on Windows, which skipped the run and reported installed data as missing.
+/// Matching is therefore separator-blind, while the value handed back is the
+/// spelling this installation actually used — Tesseract is given its own words
+/// back rather than ours (ADR-043).
 String? scriptArgument(String script, Set<String> available) {
+  String normalise(String name) => name.replaceAll(r'\', '/');
+
+  final byNormalisedName = {
+    for (final name in available) normalise(name): name,
+  };
   for (final candidate in ['script/$script', script]) {
-    if (available.contains(candidate)) return candidate;
+    final match = byNormalisedName[normalise(candidate)];
+    if (match != null) return match;
   }
   return null;
 }

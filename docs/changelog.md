@@ -8,7 +8,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Fixed
-- **Image-to-text works on Windows** (ADR-043) — install Tesseract and it is found on `PATH`, no bundling needed. It had never worked, and not for the reason the docs assumed: the app asked for its output using `tsv`, which is not a flag but the name of a config file in the installation's `tessdata/configs/`. Where that file is missing, Tesseract does not fail — it warns, exits 0 and prints plain text, so the app saw an empty result and told you to install trained data you already had. It now asks for the same output with `-c tessedit_create_tsv=1`, which depends on nothing.
+- **Image-to-text works on Windows** (ADR-043) — install Tesseract and it is found on `PATH`, no bundling needed. It had never worked, and not for the reason the docs assumed: the app asked for its output using `tsv`, which is not a flag but the name of a config file in the installation's `tessdata/configs/`. Where that file is missing, Tesseract does not fail — it warns, exits 0 and prints plain text, so the app saw an empty result and told you to install trained data you already had. It now asks for the same output with `-c tessedit_create_tsv=1`, which depends on nothing. A second cause sat behind that one: `--list-langs` spells the entry `script\Cyrillic` on Windows and `script/Cyrillic` on Linux, and the app compared the two literally — so it skipped the recognition run and reported script data as missing while the user was looking at the folder containing it. The comparison ignores the separator now.
 
 ---
 

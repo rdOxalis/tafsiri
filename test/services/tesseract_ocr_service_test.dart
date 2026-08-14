@@ -385,6 +385,59 @@ void main() {
       );
     });
 
+    test('finds script trained data that Windows spells with a backslash',
+        () async {
+      // `--list-langs` reports the name the way the platform spells paths, so
+      // the same data reads `script/Cyrillic` on Linux and `script\Cyrillic` on
+      // Windows. Comparing literally matched neither there, the run was skipped
+      // and installed data was reported as missing — with the user looking at a
+      // tessdata\script folder that plainly contained it (ADR-043).
+      final service = serviceReturning(
+        langs: {'eng', 'deu', r'script\Cyrillic'},
+        script: 'Cyrillic',
+        tsvByLanguage: {
+          'deu+eng': tsvOf([word('Mona', 71.0)]),
+          r'script\Cyrillic': tsvOf([word('Моля', 96.0), word('те,', 95.0)]),
+        },
+      );
+
+      expect(
+        await service.recogniseText(
+          '/tmp/sign.png',
+          primaryLanguage: 'German',
+          altLanguage: 'English',
+        ),
+        'Моля те,',
+      );
+    });
+
+    test('hands Tesseract back its own spelling of the name', () async {
+      // Not `script/Cyrillic` normalised to our taste: whatever the
+      // installation reported is what it gets asked for (ADR-043).
+      late List<String> seen;
+      final service = TesseractOcrService(
+        runProcess: (executable, arguments) async {
+          if (arguments.contains('--list-langs')) {
+            return ProcessResult(0, 0, 'eng\nscript\\Cyrillic\n', '');
+          }
+          if (arguments.contains('--psm')) {
+            return ProcessResult(
+                0, 0, 'Script: Cyrillic\nScript confidence: 4.5\n', '');
+          }
+          seen = arguments;
+          return ProcessResult(0, 0, tsvOf([word('Моля', 96.0)]), '');
+        },
+      );
+
+      await service.recogniseText(
+        '/tmp/sign.png',
+        primaryLanguage: 'English',
+        altLanguage: 'English',
+      );
+
+      expect(seen[seen.indexOf('-l') + 1], r'script\Cyrillic');
+    });
+
     test('names the script package when its trained data is missing', () async {
       final service = serviceReturning(
         langs: {'eng', 'deu'},
