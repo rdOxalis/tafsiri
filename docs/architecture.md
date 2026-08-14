@@ -240,14 +240,22 @@ So `tesseract-ocr` on its own covers Latin scripts.
 The configured languages are the *output* of translation, but the image holds whatever was photographed — usually something the user cannot read. After a rejected read the app therefore stops trusting the settings and asks the image:
 
 ```
-recognise with the configured languages        ← ordinary path, nothing extra
-  └─ rejected?
-       detect the script (--psm 0, osd data ships with the engine)
-         ├─ script we did not load, data installed   → retry ⇒ succeeds
-         ├─ script we did not load, data missing     → "install tesseract-ocr-script-cyrl"
-         ├─ Latin                                    → bad photograph, no install advice
-         └─ too few characters to tell               → plain "could not read that"
+detect the script (--psm 0, osd ships with the engine, 0.09 s)
+  ├─ a configured language is written in it → recognise with those
+  ├─ none is → recognise with script/<Script>
+  │     ├─ works                → done
+  │     ├─ data missing, foreign script → "install tesseract-ocr-script-cyrl"
+  │     └─ data missing, Latin          → fall through, it is a bad photograph
+  └─ too few characters to tell → recognise with the configured languages
+                                   ↓
+                          confidence gate (mean ≥ 60)
 ```
+
+Detection runs **before** recognition, not as a rescue afterwards. The confidence
+gate cannot stand in for it: Cyrillic is full of Latin lookalikes, so English
+trained data reads a Bulgarian page as `Mons, Haute Mu MacnoTo` at 60.5
+confidence — past the threshold. Confidence says whether the glyphs were
+legible, never whether they were the right alphabet.
 
 Script trained data covers every language written in that script, so it also cushions the free-text language fields: a name the map cannot resolve costs diacritics, not the whole read.
 Build requirements for Windows: Visual Studio 2022 with "Desktop development with C++", Inno Setup 6.3+ for the installer, and internet access on the first CMake configure (to fetch SQLite). Nothing is required at runtime — SQLite and the MSVC runtime ship inside the bundle.

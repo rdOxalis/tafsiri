@@ -76,18 +76,18 @@ void main() {
     });
   });
 
-  group('parseOsdScript', () {
-    test('reads the script out of OSD output', () {
-      expect(
-        parseOsdScript('Page number: 0\nOrientation in degrees: 0\n'
-            'Script: Cyrillic\nScript confidence: 4.58\n'),
-        'Cyrillic',
-      );
+  group('parseOsd', () {
+    test('reads the script and its confidence out of OSD output', () {
+      final osd = parseOsd('Page number: 0\nOrientation in degrees: 0\n'
+          'Script: Cyrillic\nScript confidence: 4.58\n');
+
+      expect(osd?.script, 'Cyrillic');
+      expect(osd?.confidence, closeTo(4.58, 0.001));
     });
 
     test('returns null when OSD had nothing to say', () {
-      expect(parseOsdScript('Too few characters. Skipping this page'), isNull);
-      expect(parseOsdScript(''), isNull);
+      expect(parseOsd('Too few characters. Skipping this page'), isNull);
+      expect(parseOsd(''), isNull);
     });
   });
 
@@ -189,7 +189,12 @@ void main() {
                 return ProcessResult(0, 1, '', 'Too few characters.');
               }
               return ProcessResult(
-                  0, 0, 'Orientation in degrees: 0\nScript: $script\n', '');
+                0,
+                0,
+                'Orientation in degrees: 0\n'
+                    'Script: $script\nScript confidence: 4.58\n',
+                '',
+              );
             }
             final requested = arguments[arguments.indexOf('-l') + 1];
             final tsv = tsvByLanguage[requested];
@@ -294,6 +299,36 @@ void main() {
           altLanguage: 'English',
         ),
         throwsA(isA<OcrFailedException>()),
+      );
+    });
+
+    test('does not hand back confident nonsense from the wrong alphabet',
+        () async {
+      // The regression. Cyrillic is full of Latin lookalikes (М о н а Т е с р),
+      // so English trained data reads a Bulgarian page as fluent-looking junk
+      // at 60.5 mean confidence — past the gate, straight to the AI, which
+      // would then invent something plausible. Confidence catches an illegible
+      // image; it cannot catch a wrong alphabet. Only the script can.
+      final service = serviceReturning(
+        langs: {'eng', 'deu'},
+        script: 'Cyrillic',
+        tsvByLanguage: {
+          'deu+eng': tsvOf([
+            word('Mons,', 61.0),
+            word('Haute', 60.0),
+            word('MacnoTo', 60.5),
+          ]),
+        },
+      );
+
+      expect(
+        () => service.recogniseText(
+          '/tmp/bulgarian.png',
+          primaryLanguage: 'German',
+          altLanguage: 'English',
+        ),
+        throwsA(isA<OcrLanguageMissingException>().having(
+            (e) => e.languageCodes, 'languageCodes', ['script-cyrl'])),
       );
     });
 
