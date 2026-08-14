@@ -9,6 +9,7 @@ import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
 import '../../core/services/clipboard/clipboard_image_service_factory.dart';
+import '../../core/services/ocr/ocr_log.dart';
 import '../../core/services/ocr/ocr_service.dart';
 import '../../core/services/ocr/ocr_service_factory.dart';
 import '../../core/services/ocr/tesseract_ocr_service.dart';
@@ -167,7 +168,7 @@ class TranslatorController extends Notifier<TranslatorState> {
     try {
       file = await ImagePicker().pickImage(source: source);
     } catch (e) {
-      debugPrint('[OCR] image picker failed: $e');
+      ocrLog('image picker failed: $e');
       state =
           state.copyWith(isOcrProcessing: false, ocrError: OcrFailure.failed);
       return;
@@ -225,11 +226,16 @@ class TranslatorController extends Notifier<TranslatorState> {
       // already said so in Settings — the same two languages the translation
       // logic runs on (ADR-037). ML Kit ignores them.
       final settings = ref.read(settingsProvider).valueOrNull;
+      final primary = settings?.targetLanguage ?? kDefaultTargetLanguage;
+      final alt = settings?.altLanguage ?? kDefaultAltLanguage;
+      ocrLog('settings: primary="$primary" alt="$alt"');
+
       final text = await ref.read(ocrServiceProvider).recogniseText(
             imagePath,
-            primaryLanguage: settings?.targetLanguage ?? kDefaultTargetLanguage,
-            altLanguage: settings?.altLanguage ?? kDefaultAltLanguage,
+            primaryLanguage: primary,
+            altLanguage: alt,
           );
+      ocrLog('OK: ${text.length} chars');
 
       state = state.copyWith(
         inputText: text,
@@ -238,20 +244,20 @@ class TranslatorController extends Notifier<TranslatorState> {
         clearError: true,
       );
     } on OcrLanguageMissingException catch (e) {
-      debugPrint('[OCR] $e');
+      ocrLog('languageMissing: $e');
       state = state.copyWith(
         isOcrProcessing: false,
         ocrError: OcrFailure.languageMissing,
         ocrErrorDetail: tesseractPackageHint(e.languageCodes),
       );
     } on OcrUnavailableException catch (e) {
-      debugPrint('[OCR] engine unavailable: $e');
+      ocrLog('engine unavailable: $e');
       state = state.copyWith(
         isOcrProcessing: false,
         ocrError: OcrFailure.engineMissing,
       );
     } catch (e) {
-      debugPrint('[OCR] error: $e');
+      ocrLog('failed: $e');
       state = state.copyWith(
         isOcrProcessing: false,
         ocrError: OcrFailure.failed,
