@@ -1,5 +1,15 @@
 # Architecture Decision Records
 
+## ADR-047: Clipboard images on Windows through its own PowerShell
+**Date:** 2026-08-14
+**Status:** Accepted
+**Context:** ADR-040 shipped Ctrl+V image paste for Linux only, and gave a reason that has since expired: Windows had no OCR engine, so an image pasted there would have had nothing to read it. Windows OCR now works with an installed Tesseract (ADR-045, ADR-046), so pressing Ctrl+V with a screenshot on the clipboard silently doing nothing is simply a gap. `super_clipboard` remains the wrong answer for one feature — it brings a Rust toolchain into the F-Droid recipe and both desktop builds.
+**Decision:** A second implementation behind the existing `ClipboardImageService`: run the Windows PowerShell that ships with every supported version, and let `System.Windows.Forms.Clipboard.GetImage()` save the image straight to a file. Three details are load-bearing. **`-STA`**, because clipboard access is only permitted from a single-threaded apartment; 5.1 already defaults to it, but saying so keeps this correct if `powershell` ever resolves to PowerShell 7, which defaults to MTA. **`-EncodedCommand`** with base64 UTF-16LE, so neither quoting nor a path containing an umlaut — the reporting machine's profile is `C:\Users\RalfDünkelmann` — has to survive a trip through a command line. And **the script writes the file itself** rather than piping bytes back: pushing binary through a text-decoding pipe is exactly the mistake ADR-046 was just written about, and it is not worth making twice. A clipboard holding no image produces no file, so the file's existence *is* the answer — nothing to parse out of stdout, and "no image", "no PowerShell" and "the save failed" all converge on the same `null` that sends the caller to paste text instead.
+**Consequences:** Ctrl+V and the paste button take a screenshot on Windows and Linux. Android is the one left, and it is genuinely different: its clipboard carries images as `content://` URIs, which needs a platform channel into `ClipboardManager` rather than a subprocess. Eight tests cover this from Linux by standing in for PowerShell — decoding the `-EncodedCommand` payload, executing what it says, and checking the file that results — which incidentally verifies the script text and the UTF-16LE encoding rather than just asserting they were passed. That is as far as a Linux machine can go: whether Windows PowerShell actually returns an image from a real clipboard is only answerable on Windows, and is a line in the todo rather than a claim here.
+
+---
+
+
 ## ADR-046: Read subprocess output as UTF-8, not as the system encoding
 **Date:** 2026-08-14
 **Status:** Accepted

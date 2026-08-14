@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Ctrl+V pastes a screenshot on Windows too** (ADR-047). It reads the clipboard through the PowerShell Windows already ships with, so there is nothing extra to install and no new dependency — the same approach as image-to-text itself. Android is the one platform left without it. As on Linux, Ctrl+V with no image on the clipboard still pastes text exactly as before.
+
 ### Fixed
 - **Non-Latin text no longer comes back as gibberish on Windows** (ADR-046). `Моля те, дай ми маслото` arrived as `ÐœÐ¾Ð»Ñ Ñ‚Ðµ, Ð´Ð°Ð¹ Ð¼Ð¸ Ð¼Ð°ÑÐ»Ð¾Ñ‚Ð¾`: Tesseract writes UTF-8, and the app was decoding it with the machine's ANSI code page, so every two-byte character became two Latin ones. Nothing reported an error — the read was 96% confident and the right length. Output is read as UTF-8 everywhere now.
 - **"Install the script package" is no longer said to people who already have it** (ADR-045). If the trained data was found and used and the read still scored poorly, the app claimed the data was missing. It now falls back to your configured languages and, failing that, says plainly that it could not read the image. The case that exposed it: a full-window screenshot, mostly Latin interface with a little Cyrillic in it — script detection called it Cyrillic by a hair, the app then read a Latin window using Cyrillic data only, and your own languages never got a turn.
