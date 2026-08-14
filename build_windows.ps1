@@ -75,14 +75,17 @@ function Assert-Flutter {
     }
 }
 
-# Short commit the tree is at, with a marker for uncommitted changes. Baked into
-# the binary so Settings can show which build is running — the question that
-# comes up whenever behaviour does not match the source.
+# Short commit the tree is at. Baked into the binary so Settings can show which
+# build is running - the question that comes up whenever behaviour does not
+# match the source.
+#
+# Just the commit, deliberately (ADR-041). It used to carry a "-dirty" suffix,
+# but a build cannot help dirtying its own tree: `flutter pub get` runs before
+# this and rewrites the plugin registrants from the plugin list, so a released
+# binary ended up labelled after files nobody had edited.
 function Get-BuildStamp {
     $stamp = & git -C $ProjectDir rev-parse --short HEAD 2>$null
     if ($LASTEXITCODE -ne 0 -or -not $stamp) { return 'nogit' }
-    & git -C $ProjectDir diff --quiet HEAD 2>$null
-    if ($LASTEXITCODE -ne 0) { return "$stamp-dirty" }
     return $stamp
 }
 

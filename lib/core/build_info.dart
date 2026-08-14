@@ -15,9 +15,15 @@
 /// in which case the UI simply shows the version on its own.
 const kBuildStamp = String.fromEnvironment('TAFSIRI_BUILD');
 
-/// What to show under Settings: `1.0.10+10 · 4d02f63`, or just the version when
-/// nothing was injected. A `-dirty` suffix means the working tree had
-/// uncommitted changes when this was built.
+/// What to show under Settings: `1.0.11+11 · 7ea9cce`, or just the version when
+/// nothing was injected.
+///
+/// The commit and nothing else. The stamp used to gain a `-dirty` suffix when
+/// the working tree had uncommitted changes, which sounds useful and was not: a
+/// build cannot help dirtying its own tree, because Flutter regenerates the
+/// plugin registrants on every run, so released binaries were labelled after
+/// files nobody had edited. Staleness is still detected where it matters —
+/// `install.sh` refuses to reuse a bundle built from a dirty tree (ADR-041).
 String buildLabel({required String version, required String buildNumber}) {
   final full = buildNumber.isEmpty ? version : '$version+$buildNumber';
   return kBuildStamp.isEmpty ? full : '$full · $kBuildStamp';

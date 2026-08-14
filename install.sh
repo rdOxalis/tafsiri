@@ -113,18 +113,30 @@ check_runtime_deps() {
     fi
 }
 
-# Short commit the working tree is at, with a marker when it has uncommitted
-# changes. Baked into the binary so Settings can show which build is running.
+# Short commit the working tree is at. Baked into the binary so Settings can
+# show which build is running — the question that comes up whenever behaviour
+# does not match the source.
+#
+# Just the commit, deliberately (ADR-041). It used to carry a `-dirty` suffix,
+# but a build cannot help dirtying its own tree: Flutter rewrites the plugin
+# registrants from the plugin list on every run, so a released binary ended up
+# labelled after files nobody had edited. Whether the tree is clean is still
+# checked — see tree_is_dirty — it just no longer leaks into a version string.
 build_stamp() {
-    local stamp
-    stamp="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null)" || {
-        echo "nogit"
-        return
-    }
-    if ! git -C "$PROJECT_DIR" diff --quiet HEAD 2>/dev/null; then
-        stamp="$stamp-dirty"
-    fi
-    echo "$stamp"
+    git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null || echo "nogit"
+}
+
+# Whether tracked files differ from HEAD, ignoring what the build itself writes.
+#
+# Only bundle_is_current uses this, to decide whether an existing bundle can be
+# reused. The plugin registrants are excluded because Flutter regenerates them
+# during every build; counting them would force a rebuild every single time.
+tree_is_dirty() {
+    ! git -C "$PROJECT_DIR" diff --quiet HEAD -- \
+        . \
+        ':(exclude)*/flutter/generated_plugin_registrant.*' \
+        ':(exclude)*/flutter/generated_plugins.cmake' \
+        ':(exclude)*/Flutter/GeneratedPluginRegistrant.*' 2>/dev/null
 }
 
 build_app() {
@@ -165,9 +177,11 @@ bundle_is_current() {
     local built current
     built="$(cat "$BUNDLE_DIR/$STAMP_FILE")"
     current="$(build_stamp)"
-    # A dirty tree can differ from its own last build in ways git cannot see,
-    # so never trust a dirty stamp.
-    case "$built" in *-dirty|nogit) return 1 ;; esac
+    # An uncommitted change leaves the commit unchanged, so the stamps would
+    # match while the source has moved on — rebuild rather than reuse. Same for
+    # a tree git cannot read at all.
+    [ "$built" = "nogit" ] && return 1
+    tree_is_dirty && return 1
     [ "$built" = "$current" ]
 }
 

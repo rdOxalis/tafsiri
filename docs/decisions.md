@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-041: The build stamp is the commit, and nothing else
+**Date:** 2026-08-14
+**Status:** Accepted
+**Context:** The stamp shown under Settings (ADR-036 era) carried a `-dirty` suffix whenever tracked files differed from HEAD. The intent was honest — say when a binary does not correspond to a commit — but it does not survive contact with Flutter. `flutter pub get` regenerates `linux/flutter/generated_plugin_registrant.*`, `windows/flutter/generated_plugin_registrant.*`, `generated_plugins.cmake` and `macos/Flutter/GeneratedPluginRegistrant.swift` from the plugin list on **every** run, and `build_windows.ps1` calls it immediately before taking the stamp. The build therefore dirtied its own tree and then labelled itself after the mess. Reported from the first Windows build: a release binary would have shown `1.0.11+11 · 7ea9cce-dirty` because of eight files nobody had edited. On Linux the same marker was stuck on for a different reason — `android/build/reports/problems/problems-report.html`, a Gradle report that is tracked by accident. A version string that is always wrong tells you nothing, and shipping one to users is worse than not marking it at all.
+**Decision:** `build_stamp` / `Get-BuildStamp` return the short commit and nothing else. The dirt check is not deleted, it is **moved to the one place that needs it**: `install.sh` reuses an existing bundle only when the recorded commit matches *and* the tree is clean, which is what ADR-037-era commit `d963681` added it for — an uncommitted change leaves the commit unchanged, so without this the stamps would match while the source had moved on. That check lives in a new `tree_is_dirty`, and it excludes the generated registrants by pathspec, because counting files the build itself writes would force a rebuild on every single run. `build_windows.ps1` gets no such helper: it always builds, so it never had a reuse decision to make.
+**Consequences:** Settings shows `1.0.11+11 · 7ea9cce`, which is what anyone reading it actually wanted — the commit to check out. What is lost is a genuine signal: a build made from a tree with real uncommitted edits is now indistinguishable from a clean one. That is an accepted trade, because the signal was pinned on for unrelated reasons and had stopped carrying information. `install.sh` still refuses to reuse such a bundle, so the failure mode that motivated the marker — debugging behaviour that is not in the code any more — stays covered on the platform where bundles are reused. Left open and worth doing: `android/build/reports/problems/problems-report.html` should be untracked and `android/build/` ignored; it is a build artefact under version control and the reason every Linux tree reads as dirty.
+
+---
+
 ## ADR-040: Ctrl+V accepts an image, without losing Ctrl+V for text
 **Date:** 2026-08-14  
 **Status:** Accepted  
