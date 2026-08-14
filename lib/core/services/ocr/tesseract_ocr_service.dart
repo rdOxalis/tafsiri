@@ -44,6 +44,38 @@ const kTesseractLanguageCodes = <String, String>{
   'arabic': 'ara', 'العربية': 'ara', 'ar': 'ara',
 };
 
+/// ISO 15924 short codes behind Debian's `tesseract-ocr-script-*` packages,
+/// keyed by the script name Tesseract's OSD reports. Script trained data covers
+/// every language written in that script, so one package answers "I photographed
+/// something Cyrillic" without knowing which Cyrillic language it was.
+const kScriptPackageSuffixes = <String, String>{
+  'Latin': 'latn', 'Cyrillic': 'cyrl', 'Greek': 'grek', 'Arabic': 'arab',
+  'Hebrew': 'hebr', 'Armenian': 'armn', 'Georgian': 'geor',
+  'Devanagari': 'deva', 'Bengali': 'beng', 'Gujarati': 'gujr',
+  'Gurmukhi': 'guru', 'Kannada': 'knda', 'Malayalam': 'mlym',
+  'Oriya': 'orya', 'Sinhala': 'sinh', 'Tamil': 'taml', 'Telugu': 'telu',
+  'Thaana': 'thaa', 'Thai': 'thai', 'Lao': 'laoo', 'Khmer': 'khmr',
+  'Myanmar': 'mymr', 'Tibetan': 'tibt', 'Ethiopic': 'ethi', 'Syriac': 'syrc',
+  'Cherokee': 'cher', 'Canadian_Aboriginal': 'cans', 'Fraktur': 'frak',
+  'Vietnamese': 'viet', 'HanS': 'hans', 'HanT': 'hant', 'Hangul': 'hang',
+  'Japanese': 'jpan',
+};
+
+/// What to install for [script], in the form [tesseractPackageHint] expects.
+String scriptPackageSuffix(String script) =>
+    'script-${kScriptPackageSuffixes[script] ?? script.toLowerCase()}';
+
+/// Pulls the script name out of `tesseract --psm 0` output.
+String? parseOsdScript(String output) {
+  for (final line in output.split('\n')) {
+    final trimmed = line.trim();
+    if (!trimmed.startsWith('Script:')) continue;
+    final value = trimmed.substring('Script:'.length).trim();
+    if (value.isNotEmpty) return value;
+  }
+  return null;
+}
+
 /// Recognition through the external `tesseract` binary (ADR-037).
 ///
 /// Deliberately a subprocess rather than FFI: no native build step, no plugin,
@@ -70,43 +102,101 @@ class TesseractOcrService implements OcrService {
     final available = await _availableLanguages();
     final languages = selectLanguages(primaryLanguage, altLanguage, available);
 
-    debugPrint('[OCR] tesseract -l ${languages.argument}');
+    final page = await _recognise(imagePath, languages.argument);
+    if (page != null && _isUsable(page)) return page.text;
+
+    // Nothing usable. The configured languages say what the user translates
+    // *into*, but the image is whatever they photographed — and a translation
+    // app is used precisely on text one cannot read, so the script may well be
+    // one we never loaded. The settings cannot answer that; the image can.
+    final recovered = await _retryByScript(imagePath, languages);
+    if (recovered != null) return recovered;
+
+    if (page == null) {
+      throw const OcrFailedException('tesseract could not process the image.');
+    }
+    if (page.text.isEmpty) {
+      throw const OcrFailedException('No text found in the image.');
+    }
+    if (languages.missing.isNotEmpty) {
+      throw OcrLanguageMissingException(languages.missing);
+    }
+    throw OcrFailedException(
+      'Mean confidence ${page.meanConfidence.toStringAsFixed(1)} is below '
+      '$kMinMeanConfidence — refusing to pass this on as text.',
+    );
+  }
+
+  /// Second attempt using the script Tesseract sees in the image.
+  ///
+  /// Returns the text when the retry worked, `null` when this route does not
+  /// apply, and throws [OcrLanguageMissingException] when the script is known
+  /// but its trained data is not installed — that is the case where the fix is
+  /// a package rather than a better photograph.
+  ///
+  /// Only runs after a failure, so the ordinary path pays nothing for it.
+  Future<String?> _retryByScript(
+    String imagePath,
+    TesseractLanguages tried,
+  ) async {
+    final script = await detectScript(imagePath);
+    if (script == null) return null;
+
+    final candidate = 'script/$script';
+    if (tried.argument.split('+').contains(candidate)) return null;
+
+    debugPrint('[OCR] detected script $script, retrying with $candidate');
+    final page = await _recognise(imagePath, candidate);
+    if (page != null && _isUsable(page)) return page.text;
+
+    // Latin is the one script our Latin-language trained data already covers,
+    // so failing there means the image is bad, not that anything is missing.
+    // Advising an install would send the user down the wrong path.
+    if (script == 'Latin') return null;
+
+    throw OcrLanguageMissingException([scriptPackageSuffix(script)]);
+  }
+
+  bool _isUsable(TesseractPage page) =>
+      page.text.isNotEmpty && page.meanConfidence >= kMinMeanConfidence;
+
+  /// One recognition run, or `null` when Tesseract could not do it — a missing
+  /// trained data file for [languages] shows up as a non-zero exit.
+  Future<TesseractPage?> _recognise(String imagePath, String languages) async {
+    debugPrint('[OCR] tesseract -l $languages');
 
     final ProcessResult result;
     try {
       // `tsv` is a config file name, not a flag, so it goes last. It gives the
       // text and the per-word confidence in one run.
-      result = await _run(
-          executable, [imagePath, 'stdout', '-l', languages.argument, 'tsv']);
+      result =
+          await _run(executable, [imagePath, 'stdout', '-l', languages, 'tsv']);
     } on ProcessException catch (e) {
       throw OcrUnavailableException('Could not run $executable: ${e.message}');
     }
 
     if (result.exitCode != 0) {
-      throw OcrFailedException(
-        'tesseract exited with ${result.exitCode}: ${result.stderr}',
-      );
+      debugPrint('[OCR] exit ${result.exitCode}: ${result.stderr}');
+      return null;
     }
+    return parseTesseractTsv('${result.stdout}');
+  }
 
-    final page = parseTesseractTsv('${result.stdout}');
-
-    if (page.text.isEmpty) {
-      throw const OcrFailedException('No text found in the image.');
+  /// The script Tesseract sees in the image, e.g. `Cyrillic`, or `null` when it
+  /// cannot tell.
+  ///
+  /// Uses `osd.traineddata`, which ships with the engine itself, so this needs
+  /// nothing extra installed. It does need enough characters: a two-word sign
+  /// is answered with "Too few characters", which is why script detection can
+  /// improve the outcome but never guarantee it.
+  Future<String?> detectScript(String imagePath) async {
+    try {
+      final result = await _run(executable, [imagePath, 'stdout', '--psm', '0']);
+      if (result.exitCode != 0) return null;
+      return parseOsdScript('${result.stdout}\n${result.stderr}');
+    } on ProcessException {
+      return null;
     }
-    if (page.meanConfidence < kMinMeanConfidence) {
-      // Unreadable *and* the configured language was never installed: name the
-      // missing trained data instead of blaming the image, because that is
-      // almost certainly the cause and the user can fix it.
-      if (languages.missing.isNotEmpty) {
-        throw OcrLanguageMissingException(languages.missing);
-      }
-      throw OcrFailedException(
-        'Mean confidence ${page.meanConfidence.toStringAsFixed(1)} is below '
-        '$kMinMeanConfidence — refusing to pass this on as text.',
-      );
-    }
-
-    return page.text;
   }
 
   /// Trained data actually installed, as three-letter codes.
@@ -185,11 +275,13 @@ class TesseractLanguages {
   final List<String> missing;
 }
 
-/// Turns missing language codes into something the user can act on.
+/// Turns missing trained data into something the user can act on.
 ///
-/// Debian and its derivatives package trained data as `tesseract-ocr-<code>`,
-/// which covers the Linux desktop this runs on. Elsewhere the bare codes are
-/// the most honest thing we can say.
+/// Debian and its derivatives package it as `tesseract-ocr-<code>` for a
+/// language (`bul`) and `tesseract-ocr-script-<code>` for a whole script — the
+/// latter arrives here already carrying its `script-` prefix, so both forms
+/// take the same route. Elsewhere the bare codes are the most honest thing we
+/// can say.
 String tesseractPackageHint(List<String> codes) {
   if (Platform.isLinux) {
     return codes.map((c) => 'tesseract-ocr-$c').join(' ');

@@ -235,7 +235,21 @@ Measured with only `eng` installed:
 | German, Polish, … (Latin + diacritics) | letters right, diacritics lost (`Käse`→`Kase`) at ~90 confidence | optional — the AI restores them |
 | Bulgarian, Russian, … (Cyrillic) and other foreign scripts | noise at ~39 confidence → rejected by the gate | **yes** |
 
-So `tesseract-ocr` on its own covers Latin scripts. When a read is rejected *and* a configured language had no trained data, the app names the package to install rather than blaming the image; when the read succeeded despite a missing package, it stays quiet.
+So `tesseract-ocr` on its own covers Latin scripts.
+
+The configured languages are the *output* of translation, but the image holds whatever was photographed — usually something the user cannot read. After a rejected read the app therefore stops trusting the settings and asks the image:
+
+```
+recognise with the configured languages        ← ordinary path, nothing extra
+  └─ rejected?
+       detect the script (--psm 0, osd data ships with the engine)
+         ├─ script we did not load, data installed   → retry ⇒ succeeds
+         ├─ script we did not load, data missing     → "install tesseract-ocr-script-cyrl"
+         ├─ Latin                                    → bad photograph, no install advice
+         └─ too few characters to tell               → plain "could not read that"
+```
+
+Script trained data covers every language written in that script, so it also cushions the free-text language fields: a name the map cannot resolve costs diacritics, not the whole read.
 Build requirements for Windows: Visual Studio 2022 with "Desktop development with C++", Inno Setup 6.3+ for the installer, and internet access on the first CMake configure (to fetch SQLite). Nothing is required at runtime — SQLite and the MSVC runtime ship inside the bundle.
 
 ### Linux installation (ADR-032)

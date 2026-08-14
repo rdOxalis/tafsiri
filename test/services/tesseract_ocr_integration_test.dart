@@ -26,6 +26,19 @@ void main() {
 
     expect(text, 'Please give me butter');
   }, skip: tesseract);
+
+  test('detects a script it was given no language for', () async {
+    // The output format of `--psm 0` is what parseOsdScript depends on, and it
+    // is not something to guess at. Asserting the *detection* rather than a
+    // successful Cyrillic read keeps this stable whether or not the machine
+    // happens to have script/Cyrillic trained data installed.
+    const service = TesseractOcrService();
+
+    expect(
+      await service.detectScript('test/fixtures/ocr_sample_cyrillic.png'),
+      'Cyrillic',
+    );
+  }, skip: tesseract);
 }
 
 /// `null` when Tesseract can run, otherwise the reason to skip.
