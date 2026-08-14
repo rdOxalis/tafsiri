@@ -196,22 +196,31 @@ CREATE TABLE translation_entry (
 
 `main()` calls `initSqfliteForDesktop()` (`lib/core/database/sqflite_desktop.dart`), which is a no-op unless `defaultTargetPlatform` is a desktop platform. On desktop it installs `createDatabaseFactoryFfi(ffiInit: useSystemSqlite)`.
 
-`useSystemSqlite` must be a **top-level** function passed as `ffiInit`, because `sqflite_common_ffi` executes SQLite in a worker isolate — a `sqlite3` loader override registered on the main isolate has no effect there. On Linux it tries `libsqlite3.so` (only present with `libsqlite3-dev`) and then `libsqlite3.so.0` (the runtime package), so no development package is needed on end-user machines.
+`useSystemSqlite` must be a **top-level** function passed as `ffiInit`, because `sqflite_common_ffi` executes SQLite in a worker isolate — a `sqlite3` loader override registered on the main isolate has no effect there. Where it looks depends on the host:
+
+| Host | Search order | Provided by |
+|---|---|---|
+| Linux | `libsqlite3.so` → `libsqlite3.so.0` | the system (`libsqlite3-0`) |
+| Windows | `sqlite3.dll` beside the executable → `windows\third_party\sqlite3\*\` → bare name | the app bundle (ADR-035) |
+
+On Linux the versioned soname is the fallback because the unversioned one only ships in `libsqlite3-dev`, which end users do not have. Windows has no system SQLite at all, so the DLL travels with the app; the repo-local path keeps `flutter test` working from a checkout, where the running executable is the Dart VM rather than the app bundle.
 
 ---
 
 ## Platform Support
 
-| Feature | Android | Linux desktop |
-|---|---|---|
-| Translation (all 3 providers) | ✅ | ✅ |
-| History / favourites (SQLite) | ✅ native | ✅ via FFI (ADR-031) |
-| Settings, localisation, donate link | ✅ | ✅ |
-| Image picking | ✅ camera + gallery | ⚠️ file selection only |
-| OCR (`google_mlkit_text_recognition`) | ✅ | ❌ no Linux implementation — reports the localised OCR error |
-| Voice input (`speech_to_text`) | ✅ | ❌ no Linux implementation — mic button disabled |
+| Feature | Android | Linux desktop | Windows desktop |
+|---|---|---|---|
+| Translation (all 3 providers) | ✅ | ✅ | ✅ |
+| History / favourites (SQLite) | ✅ native | ✅ via FFI (ADR-031) | ✅ via FFI, bundled `sqlite3.dll` (ADR-035) |
+| Settings, localisation, donate link | ✅ | ✅ | ✅ |
+| Backup / restore | ✅ SAF (`file_picker`) | ✅ GTK (`file_selector`) | ✅ native dialogs (`file_selector`) |
+| Image picking | ✅ camera + gallery | ⚠️ file selection only | ⚠️ file selection only |
+| OCR (`google_mlkit_text_recognition`) | ✅ | ❌ no Linux implementation — reports the localised OCR error | ❌ no Windows implementation — same error |
+| Voice input (`speech_to_text`) | ✅ | ❌ no Linux implementation — mic button disabled | ❌ no Windows implementation — mic button disabled |
 
 Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime.
+Build requirements for Windows: Visual Studio 2022 with "Desktop development with C++", Inno Setup 6.3+ for the installer, and internet access on the first CMake configure (to fetch SQLite). Nothing is required at runtime — SQLite and the MSVC runtime ship inside the bundle.
 
 ### Linux installation (ADR-032)
 
@@ -226,6 +235,30 @@ Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime
 | Settings + history | `~/.local/share/ke.darkman.tafsiri/` (**not** removed by `--uninstall`) |
 
 The desktop entry, the icon name and `StartupWMClass` must all be `ke.darkman.tafsiri` — the runner sets `g_set_prgname(APPLICATION_ID)`, which is what Wayland reports as the window `app_id`, and the compositor matches that against the `.desktop` basename to find the icon. Naming any of them after the binary (`tafsiri`) yields a generic placeholder icon.
+
+### Windows build and installation (ADR-035)
+
+`.\build_windows.ps1` builds the release bundle and compiles the installer:
+
+```
+build_windows.ps1
+  ├── flutter build windows --release
+  │     └── windows/CMakeLists.txt
+  │           ├── windows/sqlite3.cmake   → downloads + verifies sqlite3.dll,
+  │           │                             caches it in windows/third_party/
+  │           └── InstallRequiredSystemLibraries → MSVC runtime DLLs
+  │     ⇒ build\windows\x64\runner\Release\   (tafsiri.exe + data\ + all DLLs)
+  └── ISCC windows\installer\tafsiri.iss /DAppVersion=<pubspec version>
+        ⇒ build\windows\installer\TafsiriSetup-<version>.exe
+```
+
+| Artefact | Location |
+|---|---|
+| Program files | `%LOCALAPPDATA%\Programs\Tafsiri\` (per user — no admin rights) |
+| Start menu entry | `Tafsiri` |
+| Settings + history | `%APPDATA%\ke.darkman\Tafsiri\` (uninstall asks before removing it) |
+
+The data directory is **not** configured anywhere in Dart: `path_provider` builds it from `CompanyName` and `ProductName` in `windows/runner/Runner.rc`. Renaming either orphans every existing user's settings and history. `windows/installer/tafsiri.iss` hard-codes the same path for the uninstall prompt, so the two must be changed together.
 
 ---
 

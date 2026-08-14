@@ -1,5 +1,8 @@
 flutter/ephemeral/
 
+# Downloaded and hash-verified by sqlite3.cmake — never committed.
+third_party/
+
 # Visual Studio user-specific files.
 *.suo
 *.user

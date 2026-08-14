@@ -7,6 +7,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Windows desktop build and installer** (ADR-035). `.\build_windows.ps1` builds the release app and packages it as `build\windows\installer\TafsiriSetup-<version>.exe`. The installer is per user — no admin rights, no UAC prompt — into `%LOCALAPPDATA%\Programs\Tafsiri`, with a Start-menu entry and an optional desktop icon. Uninstalling asks whether to keep your settings, API keys and history (`%APPDATA%\ke.darkman\Tafsiri`) and defaults to keeping them.
+- `windows/sqlite3.cmake` — downloads the official SQLite DLL (pinned to 3.53.4, verified against sqlite.org's published SHA3-256) and ships it next to the executable. Windows has no system SQLite, so without it the history and every save would fail. The MSVC runtime is bundled the same way, so the app also starts on machines without the Visual C++ redistributable.
+- Windows branch in `useSystemSqlite`: looks for `sqlite3.dll` beside the executable, then in the repo-local cache, and otherwise fails with a message naming every path it tried.
+- Installer localised into 8 languages (English, German, French, Dutch, Spanish, Danish, Norwegian, Polish — Inno Setup ships no Swahili or Swedish).
+- Release workflow builds the Windows installer on `windows-latest` and uploads it as an artifact.
+
+### Changed
+- Windows app metadata: window title and `ProductName` are now `Tafsiri` instead of the lower-case package name, and `app_icon.ico` is generated from the real app icon rather than the Flutter template logo.
+
 ---
 
 ## [1.0.10] - 2026-08-12

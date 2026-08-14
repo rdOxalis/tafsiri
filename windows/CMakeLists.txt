@@ -57,6 +57,22 @@ add_subdirectory("runner")
 # them to the application.
 include(flutter/generated_plugins.cmake)
 
+# SQLite is loaded at runtime by sqflite_common_ffi and must ship with the app
+# on Windows (ADR-035). Defines SQLITE3_DLL, installed with the bundle below.
+include("${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.cmake")
+
+# Flutter's Windows bundle does not include the MSVC runtime, but a Flutter app
+# links against it. Machines without the Visual C++ redistributable would fail
+# to start with a missing msvcp140.dll, so copy the redistributable DLLs out of
+# the local Visual Studio installation and ship them next to the executable.
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+include(InstallRequiredSystemLibraries)
+if(NOT CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+  message(WARNING
+    "Visual C++ redistributable DLLs not found. The build will still work on "
+    "this machine, but the app may not start on machines without the runtime.")
+endif()
+
 
 # === Installation ===
 # Support files are copied into place next to the executable, so that it can
@@ -83,6 +99,17 @@ install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
 
 if(PLUGIN_BUNDLED_LIBRARIES)
   install(FILES "${PLUGIN_BUNDLED_LIBRARIES}"
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endif()
+
+# Next to the executable, so the default Windows DLL search order finds it
+# (ADR-035).
+install(FILES "${SQLITE3_DLL}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+
+if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+  install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
     DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
     COMPONENT Runtime)
 endif()

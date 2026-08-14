@@ -6,10 +6,14 @@
 
 - [ ] **Close F-Droid MR #39249** (needs your GitLab login — one click): https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249 (ADR-030)
 
+- [ ] **Run the Windows build on an actual Windows machine.** Everything was authored on Linux: `.\build_windows.ps1` must be executed with the Flutter SDK, Visual Studio 2022 ("Desktop development with C++") and Inno Setup 6.3+ present. Then check, in order: the app starts, the title bar and taskbar show the Tafsiri name and icon, a translation is saved and reappears in the history (that is the bundled `sqlite3.dll` working), backup save/restore opens the Windows file dialogs, the mic button is disabled and OCR reports its error, and finally install → Start menu → uninstall including the keep-your-data prompt. (ADR-035)
+
 ---
 
 ## Backlog
 
+- [ ] **(Windows) Bump the pinned SQLite version when it matters.** `windows/sqlite3.cmake` pins 3.53.4 with one SHA3-256 per architecture; a bump means editing four values from sqlite.org's download page. (ADR-035)
+- [ ] **(Windows, optional) Code-sign the installer.** Unsigned, SmartScreen warns on first run. Needs a paid certificate. (ADR-035)
 - [ ] **(Linux) Hide camera as an image source on desktop.** The camera entry in the image-source sheet is meaningless on Linux; `image_picker_linux` only does file selection. Low priority — OCR itself is unavailable there anyway. (ADR-031)
 - [ ] **(Linux, optional) Distributable packaging.** `install.sh` covers per-user installation from source; a redistributable format (AppImage / Flatpak / .deb) for users without a Flutter SDK is still open. BluesoundPlayer's `flutter/package-linux.sh` is a starting point. (ADR-032)
 - [ ] **(Linux, optional) FOSS OCR/STT alternatives.** ML Kit and `speech_to_text` have no Linux support; if desktop parity is ever wanted, this needs different engines. (ADR-031)
@@ -23,6 +27,7 @@
 - [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] Windows desktop build: bundled SQLite (hash-verified download) + MSVC runtime, per-user Inno Setup installer, `build_windows.ps1`, CI job, real app icon. Authored on Linux — needs the manual Windows pass above. (2026-08-14, ADR-035)
 - [x] Backup/restore to a file outside the app sandbox, so settings and history survive an uninstall; API keys opt-in; 22 new tests. (2026-08-12, ADR-034)
 - [x] Correction mode: header toggle, correction prompt for all three providers, `MODE:`/`NOTES:` protocol, suggestions in the output area, schema v2 (`mode`/`notes`) with history badge, strings in all 10 languages, 25 new tests. (2026-08-12, ADR-033)
 - [x] `install.sh`: per-user install into `~/.local` with icons + desktop entry, named after the Wayland `app_id`. Verified end-to-end (menu launch, icon sizes, uninstall). (2026-07-29, ADR-032)

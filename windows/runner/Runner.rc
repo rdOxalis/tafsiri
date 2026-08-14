@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "ke.darkman" "\0"
-            VALUE "FileDescription", "tafsiri" "\0"
+            VALUE "FileDescription", "AI-powered text translation" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "tafsiri" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 ke.darkman. All rights reserved." "\0"
             VALUE "OriginalFilename", "tafsiri.exe" "\0"
-            VALUE "ProductName", "tafsiri" "\0"
+            VALUE "ProductName", "Tafsiri" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

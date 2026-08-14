@@ -77,6 +77,27 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 ---
 
+## Desktop (Linux and Windows)
+
+Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there; voice input and OCR do not — those plugins have no desktop implementation, so the microphone button stays disabled and image recognition reports an error.
+
+**Linux** — needs the Flutter SDK and `libgtk-3-dev`:
+
+```bash
+./install.sh          # builds and installs into ~/.local, no root required
+./install.sh --uninstall
+```
+
+**Windows** — needs the Flutter SDK, Visual Studio 2022 with "Desktop development with C++", and [Inno Setup](https://jrsoftware.org/isinfo.php) 6.3+ for the installer:
+
+```powershell
+.\build_windows.ps1
+```
+
+This produces `build\windows\installer\TafsiriSetup-<version>.exe`. It installs for the current user only, so Windows asks for no administrator rights. Uninstalling asks whether to keep your settings, API keys and translation history.
+
+---
+
 ## Privacy
 
 Camera and microphone are used entirely on-device (Google ML Kit OCR, Android STT). No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
@@ -87,7 +108,7 @@ Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md)
 
 ## Tech Stack
 
-Flutter (Dart) · Android · SQLite · Riverpod · Google ML Kit · speech_to_text
+Flutter (Dart) · Android · Linux · Windows · SQLite · Riverpod · Google ML Kit · speech_to_text
 
 ---
 

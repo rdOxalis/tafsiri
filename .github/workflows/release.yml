@@ -17,3 +17,23 @@ jobs:
         with:
           flutter-version: ${{ env.flutter-version }}
       - run: flutter build apk --release
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.flutter-version }}
+      # Not guaranteed to be on the runner image; a no-op when it already is.
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+      # Builds the release bundle (which downloads sqlite3.dll, ADR-035) and
+      # compiles the per-user installer.
+      - name: Build app and installer
+        run: .\build_windows.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tafsiri-windows-installer
+          path: build/windows/installer/TafsiriSetup-*.exe
+          if-no-files-found: error
