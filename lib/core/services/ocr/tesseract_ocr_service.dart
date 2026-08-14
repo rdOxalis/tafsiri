@@ -249,10 +249,15 @@ class TesseractOcrService implements OcrService {
 
     final ProcessResult result;
     try {
-      // `tsv` is a config file name, not a flag, so it goes last. It gives the
-      // text and the per-word confidence in one run.
-      result =
-          await _run(executable, [imagePath, 'stdout', '-l', languages, 'tsv']);
+      // Text and per-word confidence in one run. Set as a parameter rather than
+      // via the `tsv` config file that used to go here: that file lives in the
+      // installation's `tessdata/configs/`, and where it is absent Tesseract
+      // does not fail — it prints `read_params_file: Can't open tsv` to stderr,
+      // exits 0, and hands back plain text. The parser then finds no rows, the
+      // read counts as unusable, and the user is told to install trained data
+      // that was already there. Measured on a Windows install (ADR-043).
+      result = await _run(executable,
+          [imagePath, 'stdout', '-l', languages, '-c', 'tessedit_create_tsv=1']);
     } on ProcessException catch (e) {
       throw OcrUnavailableException('Could not run $executable: ${e.message}');
     }

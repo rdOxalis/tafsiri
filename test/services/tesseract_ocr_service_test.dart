@@ -532,6 +532,36 @@ void main() {
       );
     });
 
+    test('asks for TSV by parameter, never by config file name', () async {
+      // `tsv` as a bare trailing argument is a *config file* in the
+      // installation's tessdata/configs/. Where that file is absent — measured
+      // on a Windows install — Tesseract does not fail: it warns on stderr,
+      // exits 0 and prints plain text. The parser then finds no rows, the read
+      // counts as unusable, and the user is told to install trained data that
+      // was sitting there all along (ADR-043).
+      late List<String> seen;
+      final service = TesseractOcrService(
+        runProcess: (executable, arguments) async {
+          if (arguments.contains('--list-langs')) {
+            return ProcessResult(0, 0, 'eng\n', '');
+          }
+          if (arguments.contains('--psm')) return ProcessResult(0, 1, '', '');
+          seen = arguments;
+          return ProcessResult(0, 0, tsvOf([word('Habari', 95.0)]), '');
+        },
+      );
+
+      await service.recogniseText(
+        '/tmp/photo.png',
+        primaryLanguage: 'English',
+        altLanguage: 'English',
+      );
+
+      expect(seen, containsAllInOrder(['-c', 'tessedit_create_tsv=1']));
+      expect(seen, isNot(contains('tsv')),
+          reason: 'a bare "tsv" argument reintroduces the config-file dependency');
+    });
+
     test('a missing binary is unavailable, not merely failed', () async {
       // The distinction drives the message: "install Tesseract" rather than
       // "could not read that image".

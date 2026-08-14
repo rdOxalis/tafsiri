@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-043: Ask Tesseract for TSV by parameter, not by config file name
+**Date:** 2026-08-14
+**Status:** Accepted
+**Context:** OCR turned out to work on Windows after all — the service shells out to a bare `tesseract`, and `CreateProcess` resolves that against `PATH` and appends `.exe`, so an installed Tesseract is simply found. With the engine and the Cyrillic script data both installed and the current build running (`1.0.11+11 · 451ed76`, checked in Settings), recognition still reported the script package as missing. The cause is a hidden dependency in how the run was invoked. `_recognise` passed `tsv` as a trailing argument, which is not a flag but the name of a **config file** that lives in the installation's `tessdata/configs/`. Where that file is absent, Tesseract does not fail: it writes `read_params_file: Can't open tsv` to stderr, **exits 0**, and prints ordinary text instead of TSV. `parseTesseractTsv` then finds no word rows, the read counts as unusable, and the caller falls through to the branch that names trained data to install — telling the user to install something that was already there. Every recognition on that machine had been failing this way; only script *detection* worked, because `--psm 0` needs no config file. Reproduced locally by pointing `TESSDATA_PREFIX` at a tessdata directory with `configs/` removed, which is exactly the earlier confusion in this same session where a hand-built tessdata directory produced "no word rows" until `configs/` was copied in.
+**Decision:** Ask for the same output as a parameter: `-c tessedit_create_tsv=1` instead of the trailing `tsv`. Byte-identical output, no dependency on what the installation happens to ship in `configs/`. A unit test pins the argument shape — both that `-c tessedit_create_tsv=1` is present and that a bare `tsv` is not — because the failure it guards against is silent and would otherwise only surface as a wrong error message on someone else's machine.
+**Consequences:** Image-to-text works on Windows with a user-installed Tesseract, which the documentation had been claiming was impossible; that claim needs correcting in `build_windows.ps1`, `docs/todo.md` and the v1.0.11 release notes. Bundling the engine (still open) is now clearly worth doing rather than speculative, since the only missing piece is shipping the files. One related wart remains: `tesseractPackageHint` returns Debian package names on Linux and bare codes elsewhere, so a Windows user is told to install `script-cyrl` — a name that means nothing there. The general lesson is worth keeping: a dependency that degrades to *plausible wrong output with exit code 0* is worse than one that fails, and this is the second time in this ADR series that a silent success has been the actual bug.
+
+---
+
 ## ADR-042: Releases are assembled by hand; the GitHub Actions workflow is removed
 **Date:** 2026-08-14
 **Status:** Accepted — supersedes ADR-036
