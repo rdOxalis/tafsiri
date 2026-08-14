@@ -185,8 +185,12 @@ if ($installer -and (Test-Path $installer)) {
     Write-Note "Installer:  $installer"
 }
 Write-Host ''
-Write-Note 'Note: image OCR is unavailable on Windows - no Tesseract is bundled yet'
-Write-Note '(ADR-037), so the image button reports "install Tesseract". Pasting an'
-Write-Note 'image with Ctrl+V is Linux-only for the same reason (ADR-040); Ctrl+V'
-Write-Note 'still pastes text here. Voice input does have a Windows implementation'
-Write-Note '(speech_to_text_windows, beta) and is worth testing - see docs/todo.md.'
+Write-Note 'Note: image OCR works here, but nothing is bundled - install Tesseract'
+Write-Note 'and put it on PATH (winget install UB-Mannheim.TesseractOCR), including'
+Write-Note 'the script data for any non-Latin text you photograph. Verified end to'
+Write-Note 'end on Windows (ADR-045). Pasting an image with Ctrl+V is still'
+Write-Note 'Linux-only (ADR-040); Ctrl+V pastes text here as usual. Voice input has'
+Write-Note 'a Windows implementation (speech_to_text_windows, beta), still untested.'
+Write-Note ''
+Write-Note 'When recognition misbehaves, read %TEMP%\tafsiri-ocr.log - it records'
+Write-Note 'the languages found, the script detected and every command run.'

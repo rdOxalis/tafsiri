@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -163,7 +164,27 @@ class TesseractOcrService implements OcrService {
 
   final ProcessRunner? _runProcess;
 
-  ProcessRunner get _run => _runProcess ?? Process.run;
+  ProcessRunner get _run => _runProcess ?? _utf8Run;
+
+  /// `Process.run`, but reading the output as UTF-8 rather than as whatever the
+  /// machine calls its system encoding.
+  ///
+  /// Tesseract always writes UTF-8. `Process.run` defaults to `systemEncoding`,
+  /// which is UTF-8 on Linux — and the ANSI code page on Windows, where
+  /// `Моля те` came back as `ÐœÐ¾Ð»Ñ Ñ‚Ðµ`: every two-byte character decoded as
+  /// two Latin ones. Nothing failed, the confidence was 96, and the text was
+  /// nonsense (ADR-046). Malformed input is tolerated rather than thrown on,
+  /// because a mangled character is worth reporting and a crash is not.
+  static Future<ProcessResult> _utf8Run(
+    String executable,
+    List<String> arguments,
+  ) =>
+      Process.run(
+        executable,
+        arguments,
+        stdoutEncoding: const Utf8Codec(allowMalformed: true),
+        stderrEncoding: const Utf8Codec(allowMalformed: true),
+      );
 
   @override
   Future<String> recogniseText(

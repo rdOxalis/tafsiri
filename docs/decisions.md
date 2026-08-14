@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-046: Read subprocess output as UTF-8, not as the system encoding
+**Date:** 2026-08-14
+**Status:** Accepted
+**Context:** With ADR-045 in place the Windows log finally read `448 B out, text=37 chars, confidence=96.0` and `OK: 37 chars` — recognition working, high confidence, correct length. What appeared in the input field was `ÐœÐ¾Ð»Ñ Ñ‚Ðµ, Ð´Ð°Ð¹ Ð¼Ð¸ Ð¼Ð°ÑÐ»Ð¾Ñ‚Ð¾`: the UTF-8 bytes of `Моля те, дай ми маслото` with every byte rendered as its own Latin character. `Process.run` decodes with `systemEncoding` by default, which is UTF-8 on Linux and the machine's **ANSI code page** on Windows; Tesseract always writes UTF-8. So each two-byte Cyrillic character arrived as two characters, which is why the count was 37 rather than 24. Nothing failed anywhere: exit code 0, 96 confidence, a plausible-looking string. This is the same shape as the `tsv` config file (ADR-043) and the mis-attributed error (ADR-045) — the failure mode this component keeps producing is *silent success with wrong content*, and it is the one that survives longest because every check it passes is real.
+**Decision:** Read both streams as UTF-8 explicitly, with `allowMalformed: true` so a damaged byte costs one replacement character rather than an exception — a mangled letter is worth reporting to the user, a crash is not. This is also more correct on Linux, where a `LANG=C` session would have had the same problem for the same reason. Only the default runner changes; the injectable `ProcessRunner` used by the tests is untouched.
+**Consequences:** Cyrillic, Greek and Arabic reads return the characters Tesseract actually found, on every platform. The existing integration test already covers this — it asserts the result matches `[Ѐ-ӿ]`, which mojibake does not — but only on a machine where the bug reproduces, so it passed on Linux throughout. That is the limitation worth naming: a test that can only fail on the platform you do not develop on is documentation, not a guard. The diagnostic log (ADR-044) is what actually closed this one, and it closed it in a single round after four rounds of guessing without it.
+
+---
+
 ## ADR-045: A poor read is a poor read, not a missing package
 **Date:** 2026-08-14
 **Status:** Accepted
