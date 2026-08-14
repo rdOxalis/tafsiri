@@ -271,6 +271,9 @@ Build requirements for Windows: Visual Studio 2022 with "Desktop development wit
 | Desktop entry | `~/.local/share/applications/ke.darkman.tafsiri.desktop` |
 | Icons | `~/.local/share/icons/hicolor/{16…512}/apps/` + `scalable/` |
 | Settings + history | `~/.local/share/ke.darkman.tafsiri/` (**not** removed by `--uninstall`) |
+| Build marker | `build/linux/x64/release/bundle/.tafsiri-build` — the commit the bundle was built from |
+
+`install.sh` bakes that commit into the binary via `--dart-define=TAFSIRI_BUILD`, shows it under Settings (`v1.0.10+10 · 4d02f63`), and compares it on the next run: a bundle from a different commit is rebuilt rather than reused. An installed bundle is a copy of the build directory, so without this a `./install.sh` after a `git pull` could reinstall exactly the code you were trying to replace. A `-dirty` stamp is never trusted, since git cannot tell whether the tree changed after the build.
 
 The desktop entry, the icon name and `StartupWMClass` must all be `ke.darkman.tafsiri` — the runner sets `g_set_prgname(APPLICATION_ID)`, which is what Wayland reports as the window `app_id`, and the compositor matches that against the `.desktop` basename to find the icon. Naming any of them after the binary (`tafsiri`) yields a generic placeholder icon.
 

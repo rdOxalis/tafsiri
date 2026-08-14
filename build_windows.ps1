@@ -75,6 +75,17 @@ function Assert-Flutter {
     }
 }
 
+# Short commit the tree is at, with a marker for uncommitted changes. Baked into
+# the binary so Settings can show which build is running — the question that
+# comes up whenever behaviour does not match the source.
+function Get-BuildStamp {
+    $stamp = & git -C $ProjectDir rev-parse --short HEAD 2>$null
+    if ($LASTEXITCODE -ne 0 -or -not $stamp) { return 'nogit' }
+    & git -C $ProjectDir diff --quiet HEAD 2>$null
+    if ($LASTEXITCODE -ne 0) { return "$stamp-dirty" }
+    return $stamp
+}
+
 function Build-App {
     if ($Rebuild) {
         Write-Step 'Removing build\windows for a clean rebuild...'
@@ -85,8 +96,9 @@ function Build-App {
     & flutter pub get
     if ($LASTEXITCODE -ne 0) { Fail 'flutter pub get failed.' }
 
-    Write-Step 'Building Tafsiri (release)...'
-    & flutter build windows --release
+    $stamp = Get-BuildStamp
+    Write-Step "Building Tafsiri (release, $stamp)..."
+    & flutter build windows --release "--dart-define=TAFSIRI_BUILD=$stamp"
     if ($LASTEXITCODE -ne 0) { Fail 'flutter build windows failed.' }
 
     if (-not (Test-Path (Join-Path $BundleDir 'tafsiri.exe'))) {

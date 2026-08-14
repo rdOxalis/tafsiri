@@ -20,6 +20,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Automated releases** (ADR-036). Pushing a `v*` tag now builds the APK, the Linux tarball and the Windows installer and attaches all three to the GitHub release for that tag. A release that already exists keeps its hand-written title and notes — only the assets are added. The tag is checked against `pubspec.yaml` first, so a mistyped tag fails before anything is built.
 - The APK is only built when the Android signing secrets (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`) are configured. Without them Gradle would fall back to debug signing and produce an APK nobody could install over their existing Tafsiri, so it is skipped instead — Linux and Windows still publish.
 
+- **The build is now identifiable.** Settings shows `v1.0.10+10 · 4d02f63` — version, build number and the commit it was compiled from, with a `-dirty` suffix when the working tree had uncommitted changes. An installed desktop bundle is a copy, so behaviour that contradicts the source is more often a stale binary than a bug, and this is how you tell in one glance.
+- `install.sh` notices by itself when the existing bundle came from a different commit and rebuilds instead of silently reusing it. Previously `./install.sh` without `--rebuild` would happily install a bundle built from older code.
+
 ### Changed
 - The camera entry in the image source sheet is hidden on desktop, where image pickers do file selection only and it was a guaranteed dead end.
 - The Windows installer is named `tafsiri-<version>-windows-x64.exe`, matching the existing `tafsiri-<version>.apk` and `tafsiri-<version>-linux-x64.tar.gz` assets.

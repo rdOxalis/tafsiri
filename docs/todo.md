@@ -32,6 +32,7 @@
 - [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] Build stamp: commit baked into the binary and shown under Settings; `install.sh` rebuilds a bundle that came from a different commit instead of reusing it. (2026-08-14)
 - [x] Script detection as a second attempt: a rejected read asks the image which script it is, retries with script-level trained data, and names the package when that is missing. Closes the case the settings cannot cover — photographing a script you never configured. (2026-08-14, ADR-037)
 - [x] Italian and Bulgarian as UI languages (12 total), including the STT language list and the Windows installer. Bulgarian is the first non-Latin script. (2026-08-14)
 - [x] Actionable message when OCR fails because the configured language has no trained data installed. (2026-08-14, ADR-037)

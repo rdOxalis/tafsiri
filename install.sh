@@ -33,6 +33,9 @@ ICON_PNG="$PROJECT_DIR/assets/icon/icon_1024.png"
 ICON_SVG="$PROJECT_DIR/assets/icon/icon.svg"
 ICON_SIZES=(16 24 32 48 64 128 256 512)
 
+# Records which commit the bundle was built from; see bundle_is_current.
+STAMP_FILE=".tafsiri-build"
+
 info()  { printf '\033[1;36m==>\033[0m %s\n' "$1"; }
 warn()  { printf '\033[1;33m warning:\033[0m %s\n' "$1" >&2; }
 die()   { printf '\033[1;31m error:\033[0m %s\n' "$1" >&2; exit 1; }
@@ -110,6 +113,20 @@ check_runtime_deps() {
     fi
 }
 
+# Short commit the working tree is at, with a marker when it has uncommitted
+# changes. Baked into the binary so Settings can show which build is running.
+build_stamp() {
+    local stamp
+    stamp="$(git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null)" || {
+        echo "nogit"
+        return
+    }
+    if ! git -C "$PROJECT_DIR" diff --quiet HEAD 2>/dev/null; then
+        stamp="$stamp-dirty"
+    fi
+    echo "$stamp"
+}
+
 build_app() {
     local cache="$PROJECT_DIR/build/linux/x64/release/CMakeCache.txt"
 
@@ -125,11 +142,33 @@ build_app() {
         rm -rf "$PROJECT_DIR/build/linux"
     fi
 
-    info "Building $APP_NAME (release)…"
-    ( cd "$PROJECT_DIR" && flutter build linux --release )
+    local stamp
+    stamp="$(build_stamp)"
+
+    info "Building $APP_NAME (release, $stamp)…"
+    ( cd "$PROJECT_DIR" \
+        && flutter build linux --release --dart-define=TAFSIRI_BUILD="$stamp" )
 
     [ -x "$BUNDLE_DIR/$BINARY_NAME" ] \
         || die "Build finished but $BUNDLE_DIR/$BINARY_NAME is missing."
+
+    # Lets the next run tell whether the bundle still matches the source.
+    echo "$stamp" > "$BUNDLE_DIR/$STAMP_FILE"
+}
+
+# An installed bundle is a copy: editing the source does not change it, and
+# neither does a build that never ran. Reusing a bundle from a different commit
+# is how you end up debugging behaviour that is not in the code any more.
+bundle_is_current() {
+    [ -x "$BUNDLE_DIR/$BINARY_NAME" ] || return 1
+    [ -f "$BUNDLE_DIR/$STAMP_FILE" ] || return 1
+    local built current
+    built="$(cat "$BUNDLE_DIR/$STAMP_FILE")"
+    current="$(build_stamp)"
+    # A dirty tree can differ from its own last build in ways git cannot see,
+    # so never trust a dirty stamp.
+    case "$built" in *-dirty|nogit) return 1 ;; esac
+    [ "$built" = "$current" ]
 }
 
 install_icons() {
@@ -231,10 +270,10 @@ do_install() {
     if [ "$force_rebuild" = "yes" ]; then
         rm -rf "$PROJECT_DIR/build/linux"
         build_app
-    elif [ ! -x "$BUNDLE_DIR/$BINARY_NAME" ]; then
-        build_app
-    else
+    elif bundle_is_current; then
         info "Reusing existing build at $BUNDLE_DIR (use --rebuild to force)."
+    else
+        build_app
     fi
 
     info "Installing to $INSTALL_DIR…"
@@ -254,7 +293,9 @@ do_install() {
     refresh_caches
 
     echo
-    info "$APP_NAME is installed."
+    info "$APP_NAME is installed ($(cat "$BUNDLE_DIR/$STAMP_FILE" 2>/dev/null || echo unknown))."
+    echo "  The same string is shown under Settings, so you can always check"
+    echo "  which build is actually running."
     echo "  Launch it from your application menu, or run: $BINARY_NAME"
     echo
 

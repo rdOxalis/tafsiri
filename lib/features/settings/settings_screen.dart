@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../../core/build_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants.dart';
 import '../../core/locale_notifier.dart';
@@ -33,7 +34,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void initState() {
     super.initState();
     PackageInfo.fromPlatform().then((info) {
-      if (mounted) setState(() => _appVersion = info.version);
+      if (mounted) {
+        setState(() => _appVersion = buildLabel(
+              version: info.version,
+              buildNumber: info.buildNumber,
+            ));
+      }
     });
   }
 
@@ -239,6 +245,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 Center(
                   child: Text(
                     'v$_appVersion',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.outlineVariant,
                         ),

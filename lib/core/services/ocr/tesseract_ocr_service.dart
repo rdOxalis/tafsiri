@@ -211,7 +211,13 @@ class TesseractOcrService implements OcrService {
       final result = await _run(executable, [imagePath, 'stdout', '--psm', '0']);
       if (result.exitCode != 0) return null;
       final osd = parseOsd('${result.stdout}\n${result.stderr}');
-      if (osd == null || osd.confidence < kMinScriptConfidence) return null;
+      if (osd == null || osd.confidence < kMinScriptConfidence) {
+        // Usually "Too few characters" — a short sign. Worth saying out loud,
+        // because it is the one case that silently falls back to the configured
+        // languages and can therefore still misread a foreign script.
+        debugPrint('[OCR] script not detected: ${osd ?? result.stdout}');
+        return null;
+      }
       debugPrint('[OCR] script ${osd.script} (${osd.confidence})');
       return osd.script;
     } on ProcessException {
