@@ -1,6 +1,6 @@
 ﻿; Tafsiri — Inno Setup installer script (ADR-035).
 ;
-; Builds a single TafsiriSetup-<version>.exe from the Flutter release bundle.
+; Builds a single tafsiri-<version>-windows-x64.exe from the Flutter release bundle.
 ; Do not compile this by hand: build_windows.ps1 builds the app first and passes
 ; the version from pubspec.yaml in via /DAppVersion.
 ;
@@ -45,7 +45,8 @@ PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 OutputDir=..\..\build\windows\installer
-OutputBaseFilename=TafsiriSetup-{#AppVersion}
+; Matches the naming of the other release assets: tafsiri-<version>[-platform].
+OutputBaseFilename=tafsiri-{#AppVersion}-windows-x64
 SetupIconFile=..\runner\resources\app_icon.ico
 UninstallDisplayIcon={app}\{#AppExe}
 UninstallDisplayName={#AppName}

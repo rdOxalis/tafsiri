@@ -94,7 +94,7 @@ Tafsiri also runs on the desktop. Translation, history, favourites, settings and
 .\build_windows.ps1
 ```
 
-This produces `build\windows\installer\TafsiriSetup-<version>.exe`. It installs for the current user only, so Windows asks for no administrator rights. Uninstalling asks whether to keep your settings, API keys and translation history.
+This produces `build\windows\installer\tafsiri-<version>-windows-x64.exe`. It installs for the current user only, so Windows asks for no administrator rights. Uninstalling asks whether to keep your settings, API keys and translation history.
 
 ---
 

@@ -8,14 +8,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- **Windows desktop build and installer** (ADR-035). `.\build_windows.ps1` builds the release app and packages it as `build\windows\installer\TafsiriSetup-<version>.exe`. The installer is per user — no admin rights, no UAC prompt — into `%LOCALAPPDATA%\Programs\Tafsiri`, with a Start-menu entry and an optional desktop icon. Uninstalling asks whether to keep your settings, API keys and history (`%APPDATA%\ke.darkman\Tafsiri`) and defaults to keeping them.
+- **Windows desktop build and installer** (ADR-035). `.\build_windows.ps1` builds the release app and packages it as `build\windows\installer\tafsiri-<version>-windows-x64.exe`. The installer is per user — no admin rights, no UAC prompt — into `%LOCALAPPDATA%\Programs\Tafsiri`, with a Start-menu entry and an optional desktop icon. Uninstalling asks whether to keep your settings, API keys and history (`%APPDATA%\ke.darkman\Tafsiri`) and defaults to keeping them.
 - `windows/sqlite3.cmake` — downloads the official SQLite DLL (pinned to 3.53.4, verified against sqlite.org's published SHA3-256) and ships it next to the executable. Windows has no system SQLite, so without it the history and every save would fail. The MSVC runtime is bundled the same way, so the app also starts on machines without the Visual C++ redistributable.
 - Windows branch in `useSystemSqlite`: looks for `sqlite3.dll` beside the executable, then in the repo-local cache, and otherwise fails with a message naming every path it tried.
 - Installer localised into 8 languages (English, German, French, Dutch, Spanish, Danish, Norwegian, Polish — Inno Setup ships no Swahili or Swedish).
-- Release workflow builds the Windows installer on `windows-latest` and uploads it as an artifact.
+- **Automated releases** (ADR-036). Pushing a `v*` tag now builds the APK, the Linux tarball and the Windows installer and attaches all three to the GitHub release for that tag. A release that already exists keeps its hand-written title and notes — only the assets are added. The tag is checked against `pubspec.yaml` first, so a mistyped tag fails before anything is built.
+- The APK is only built when the Android signing secrets (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`) are configured. Without them Gradle would fall back to debug signing and produce an APK nobody could install over their existing Tafsiri, so it is skipped instead — Linux and Windows still publish.
 
 ### Changed
 - Windows app metadata: window title and `ProductName` are now `Tafsiri` instead of the lower-case package name, and `app_icon.ico` is generated from the real app icon rather than the Flutter template logo.
+- The Windows installer is named `tafsiri-<version>-windows-x64.exe`, matching the existing `tafsiri-<version>.apk` and `tafsiri-<version>-linux-x64.tar.gz` assets.
 
 ---
 

@@ -5,7 +5,7 @@
 
 .DESCRIPTION
     Builds the Flutter release bundle and compiles windows\installer\tafsiri.iss
-    with Inno Setup into build\windows\installer\TafsiriSetup-<version>.exe.
+    with Inno Setup into build\windows\installer\tafsiri-<version>-windows-x64.exe.
 
     The installer installs per user (no admin rights, no UAC prompt) into
     %LOCALAPPDATA%\Programs\Tafsiri.
@@ -148,7 +148,7 @@ function Build-Installer {
     & $iscc "/DAppVersion=$Version" $IssFile
     if ($LASTEXITCODE -ne 0) { Fail 'Inno Setup failed to compile the installer.' }
 
-    return (Join-Path $OutputDir "TafsiriSetup-$Version.exe")
+    return (Join-Path $OutputDir "tafsiri-$Version-windows-x64.exe")
 }
 
 # -------------------------------------------------------------------- main --

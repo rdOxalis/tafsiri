@@ -1,5 +1,9 @@
 name: Release
 
+# Pushing a v* tag builds all three artefacts and attaches them to the GitHub
+# release for that tag (ADR-036). An existing release keeps its hand-written
+# title and notes — only the assets are added.
+
 on:
   push:
     tags:
@@ -9,16 +13,114 @@ env:
   flutter-version: '3.41.9'
 
 jobs:
-  build:
+  # The tag drives the asset names, so a tag that disagrees with pubspec.yaml
+  # would ship mislabelled files. Catch that before spending three builds on it.
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pubspec="$(sed -n 's/^version:[[:space:]]*\([^+]*\).*/\1/p' pubspec.yaml | tr -d '[:space:]')"
+          if [ "$tag" != "$pubspec" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match pubspec.yaml version $pubspec"
+            exit 1
+          fi
+          echo "version=$tag" >> "$GITHUB_OUTPUT"
+
+  android:
+    needs: version
+    runs-on: ubuntu-latest
+    # The Android toolchain (NDK, keystore) is the fragile part of this
+    # workflow. If it breaks, the Linux and Windows assets must still ship —
+    # the APK can always be uploaded by hand afterwards.
+    continue-on-error: true
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+    steps:
+      - uses: actions/checkout@v4
+      # Without android/key.properties, Gradle silently falls back to the debug
+      # signing config (android/app/build.gradle.kts). A debug-signed APK cannot
+      # be installed over an existing Tafsiri, so skip the APK entirely rather
+      # than publish one nobody can update to.
+      - id: signing
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::ANDROID_KEYSTORE_BASE64 is not set — skipping the APK. Build and upload it manually, or add the signing secrets (see ADR-036)."
+          else
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.signing.outputs.signed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - if: steps.signing.outputs.signed == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.flutter-version }}
+      - name: Write the signing config
+        if: steps.signing.outputs.signed == 'true'
+        env:
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/release-keystore.jks
+          # storeFile is resolved relative to android/app by build.gradle.kts.
+          cat > android/key.properties <<EOF
+          storeFile=release-keystore.jks
+          storePassword=$STORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+      - if: steps.signing.outputs.signed == 'true'
+        run: flutter build apk --release
+      - name: Collect the APK
+        if: steps.signing.outputs.signed == 'true'
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             "dist/tafsiri-${{ needs.version.outputs.version }}.apk"
+      - if: steps.signing.outputs.signed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-android
+          path: dist/*.apk
+          if-no-files-found: error
+
+  linux:
+    needs: version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.flutter-version }}
-      - run: flutter build apk --release
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+      - run: flutter build linux --release
+      # Same layout as the 1.0.10 asset: one top-level directory holding the
+      # bundle, so unpacking never scatters files into the current directory.
+      - name: Pack the bundle
+        run: |
+          name="tafsiri-${{ needs.version.outputs.version }}-linux-x64"
+          mkdir -p dist
+          cp -r build/linux/x64/release/bundle "$name"
+          tar czf "dist/$name.tar.gz" "$name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-linux
+          path: dist/*.tar.gz
+          if-no-files-found: error
 
   windows:
+    needs: version
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +136,31 @@ jobs:
         run: .\build_windows.ps1
       - uses: actions/upload-artifact@v4
         with:
-          name: tafsiri-windows-installer
-          path: build/windows/installer/TafsiriSetup-*.exe
+          name: release-windows
+          path: build/windows/installer/*.exe
           if-no-files-found: error
+
+  publish:
+    needs: [version, android, linux, windows]
+    # android may have been skipped or failed; publish whatever did build.
+    if: always() && needs.linux.result == 'success' && needs.windows.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: dist
+      - name: Attach the artefacts to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ls -lh dist/
+          # Keep an existing release as it is — its title and notes are written
+          # by hand — and only create a bare one if the tag has none yet.
+          gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+                 --title "Tafsiri $GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber dist/*

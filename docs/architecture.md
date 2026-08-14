@@ -249,7 +249,7 @@ build_windows.ps1
   │           └── InstallRequiredSystemLibraries → MSVC runtime DLLs
   │     ⇒ build\windows\x64\runner\Release\   (tafsiri.exe + data\ + all DLLs)
   └── ISCC windows\installer\tafsiri.iss /DAppVersion=<pubspec version>
-        ⇒ build\windows\installer\TafsiriSetup-<version>.exe
+        ⇒ build\windows\installer\tafsiri-<version>-windows-x64.exe
 ```
 
 | Artefact | Location |
@@ -259,6 +259,25 @@ build_windows.ps1
 | Settings + history | `%APPDATA%\ke.darkman\Tafsiri\` (uninstall asks before removing it) |
 
 The data directory is **not** configured anywhere in Dart: `path_provider` builds it from `CompanyName` and `ProductName` in `windows/runner/Runner.rc`. Renaming either orphans every existing user's settings and history. `windows/installer/tafsiri.iss` hard-codes the same path for the uninstall prompt, so the two must be changed together.
+
+### Releasing (ADR-036)
+
+`git tag vX.Y.Z && git push --tags` triggers `.github/workflows/release.yml`:
+
+```
+version   tag == pubspec.yaml? otherwise stop before building anything
+   ├── android   flutter build apk       → tafsiri-<version>.apk
+   ├── linux     flutter build linux     → tafsiri-<version>-linux-x64.tar.gz
+   └── windows   build_windows.ps1       → tafsiri-<version>-windows-x64.exe
+publish   gh release upload --clobber  (creates the release only if absent)
+```
+
+| | |
+|---|---|
+| Release notes | written by hand; `publish` never overwrites an existing release's title or body |
+| APK | built only if `ANDROID_KEYSTORE_BASE64` and the three other signing secrets exist — otherwise Gradle would fall back to **debug** signing (`android/app/build.gradle.kts`) and produce an APK that cannot be installed over an existing Tafsiri |
+| Failure isolation | `android` is `continue-on-error`; `publish` needs only `linux` and `windows` |
+| Re-runs | `--clobber` replaces assets, so re-running a tag is safe |
 
 ---
 
