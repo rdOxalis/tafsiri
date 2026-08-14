@@ -37,6 +37,7 @@
   "errorApiError": "Vertaling mislukt. Probeer het opnieuw.",
   "errorNetwork": "Geen verbinding. Controleer uw internet.",
   "errorOcrFailed": "Kon geen tekst uit de afbeelding halen.",
+  "errorOcrEngineMissing": "Tekstherkenning is niet geïnstalleerd. Installeer Tesseract om tekst uit afbeeldingen te lezen.",
   "errorSttUnavailable": "Spraakinvoer is niet beschikbaar op dit apparaat.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

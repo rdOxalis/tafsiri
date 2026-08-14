@@ -89,6 +89,25 @@ check_runtime_deps() {
              translations fail at runtime, install it with:
              sudo apt install libsqlite3-0"
     fi
+
+    # Image-to-text runs through the external tesseract binary on desktop
+    # (ADR-037). Optional: without it the rest of the app works, only the image
+    # button reports that no recognition engine is installed.
+    if ! command -v tesseract >/dev/null 2>&1; then
+        warn "tesseract not found — image-to-text will be unavailable. Install
+             it, plus the trained data for the languages you translate:
+             sudo apt install tesseract-ocr tesseract-ocr-swa tesseract-ocr-deu"
+    else
+        # Trained data is packaged per language; the engine alone only ships
+        # English. Tafsiri passes both configured languages to tesseract.
+        local langs
+        langs="$(tesseract --list-langs 2>&1 | grep -cv ' ' || true)"
+        if [ "${langs:-0}" -le 2 ]; then
+            warn "tesseract is installed but has almost no trained data. For
+             anything but English, add the matching package, e.g.:
+             sudo apt install tesseract-ocr-swa"
+        fi
+    fi
 }
 
 build_app() {
@@ -245,8 +264,9 @@ do_install() {
              not work until you add it. The menu entry works regardless." ;;
     esac
 
-    echo "  Note: voice input and image OCR are unavailable on Linux —"
-    echo "  those plugins have no Linux implementation (see docs/decisions.md, ADR-031)."
+    echo "  Note: voice input is unavailable on Linux — speech_to_text has no"
+    echo "  Linux implementation (see docs/decisions.md, ADR-031). Image-to-text"
+    echo "  works via tesseract (ADR-037); see the warnings above if it is missing."
 }
 
 # ---------------------------------------------------------------------- main --

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../core/services/ocr/ocr_service_factory.dart';
 import '../../../shared/providers/selected_tab_provider.dart';
 import '../../settings/settings_controller.dart';
 import '../translator_controller.dart';
@@ -198,16 +199,19 @@ class ActionBar extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: Text(l10n.ocrSourceCamera),
-              onTap: () {
-                Navigator.pop(ctx);
-                ref.read(translatorProvider.notifier).pickImageAndRecognize(
-                      source: ImageSource.camera,
-                    );
-              },
-            ),
+            // Desktop image pickers do file selection only, so offering the
+            // camera here would be a guaranteed dead end (ADR-037).
+            if (hasCamera)
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: Text(l10n.ocrSourceCamera),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  ref.read(translatorProvider.notifier).pickImageAndRecognize(
+                        source: ImageSource.camera,
+                      );
+                },
+              ),
             ListTile(
               leading: const Icon(Icons.photo_library),
               title: Text(l10n.ocrSourceGallery),

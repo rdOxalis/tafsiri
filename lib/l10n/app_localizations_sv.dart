@@ -123,6 +123,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get errorOcrFailed => 'Kunde inte extrahera text från bilden.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Textigenkänning är inte installerad. Installera Tesseract för att läsa text från bilder.';
+
+  @override
   String get errorSttUnavailable =>
       'Röstinmatning är inte tillgänglig på den här enheten.';
 

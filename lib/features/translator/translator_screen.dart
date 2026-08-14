@@ -16,11 +16,16 @@ class TranslatorScreen extends ConsumerWidget {
 
     ref.listen(
       translatorProvider.select((s) => s.ocrError),
-      (_, hasError) {
-        if (!hasError) return;
+      (_, failure) {
+        if (failure == null) return;
         ref.read(translatorProvider.notifier).clearOcrError();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.errorOcrFailed)),
+          SnackBar(
+            content: Text(switch (failure) {
+              OcrFailure.engineMissing => l10n.errorOcrEngineMissing,
+              OcrFailure.failed => l10n.errorOcrFailed,
+            }),
+          ),
         );
       },
     );

@@ -16,9 +16,12 @@
 - [ ] **Verify the Android job actually builds in CI.** It has never run — the local build needed Java 17 and NDK 27.0.12077973, and the runner may need the NDK installed explicitly. It is `continue-on-error`, so a failure only costs the APK, not the release. (ADR-036)
 - [ ] **(Windows) Bump the pinned SQLite version when it matters.** `windows/sqlite3.cmake` pins 3.53.4 with one SHA3-256 per architecture; a bump means editing four values from sqlite.org's download page. (ADR-035)
 - [ ] **(Windows, optional) Code-sign the installer.** Unsigned, SmartScreen warns on first run. Needs a paid certificate. (ADR-035)
-- [ ] **(Linux) Hide camera as an image source on desktop.** The camera entry in the image-source sheet is meaningless on Linux; `image_picker_linux` only does file selection. Low priority — OCR itself is unavailable there anyway. (ADR-031)
 - [ ] **(Linux, optional) Distributable packaging.** `install.sh` covers per-user installation from source; a redistributable format (AppImage / Flatpak / .deb) for users without a Flutter SDK is still open. BluesoundPlayer's `flutter/package-linux.sh` is a starting point. (ADR-032)
-- [ ] **(Linux, optional) FOSS OCR/STT alternatives.** ML Kit and `speech_to_text` have no Linux support; if desktop parity is ever wanted, this needs different engines. (ADR-031)
+- [ ] **(Windows) Bundle Tesseract into the installer.** Linux is done (ADR-037); Windows still reports "install Tesseract". Unlike SQLite there is no tidy official zip with a published hash — the usual source (UB Mannheim) ships an installer `.exe`, so getting engine + trained data portable into our installer needs research. (ADR-037)
+- [ ] **(Optional) Preprocess images before recognition.** Tesseract is strong on flat scans and weak on angled, badly lit phone photos. Greyscale, contrast and deskew before handing the file over is the obvious next quality lever, and would let the confidence gate reject less often. (ADR-037)
+- [ ] **(Optional) Tune the confidence threshold.** 60 is a first guess; only real-world images can tell whether it rejects too much or too little. (ADR-037)
+- [ ] **(Later) Replace ML Kit with Tesseract on Android.** Would drop the proprietary blob that blocks official F-Droid (ADR-028, ADR-030) and most of the 82 MB APK. Needs the library built into the app via the NDK — a different exercise from the desktop subprocess. The `OcrService` interface is already the seam for it. (ADR-037)
+- [ ] **(Linux, optional) FOSS STT alternative.** `speech_to_text` has no Linux support; voice input needs a different engine for desktop parity. (ADR-031)
 
 - [ ] **Try the backup dialogs on both platforms by hand.** The logic is covered by tests against a fake file layer, and the plugin wiring was checked statically, but nobody has yet clicked through the actual GTK save dialog on Linux or the SAF picker on Android. (ADR-034)
 - [ ] **(Optional) Encrypt backups that contain API keys.** Currently the file is plain text and the UI warns about it; a passphrase would remove the caveat. (ADR-034)
@@ -29,6 +32,7 @@
 - [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] Image-to-text on Linux via Tesseract, behind an `OcrService` interface; confidence gate against AI-invented text; languages from settings; camera hidden on desktop; 17 new tests. (2026-08-14, ADR-037)
 - [x] Release workflow: one tag builds APK + Linux tarball + Windows installer and attaches them to the GitHub release, without touching hand-written release notes. (2026-08-14, ADR-036)
 - [x] Windows desktop build: bundled SQLite (hash-verified download) + MSVC runtime, per-user Inno Setup installer, `build_windows.ps1`, CI job, real app icon. Authored on Linux — needs the manual Windows pass above. (2026-08-14, ADR-035)
 - [x] Backup/restore to a file outside the app sandbox, so settings and history survive an uninstall; API keys opt-in; 22 new tests. (2026-08-12, ADR-034)

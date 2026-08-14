@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -9,11 +8,19 @@ import '../../core/constants.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
+import '../../core/services/ocr/ocr_service.dart';
+import '../../core/services/ocr/ocr_service_factory.dart';
 import '../../features/history/history_controller.dart';
 import '../../features/settings/settings_controller.dart';
 import '../../shared/models/translation_entry.dart';
 
 enum TranslatorError { noApiKey, apiError, networkError }
+
+/// Why text recognition did not produce anything (ADR-037).
+///
+/// [engineMissing] is worth its own message: on desktop it means the user has
+/// to install Tesseract, which no amount of retrying will fix.
+enum OcrFailure { failed, engineMissing }
 
 class TranslatorState {
   final String inputText;
@@ -31,7 +38,9 @@ class TranslatorState {
   final bool isSttAvailable;
   final bool isListening;
   final bool isOcrProcessing;
-  final bool ocrError;
+
+  /// Set when the last recognition attempt failed; `null` otherwise.
+  final OcrFailure? ocrError;
 
   const TranslatorState({
     this.inputText = '',
@@ -45,7 +54,7 @@ class TranslatorState {
     this.isSttAvailable = false,
     this.isListening = false,
     this.isOcrProcessing = false,
-    this.ocrError = false,
+    this.ocrError,
   });
 
   TranslatorState copyWith({
@@ -62,7 +71,8 @@ class TranslatorState {
     bool? isSttAvailable,
     bool? isListening,
     bool? isOcrProcessing,
-    bool? ocrError,
+    OcrFailure? ocrError,
+    bool clearOcrError = false,
   }) =>
       TranslatorState(
         inputText: inputText ?? this.inputText,
@@ -79,7 +89,7 @@ class TranslatorState {
         isSttAvailable: isSttAvailable ?? this.isSttAvailable,
         isListening: isListening ?? this.isListening,
         isOcrProcessing: isOcrProcessing ?? this.isOcrProcessing,
-        ocrError: ocrError ?? this.ocrError,
+        ocrError: clearOcrError ? null : ocrError ?? this.ocrError,
       );
 }
 
@@ -148,29 +158,39 @@ class TranslatorController extends Notifier<TranslatorState> {
         state = state.copyWith(isOcrProcessing: false);
         return;
       }
-      final recognizer = TextRecognizer();
-      final result =
-          await recognizer.processImage(InputImage.fromFilePath(file.path));
-      await recognizer.close();
-      final text = result.text.trim();
-      if (text.isEmpty) {
-        state = state.copyWith(isOcrProcessing: false, ocrError: true);
-        return;
-      }
+      // Tesseract needs to know which trained data to load, and the user has
+      // already said so in Settings — the same two languages the translation
+      // logic runs on (ADR-037). ML Kit ignores them.
+      final settings = ref.read(settingsProvider).valueOrNull;
+      final text = await ref.read(ocrServiceProvider).recogniseText(
+            file.path,
+            primaryLanguage: settings?.targetLanguage ?? kDefaultTargetLanguage,
+            altLanguage: settings?.altLanguage ?? kDefaultAltLanguage,
+          );
+
       state = state.copyWith(
         inputText: text,
         isOcrProcessing: false,
         clearOutput: true,
         clearError: true,
       );
+    } on OcrUnavailableException catch (e) {
+      debugPrint('[OCR] engine unavailable: $e');
+      state = state.copyWith(
+        isOcrProcessing: false,
+        ocrError: OcrFailure.engineMissing,
+      );
     } catch (e) {
       debugPrint('[OCR] error: $e');
-      state = state.copyWith(isOcrProcessing: false, ocrError: true);
+      state = state.copyWith(
+        isOcrProcessing: false,
+        ocrError: OcrFailure.failed,
+      );
     }
   }
 
   void clearOcrError() {
-    state = state.copyWith(ocrError: false);
+    state = state.copyWith(clearOcrError: true);
   }
 
   void setInputText(String text) {

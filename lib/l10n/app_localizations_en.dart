@@ -122,6 +122,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorOcrFailed => 'Could not extract text from image.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Text recognition is not installed. Install Tesseract to read text from images.';
+
+  @override
   String get errorSttUnavailable =>
       'Voice input is not available on this device.';
 
@@ -389,6 +393,10 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get errorOcrFailed => 'Could not extract text from image.';
+
+  @override
+  String get errorOcrEngineMissing =>
+      'Text recognition is not installed. Install Tesseract to read text from images.';
 
   @override
   String get errorSttUnavailable =>

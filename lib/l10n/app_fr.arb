@@ -37,6 +37,7 @@
   "errorApiError": "Échec de la traduction. Veuillez réessayer.",
   "errorNetwork": "Pas de connexion. Veuillez vérifier votre internet.",
   "errorOcrFailed": "Impossible d'extraire le texte de l'image.",
+  "errorOcrEngineMissing": "La reconnaissance de texte n'est pas installée. Installez Tesseract pour lire le texte des images.",
   "errorSttUnavailable": "La saisie vocale n'est pas disponible sur cet appareil.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

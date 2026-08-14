@@ -37,6 +37,7 @@
   "errorApiError": "Tłumaczenie nie powiodło się. Spróbuj ponownie.",
   "errorNetwork": "Brak połączenia. Sprawdź swoje połączenie z internetem.",
   "errorOcrFailed": "Nie udało się wyodrębnić tekstu z obrazu.",
+  "errorOcrEngineMissing": "Rozpoznawanie tekstu nie jest zainstalowane. Zainstaluj Tesseract, aby odczytywać tekst z obrazów.",
   "errorSttUnavailable": "Wprowadzanie głosowe nie jest dostępne na tym urządzeniu.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

@@ -337,6 +337,12 @@ abstract class AppLocalizations {
   /// **'Could not extract text from image.'**
   String get errorOcrFailed;
 
+  /// Error shown when no OCR engine is installed (desktop)
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Text recognition is not installed. Install Tesseract to read text from images.'**
+  String get errorOcrEngineMissing;
+
   /// Message shown when STT is not available
   ///
   /// In en_GB, this message translates to:

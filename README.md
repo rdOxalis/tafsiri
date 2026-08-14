@@ -79,9 +79,9 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 ## Desktop (Linux and Windows)
 
-Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there; voice input and OCR do not — those plugins have no desktop implementation, so the microphone button stays disabled and image recognition reports an error.
+Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there. Voice input does not — `speech_to_text` has no desktop implementation, so the microphone button stays disabled. Image-to-text works on Linux through Tesseract; on Windows the engine is not bundled yet.
 
-**Linux** — needs the Flutter SDK and `libgtk-3-dev`:
+**Linux** — needs the Flutter SDK and `libgtk-3-dev`. For image-to-text also `sudo apt install tesseract-ocr tesseract-ocr-swa` (add the trained data for whichever languages you translate):
 
 ```bash
 ./install.sh          # builds and installs into ~/.local, no root required
@@ -100,7 +100,7 @@ This produces `build\windows\installer\tafsiri-<version>-windows-x64.exe`. It in
 
 ## Privacy
 
-Camera and microphone are used entirely on-device (Google ML Kit OCR, Android STT). No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
+Camera and microphone are used entirely on-device — Google ML Kit OCR and Android STT on the phone, Tesseract on the Linux desktop. No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
 
 Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md)
 

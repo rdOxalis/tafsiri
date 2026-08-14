@@ -122,6 +122,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get errorOcrFailed => 'Kon geen tekst uit de afbeelding halen.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Tekstherkenning is niet geïnstalleerd. Installeer Tesseract om tekst uit afbeeldingen te lezen.';
+
+  @override
   String get errorSttUnavailable =>
       'Spraakinvoer is niet beschikbaar op dit apparaat.';
 

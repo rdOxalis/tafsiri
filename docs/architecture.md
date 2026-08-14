@@ -23,6 +23,10 @@ Tafsiri is a Flutter Android app that translates text using one of three AI back
 | `OpenAiService` | `lib/core/services/` | OpenAI Chat Completions API calls |
 | `MistralService` | `lib/core/services/` | Mistral Chat API calls |
 | `aiServiceProvider` | `lib/core/services/` | Riverpod `Provider` — selects backend from settings |
+| `OcrService` (abstract) | `lib/core/services/ocr/` | Contract for text recognition engines (ADR-037) |
+| `MlKitOcrService` | `lib/core/services/ocr/` | On-device recognition, Android/iOS |
+| `TesseractOcrService` | `lib/core/services/ocr/` | `tesseract` subprocess + TSV parsing + confidence gate, desktop |
+| `ocrServiceProvider` | `lib/core/services/ocr/` | Riverpod `Provider` — selects the engine by platform |
 | `DbHelper` | `lib/core/database/` | SQLite init, schema version, migrations |
 | `TranslationDao` | `lib/core/database/` | CRUD on `translation_entry` |
 | `translationDaoProvider` | `lib/core/database/` | Riverpod `FutureProvider<TranslationDao>` |
@@ -41,7 +45,7 @@ Tafsiri is a Flutter Android app that translates text using one of three AI back
 flowchart TD
     A[User Input] -->|type / paste| B[InputArea]
     A -->|voice STT| C[SpeechToText]
-    A -->|image OCR| D[MLKit TextRecognizer]
+    A -->|image OCR| D[ocrServiceProvider\nMLKit · mobile / Tesseract · desktop]
     C -->|recognizedWords| B
     D -->|extracted text| B
     B --> E[TranslatorController.translate]
@@ -215,11 +219,11 @@ On Linux the versioned soname is the fallback because the unversioned one only s
 | History / favourites (SQLite) | ✅ native | ✅ via FFI (ADR-031) | ✅ via FFI, bundled `sqlite3.dll` (ADR-035) |
 | Settings, localisation, donate link | ✅ | ✅ | ✅ |
 | Backup / restore | ✅ SAF (`file_picker`) | ✅ GTK (`file_selector`) | ✅ native dialogs (`file_selector`) |
-| Image picking | ✅ camera + gallery | ⚠️ file selection only | ⚠️ file selection only |
-| OCR (`google_mlkit_text_recognition`) | ✅ | ❌ no Linux implementation — reports the localised OCR error | ❌ no Windows implementation — same error |
+| Image picking | ✅ camera + gallery | ⚠️ file selection only (camera entry hidden) | ⚠️ file selection only (camera entry hidden) |
+| OCR / image to text | ✅ ML Kit, on-device | ✅ Tesseract subprocess (ADR-037) | ❌ engine not bundled yet — reports "install Tesseract" |
 | Voice input (`speech_to_text`) | ✅ | ❌ no Linux implementation — mic button disabled | ❌ no Windows implementation — mic button disabled |
 
-Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime.
+Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime, plus `tesseract-ocr` and the trained data for the languages in use if you want image-to-text.
 Build requirements for Windows: Visual Studio 2022 with "Desktop development with C++", Inno Setup 6.3+ for the installer, and internet access on the first CMake configure (to fetch SQLite). Nothing is required at runtime — SQLite and the MSVC runtime ship inside the bundle.
 
 ### Linux installation (ADR-032)

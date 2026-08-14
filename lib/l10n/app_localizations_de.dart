@@ -125,6 +125,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Text konnte nicht aus dem Bild extrahiert werden.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Texterkennung ist nicht installiert. Installiere Tesseract, um Text aus Bildern zu lesen.';
+
+  @override
   String get errorSttUnavailable =>
       'Spracheingabe ist auf diesem Gerät nicht verfügbar.';
 

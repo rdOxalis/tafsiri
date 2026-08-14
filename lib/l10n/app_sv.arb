@@ -37,6 +37,7 @@
   "errorApiError": "Översättningen misslyckades. Försök igen.",
   "errorNetwork": "Ingen anslutning. Kontrollera din internetanslutning.",
   "errorOcrFailed": "Kunde inte extrahera text från bilden.",
+  "errorOcrEngineMissing": "Textigenkänning är inte installerad. Installera Tesseract för att läsa text från bilder.",
   "errorSttUnavailable": "Röstinmatning är inte tillgänglig på den här enheten.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

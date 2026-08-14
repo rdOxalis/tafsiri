@@ -36,7 +36,7 @@ ARB files live in `lib/l10n/`. The Flutter tool generates `AppLocalizations` fro
 - **Local database:** `sqflite` + `path_provider`
 - **Voice input (STT = Speech-to-Text):** `speech_to_text` — microphone button; recognition locale is derived from the detected source language of the last translation (or falls back to device locale); transcription flows into input field, translation triggers automatically
 - **Donate / Buy me a coffee:** `url_launcher` — opens PayPal donate URL from Settings screen
-- **Image input / OCR:** `image_picker` + `google_mlkit_text_recognition` (on-device, no extra API call)
+- **Image input / OCR:** `image_picker` + a platform-specific engine behind the `OcrService` interface — `google_mlkit_text_recognition` on Android/iOS, the external `tesseract` binary on desktop. On-device either way, no extra API call. See ADR-037.
 - **Language detection:** via AI prompt (more reliable for Swahili and lesser-supported languages than local libraries)
 - **Settings persistence:** `shared_preferences`
 - **Backup/restore file dialogs:** `file_selector` (Linux — native GTK) + `file_picker` (Android — Storage Access Framework). Split by platform: `file_selector` has no save dialog on Android, `file_picker` needs `zenity` on Linux. See ADR-034.

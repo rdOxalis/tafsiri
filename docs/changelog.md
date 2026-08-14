@@ -8,10 +8,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **Image-to-text on Linux** (ADR-037). Picking an image on the desktop no longer ends in an error: recognition runs through the external `tesseract` binary. Needs `tesseract-ocr` plus the trained data for the languages you translate (`sudo apt install tesseract-ocr tesseract-ocr-swa`); `install.sh` warns when either is missing. Windows is not done yet — the engine still has to be bundled into the installer.
+- Text recognition now sits behind an `OcrService` interface with two implementations (ML Kit on Android/iOS, Tesseract on desktop), so the translator no longer knows which engine it has.
+- Tesseract is told which languages to expect from the two you already configured for translation, passed together so mixed-language images work. English names, native spellings (`Deutsch`, `Kiswahili`) and two-letter codes are all understood; missing trained data falls back to English.
+- **A confidence gate**: if Tesseract's mean word confidence is below 60, the image is reported as unreadable instead of being passed on. Handed garbled text, the AI does not fail — it invents fluent, plausible text that was never on the image, which looks like success and is worse than an error.
+- A separate message when no recognition engine is installed at all, so the desktop tells you to install Tesseract rather than blaming the image. Translated into all 10 UI languages.
+- 17 new tests (112 total, was 95), including one that drives the real `tesseract` binary against a fixture image and skips itself where it is not installed.
 - **Automated releases** (ADR-036). Pushing a `v*` tag now builds the APK, the Linux tarball and the Windows installer and attaches all three to the GitHub release for that tag. A release that already exists keeps its hand-written title and notes — only the assets are added. The tag is checked against `pubspec.yaml` first, so a mistyped tag fails before anything is built.
 - The APK is only built when the Android signing secrets (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`) are configured. Without them Gradle would fall back to debug signing and produce an APK nobody could install over their existing Tafsiri, so it is skipped instead — Linux and Windows still publish.
 
 ### Changed
+- The camera entry in the image source sheet is hidden on desktop, where image pickers do file selection only and it was a guaranteed dead end.
 - The Windows installer is named `tafsiri-<version>-windows-x64.exe`, matching the existing `tafsiri-<version>.apk` and `tafsiri-<version>-linux-x64.tar.gz` assets.
 
 ---

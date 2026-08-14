@@ -123,6 +123,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get errorOcrFailed => 'Nie udało się wyodrębnić tekstu z obrazu.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Rozpoznawanie tekstu nie jest zainstalowane. Zainstaluj Tesseract, aby odczytywać tekst z obrazów.';
+
+  @override
   String get errorSttUnavailable =>
       'Wprowadzanie głosowe nie jest dostępne na tym urządzeniu.';
 

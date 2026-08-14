@@ -123,6 +123,10 @@ class AppLocalizationsSw extends AppLocalizations {
   String get errorOcrFailed => 'Haikuweza kutoa maandishi kutoka kwa picha.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Utambuzi wa maandishi haujasakinishwa. Sakinisha Tesseract ili kusoma maandishi kwenye picha.';
+
+  @override
   String get errorSttUnavailable =>
       'Ingizo la sauti halipatikani kwenye kifaa hiki.';
 

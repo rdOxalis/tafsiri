@@ -123,6 +123,10 @@ class AppLocalizationsNb extends AppLocalizations {
   String get errorOcrFailed => 'Kunne ikke hente ut tekst fra bildet.';
 
   @override
+  String get errorOcrEngineMissing =>
+      'Tekstgjenkjenning er ikke installert. Installer Tesseract for å lese tekst fra bilder.';
+
+  @override
   String get errorSttUnavailable =>
       'Taleinntasting er ikke tilgjengelig på denne enheten.';
 
