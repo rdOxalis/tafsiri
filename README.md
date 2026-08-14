@@ -24,6 +24,21 @@ You configure both languages freely in Settings. There are no hardcoded language
 
 ---
 
+## Correction mode
+
+A toggle in the translator header switches Tafsiri from translating to coaching.
+
+When it is on, text written predominantly in your primary language is no longer translated into the secondary language — it is corrected and improved, and a **Suggestions** section explains every change. Words you substituted from another language because you did not know them are replaced with the right one:
+
+> **Tafadhali nipe Butter.** → *Tafadhali nipe siagi.*
+> — Butter → siagi: German for "butter".
+
+Input in any other language is still translated into your primary language, exactly as before. The setting persists across restarts, and the action button changes to "Improve" while it is active.
+
+Corrections are stored in the history with their suggestions and marked with their own badge. The database migrates in place — existing entries are kept and counted as translations.
+
+---
+
 ## Bring Your Own API Key
 
 Tafsiri does not have a backend. There is no subscription, no account, no server in between. The app talks directly to the AI provider of your choice using your own API key.
