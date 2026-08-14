@@ -6,6 +6,12 @@ Tafsiri is an Android app for AI-powered text translation. It supports voice inp
 
 ---
 
+## Download
+
+<a href="https://github.com/rdOxalis/tafsiri/releases/latest"><img alt="Get it on GitHub" src="assets/badges/github.png" height="48"></a>
+
+---
+
 ## How It Works
 
 Tafsiri is built around two language slots: a **primary language** and a **secondary language**.
