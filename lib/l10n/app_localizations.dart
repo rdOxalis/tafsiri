@@ -299,6 +299,18 @@ abstract class AppLocalizations {
   /// **'Secondary Language'**
   String get altLanguageLabel;
 
+  /// Explains what the primary language setting decides
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Primary language — the language you want to learn, or the one you are less confident in.'**
+  String get targetLanguageInfo;
+
+  /// Explains what the secondary language setting decides
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.'**
+  String get altLanguageInfo;
+
   /// Label for the app UI language selector
   ///
   /// In en_GB, this message translates to:

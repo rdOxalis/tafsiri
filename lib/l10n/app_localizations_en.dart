@@ -99,6 +99,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get altLanguageLabel => 'Secondary Language';
 
   @override
+  String get targetLanguageInfo =>
+      'Primary language — the language you want to learn, or the one you are less confident in.';
+
+  @override
+  String get altLanguageInfo =>
+      'Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.';
+
+  @override
   String get appLanguageLabel => 'App Language';
 
   @override
@@ -375,6 +383,14 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get altLanguageLabel => 'Secondary Language';
+
+  @override
+  String get targetLanguageInfo =>
+      'Primary language — the language you want to learn, or the one you are less confident in.';
+
+  @override
+  String get altLanguageInfo =>
+      'Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.';
 
   @override
   String get appLanguageLabel => 'App Language';

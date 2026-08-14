@@ -21,6 +21,8 @@ dependencies:
   http: ^1.2.1
   speech_to_text: ^7.0.0
   image_picker: ^1.0.7
+  # Tiles a short page so Tesseract's OSD will judge its script (ADR-038).
+  image: ^4.8.0
   google_mlkit_text_recognition: ^0.13.0
   riverpod: ^2.5.1
   flutter_riverpod: ^2.5.1

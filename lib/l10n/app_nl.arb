@@ -30,6 +30,14 @@
   "providerSubtitle": "gebruik je eigen API-sleutel",
   "targetLanguageLabel": "Primaire taal",
   "altLanguageLabel": "Secundaire taal",
+  "targetLanguageInfo": "Primaire taal — de taal die je wilt leren, of die je minder goed beheerst.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Secundaire taal — de taal die je goed spreekt, en waarnaar je tekst wordt vertaald als je de primaire taal invoert.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "App-taal",
   "warningNoApiKey": "Geen API-sleutel ingesteld voor de actieve aanbieder. Voeg hieronder uw sleutel toe.",
   "donateButton": "Trakteer me op een koffie",

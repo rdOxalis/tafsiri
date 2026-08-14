@@ -29,6 +29,14 @@
   "providerSubtitle": "usa la tua chiave API",
   "targetLanguageLabel": "Lingua principale",
   "altLanguageLabel": "Lingua secondaria",
+  "targetLanguageInfo": "Lingua principale — la lingua che vuoi imparare o che padroneggi meno.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Lingua secondaria — la lingua che parli bene e verso cui viene tradotto il testo quando scrivi nella lingua principale.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Lingua dell’app",
   "warningNoApiKey": "Nessuna chiave API impostata per il provider attivo. Inseriscila qui sotto.",
   "donateButton": "Offrimi un caffè",

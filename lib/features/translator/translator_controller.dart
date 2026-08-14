@@ -8,6 +8,7 @@ import '../../core/constants.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
+import '../../core/services/clipboard/clipboard_image_service_factory.dart';
 import '../../core/services/ocr/ocr_service.dart';
 import '../../core/services/ocr/ocr_service_factory.dart';
 import '../../core/services/ocr/tesseract_ocr_service.dart';
@@ -161,18 +162,71 @@ class TranslatorController extends Notifier<TranslatorState> {
 
   Future<void> pickImageAndRecognize({required ImageSource source}) async {
     state = state.copyWith(isOcrProcessing: true);
+
+    final XFile? file;
     try {
-      final file = await ImagePicker().pickImage(source: source);
-      if (file == null) {
-        state = state.copyWith(isOcrProcessing: false);
-        return;
+      file = await ImagePicker().pickImage(source: source);
+    } catch (e) {
+      debugPrint('[OCR] image picker failed: $e');
+      state =
+          state.copyWith(isOcrProcessing: false, ocrError: OcrFailure.failed);
+      return;
+    }
+    if (file == null) {
+      state = state.copyWith(isOcrProcessing: false);
+      return;
+    }
+
+    await _recogniseInto(file.path);
+  }
+
+  /// Runs recognition on an image the clipboard was holding (ADR-040).
+  ///
+  /// Returns false when there was no image, which is the ordinary case and has
+  /// to stay silent: the caller then pastes text, exactly as it did before this
+  /// existed. Only an image found *and* read counts as handled.
+  Future<bool> pasteImageFromClipboard() async {
+    // A keystroke can be repeated far faster than recognition finishes, and two
+    // runs would race for the input field. Reported as handled, not as "no
+    // image" — falling through to a text paste here would be worse than
+    // ignoring the press.
+    if (state.isOcrProcessing) return true;
+
+    final File? file;
+    try {
+      file = await ref.read(clipboardImageServiceProvider).readImage();
+    } catch (e) {
+      debugPrint('[Clipboard] read failed: $e');
+      return false;
+    }
+    if (file == null) return false;
+
+    state = state.copyWith(isOcrProcessing: true);
+    try {
+      await _recogniseInto(file.path);
+    } finally {
+      // The temporary directory belongs to us and nothing reads it after
+      // recognition; a failure to tidy up must not mask the result.
+      try {
+        await file.parent.delete(recursive: true);
+      } on IOException catch (e) {
+        debugPrint('[Clipboard] could not remove the temporary file: $e');
       }
+    }
+    return true;
+  }
+
+  /// Recognition and its failure modes, shared by every way an image arrives.
+  ///
+  /// Assumes `isOcrProcessing` is already set, and always clears it.
+  Future<void> _recogniseInto(String imagePath) async {
+    try {
       // Tesseract needs to know which trained data to load, and the user has
       // already said so in Settings — the same two languages the translation
       // logic runs on (ADR-037). ML Kit ignores them.
       final settings = ref.read(settingsProvider).valueOrNull;
       final text = await ref.read(ocrServiceProvider).recogniseText(
-            file.path,
+            imagePath,
             primaryLanguage: settings?.targetLanguage ?? kDefaultTargetLanguage,
             altLanguage: settings?.altLanguage ?? kDefaultAltLanguage,
           );

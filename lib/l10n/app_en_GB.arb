@@ -120,6 +120,14 @@
   "@altLanguageLabel": {
     "description": "Label for the alternative language input field"
   },
+  "targetLanguageInfo": "Primary language — the language you want to learn, or the one you are less confident in.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "App Language",
   "@appLanguageLabel": {
     "description": "Label for the app UI language selector"

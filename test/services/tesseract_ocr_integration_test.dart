@@ -41,6 +41,39 @@ void main() {
     );
   }, skip: tesseract);
 
+  test('detects the script of a phrase too short for plain OSD', () async {
+    // The regression (ADR-038). `tesseract --psm 0` answers this 21-character
+    // line with "Too few characters. Skipping this page", which used to leave
+    // detectScript with nothing and let a Latin misread through. The other
+    // Cyrillic fixtures are 40 and 94 characters and clear OSD's floor on their
+    // own, so only a short one can catch this.
+    const service = TesseractOcrService();
+
+    expect(
+      await service.detectScript('test/fixtures/ocr_sample_bulgarian_short.png'),
+      'Cyrillic',
+    );
+  }, skip: tesseract);
+
+  test('never returns Latin nonsense for a short Cyrillic phrase', () async {
+    // End to end on the image that actually failed in the app: Bulgarian
+    // configured, no `bul` trained data, a phrase under OSD's character floor.
+    // "Mona Te, nal Mu MacnoTo." at 70.6 confidence must never come back.
+    const service = TesseractOcrService();
+
+    try {
+      final text = await service.recogniseText(
+        'test/fixtures/ocr_sample_bulgarian_short.png',
+        primaryLanguage: 'Bulgarian',
+        altLanguage: 'English',
+      );
+      expect(text, matches(RegExp(r'[Ѐ-ӿ]')),
+          reason: 'a Cyrillic image must not come back as Latin text');
+    } on OcrLanguageMissingException catch (e) {
+      expect(e.languageCodes, ['bul']);
+    }
+  }, skip: tesseract);
+
   test('never returns Latin nonsense for a Cyrillic image', () async {
     // Against the real engine, with Latin languages configured. Two outcomes
     // are correct depending on what this machine has installed: the read

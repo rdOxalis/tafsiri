@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,12 +94,60 @@ void main() {
       );
     });
 
-    testWidgets('mic and image buttons are present', (tester) async {
-      await tester.pumpWidget(_wrap(const TranslatorScreen()));
-      await tester.pump();
+    /// The platform override has to be cleared inside the test body: the test
+    /// framework asserts every foundation debug variable is unset when the body
+    /// returns, which is before `addTearDown` callbacks run.
+    Future<void> onPlatform(
+      TargetPlatform platform,
+      Future<void> Function() body,
+    ) async {
+      debugDefaultTargetPlatformOverride = platform;
+      try {
+        await body();
+      } finally {
+        debugDefaultTargetPlatformOverride = null;
+      }
+    }
 
-      expect(find.byIcon(Icons.mic_none), findsOneWidget);
-      expect(find.byIcon(Icons.image), findsOneWidget);
+    testWidgets('mic and image buttons are present on mobile', (tester) async {
+      await onPlatform(TargetPlatform.android, () async {
+        await tester.pumpWidget(_wrap(const TranslatorScreen()));
+        await tester.pump();
+
+        expect(find.byIcon(Icons.mic_none), findsOneWidget);
+        expect(find.byIcon(Icons.image), findsOneWidget);
+      });
+    });
+
+    testWidgets('the mic is gone on Linux, the image button stays',
+        (tester) async {
+      // Linux is the one target `speech_to_text` has no implementation for, so
+      // the button was permanently greyed out with no setting anywhere that
+      // could enable it — which reads as "not right now" rather than "not here"
+      // (ADR-039). OCR does work on Linux, so its button must survive.
+      await onPlatform(TargetPlatform.linux, () async {
+        await tester.pumpWidget(_wrap(const TranslatorScreen()));
+        await tester.pump();
+
+        expect(find.byIcon(Icons.mic_none), findsNothing);
+        expect(find.byIcon(Icons.mic), findsNothing);
+        expect(find.byIcon(Icons.image), findsOneWidget);
+      });
+    });
+
+    testWidgets('the mic survives on Windows and macOS', (tester) async {
+      // The correction that nearly shipped: hiding it on "not mobile" would
+      // have taken it off Windows and macOS too, where speech_to_text does have
+      // an implementation — Windows through speech_to_text_windows (ADR-039).
+      for (final platform in [TargetPlatform.windows, TargetPlatform.macOS]) {
+        await onPlatform(platform, () async {
+          await tester.pumpWidget(_wrap(const TranslatorScreen()));
+          await tester.pump();
+
+          expect(find.byIcon(Icons.mic_none), findsOneWidget,
+              reason: 'the microphone must stay on $platform');
+        });
+      }
     });
   });
 

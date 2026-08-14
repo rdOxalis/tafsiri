@@ -99,6 +99,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get altLanguageLabel => 'Język dodatkowy';
 
   @override
+  String get targetLanguageInfo =>
+      'Język główny — język, którego chcesz się uczyć lub który znasz słabiej.';
+
+  @override
+  String get altLanguageInfo =>
+      'Język pomocniczy — język, który znasz dobrze i na który tłumaczony jest tekst, gdy wpiszesz coś w języku głównym.';
+
+  @override
   String get appLanguageLabel => 'Język aplikacji';
 
   @override

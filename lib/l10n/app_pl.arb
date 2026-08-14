@@ -30,6 +30,14 @@
   "providerSubtitle": "użyj własnego klucza API",
   "targetLanguageLabel": "Język podstawowy",
   "altLanguageLabel": "Język dodatkowy",
+  "targetLanguageInfo": "Język główny — język, którego chcesz się uczyć lub który znasz słabiej.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Język pomocniczy — język, który znasz dobrze i na który tłumaczony jest tekst, gdy wpiszesz coś w języku głównym.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Język aplikacji",
   "warningNoApiKey": "Brak klucza API dla aktywnego dostawcy. Dodaj swój klucz poniżej.",
   "donateButton": "Postaw mi kawę",

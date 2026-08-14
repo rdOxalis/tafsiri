@@ -29,6 +29,14 @@
   "providerSubtitle": "използвайте свой API ключ",
   "targetLanguageLabel": "Основен език",
   "altLanguageLabel": "Втори език",
+  "targetLanguageInfo": "Основен език — езикът, който искаш да научиш или който владееш по-слабо.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Втори език — езикът, който владееш добре и на който се превежда текстът, когато въведеш нещо на основния език.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Език на приложението",
   "warningNoApiKey": "Няма зададен API ключ за активния доставчик. Моля, въведете го по-долу.",
   "donateButton": "Почерпете ме с кафе",

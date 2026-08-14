@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constants.dart';
+
 const _prefKey = 'app_locale';
 
 const List<(String code, String label)> supportedAppLocales = [
@@ -18,6 +20,13 @@ const List<(String code, String label)> supportedAppLocales = [
   ('it', 'Italiano'),
   ('bg', 'Български'),
 ];
+
+/// [supportedAppLocales] in display order (ADR-039). Declaration order here is
+/// historical — the order languages were added — which is no help to anyone
+/// looking for theirs.
+List<(String code, String label)> get sortedAppLocales =>
+    supportedAppLocales.toList()
+      ..sort((a, b) => compareLanguageLabels(a.$2, b.$2));
 
 Locale _codeToLocale(String code) {
   if (code.contains('_')) {

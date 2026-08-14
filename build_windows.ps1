@@ -182,5 +182,8 @@ if ($installer -and (Test-Path $installer)) {
     Write-Note "Installer:  $installer"
 }
 Write-Host ''
-Write-Note 'Note: voice input and image OCR are unavailable on Windows - those'
-Write-Note 'plugins have no Windows implementation (see docs/decisions.md, ADR-035).'
+Write-Note 'Note: image OCR is unavailable on Windows - no Tesseract is bundled yet'
+Write-Note '(ADR-037), so the image button reports "install Tesseract". Pasting an'
+Write-Note 'image with Ctrl+V is Linux-only for the same reason (ADR-040); Ctrl+V'
+Write-Note 'still pastes text here. Voice input does have a Windows implementation'
+Write-Note '(speech_to_text_windows, beta) and is worth testing - see docs/todo.md.'

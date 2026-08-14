@@ -99,6 +99,14 @@ class AppLocalizationsNb extends AppLocalizations {
   String get altLanguageLabel => 'Sekundærspråk';
 
   @override
+  String get targetLanguageInfo =>
+      'Primærspråk — språket du vil lære, eller som du behersker dårligst.';
+
+  @override
+  String get altLanguageInfo =>
+      'Sekundærspråk — språket du behersker godt, og som teksten din oversettes til når du skriver på primærspråket.';
+
+  @override
   String get appLanguageLabel => 'Appspråk';
 
   @override

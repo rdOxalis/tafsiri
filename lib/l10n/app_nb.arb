@@ -30,6 +30,14 @@
   "providerSubtitle": "bruk din egen API-nøkkel",
   "targetLanguageLabel": "Primærspråk",
   "altLanguageLabel": "Sekundærspråk",
+  "targetLanguageInfo": "Primærspråk — språket du vil lære, eller som du behersker dårligst.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Sekundærspråk — språket du behersker godt, og som teksten din oversettes til når du skriver på primærspråket.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Appspråk",
   "warningNoApiKey": "Ingen API-nøkkel angitt for den aktive leverandøren. Legg til nøkkelen din nedenfor.",
   "donateButton": "Kjøp meg en kaffe",

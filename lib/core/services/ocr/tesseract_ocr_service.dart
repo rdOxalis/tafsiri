@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
+import 'package:path/path.dart' as p;
 
 import 'ocr_service.dart';
 
@@ -78,6 +80,23 @@ const kScriptPackageSuffixes = <String, String>{
 String scriptPackageSuffix(String script) =>
     'script-${kScriptPackageSuffixes[script] ?? script.toLowerCase()}';
 
+/// The `-l` name for [script]'s trained data, or `null` when it is not there.
+///
+/// The layout is not a convention we can assume. Upstream `tessdata` ships the
+/// file under `script/`, and Tesseract turns `-l script/Cyrillic` into that
+/// path — but Debian's `tesseract-ocr-script-cyrl` installs the same data flat
+/// as `Cyrillic.traineddata` at the top of `tessdata`, where that argument
+/// finds nothing. The failure is "Error opening data file", indistinguishable
+/// from the package being absent, so an installed script package still produced
+/// "install tesseract-ocr-script-cyrl" and no way to act on it. Taking the name
+/// from `--list-langs` instead makes both layouts work (ADR-038).
+String? scriptArgument(String script, Set<String> available) {
+  for (final candidate in ['script/$script', script]) {
+    if (available.contains(candidate)) return candidate;
+  }
+  return null;
+}
+
 /// Pulls the script and its confidence out of `tesseract --psm 0` output.
 ({String script, double confidence})? parseOsd(String output) {
   String? script;
@@ -104,6 +123,15 @@ String scriptPackageSuffix(String script) =>
 /// page measures around 4.5 and a Latin one around 25, so this is a guard
 /// against noise, not a quality bar.
 const kMinScriptConfidence = 1.0;
+
+/// How often the page is repeated per axis before OSD is asked a second time.
+///
+/// OSD refuses to judge a page with too few characters, and the phrase off a
+/// menu or a sign this app exists for is regularly under that floor. Nine
+/// copies carry a twenty-character line past it — measured on the Bulgarian
+/// sample, which goes from "Too few characters" to Cyrillic at 26.7 — while the
+/// image stays small enough for the extra run to be unnoticeable (ADR-038).
+const kOsdTileFactor = 3;
 
 /// Recognition through the external `tesseract` binary (ADR-037).
 ///
@@ -141,18 +169,41 @@ class TesseractOcrService implements OcrService {
     final script = await detectScript(imagePath);
 
     if (script != null && !_covers(configured, script)) {
-      final byScript = await _recognise(imagePath, 'script/$script');
+      // Whatever this installation calls that trained data — or nothing, in
+      // which case there is no point spawning a run that cannot succeed.
+      final argument = scriptArgument(script, available);
+      final byScript =
+          argument == null ? null : await _recognise(imagePath, argument);
       if (byScript != null && _isUsable(byScript)) return byScript.text;
 
       // Latin is already covered by any Latin language we might load, so a
       // failure there is a bad photograph — an install hint would misdirect.
       if (script != 'Latin') {
-        throw OcrLanguageMissingException([scriptPackageSuffix(script)]);
+        throw OcrLanguageMissingException(_installHint(configured, script));
       }
     }
 
+    // Configured languages that are missing *and* written in a script nothing
+    // loaded can read. A missing Latin language does not qualify: English reads
+    // those letters and only drops diacritics, which the AI restores downstream.
+    final unreadable = configured.missing
+        .where((code) => !_covers(configured, kLanguageScripts[code] ?? 'Latin'))
+        .toList();
+
     final page = await _recognise(imagePath, configured.argument);
-    if (page != null && _isUsable(page)) return page.text;
+    if (page != null && _isUsable(page)) {
+      // Confidence cannot catch a wrong alphabet. English trained data reads
+      // "Моля те, дай ми маслото." as "Mona Te, nal Mu MacnoTo." at 70.6 — well
+      // past the gate — because Cyrillic is full of Latin lookalikes. So when
+      // OSD could not name the script and a configured one is unreadable, a
+      // confident result is not evidence that it was read correctly, and
+      // returning it would hand the model fluent nonsense (ADR-038).
+      if (script == null && unreadable.isNotEmpty) {
+        debugPrint('[OCR] script unknown and $unreadable unreadable — refusing');
+        throw OcrLanguageMissingException(unreadable);
+      }
+      return page.text;
+    }
 
     if (page == null) {
       throw const OcrFailedException('tesseract could not process the image.');
@@ -173,6 +224,20 @@ class TesseractOcrService implements OcrService {
   bool _covers(TesseractLanguages languages, String script) => languages.argument
       .split('+')
       .any((code) => kLanguageScripts[code] == script);
+
+  /// What to tell the user to install for [script].
+  ///
+  /// A configured language written in that script wins over the script pack:
+  /// it is the smaller download, and language data reads its own language
+  /// better than the generic script data does. Only when the detected script
+  /// matches nothing the user configured is the whole script pack the honest
+  /// answer — they photographed something they never mentioned.
+  List<String> _installHint(TesseractLanguages languages, String script) {
+    final configured = languages.missing
+        .where((code) => kLanguageScripts[code] == script)
+        .toList();
+    return configured.isNotEmpty ? configured : [scriptPackageSuffix(script)];
+  }
 
   bool _isUsable(TesseractPage page) =>
       page.text.isNotEmpty && page.meanConfidence >= kMinMeanConfidence;
@@ -203,24 +268,72 @@ class TesseractOcrService implements OcrService {
   /// cannot tell.
   ///
   /// Uses `osd.traineddata`, which ships with the engine itself, so this needs
-  /// nothing extra installed. It does need enough characters: a two-word sign
-  /// is answered with "Too few characters", which is why script detection can
-  /// improve the outcome but never guarantee it.
+  /// nothing extra installed. It does need enough characters, and a short
+  /// phrase is answered with "Too few characters" — so a page OSD will not
+  /// judge is tiled and asked once more before giving up (ADR-038).
   Future<String?> detectScript(String imagePath) async {
+    final direct = await _osd(imagePath);
+    if (direct != null) return direct;
+
+    final tiled = await _tiledCopy(imagePath);
+    if (tiled == null) return null;
+    try {
+      return await _osd(tiled.path);
+    } finally {
+      await tiled.parent.delete(recursive: true);
+    }
+  }
+
+  /// One `--psm 0` run, or `null` when it produced no verdict worth trusting.
+  Future<String?> _osd(String imagePath) async {
     try {
       final result = await _run(executable, [imagePath, 'stdout', '--psm', '0']);
       if (result.exitCode != 0) return null;
       final osd = parseOsd('${result.stdout}\n${result.stderr}');
       if (osd == null || osd.confidence < kMinScriptConfidence) {
-        // Usually "Too few characters" — a short sign. Worth saying out loud,
-        // because it is the one case that silently falls back to the configured
-        // languages and can therefore still misread a foreign script.
         debugPrint('[OCR] script not detected: ${osd ?? result.stdout}');
         return null;
       }
       debugPrint('[OCR] script ${osd.script} (${osd.confidence})');
       return osd.script;
     } on ProcessException {
+      return null;
+    }
+  }
+
+  /// The page repeated in a [kOsdTileFactor]² grid in a temporary directory,
+  /// or `null` when the image cannot be read as one.
+  ///
+  /// Repetition invents no glyph the page did not already carry, so the verdict
+  /// stays honest — it only lifts the character count over OSD's floor. The
+  /// caller owns the directory and deletes it.
+  Future<File?> _tiledCopy(String imagePath) async {
+    try {
+      final source = img.decodeImage(await File(imagePath).readAsBytes());
+      if (source == null) return null;
+
+      const n = kOsdTileFactor;
+      final tiled =
+          img.Image(width: source.width * n, height: source.height * n);
+      // Screenshots arrive with transparency, which OSD reads as black on
+      // black; white is the background every trained data expects.
+      img.fill(tiled, color: img.ColorRgb8(255, 255, 255));
+      for (var row = 0; row < n; row++) {
+        for (var column = 0; column < n; column++) {
+          img.compositeImage(
+            tiled,
+            source,
+            dstX: column * source.width,
+            dstY: row * source.height,
+          );
+        }
+      }
+
+      final directory = await Directory.systemTemp.createTemp('tafsiri_osd');
+      final file = File(p.join(directory.path, 'tiled.png'));
+      await file.writeAsBytes(img.encodePng(tiled));
+      return file;
+    } on IOException {
       return null;
     }
   }

@@ -89,8 +89,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               const SizedBox(height: 8),
               TextField(
                 controller: _targetLangController,
-                decoration:
-                    InputDecoration(labelText: l10n.targetLanguageLabel),
+                decoration: InputDecoration(
+                  labelText: l10n.targetLanguageLabel,
+                  suffixIcon: _FieldInfoButton(
+                    title: l10n.targetLanguageLabel,
+                    message: l10n.targetLanguageInfo,
+                  ),
+                ),
                 onChanged: (v) => ref
                     .read(settingsProvider.notifier)
                     .setTargetLanguage(v),
@@ -98,8 +103,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               const SizedBox(height: 12),
               TextField(
                 controller: _altLangController,
-                decoration:
-                    InputDecoration(labelText: l10n.altLanguageLabel),
+                decoration: InputDecoration(
+                  labelText: l10n.altLanguageLabel,
+                  suffixIcon: _FieldInfoButton(
+                    title: l10n.altLanguageLabel,
+                    message: l10n.altLanguageInfo,
+                  ),
+                ),
                 onChanged: (v) =>
                     ref.read(settingsProvider.notifier).setAltLanguage(v),
               ),
@@ -114,7 +124,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         (e) => e.$1 == settings.sttLanguage)
                     ? settings.sttLanguage
                     : '',
-                items: kSttLanguageOptions
+                items: sortedSttLanguageOptions
                     .map((e) => DropdownMenuItem(
                           value: e.$1,
                           child: Text(e.$1.isEmpty
@@ -406,7 +416,7 @@ class _LocaleDropdown extends ConsumerWidget {
       value: supportedAppLocales.any((e) => e.$1 == currentCode)
           ? currentCode
           : 'en_GB',
-      items: supportedAppLocales
+      items: sortedAppLocales
           .map((e) => DropdownMenuItem(value: e.$1, child: Text(e.$2)))
           .toList(),
       onChanged: (code) {
@@ -414,6 +424,42 @@ class _LocaleDropdown extends ConsumerWidget {
           ref.read(localeProvider.notifier).setLocale(code);
         }
       },
+    );
+  }
+}
+
+/// The "what does this field decide" affordance beside a language field.
+///
+/// These two settings are where the whole translation logic is configured, and
+/// their names alone do not say which is which (ADR-039). A dialog rather than
+/// a bare `Tooltip`, because hover does not exist on the touch devices this
+/// ships to first; the tooltip is kept as well, so a desktop user gets the
+/// answer without a click.
+class _FieldInfoButton extends StatelessWidget {
+  const _FieldInfoButton({required this.title, required this.message});
+
+  final String title;
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.info_outline),
+      tooltip: message,
+      onPressed: () => showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          icon: const Icon(Icons.info_outline, size: 28),
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(MaterialLocalizations.of(ctx).okButtonLabel),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

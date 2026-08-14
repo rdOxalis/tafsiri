@@ -30,6 +30,14 @@
   "providerSubtitle": "trae tu propia clave API",
   "targetLanguageLabel": "Idioma principal",
   "altLanguageLabel": "Idioma secundario",
+  "targetLanguageInfo": "Idioma principal — el idioma que quieres aprender o en el que te desenvuelves peor.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Idioma secundario — el idioma que dominas bien y al que se traduce tu texto cuando escribes en el idioma principal.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Idioma de la aplicación",
   "warningNoApiKey": "No hay clave API para el proveedor activo. Por favor, añádela a continuación.",
   "donateButton": "Invítame a un café",

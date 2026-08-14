@@ -100,6 +100,14 @@ class AppLocalizationsIt extends AppLocalizations {
   String get altLanguageLabel => 'Lingua secondaria';
 
   @override
+  String get targetLanguageInfo =>
+      'Lingua principale — la lingua che vuoi imparare o che padroneggi meno.';
+
+  @override
+  String get altLanguageInfo =>
+      'Lingua secondaria — la lingua che parli bene e verso cui viene tradotto il testo quando scrivi nella lingua principale.';
+
+  @override
   String get appLanguageLabel => 'Lingua dell’app';
 
   @override

@@ -99,6 +99,14 @@ class AppLocalizationsSw extends AppLocalizations {
   String get altLanguageLabel => 'Lugha ya Pili';
 
   @override
+  String get targetLanguageInfo =>
+      'Lugha ya msingi — lugha unayotaka kujifunza, au ambayo huimudu vizuri.';
+
+  @override
+  String get altLanguageInfo =>
+      'Lugha ya pili — lugha unayoimudu vizuri, na ambayo maandishi yako hutafsiriwa kwake unapoandika kwa lugha ya msingi.';
+
+  @override
   String get appLanguageLabel => 'Lugha ya Programu';
 
   @override

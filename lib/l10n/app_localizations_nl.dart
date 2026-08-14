@@ -99,6 +99,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get altLanguageLabel => 'Secundaire taal';
 
   @override
+  String get targetLanguageInfo =>
+      'Primaire taal — de taal die je wilt leren, of die je minder goed beheerst.';
+
+  @override
+  String get altLanguageInfo =>
+      'Secundaire taal — de taal die je goed spreekt, en waarnaar je tekst wordt vertaald als je de primaire taal invoert.';
+
+  @override
   String get appLanguageLabel => 'App-taal';
 
   @override

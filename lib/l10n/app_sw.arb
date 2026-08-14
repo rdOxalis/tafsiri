@@ -30,6 +30,14 @@
   "providerSubtitle": "tumia ufunguo wako wa API",
   "targetLanguageLabel": "Lugha ya Msingi",
   "altLanguageLabel": "Lugha ya Pili",
+  "targetLanguageInfo": "Lugha ya msingi — lugha unayotaka kujifunza, au ambayo huimudu vizuri.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Lugha ya pili — lugha unayoimudu vizuri, na ambayo maandishi yako hutafsiriwa kwake unapoandika kwa lugha ya msingi.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Lugha ya Programu",
   "warningNoApiKey": "Hakuna ufunguo wa API kwa mtoa huduma aliyechaguliwa. Tafadhali ongeza ufunguo wako hapa chini.",
   "donateButton": "Nununulie kahawa",

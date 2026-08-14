@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../core/services/ocr/ocr_service_factory.dart';
+import '../../../core/platform_capabilities.dart';
 import '../../../shared/providers/selected_tab_provider.dart';
 import '../../settings/settings_controller.dart';
 import '../translator_controller.dart';
@@ -48,18 +48,22 @@ class ActionBar extends ConsumerWidget {
               correctionMode: correctionMode,
             ),
           ),
-          // Microphone
-          IconButton(
-            tooltip: l10n.microphoneButton,
-            icon: Icon(isListening ? Icons.mic : Icons.mic_none),
-            color: isListening
-                ? Theme.of(context).colorScheme.error
-                : null,
-            onPressed: (isLoading || !isSttAvailable)
-                ? null
-                : () =>
-                    ref.read(translatorProvider.notifier).toggleListening(),
-          ),
+          // Microphone — absent on Linux, the one target `speech_to_text` has
+          // no implementation for (ADR-039). Everywhere else it stays visible
+          // and merely disables, because there the failure is a permission or a
+          // beta gap, which the user can act on.
+          if (hasSpeechInput)
+            IconButton(
+              tooltip: l10n.microphoneButton,
+              icon: Icon(isListening ? Icons.mic : Icons.mic_none),
+              color: isListening
+                  ? Theme.of(context).colorScheme.error
+                  : null,
+              onPressed: (isLoading || !isSttAvailable)
+                  ? null
+                  : () =>
+                      ref.read(translatorProvider.notifier).toggleListening(),
+            ),
           // Image / OCR
           IconButton(
             tooltip: l10n.imageButton,
@@ -78,16 +82,19 @@ class ActionBar extends ConsumerWidget {
           IconButton(
             tooltip: l10n.pasteButton,
             icon: const Icon(Icons.content_paste),
-            onPressed: isLoading
+            onPressed: (isLoading || isOcrProcessing)
                 ? null
                 : () async {
+                    // An image first, so the button matches Ctrl+V (ADR-040)
+                    // and stays useful without a keyboard.
+                    final notifier = ref.read(translatorProvider.notifier);
+                    if (await notifier.pasteImageFromClipboard()) return;
+
                     final data =
                         await Clipboard.getData(Clipboard.kTextPlain);
                     final text = data?.text ?? '';
                     if (text.isNotEmpty) {
-                      ref
-                          .read(translatorProvider.notifier)
-                          .setInputText(text);
+                      notifier.setInputText(text);
                     }
                   },
           ),

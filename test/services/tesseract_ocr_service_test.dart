@@ -358,6 +358,33 @@ void main() {
       );
     });
 
+    test('finds script trained data that the distribution installed flat',
+        () async {
+      // Debian's tesseract-ocr-script-cyrl puts the file at the top of tessdata
+      // as `Cyrillic.traineddata`, not under `script/` the way upstream ships
+      // it. Asking for `-l script/Cyrillic` then fails with "Error opening data
+      // file" — indistinguishable from the package being absent, so an
+      // installed package still produced "install tesseract-ocr-script-cyrl"
+      // and left the user with nothing to do (ADR-038).
+      final service = serviceReturning(
+        langs: {'eng', 'deu', 'Cyrillic'},
+        script: 'Cyrillic',
+        tsvByLanguage: {
+          'deu+eng': tsvOf([word('Mona', 71.0)]),
+          'Cyrillic': tsvOf([word('Моля', 96.0), word('те,', 95.0)]),
+        },
+      );
+
+      expect(
+        await service.recogniseText(
+          '/tmp/sign.png',
+          primaryLanguage: 'German',
+          altLanguage: 'English',
+        ),
+        'Моля те,',
+      );
+    });
+
     test('names the script package when its trained data is missing', () async {
       final service = serviceReturning(
         langs: {'eng', 'deu'},
@@ -417,6 +444,91 @@ void main() {
           altLanguage: 'English',
         ),
         throwsA(isA<OcrFailedException>()),
+      );
+    });
+
+    test('refuses a confident read when the missing script cannot be checked',
+        () async {
+      // The bug this guards (ADR-038): OSD says "too few characters" on a short
+      // phrase, so the Cyrillic check never runs, English trained data reads
+      // "Моля те, дай ми маслото." as Latin lookalikes at 70.6 — past the
+      // confidence gate — and the junk was returned as a successful read.
+      // Bulgarian is configured and has no trained data, so nothing loaded here
+      // could have produced a correct read, whatever the confidence says.
+      final service = serviceReturning(
+        langs: {'eng', 'deu'},
+        script: null,
+        tsvByLanguage: {
+          'eng': tsvOf([
+            word('Mona', 71.0),
+            word('Te,', 70.0),
+            word('nal', 71.0),
+            word('Mu', 70.0),
+            word('MacnoTo.', 71.0),
+          ]),
+        },
+      );
+
+      await expectLater(
+        service.recogniseText(
+          '/tmp/short.png',
+          primaryLanguage: 'Bulgarian',
+          altLanguage: 'English',
+        ),
+        throwsA(isA<OcrLanguageMissingException>().having(
+          (e) => e.languageCodes,
+          'languageCodes',
+          ['bul'],
+        )),
+      );
+    });
+
+    test('still returns a confident read when only Latin data is missing',
+        () async {
+      // The counterpart: French is not installed and OSD stayed silent, but
+      // English reads Latin letters correctly and only drops diacritics, which
+      // the AI restores downstream. Refusing here would be a false alarm.
+      final service = serviceReturning(
+        langs: {'eng'},
+        script: null,
+        tsvByLanguage: {
+          'eng': tsvOf([word('Donnez', 92.0), word('moi', 94.0)]),
+        },
+      );
+
+      expect(
+        await service.recogniseText(
+          '/tmp/menu.png',
+          primaryLanguage: 'French',
+          altLanguage: 'English',
+        ),
+        'Donnez moi',
+      );
+    });
+
+    test('names the configured language rather than the whole script pack',
+        () async {
+      // Bulgarian is what the user set and what the image turned out to be, so
+      // `tesseract-ocr-bul` is both smaller and better than `script-cyrl`.
+      final service = serviceReturning(
+        langs: {'eng'},
+        script: 'Cyrillic',
+        tsvByLanguage: {
+          'eng': tsvOf([word('Mona', 71.0)]),
+        },
+      );
+
+      await expectLater(
+        service.recogniseText(
+          '/tmp/photo.png',
+          primaryLanguage: 'Bulgarian',
+          altLanguage: 'English',
+        ),
+        throwsA(isA<OcrLanguageMissingException>().having(
+          (e) => e.languageCodes,
+          'languageCodes',
+          ['bul'],
+        )),
       );
     });
 

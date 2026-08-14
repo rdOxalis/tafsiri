@@ -30,6 +30,14 @@
   "providerSubtitle": "ta med din egen API-nyckel",
   "targetLanguageLabel": "Primärt språk",
   "altLanguageLabel": "Sekundärt språk",
+  "targetLanguageInfo": "Primärt språk — språket du vill lära dig, eller det du behärskar sämst.",
+  "@targetLanguageInfo": {
+    "description": "Explains what the primary language setting decides"
+  },
+  "altLanguageInfo": "Sekundärt språk — språket du behärskar väl, och som din text översätts till när du skriver på det primära språket.",
+  "@altLanguageInfo": {
+    "description": "Explains what the secondary language setting decides"
+  },
   "appLanguageLabel": "Appspråk",
   "warningNoApiKey": "Ingen API-nyckel angiven för den aktiva leverantören. Lägg till din nyckel nedan.",
   "donateButton": "Bjud mig på ett kaffe",

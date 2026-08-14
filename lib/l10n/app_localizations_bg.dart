@@ -100,6 +100,14 @@ class AppLocalizationsBg extends AppLocalizations {
   String get altLanguageLabel => 'Втори език';
 
   @override
+  String get targetLanguageInfo =>
+      'Основен език — езикът, който искаш да научиш или който владееш по-слабо.';
+
+  @override
+  String get altLanguageInfo =>
+      'Втори език — езикът, който владееш добре и на който се превежда текстът, когато въведеш нещо на основния език.';
+
+  @override
   String get appLanguageLabel => 'Език на приложението';
 
   @override
