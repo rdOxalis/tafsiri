@@ -68,6 +68,23 @@ void main() {
       expect(page.meanConfidence, closeTo(95.0, 0.001));
     });
 
+    test('reads Windows line endings', () {
+      // The bug that made every Windows read fail (ADR-043): splitting on '\n'
+      // alone leaves the header's last field named 'text\r', so the column
+      // lookup returns -1 and the whole page comes back empty — which the
+      // caller reports as missing trained data.
+      final tsv = [
+        tsvHeader,
+        word('Моля', 96.0),
+        word('те,', 95.0),
+      ].join('\r\n');
+
+      final page = parseTesseractTsv(tsv);
+
+      expect(page.text, 'Моля те,');
+      expect(page.meanConfidence, closeTo(95.5, 0.001));
+    });
+
     test('survives empty and malformed output', () {
       expect(parseTesseractTsv('').text, isEmpty);
       expect(parseTesseractTsv('').meanConfidence, 0);

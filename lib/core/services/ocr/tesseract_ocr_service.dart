@@ -462,7 +462,14 @@ class TesseractPage {
 /// are addressed by header name rather than index, because the column set has
 /// changed between Tesseract versions.
 TesseractPage parseTesseractTsv(String tsv) {
-  final lines = tsv.split('\n').where((l) => l.trim().isNotEmpty).toList();
+  // `\r?\n`, not `\n`: on Windows Tesseract ends every line with CRLF, which
+  // leaves the header's last field named `text\r`. `column('text')` then
+  // returns -1, the guard below reports an empty page, and the caller — seeing
+  // no text — blames missing trained data. Every read on Windows failed this
+  // way, and the trailing `\r` on the *word* cells was invisible because those
+  // are trimmed individually (ADR-043).
+  final lines =
+      tsv.split(RegExp(r'\r?\n')).where((l) => l.trim().isNotEmpty).toList();
   if (lines.isEmpty) {
     return const TesseractPage(text: '', meanConfidence: 0);
   }
