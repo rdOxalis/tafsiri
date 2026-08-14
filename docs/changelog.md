@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.12] - 2026-08-14
+
 ### Added
 - **Ctrl+V pastes a screenshot on Windows too** (ADR-047). It reads the clipboard through the PowerShell Windows already ships with, so there is nothing extra to install and no new dependency — the same approach as image-to-text itself. Android is the one platform left without it. As on Linux, Ctrl+V with no image on the clipboard still pastes text exactly as before.
 
