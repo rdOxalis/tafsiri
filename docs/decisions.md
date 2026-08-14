@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-045: A poor read is a poor read, not a missing package
+**Date:** 2026-08-14
+**Status:** Accepted
+**Context:** The diagnostic log from ADR-044 answered the Windows question on its first run, in one line: `8453 B out, text=2287 chars, confidence=42.1`, followed by `languageMissing: no trained data for script-cyrl`. Recognition had **worked**. Tesseract loaded the Cyrillic script data — installed, found, used — read 2287 characters, and the result was thrown away for scoring 42.1 against the gate of 60. The app then reported the one thing that was certainly not true: that the trained data was missing. The user had spent four rounds installing and reinstalling a package that was never absent. The underlying situation is worth recording too, because it is the ordinary case on a desktop: the image was a full-window screenshot, mostly Latin interface with a little Cyrillic in it. OSD called it Cyrillic at **1.76** — barely over the noise floor of 1.0, against ~4.5 for a genuinely Cyrillic page — so the app loaded Cyrillic data *only* and read a Latin interface with it. The configured languages, which would have read that screenshot well, never got a turn: the script branch threw before reaching them.
+**Decision:** Separate the two failures the branch had conflated. Trained data that is genuinely absent (`scriptArgument` resolves to nothing) still throws `OcrLanguageMissingException` and names the package — that hint is correct and actionable. But when the data *was* found and used and the read still came out poor, fall through to the configured languages and let them try. If they do better, that is the answer; if they do no better, the existing ladder reports a failed read with the measured confidence. What is never said again is "install what you are already looking at".
+**Consequences:** A screenshot whose script OSD misjudges now recovers instead of dead-ending, which is the common desktop case and was previously unreachable. The cost is one extra recognition run on that path, after a run that was already wasted. The `1.76` measurement argues that `kMinScriptConfidence = 1.0` is too permissive, but tuning a magic number is a worse fix than making the flow survive a wrong answer, so the threshold stands and the flow now tolerates it. Two tests pin the split: a poor script read with a good configured read returns the configured text, and a poor script read with no better alternative raises `OcrFailedException` rather than an install hint. The general shape of this bug is the one this whole series keeps producing — **an error message that names a cause the code never actually checked** — and it stayed alive for four rounds because the message was confident, specific, and wrong.
+
+---
+
 ## ADR-044: OCR writes a diagnostic log to a file, because desktop cannot print
 **Date:** 2026-08-14
 **Status:** Accepted

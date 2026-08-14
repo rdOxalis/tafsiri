@@ -193,14 +193,27 @@ class TesseractOcrService implements OcrService {
       final argument = scriptArgument(script, available);
       ocrLog('script $script is not covered; script data resolves to '
           '${argument ?? "NOTHING INSTALLED"}');
-      final byScript =
-          argument == null ? null : await _recognise(imagePath, argument);
-      if (byScript != null && _isUsable(byScript)) return byScript.text;
+      // Nothing installed for this script: that is the one case where naming a
+      // package is the right answer. Latin is exempt — any Latin language we
+      // might load already covers it, so a failure there is a bad photograph
+      // and an install hint would misdirect.
+      if (argument == null) {
+        if (script != 'Latin') {
+          throw OcrLanguageMissingException(_installHint(configured, script));
+        }
+      } else {
+        final byScript = await _recognise(imagePath, argument);
+        if (byScript != null && _isUsable(byScript)) return byScript.text;
 
-      // Latin is already covered by any Latin language we might load, so a
-      // failure there is a bad photograph — an install hint would misdirect.
-      if (script != 'Latin') {
-        throw OcrLanguageMissingException(_installHint(configured, script));
+        // The data was there and was used, and the read still came out poor.
+        // Claiming it is missing would be a lie, and one the user cannot act
+        // on — they are looking at the installed file. Far more likely the
+        // detection was wrong: this is what a screenshot of a mostly-Latin
+        // window does, where a little Cyrillic wins OSD by a nose (measured at
+        // script confidence 1.76, against ~4.5 for a genuinely Cyrillic page)
+        // and the configured languages would have read it better. So fall
+        // through and let them try (ADR-045).
+        ocrLog('script read unusable; falling back to ${configured.argument}');
       }
     }
 

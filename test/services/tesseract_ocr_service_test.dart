@@ -455,6 +455,56 @@ void main() {
       expect(seen[seen.indexOf('-l') + 1], r'script\Cyrillic');
     });
 
+    test('falls back to the configured languages when the script read is poor',
+        () async {
+      // A screenshot of a mostly-Latin window with a little Cyrillic in it:
+      // OSD wins by a nose, the app loads Cyrillic data only, and reading a
+      // Latin interface with it scores 42. The data was present and was used,
+      // so calling it missing would be a lie the user cannot act on — they are
+      // looking at the installed file. The configured languages get their turn
+      // (ADR-045).
+      final service = serviceReturning(
+        langs: {'eng', 'swa', r'script\Cyrillic'},
+        script: 'Cyrillic',
+        tsvByLanguage: {
+          r'script\Cyrillic': tsvOf([word('шзе', 42.0), word('гмуо', 42.0)]),
+          'swa+eng': tsvOf([word('Please', 95.0), word('wait', 94.0)]),
+        },
+      );
+
+      expect(
+        await service.recogniseText(
+          '/tmp/screenshot.png',
+          primaryLanguage: 'Swahili',
+          altLanguage: 'English',
+        ),
+        'Please wait',
+      );
+    });
+
+    test('a poor script read with nothing better is a failed read, not a '
+        'missing package', () async {
+      // Same situation, but the configured languages do no better. The honest
+      // answer is "could not read that", never "install what you already have".
+      final service = serviceReturning(
+        langs: {'eng', 'swa', r'script\Cyrillic'},
+        script: 'Cyrillic',
+        tsvByLanguage: {
+          r'script\Cyrillic': tsvOf([word('шзе', 42.0)]),
+          'swa+eng': tsvOf([word('Bltte', 30.0)]),
+        },
+      );
+
+      expect(
+        () => service.recogniseText(
+          '/tmp/screenshot.png',
+          primaryLanguage: 'Swahili',
+          altLanguage: 'English',
+        ),
+        throwsA(isA<OcrFailedException>()),
+      );
+    });
+
     test('names the script package when its trained data is missing', () async {
       final service = serviceReturning(
         langs: {'eng', 'deu'},
