@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.11] - 2026-08-14
+
 ### Added
 - **Image-to-text on Linux** (ADR-037). Picking an image on the desktop no longer ends in an error: recognition runs through the external `tesseract` binary. Needs `tesseract-ocr` plus the trained data for the languages you translate (`sudo apt install tesseract-ocr tesseract-ocr-swa`); `install.sh` warns when either is missing. Windows is not done yet — the engine still has to be bundled into the installer.
 - Text recognition now sits behind an `OcrService` interface with two implementations (ML Kit on Android/iOS, Tesseract on desktop), so the translator no longer knows which engine it has.

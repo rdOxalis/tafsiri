@@ -2,7 +2,7 @@ name: tafsiri
 description: "AI-powered text translation app supporting Mistral, Claude, and ChatGPT backends."
 publish_to: 'none'
 
-version: 1.0.10+10
+version: 1.0.11+11
 
 environment:
   sdk: ^3.8.1
