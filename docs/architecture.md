@@ -224,6 +224,18 @@ On Linux the versioned soname is the fallback because the unversioned one only s
 | Voice input (`speech_to_text`) | ✅ | ❌ no Linux implementation — mic button disabled | ❌ no Windows implementation — mic button disabled |
 
 Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime, plus `tesseract-ocr` and the trained data for the languages in use if you want image-to-text.
+
+### Which OCR trained data is actually needed (ADR-037)
+
+Measured with only `eng` installed:
+
+| Script | With English trained data | Needs its own package? |
+|---|---|---|
+| Swahili (plain ASCII Latin) | read perfectly | no |
+| German, Polish, … (Latin + diacritics) | letters right, diacritics lost (`Käse`→`Kase`) at ~90 confidence | optional — the AI restores them |
+| Bulgarian, Russian, … (Cyrillic) and other foreign scripts | noise at ~39 confidence → rejected by the gate | **yes** |
+
+So `tesseract-ocr` on its own covers Latin scripts. When a read is rejected *and* a configured language had no trained data, the app names the package to install rather than blaming the image; when the read succeeded despite a missing package, it stays quiet.
 Build requirements for Windows: Visual Studio 2022 with "Desktop development with C++", Inno Setup 6.3+ for the installer, and internet access on the first CMake configure (to fetch SQLite). Nothing is required at runtime — SQLite and the MSVC runtime ship inside the bundle.
 
 ### Linux installation (ADR-032)

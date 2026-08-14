@@ -34,6 +34,8 @@ class TafsiriApp extends ConsumerWidget {
         Locale('nb'),
         Locale('sv'),
         Locale('pl'),
+        Locale('it'),
+        Locale('bg'),
       ],
       theme: _buildTheme(Brightness.light),
       darkTheme: _buildTheme(Brightness.dark),

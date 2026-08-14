@@ -126,6 +126,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Text recognition is not installed. Install Tesseract to read text from images.';
 
   @override
+  String errorOcrLanguageMissing(String package) {
+    return 'Text recognition has no data for this language. Install: $package';
+  }
+
+  @override
   String get errorSttUnavailable =>
       'Voice input is not available on this device.';
 
@@ -397,6 +402,11 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   @override
   String get errorOcrEngineMissing =>
       'Text recognition is not installed. Install Tesseract to read text from images.';
+
+  @override
+  String errorOcrLanguageMissing(String package) {
+    return 'Text recognition has no data for this language. Install: $package';
+  }
 
   @override
   String get errorSttUnavailable =>

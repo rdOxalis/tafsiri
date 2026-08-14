@@ -11,7 +11,7 @@ Flutter Android app for AI-powered text translation. The name "Tafsiri" is Swahi
 
 ## App Localisation
 
-The app UI is available in 10 languages. All user-facing strings must go through Flutter's `intl`/ARB localisation system — no hardcoded strings in widgets.
+The app UI is available in 12 languages. All user-facing strings must go through Flutter's `intl`/ARB localisation system — no hardcoded strings in widgets.
 
 | Language | Locale code |
 |---|---|
@@ -25,8 +25,10 @@ The app UI is available in 10 languages. All user-facing strings must go through
 | Norwegian | `no` |
 | Swedish | `sv` |
 | Polish | `pl` |
+| Italian | `it` |
+| Bulgarian | `bg` |
 
-ARB files live in `lib/l10n/`. The Flutter tool generates `AppLocalizations` from these. Always add new strings to all 10 ARB files before shipping.
+ARB files live in `lib/l10n/`. The Flutter tool generates `AppLocalizations` from these. Always add new strings to all 12 ARB files before shipping. Note Bulgarian is the first non-Latin script — it is the case that makes OCR trained data mandatory rather than merely nice to have (ADR-037).
 
 ---
 

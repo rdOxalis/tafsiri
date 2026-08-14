@@ -38,6 +38,7 @@
   "errorNetwork": "Geen verbinding. Controleer uw internet.",
   "errorOcrFailed": "Kon geen tekst uit de afbeelding halen.",
   "errorOcrEngineMissing": "Tekstherkenning is niet geïnstalleerd. Installeer Tesseract om tekst uit afbeeldingen te lezen.",
+  "errorOcrLanguageMissing": "Tekstherkenning heeft geen gegevens voor deze taal. Installeer: {package}",
   "errorSttUnavailable": "Spraakinvoer is niet beschikbaar op dit apparaat.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

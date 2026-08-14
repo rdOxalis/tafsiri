@@ -38,6 +38,7 @@
   "errorNetwork": "Ingen forbindelse. Kontrollér venligst din internetforbindelse.",
   "errorOcrFailed": "Kunne ikke udtrække tekst fra billedet.",
   "errorOcrEngineMissing": "Tekstgenkendelse er ikke installeret. Installer Tesseract for at læse tekst fra billeder.",
+  "errorOcrLanguageMissing": "Tekstgenkendelsen mangler data for dette sprog. Installer: {package}",
   "errorSttUnavailable": "Taleindtastning er ikke tilgængelig på denne enhed.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

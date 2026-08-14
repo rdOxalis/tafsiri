@@ -15,14 +15,17 @@ class TranslatorScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     ref.listen(
-      translatorProvider.select((s) => s.ocrError),
-      (_, failure) {
+      translatorProvider.select((s) => (s.ocrError, s.ocrErrorDetail)),
+      (_, next) {
+        final (failure, detail) = next;
         if (failure == null) return;
         ref.read(translatorProvider.notifier).clearOcrError();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(switch (failure) {
               OcrFailure.engineMissing => l10n.errorOcrEngineMissing,
+              OcrFailure.languageMissing =>
+                l10n.errorOcrLanguageMissing(detail ?? ''),
               OcrFailure.failed => l10n.errorOcrFailed,
             }),
           ),

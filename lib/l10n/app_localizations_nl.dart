@@ -126,6 +126,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Tekstherkenning is niet geïnstalleerd. Installeer Tesseract om tekst uit afbeeldingen te lezen.';
 
   @override
+  String errorOcrLanguageMissing(String package) {
+    return 'Tekstherkenning heeft geen gegevens voor deze taal. Installeer: $package';
+  }
+
+  @override
   String get errorSttUnavailable =>
       'Spraakinvoer is niet beschikbaar op dit apparaat.';
 

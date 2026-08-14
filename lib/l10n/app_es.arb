@@ -38,6 +38,7 @@
   "errorNetwork": "Sin conexión. Por favor, comprueba tu internet.",
   "errorOcrFailed": "No se pudo extraer el texto de la imagen.",
   "errorOcrEngineMissing": "El reconocimiento de texto no está instalado. Instala Tesseract para leer texto de las imágenes.",
+  "errorOcrLanguageMissing": "El reconocimiento de texto no tiene datos para este idioma. Instala: {package}",
   "errorSttUnavailable": "La entrada de voz no está disponible en este dispositivo.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

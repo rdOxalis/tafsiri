@@ -15,6 +15,8 @@ const List<(String code, String label)> supportedAppLocales = [
   ('nb', 'Norsk'),
   ('sv', 'Svenska'),
   ('pl', 'Polski'),
+  ('it', 'Italiano'),
+  ('bg', 'Български'),
 ];
 
 Locale _codeToLocale(String code) {

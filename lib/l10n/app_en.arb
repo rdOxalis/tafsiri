@@ -146,6 +146,7 @@
     "description": "Error message shown when OCR fails"
   },
   "errorOcrEngineMissing": "Text recognition is not installed. Install Tesseract to read text from images.",
+  "errorOcrLanguageMissing": "Text recognition has no data for this language. Install: {package}",
   "errorSttUnavailable": "Voice input is not available on this device.",
   "@errorSttUnavailable": {
     "description": "Message shown when STT is not available"

@@ -39,3 +39,24 @@ class OcrFailedException implements Exception {
   @override
   String toString() => 'OcrFailedException: $message';
 }
+
+/// Nothing usable came back *and* the configured language had no trained data
+/// installed — so the fix is a package away, not a better photo.
+///
+/// Only raised for that combination. A missing language pack that still yields
+/// good text stays silent: for Latin scripts English trained data reads the
+/// letters correctly and only drops diacritics, which the AI restores anyway.
+/// It is the foreign scripts — Cyrillic, Arabic, Chinese — that produce noise
+/// without their own data, and those are exactly the ones the confidence gate
+/// catches (ADR-037).
+class OcrLanguageMissingException implements Exception {
+  const OcrLanguageMissingException(this.languageCodes);
+
+  /// ISO 639-2 codes of the trained data that is not installed, e.g. `['bul']`.
+  final List<String> languageCodes;
+
+  @override
+  String toString() =>
+      'OcrLanguageMissingException: no trained data for '
+      '${languageCodes.join(', ')}';
+}

@@ -10,6 +10,7 @@ import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
 import '../../core/services/ocr/ocr_service.dart';
 import '../../core/services/ocr/ocr_service_factory.dart';
+import '../../core/services/ocr/tesseract_ocr_service.dart';
 import '../../features/history/history_controller.dart';
 import '../../features/settings/settings_controller.dart';
 import '../../shared/models/translation_entry.dart';
@@ -18,9 +19,10 @@ enum TranslatorError { noApiKey, apiError, networkError }
 
 /// Why text recognition did not produce anything (ADR-037).
 ///
-/// [engineMissing] is worth its own message: on desktop it means the user has
-/// to install Tesseract, which no amount of retrying will fix.
-enum OcrFailure { failed, engineMissing }
+/// The last two are worth their own messages: both mean the user has to install
+/// something, which no amount of retrying will fix. [languageMissing] carries
+/// the package to install in `TranslatorState.ocrErrorDetail`.
+enum OcrFailure { failed, engineMissing, languageMissing }
 
 class TranslatorState {
   final String inputText;
@@ -42,6 +44,9 @@ class TranslatorState {
   /// Set when the last recognition attempt failed; `null` otherwise.
   final OcrFailure? ocrError;
 
+  /// What to install, for [OcrFailure.languageMissing].
+  final String? ocrErrorDetail;
+
   const TranslatorState({
     this.inputText = '',
     this.outputText,
@@ -55,6 +60,7 @@ class TranslatorState {
     this.isListening = false,
     this.isOcrProcessing = false,
     this.ocrError,
+    this.ocrErrorDetail,
   });
 
   TranslatorState copyWith({
@@ -72,6 +78,7 @@ class TranslatorState {
     bool? isListening,
     bool? isOcrProcessing,
     OcrFailure? ocrError,
+    String? ocrErrorDetail,
     bool clearOcrError = false,
   }) =>
       TranslatorState(
@@ -90,6 +97,8 @@ class TranslatorState {
         isListening: isListening ?? this.isListening,
         isOcrProcessing: isOcrProcessing ?? this.isOcrProcessing,
         ocrError: clearOcrError ? null : ocrError ?? this.ocrError,
+        ocrErrorDetail:
+            clearOcrError ? null : ocrErrorDetail ?? this.ocrErrorDetail,
       );
 }
 
@@ -173,6 +182,13 @@ class TranslatorController extends Notifier<TranslatorState> {
         isOcrProcessing: false,
         clearOutput: true,
         clearError: true,
+      );
+    } on OcrLanguageMissingException catch (e) {
+      debugPrint('[OCR] $e');
+      state = state.copyWith(
+        isOcrProcessing: false,
+        ocrError: OcrFailure.languageMissing,
+        ocrErrorDetail: tesseractPackageHint(e.languageCodes),
       );
     } on OcrUnavailableException catch (e) {
       debugPrint('[OCR] engine unavailable: $e');

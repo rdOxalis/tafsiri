@@ -38,6 +38,7 @@
   "errorNetwork": "Hakuna muunganisho. Tafadhali angalia intaneti yako.",
   "errorOcrFailed": "Haikuweza kutoa maandishi kutoka kwa picha.",
   "errorOcrEngineMissing": "Utambuzi wa maandishi haujasakinishwa. Sakinisha Tesseract ili kusoma maandishi kwenye picha.",
+  "errorOcrLanguageMissing": "Utambuzi wa maandishi hauna data ya lugha hii. Sakinisha: {package}",
   "errorSttUnavailable": "Ingizo la sauti halipatikani kwenye kifaa hiki.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

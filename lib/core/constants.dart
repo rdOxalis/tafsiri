@@ -50,6 +50,8 @@ const List<(String, String)> kSttLanguageOptions = [
   ('sv', 'Svenska'),
   ('pl', 'Polski'),
   ('sw', 'Kiswahili'),
+  ('it', 'Italiano'),
+  ('bg', 'Български'),
 ];
 
 // STT locale map: ISO-639-1 → BCP-47
@@ -65,4 +67,6 @@ const Map<String, String> kSttLocaleMap = {
   'nb': 'nb-NO',
   'sv': 'sv-SE',
   'pl': 'pl-PL',
+  'it': 'it-IT',
+  'bg': 'bg-BG',
 };

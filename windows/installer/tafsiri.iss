@@ -62,6 +62,10 @@ RestartApplications=no
 ; Only the locales Inno Setup ships out of the box. Tafsiri's Swahili and
 ; Swedish UI translations have no counterpart here, so those users get the
 ; English installer and a translated app.
+;
+; If ISCC ever fails with "Could not open file ...\<Language>.isl", that
+; translation is not in the installed Inno Setup — drop the line rather than
+; hunting for the file.
 Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
@@ -70,6 +74,8 @@ Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "da"; MessagesFile: "compiler:Languages\Danish.isl"
 Name: "no"; MessagesFile: "compiler:Languages\Norwegian.isl"
 Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "bg"; MessagesFile: "compiler:Languages\Bulgarian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -94,6 +100,8 @@ es.KeepDataPrompt=¿Conservar la configuración, las claves de API y el historia
 da.KeepDataPrompt=Vil du beholde dine Tafsiri-indstillinger, API-nøgler og oversættelseshistorik?%n%nJa beholder dem til en senere geninstallation, Nej sletter dem permanent.
 no.KeepDataPrompt=Vil du beholde Tafsiri-innstillingene, API-nøklene og oversettelsesloggen?%n%nJa beholder dem til en senere reinstallasjon, Nei sletter dem permanent.
 pl.KeepDataPrompt=Zachować ustawienia, klucze API i historię tłumaczeń Tafsiri?%n%nTak zachowa je na potrzeby ponownej instalacji, Nie usunie je trwale.
+it.KeepDataPrompt=Conservare impostazioni, chiavi API e cronologia delle traduzioni di Tafsiri?%n%nSì le conserva per una futura reinstallazione, No le elimina definitivamente.
+bg.KeepDataPrompt=Да се запазят ли настройките, API ключовете и историята на преводите на Tafsiri?%n%nДа ги запазва за бъдещо преинсталиране, Не ги изтрива безвъзвратно.
 
 [Code]
 { Uninstalling must not silently destroy the user's API keys and history — that

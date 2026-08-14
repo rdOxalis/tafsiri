@@ -149,6 +149,16 @@
     "description": "Error message shown when OCR fails"
   },
   "errorOcrEngineMissing": "Text recognition is not installed. Install Tesseract to read text from images.",
+  "errorOcrLanguageMissing": "Text recognition has no data for this language. Install: {package}",
+  "@errorOcrLanguageMissing": {
+    "description": "Shown when the configured language has no trained data; {package} is what to install",
+    "placeholders": {
+      "package": {
+        "type": "String",
+        "example": "tesseract-ocr-bul"
+      }
+    }
+  },
   "@errorOcrEngineMissing": {
     "description": "Error shown when no OCR engine is installed (desktop)"
   },

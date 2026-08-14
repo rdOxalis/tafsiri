@@ -127,6 +127,11 @@ class AppLocalizationsSw extends AppLocalizations {
       'Utambuzi wa maandishi haujasakinishwa. Sakinisha Tesseract ili kusoma maandishi kwenye picha.';
 
   @override
+  String errorOcrLanguageMissing(String package) {
+    return 'Utambuzi wa maandishi hauna data ya lugha hii. Sakinisha: $package';
+  }
+
+  @override
   String get errorSttUnavailable =>
       'Ingizo la sauti halipatikani kwenye kifaa hiki.';
 

@@ -127,6 +127,11 @@ class AppLocalizationsDa extends AppLocalizations {
       'Tekstgenkendelse er ikke installeret. Installer Tesseract for at læse tekst fra billeder.';
 
   @override
+  String errorOcrLanguageMissing(String package) {
+    return 'Tekstgenkendelsen mangler data for dette sprog. Installer: $package';
+  }
+
+  @override
   String get errorSttUnavailable =>
       'Taleindtastning er ikke tilgængelig på denne enhed.';
 

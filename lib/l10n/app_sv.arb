@@ -38,6 +38,7 @@
   "errorNetwork": "Ingen anslutning. Kontrollera din internetanslutning.",
   "errorOcrFailed": "Kunde inte extrahera text från bilden.",
   "errorOcrEngineMissing": "Textigenkänning är inte installerad. Installera Tesseract för att läsa text från bilder.",
+  "errorOcrLanguageMissing": "Textigenkänningen saknar data för det här språket. Installera: {package}",
   "errorSttUnavailable": "Röstinmatning är inte tillgänglig på den här enheten.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

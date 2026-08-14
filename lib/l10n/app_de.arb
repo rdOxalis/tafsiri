@@ -38,6 +38,7 @@
   "errorNetwork": "Keine Verbindung. Bitte Internetverbindung prüfen.",
   "errorOcrFailed": "Text konnte nicht aus dem Bild extrahiert werden.",
   "errorOcrEngineMissing": "Texterkennung ist nicht installiert. Installiere Tesseract, um Text aus Bildern zu lesen.",
+  "errorOcrLanguageMissing": "Der Texterkennung fehlen die Daten für diese Sprache. Installiere: {package}",
   "errorSttUnavailable": "Spracheingabe ist auf diesem Gerät nicht verfügbar.",
   "providerMistral": "Mistral",
   "providerClaude": "Claude",

@@ -76,41 +76,61 @@ void main() {
     });
   });
 
-  group('languageArgument', () {
+  group('selectLanguages', () {
     const service = TesseractOcrService();
     const installed = {'eng', 'deu', 'swa', 'fra'};
 
     test('maps both configured languages and passes them together', () {
-      expect(service.languageArgument('Swahili', 'English', installed),
-          'swa+eng');
+      final selection =
+          service.selectLanguages('Swahili', 'English', installed);
+      expect(selection.argument, 'swa+eng');
+      expect(selection.missing, isEmpty);
     });
 
     test('accepts native spellings and two-letter codes', () {
-      expect(service.languageArgument('Deutsch', 'en', installed), 'deu+eng');
-      expect(service.languageArgument('de', 'Français', installed), 'deu+fra');
+      expect(service.selectLanguages('Deutsch', 'en', installed).argument,
+          'deu+eng');
+      expect(service.selectLanguages('de', 'Français', installed).argument,
+          'deu+fra');
+    });
+
+    test('understands the two newest UI languages', () {
+      // Italian is Latin, Bulgarian is Cyrillic — the second is the reason the
+      // missing-data path has to be actionable (ADR-037).
+      expect(service.selectLanguages('Italian', 'English', {'eng', 'ita'})
+          .argument, 'ita+eng');
+      expect(service.selectLanguages('Български', 'English', {'eng', 'bul'})
+          .argument, 'bul+eng');
     });
 
     test('does not repeat a language configured twice', () {
-      expect(service.languageArgument('German', 'de', installed), 'deu');
+      expect(service.selectLanguages('German', 'de', installed).argument,
+          'deu');
     });
 
     test('skips languages whose trained data is not installed', () {
-      expect(service.languageArgument('Polish', 'German', installed), 'deu');
+      final selection = service.selectLanguages('Polish', 'German', installed);
+      expect(selection.argument, 'deu');
+      expect(selection.missing, ['pol']);
     });
 
     test('falls back to English when nothing configured is installed', () {
-      expect(service.languageArgument('Polish', 'Swedish', installed), 'eng');
+      final selection =
+          service.selectLanguages('Bulgarian', 'Russian', installed);
+      expect(selection.argument, 'eng');
+      expect(selection.missing, ['bul', 'rus']);
     });
 
     test('gives up when even English is missing', () {
       expect(
-        () => service.languageArgument('Polish', 'Swedish', {'jpn'}),
+        () => service.selectLanguages('Polish', 'Swedish', {'jpn'}),
         throwsA(isA<OcrUnavailableException>()),
       );
     });
 
     test('falls back for a language name it does not know', () {
-      expect(service.languageArgument('Klingon', 'Elvish', installed), 'eng');
+      expect(service.selectLanguages('Klingon', 'Elvish', installed).argument,
+          'eng');
     });
   });
 
@@ -154,13 +174,33 @@ void main() {
       );
     });
 
-    test('rejects a low-confidence read instead of passing it to the AI',
+    test('names the missing language pack when that is the likely cause',
         () async {
-      // This is the case the gate exists for: handed this, a language model
-      // would not fail — it would invent fluent text that was never on the
-      // image, and the user could not tell.
+      // Bulgarian on a machine with only English trained data: Cyrillic comes
+      // back as noise, and the fix is an apt install rather than a better
+      // photo — so say so instead of blaming the image.
       final service = serviceReturning(
         langs: {'eng'},
+        tsv: tsvOf([word('Noxkanyucta,', 39.0), word('Gavte', 41.0)]),
+      );
+
+      expect(
+        () => service.recogniseText(
+          '/tmp/photo.png',
+          primaryLanguage: 'Bulgarian',
+          altLanguage: 'English',
+        ),
+        throwsA(isA<OcrLanguageMissingException>()
+            .having((e) => e.languageCodes, 'languageCodes', ['bul'])),
+      );
+    });
+
+    test('blames the image when every configured language is installed',
+        () async {
+      // The gate itself: handed this, a language model would not fail — it
+      // would invent fluent text that was never on the image.
+      final service = serviceReturning(
+        langs: {'eng', 'swa'},
         tsv: tsvOf([word('Tafadhal1', 31.0), word('n|pe', 22.0)]),
       );
 

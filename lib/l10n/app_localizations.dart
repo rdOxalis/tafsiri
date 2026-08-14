@@ -5,11 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_bg.dart';
 import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
 import 'app_localizations_fr.dart';
+import 'app_localizations_it.dart';
 import 'app_localizations_nb.dart';
 import 'app_localizations_nl.dart';
 import 'app_localizations_pl.dart';
@@ -102,12 +104,14 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('bg'),
     Locale('da'),
     Locale('de'),
     Locale('en'),
     Locale('en', 'GB'),
     Locale('es'),
     Locale('fr'),
+    Locale('it'),
     Locale('nb'),
     Locale('nl'),
     Locale('pl'),
@@ -342,6 +346,12 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'Text recognition is not installed. Install Tesseract to read text from images.'**
   String get errorOcrEngineMissing;
+
+  /// Shown when the configured language has no trained data; {package} is what to install
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Text recognition has no data for this language. Install: {package}'**
+  String errorOcrLanguageMissing(String package);
 
   /// Message shown when STT is not available
   ///
@@ -625,11 +635,13 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) => <String>[
+    'bg',
     'da',
     'de',
     'en',
     'es',
     'fr',
+    'it',
     'nb',
     'nl',
     'pl',
@@ -656,6 +668,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'bg':
+      return AppLocalizationsBg();
     case 'da':
       return AppLocalizationsDa();
     case 'de':
@@ -666,6 +680,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEs();
     case 'fr':
       return AppLocalizationsFr();
+    case 'it':
+      return AppLocalizationsIt();
     case 'nb':
       return AppLocalizationsNb();
     case 'nl':

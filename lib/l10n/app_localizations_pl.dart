@@ -127,6 +127,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Rozpoznawanie tekstu nie jest zainstalowane. Zainstaluj Tesseract, aby odczytywać tekst z obrazów.';
 
   @override
+  String errorOcrLanguageMissing(String package) {
+    return 'Rozpoznawanie tekstu nie ma danych dla tego języka. Zainstaluj: $package';
+  }
+
+  @override
   String get errorSttUnavailable =>
       'Wprowadzanie głosowe nie jest dostępne na tym urządzeniu.';
 

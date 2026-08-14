@@ -22,7 +22,7 @@ typedef ProcessRunner = Future<ProcessResult> Function(
 const kMinMeanConfidence = 60.0;
 
 /// Maps the free-text language names from Settings to Tesseract's ISO 639-2
-/// codes. Covers the app's ten UI languages, their native spellings and the
+/// codes. Covers the app's twelve UI languages, their native spellings and the
 /// two-letter codes the AI returns, since the setting accepts any of them.
 const kTesseractLanguageCodes = <String, String>{
   'swahili': 'swa', 'kiswahili': 'swa', 'sw': 'swa',
@@ -38,6 +38,10 @@ const kTesseractLanguageCodes = <String, String>{
   'italian': 'ita', 'italiano': 'ita', 'it': 'ita',
   'portuguese': 'por', 'português': 'por', 'portugues': 'por', 'pt': 'por',
   'turkish': 'tur', 'türkçe': 'tur', 'tr': 'tur',
+  'bulgarian': 'bul', 'български': 'bul', 'bg': 'bul',
+  'russian': 'rus', 'русский': 'rus', 'ru': 'rus',
+  'greek': 'ell', 'ελληνικά': 'ell', 'el': 'ell',
+  'arabic': 'ara', 'العربية': 'ara', 'ar': 'ara',
 };
 
 /// Recognition through the external `tesseract` binary (ADR-037).
@@ -64,19 +68,16 @@ class TesseractOcrService implements OcrService {
     required String altLanguage,
   }) async {
     final available = await _availableLanguages();
-    final languages = languageArgument(
-      primaryLanguage,
-      altLanguage,
-      available,
-    );
+    final languages = selectLanguages(primaryLanguage, altLanguage, available);
 
-    debugPrint('[OCR] tesseract -l $languages');
+    debugPrint('[OCR] tesseract -l ${languages.argument}');
 
     final ProcessResult result;
     try {
       // `tsv` is a config file name, not a flag, so it goes last. It gives the
       // text and the per-word confidence in one run.
-      result = await _run(executable, [imagePath, 'stdout', '-l', languages, 'tsv']);
+      result = await _run(
+          executable, [imagePath, 'stdout', '-l', languages.argument, 'tsv']);
     } on ProcessException catch (e) {
       throw OcrUnavailableException('Could not run $executable: ${e.message}');
     }
@@ -93,6 +94,12 @@ class TesseractOcrService implements OcrService {
       throw const OcrFailedException('No text found in the image.');
     }
     if (page.meanConfidence < kMinMeanConfidence) {
+      // Unreadable *and* the configured language was never installed: name the
+      // missing trained data instead of blaming the image, because that is
+      // almost certainly the cause and the user can fix it.
+      if (languages.missing.isNotEmpty) {
+        throw OcrLanguageMissingException(languages.missing);
+      }
       throw OcrFailedException(
         'Mean confidence ${page.meanConfidence.toStringAsFixed(1)} is below '
         '$kMinMeanConfidence — refusing to pass this on as text.',
@@ -129,7 +136,11 @@ class TesseractOcrService implements OcrService {
   /// way, which is exactly the case correction mode is built around: a
   /// primary-language text with foreign words in it (ADR-033).
   @visibleForTesting
-  String languageArgument(String primary, String alt, Set<String> available) {
+  TesseractLanguages selectLanguages(
+    String primary,
+    String alt,
+    Set<String> available,
+  ) {
     final wanted = <String>[];
     for (final name in [primary, alt]) {
       final code = kTesseractLanguageCodes[name.trim().toLowerCase()];
@@ -137,14 +148,23 @@ class TesseractOcrService implements OcrService {
     }
 
     final installed = wanted.where(available.contains).toList();
-    if (installed.isNotEmpty) return installed.join('+');
+    final missing = wanted.where((c) => !available.contains(c)).toList();
+
+    if (installed.isNotEmpty) {
+      return TesseractLanguages(
+        argument: installed.join('+'),
+        missing: missing,
+      );
+    }
 
     // Nothing configured is installed. English is the one language virtually
-    // every Tesseract install ships, and a wrong-language guess still beats
-    // refusing outright — the AI cleans up the result afterwards anyway.
+    // every Tesseract install ships, and for Latin scripts it reads the letters
+    // correctly and only loses diacritics — which the AI restores downstream.
+    // For a foreign script it produces noise, and the confidence gate then
+    // turns `missing` into an actionable message rather than a dead end.
     if (available.contains('eng')) {
       debugPrint('[OCR] no trained data for $wanted, falling back to eng');
-      return 'eng';
+      return TesseractLanguages(argument: 'eng', missing: missing);
     }
 
     throw OcrUnavailableException(
@@ -152,6 +172,29 @@ class TesseractOcrService implements OcrService {
       'fallback. Installed: ${available.join(', ')}',
     );
   }
+}
+
+/// The `-l` argument to use, plus the configured languages that are not there.
+@immutable
+class TesseractLanguages {
+  const TesseractLanguages({required this.argument, required this.missing});
+
+  final String argument;
+
+  /// Configured languages with no trained data installed, as ISO 639-2 codes.
+  final List<String> missing;
+}
+
+/// Turns missing language codes into something the user can act on.
+///
+/// Debian and its derivatives package trained data as `tesseract-ocr-<code>`,
+/// which covers the Linux desktop this runs on. Elsewhere the bare codes are
+/// the most honest thing we can say.
+String tesseractPackageHint(List<String> codes) {
+  if (Platform.isLinux) {
+    return codes.map((c) => 'tesseract-ocr-$c').join(' ');
+  }
+  return codes.join(', ');
 }
 
 /// One recognised page: its text and how sure Tesseract was on average.
