@@ -6,7 +6,19 @@
 	<true/>
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
+
+	<!-- Flutter's own tooling talks to the running app over a local socket. -->
 	<key>com.apple.security.network.server</key>
+	<true/>
+
+	<!-- The same four the release build needs. Kept in step deliberately: a
+	     permission that exists only in debug produces a build that works while
+	     you develop and fails once shipped, which is the worst way to find out. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.device.audio-input</key>
+	<true/>
+	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
 </dict>
 </plist>

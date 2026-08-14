@@ -28,5 +28,12 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<!-- macOS terminates the app on first access when either of these is
+	     missing, rather than refusing the permission. Both are needed: one to
+	     open the microphone, one to have anything transcribe it. -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Tafsiri uses the microphone for voice input, so you can speak the text you want translated instead of typing it.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Tafsiri turns what you say into text so it can be translated. Recognition runs on this Mac; only the resulting text is sent to the AI provider you configured.</string>
 </dict>
 </plist>

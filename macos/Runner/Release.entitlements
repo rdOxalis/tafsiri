@@ -4,5 +4,24 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+
+	<!-- Outgoing connections. Without this the sandbox blocks every call to
+	     Mistral, Claude and ChatGPT, and the app can do nothing at all — this
+	     is not an optional extra for Tafsiri, it is the product. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+
+	<!-- Voice input. speech_to_text has a macOS implementation, so the
+	     microphone button is shown here; without this it would be shown and
+	     then fail. -->
+	<key>com.apple.security.device.audio-input</key>
+	<true/>
+
+	<!-- Files the user picks in a dialog: the image for text recognition, and
+	     the backup file written and read outside the sandbox container on
+	     purpose (ADR-034) — sandbox data is deleted on uninstall, which is
+	     exactly what backups guard against. -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
 </dict>
 </plist>

@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-048: macOS entitlements, declared before the first build
+**Date:** 2026-08-14
+**Status:** Accepted — unverified, no macOS build has ever been made
+**Context:** macOS is next, and `macos/` still carries Flutter's untouched template. Two of its gaps would have looked like application bugs. `Release.entitlements` declares nothing but `com.apple.security.app-sandbox`: with the sandbox on and no `network.client`, **every** call to Mistral, Claude and ChatGPT is refused, so the app would appear to be broken rather than unpermitted — and `DebugProfile.entitlements` lacked it too, so developing would not have revealed it either. `Info.plist` carries no `NSMicrophoneUsageDescription` or `NSSpeechRecognitionUsageDescription`, and macOS does not deny a permission whose purpose string is missing — it **terminates the process**. Since `speech_to_text` does have a macOS implementation, the microphone button is shown there (ADR-039), so the app would have offered a control that killed it.
+**Decision:** Declare the four the app actually needs, in both entitlement files: `network.client` for the AI providers, `device.audio-input` for voice, `files.user-selected.read-write` for the images the user picks and the backup written deliberately outside the container (ADR-034), plus the sandbox itself. Debug and release are kept identical apart from Flutter's own JIT and local-socket needs — a permission present only in debug produces a build that works throughout development and fails once shipped, which is the worst moment to learn about it. The usage strings are written to say what is done and where: speech recognition runs on the Mac, and only the resulting text reaches the configured provider.
+**Consequences:** All of this is declaration, none of it is tested — the plists were checked only for being well-formed. What it buys is that tomorrow starts with translation and the microphone working rather than an hour spent on two files. What it does **not** solve is the one that needs a decision rather than a key: image-to-text shells out to `tesseract`, and under the App Sandbox the child process cannot reach `/opt/homebrew/bin` or read the image outside the container. Either the sandbox comes off — acceptable for direct distribution, fatal for the Mac App Store — or Tesseract is bundled into the app, which is the same packaging question already open for Windows and would settle both. Clipboard image paste is likewise unimplemented on macOS; `osascript -e 'the clipboard as «class PNGf»'` fits behind the existing `ClipboardImageService` seam (ADR-047).
+
+---
+
 ## ADR-047: Clipboard images on Windows through its own PowerShell
 **Date:** 2026-08-14
 **Status:** Accepted
