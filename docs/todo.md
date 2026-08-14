@@ -4,6 +4,12 @@
 
 <!-- Move items here when actively working on them -->
 
+- [ ] **Bulgarian OCR still returns Latin junk — cause not yet identified.** Reported 2026-08-14 *after* the fix in `4d02f63`: an image with Bulgarian text and no Cyrillic trained data installed gives `Mona Te, nal Mu MacnoTo` instead of the "install `tesseract-ocr-script-cyrl`" message. Two candidates, not yet distinguished:
+  1. **A stale binary.** Before `d963681`, `install.sh` reused an existing bundle even when it came from a different commit. Run `./install.sh` and check the label at the bottom of Settings — it must read `v1.0.10+10 · d963681` or newer.
+  2. **The documented OSD limit.** Script detection needs enough characters; a two-word sign returns "Too few characters", falls back to the configured languages, and the misread recurs. Run `~/.local/share/tafsiri/tafsiri` from a terminal and look for `[OCR] script not detected: …` versus `[OCR] script Cyrillic (…)`.
+
+  If it is (2), the open design question is what to do for short text: loading script-level data speculatively alongside the configured languages, or comparing two runs and taking the higher confidence. Testing the happy path needs `sudo apt install tesseract-ocr-script-cyrl` (28 MB) — this machine has only `eng` and `osd`. Fixtures: `test/fixtures/ocr_sample*.png`. (ADR-037)
+
 - [ ] **Close F-Droid MR #39249** (needs your GitLab login — one click): https://gitlab.com/fdroid/fdroiddata/-/merge_requests/39249 (ADR-030)
 
 - [ ] **Run the Windows build on an actual Windows machine.** Everything was authored on Linux: `.\build_windows.ps1` must be executed with the Flutter SDK, Visual Studio 2022 ("Desktop development with C++") and Inno Setup 6.3+ present. Then check, in order: the app starts, the title bar and taskbar show the Tafsiri name and icon, a translation is saved and reappears in the history (that is the bundled `sqlite3.dll` working), backup save/restore opens the Windows file dialogs, the mic button is disabled and OCR reports its error, and finally install → Start menu → uninstall including the keep-your-data prompt. (ADR-035)
