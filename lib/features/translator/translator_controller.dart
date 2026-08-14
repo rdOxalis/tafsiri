@@ -193,14 +193,22 @@ class TranslatorController extends Notifier<TranslatorState> {
     // ignoring the press.
     if (state.isOcrProcessing) return true;
 
+    // Logged before anything else, because "Ctrl+V does nothing" has two very
+    // different causes — the keystroke never reaching here, or the clipboard
+    // holding no image — and only one of them is a bug in this code.
+    ocrLog('clipboard: paste requested');
+
     final File? file;
     try {
       file = await ref.read(clipboardImageServiceProvider).readImage();
     } catch (e) {
-      debugPrint('[Clipboard] read failed: $e');
+      ocrLog('clipboard: read failed: $e');
       return false;
     }
-    if (file == null) return false;
+    if (file == null) {
+      ocrLog('clipboard: no image — falling back to text');
+      return false;
+    }
 
     state = state.copyWith(isOcrProcessing: true);
     try {
@@ -211,7 +219,7 @@ class TranslatorController extends Notifier<TranslatorState> {
       try {
         await file.parent.delete(recursive: true);
       } on IOException catch (e) {
-        debugPrint('[Clipboard] could not remove the temporary file: $e');
+        ocrLog('clipboard: could not remove the temporary file: $e');
       }
     }
     return true;

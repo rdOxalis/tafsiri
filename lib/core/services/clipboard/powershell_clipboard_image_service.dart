@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
+import '../ocr/ocr_log.dart';
 import 'clipboard_image_service.dart';
 import 'process_clipboard_image_service.dart' show ClipboardProcessRunner;
 
@@ -40,7 +41,7 @@ class PowerShellClipboardImageService implements ClipboardImageService {
     try {
       directory = await Directory.systemTemp.createTemp('tafsiri_clip');
     } on IOException catch (e) {
-      debugPrint('[Clipboard] could not create a temporary directory: $e');
+      ocrLog('clipboard: could not create a temporary directory: $e');
       return null;
     }
 
@@ -62,13 +63,13 @@ class PowerShellClipboardImageService implements ClipboardImageService {
         ],
       );
       if (result.exitCode != 0) {
-        debugPrint('[Clipboard] powershell exited ${result.exitCode}: '
+        ocrLog('clipboard: powershell exited ${result.exitCode}: '
             '${result.stderr}');
       }
     } on ProcessException catch (e) {
       // No PowerShell on PATH. Reads as "no image", like every other platform
       // that cannot answer, so the caller falls back to pasting text.
-      debugPrint('[Clipboard] could not run powershell: ${e.message}');
+      ocrLog('clipboard: could not run powershell: ${e.message}');
       await _discard(directory);
       return null;
     }
@@ -79,7 +80,7 @@ class PowerShellClipboardImageService implements ClipboardImageService {
       await _discard(directory);
       return null;
     }
-    debugPrint('[Clipboard] powershell produced ${file.lengthSync()} B');
+    ocrLog('clipboard: powershell produced ${file.lengthSync()} B');
     return file;
   }
 
