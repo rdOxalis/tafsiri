@@ -208,8 +208,14 @@ if [ "$MODE" = "package" ]; then
     note "Upload this to the release:"
     note "  $PACKAGE_PATH"
     note ""
-    note "It is ad-hoc signed and not notarized, so anyone else who downloads it"
-    note "gets a Gatekeeper warning and has to right-click - Open the first time."
+    note "It is ad-hoc signed and not notarized. Downloading it attaches a"
+    note "quarantine flag, so anyone else has to clear Gatekeeper once:"
+    note "  System Settings - Privacy & Security - Open Anyway"
+    note "or, in one step:"
+    note "  xattr -dr com.apple.quarantine /Applications/tafsiri.app"
+    note ""
+    note "The old right-click - Open shortcut stopped working in macOS 15."
+    note "Your own build is unaffected: quarantine is only set on downloads."
     exit 0
 fi
 

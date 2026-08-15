@@ -126,7 +126,7 @@ flutter config --no-enable-swift-package-manager
 ./build_macos.sh --uninstall
 ```
 
-The app then appears in Finder and Spotlight like any other. It is **not** sandboxed: image-to-text runs Tesseract as a child process, and the App Sandbox refuses that outright.
+The app then appears in Finder and Spotlight like any other. A build you made yourself starts normally; a copy someone **downloads** is quarantined by macOS and needs clearing once, under System Settings → Privacy & Security → *Open Anyway*, because the app is ad-hoc signed rather than notarized. It is **not** sandboxed: image-to-text runs Tesseract as a child process, and the App Sandbox refuses that outright.
 
 The microphone asks for permission the first time. macOS only shows that prompt to an app in the **foreground**, so click the window first — and note that `flutter run` cannot foreground the app, which is why voice input appears broken when testing that way. If the prompt was ever refused, macOS never asks again: `tccutil reset SpeechRecognition ke.darkman.tafsiri` (and the same for `Microphone`).
 
