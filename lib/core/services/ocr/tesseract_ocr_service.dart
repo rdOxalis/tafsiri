@@ -149,6 +149,69 @@ const kMinScriptConfidence = 1.0;
 /// image stays small enough for the extra run to be unnoticeable (ADR-038).
 const kOsdTileFactor = 3;
 
+/// Where the binary is looked for when the bare name does not resolve.
+///
+/// A desktop application does not get the `PATH` you see in a terminal. On
+/// macOS an app launched from Finder — or by `flutter run`, which starts it
+/// with `open` — inherits `/usr/bin:/bin:/usr/sbin:/sbin` and nothing else, so
+/// a perfectly good Homebrew install in `/opt/homebrew/bin` is invisible to it
+/// and the app reports the engine as missing (ADR-051). Windows is listed for a
+/// different reason: it spares the user the `PATH` edit and the sign-out that
+/// makes it take effect. Ordered most specific first; `PATH` is still tried
+/// before any of them.
+const kTesseractSearchPaths = <String, List<String>>{
+  'macos': [
+    '/opt/homebrew/bin/tesseract', // Apple silicon
+    '/usr/local/bin/tesseract', // Intel, and MacPorts installs
+  ],
+  'windows': [
+    r'C:\Program Files\Tesseract-OCR\tesseract.exe',
+    r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe',
+  ],
+  'linux': [
+    '/usr/bin/tesseract',
+    '/usr/local/bin/tesseract',
+  ],
+};
+
+/// An absolute path to the binary, or [configured] unchanged when none of the
+/// places worth looking has it.
+///
+/// `PATH` is searched the way the operating system would, and only then the
+/// well-known install locations — so a user who put a particular build first on
+/// their `PATH` still gets that one. Returning [configured] on failure is
+/// deliberate: `Process.run` then produces the real "not found" error, which is
+/// what `OcrUnavailableException` is built to report.
+@visibleForTesting
+String resolveTesseract({
+  required String configured,
+  required String operatingSystem,
+  required String? pathVariable,
+  required bool Function(String path) exists,
+}) {
+  // An explicit path from the caller is an instruction, not a hint.
+  if (configured != 'tesseract') return configured;
+
+  final windows = operatingSystem == 'windows';
+  final name = windows ? 'tesseract.exe' : 'tesseract';
+  // The target's path style, not the host's: `p.join` would otherwise build
+  // `C:\tools/tesseract.exe` when this runs anywhere but Windows, which is a
+  // trap for the tests rather than for production but a trap either way.
+  final style = windows ? p.windows : p.posix;
+
+  for (final directory in (pathVariable ?? '').split(windows ? ';' : ':')) {
+    if (directory.isEmpty) continue;
+    final candidate = style.join(directory, name);
+    if (exists(candidate)) return candidate;
+  }
+
+  for (final candidate in kTesseractSearchPaths[operatingSystem] ?? const []) {
+    if (exists(candidate)) return candidate;
+  }
+
+  return configured;
+}
+
 /// Recognition through the external `tesseract` binary (ADR-037).
 ///
 /// Deliberately a subprocess rather than FFI: no native build step, no plugin,
@@ -157,14 +220,28 @@ class TesseractOcrService implements OcrService {
   const TesseractOcrService({
     this.executable = 'tesseract',
     ProcessRunner? runProcess,
-  }) : _runProcess = runProcess;
+    bool Function(String path)? fileExists,
+  })  : _runProcess = runProcess,
+        _fileExists = fileExists;
 
-  /// Binary name or absolute path. On Linux this is whatever is on `PATH`.
+  /// Binary name or absolute path. The bare name resolves through `PATH`.
   final String executable;
+
+  /// Tests the candidate paths. Injectable so the search can be exercised
+  /// without the machine actually having Tesseract in any of them.
+  final bool Function(String path)? _fileExists;
 
   final ProcessRunner? _runProcess;
 
   ProcessRunner get _run => _runProcess ?? _utf8Run;
+
+  /// The binary every run in this service invokes.
+  String get _binary => resolveTesseract(
+        configured: executable,
+        operatingSystem: Platform.operatingSystem,
+        pathVariable: Platform.environment['PATH'],
+        exists: _fileExists ?? (path) => File(path).existsSync(),
+      );
 
   /// `Process.run`, but reading the output as UTF-8 rather than as whatever the
   /// machine calls its system encoding.
@@ -308,7 +385,10 @@ class TesseractOcrService implements OcrService {
       '-c',
       'tessedit_create_tsv=1',
     ];
-    ocrLog('run: $executable ${arguments.join(" ")}');
+    // The resolved path, not the configured name — when the two differ, which
+    // is exactly when something went wrong, the log has to say which binary ran.
+    final binary = _binary;
+    ocrLog('run: $binary ${arguments.join(" ")}');
 
     final ProcessResult result;
     try {
@@ -319,9 +399,9 @@ class TesseractOcrService implements OcrService {
       // exits 0, and hands back plain text. The parser then finds no rows, the
       // read counts as unusable, and the user is told to install trained data
       // that was already there. Measured on a Windows install (ADR-043).
-      result = await _run(executable, arguments);
+      result = await _run(binary, arguments);
     } on ProcessException catch (e) {
-      throw OcrUnavailableException('Could not run $executable: ${e.message}');
+      throw OcrUnavailableException('Could not run $binary: ${e.message}');
     }
 
     if (result.exitCode != 0) {
@@ -364,7 +444,7 @@ class TesseractOcrService implements OcrService {
   /// One `--psm 0` run, or `null` when it produced no verdict worth trusting.
   Future<String?> _osd(String imagePath) async {
     try {
-      final result = await _run(executable, [imagePath, 'stdout', '--psm', '0']);
+      final result = await _run(_binary, [imagePath, 'stdout', '--psm', '0']);
       if (result.exitCode != 0) return null;
       final osd = parseOsd('${result.stdout}\n${result.stderr}');
       if (osd == null || osd.confidence < kMinScriptConfidence) {
@@ -419,7 +499,7 @@ class TesseractOcrService implements OcrService {
   Future<Set<String>> _availableLanguages() async {
     final ProcessResult result;
     try {
-      result = await _run(executable, ['--list-langs']);
+      result = await _run(_binary, ['--list-langs']);
     } on ProcessException catch (e) {
       throw OcrUnavailableException(
         'Tesseract is not installed or not on PATH ($executable): ${e.message}',

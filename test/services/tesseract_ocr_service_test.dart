@@ -683,6 +683,9 @@ void main() {
     });
 
     test('a missing binary is unavailable, not merely failed', () async {
+      // Kept alongside the resolution tests below: when nothing is found
+      // anywhere, the bare name is handed to Process.run so the operating
+      // system produces the real error.
       // The distinction drives the message: "install Tesseract" rather than
       // "could not read that image".
       final service = TesseractOcrService(
