@@ -46,6 +46,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/
+    # Shown on the licence page. Flutter collects the LICENSE of every Dart
+    # package including this one, but knows nothing of an external binary the
+    # app shells out to — so Tesseract has to be added by hand (ADR-049).
+    - assets/licenses/
 
 flutter_launcher_icons:
   android: true

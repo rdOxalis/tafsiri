@@ -1,5 +1,15 @@
 # Architecture Decision Records
 
+## ADR-049: The licence page lists what the app runs, not only what it links
+**Date:** 2026-08-15
+**Status:** Accepted
+**Context:** The new About section (ADR-048 era) exposes Flutter's `showLicensePage`, which is populated from the `LICENSE` file of every Dart package in the build. Checking the generated `NOTICES` in the Linux bundle: 210 entries, `tafsiri` among them — the root package is collected like any other, so the app's own MIT licence is already there and needs nothing. What is **not** there is Tesseract. Text recognition on the desktop does its actual work by shelling out to it (ADR-037), and a registry built from linked packages has no way to know about a program the app merely executes. The only near-match in the list is `libtess2`, an unrelated tessellation library from the engine, which makes the gap easy to miss.
+**Decision:** Register Tesseract's Apache-2.0 text with `LicenseRegistry.addLicense` at startup, from `assets/licenses/Tesseract-Apache-2.0.txt`. Only on desktop: Android and iOS recognise text with ML Kit, which is a Dart package and already listed, so naming Tesseract there would describe software the app never touches — a licence page has to be true, not merely generous. Tafsiri's own licence is deliberately *not* added, because adding it would duplicate an entry Flutter already produces.
+**Consequences:** 11 KB of asset, and the licence page now accounts for the engine that does the reading. Today this is attribution rather than obligation — Tesseract is installed by the user, not distributed by us — but it becomes an obligation the moment the engine ships inside the app, which is open for both Windows and macOS (and on macOS may be forced by the App Sandbox, ADR-048). Being correct in advance costs one file. The general point is worth keeping for the next dependency of this kind: **the tools this app shells out to are invisible to every automatic licence mechanism**, so `wl-paste`, `xclip` and PowerShell are equally absent. They stay absent by choice — none is distributed, and each is a component of the operating system or a package the user installed deliberately — but that is now a decision rather than an oversight.
+
+---
+
+
 ## ADR-048: macOS entitlements, declared before the first build
 **Date:** 2026-08-14
 **Status:** Accepted — unverified, no macOS build has ever been made
