@@ -117,6 +117,20 @@ class AppLocalizationsSw extends AppLocalizations {
   String get donateButton => 'Nununulie kahawa';
 
   @override
+  String get aboutSection => 'Kuhusu';
+
+  @override
+  String get licensesButton => 'Leseni za chanzo huria';
+
+  @override
+  String get sourceCodeButton => 'Msimbo wa chanzo kwenye GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Toleo $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Hakuna ufunguo wa API. Tafadhali ongeza ufunguo wako katika Mipangilio.';
 

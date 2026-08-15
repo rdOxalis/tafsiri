@@ -329,6 +329,30 @@ abstract class AppLocalizations {
   /// **'Buy me a coffee'**
   String get donateButton;
 
+  /// Header of the About section at the bottom of Settings
+  ///
+  /// In en_GB, this message translates to:
+  /// **'About'**
+  String get aboutSection;
+
+  /// Opens the open-source licence list
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Open Source Licences'**
+  String get licensesButton;
+
+  /// Opens the project on GitHub
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Source code on GitHub'**
+  String get sourceCodeButton;
+
+  /// Version and build commit, shown under the app name
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Version {version}'**
+  String versionLabel(String version);
+
   /// Snackbar error when no API key is configured
   ///
   /// In en_GB, this message translates to:

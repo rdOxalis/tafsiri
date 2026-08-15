@@ -41,6 +41,27 @@
   "appLanguageLabel": "Język aplikacji",
   "warningNoApiKey": "Brak klucza API dla aktywnego dostawcy. Dodaj swój klucz poniżej.",
   "donateButton": "Postaw mi kawę",
+  "aboutSection": "Informacje",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Licencje open source",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Kod źródłowy na GitHubie",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Wersja {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Brak klucza API. Dodaj swój klucz w Ustawieniach.",
   "errorApiError": "Tłumaczenie nie powiodło się. Spróbuj ponownie.",
   "errorNetwork": "Brak połączenia. Sprawdź swoje połączenie z internetem.",

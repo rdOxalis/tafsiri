@@ -41,6 +41,27 @@
   "appLanguageLabel": "Lugha ya Programu",
   "warningNoApiKey": "Hakuna ufunguo wa API kwa mtoa huduma aliyechaguliwa. Tafadhali ongeza ufunguo wako hapa chini.",
   "donateButton": "Nununulie kahawa",
+  "aboutSection": "Kuhusu",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Leseni za chanzo huria",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Msimbo wa chanzo kwenye GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Toleo {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Hakuna ufunguo wa API. Tafadhali ongeza ufunguo wako katika Mipangilio.",
   "errorApiError": "Tafsiri imeshindwa. Tafadhali jaribu tena.",
   "errorNetwork": "Hakuna muunganisho. Tafadhali angalia intaneti yako.",

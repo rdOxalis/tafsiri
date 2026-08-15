@@ -117,6 +117,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donateButton => 'Buy me a coffee';
 
   @override
+  String get aboutSection => 'About';
+
+  @override
+  String get licensesButton => 'Open Source Licenses';
+
+  @override
+  String get sourceCodeButton => 'Source code on GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'No API key set. Please add your key in Settings.';
 
@@ -401,6 +415,20 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get donateButton => 'Buy me a coffee';
+
+  @override
+  String get aboutSection => 'About';
+
+  @override
+  String get licensesButton => 'Open Source Licences';
+
+  @override
+  String get sourceCodeButton => 'Source code on GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
 
   @override
   String get errorNoApiKey =>

@@ -117,6 +117,20 @@ class AppLocalizationsSv extends AppLocalizations {
   String get donateButton => 'Bjud mig på ett kaffe';
 
   @override
+  String get aboutSection => 'Om';
+
+  @override
+  String get licensesButton => 'Licenser för öppen källkod';
+
+  @override
+  String get sourceCodeButton => 'Källkod på GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Ingen API-nyckel angiven. Lägg till din nyckel i Inställningar.';
 

@@ -117,6 +117,20 @@ class AppLocalizationsDa extends AppLocalizations {
   String get donateButton => 'Køb mig en kop kaffe';
 
   @override
+  String get aboutSection => 'Om';
+
+  @override
+  String get licensesButton => 'Open source-licenser';
+
+  @override
+  String get sourceCodeButton => 'Kildekode på GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Ingen API-nøgle angivet. Tilføj din nøgle i Indstillinger.';
 

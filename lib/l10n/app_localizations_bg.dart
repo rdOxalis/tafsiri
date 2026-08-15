@@ -118,6 +118,20 @@ class AppLocalizationsBg extends AppLocalizations {
   String get donateButton => 'Почерпете ме с кафе';
 
   @override
+  String get aboutSection => 'Относно';
+
+  @override
+  String get licensesButton => 'Лицензи с отворен код';
+
+  @override
+  String get sourceCodeButton => 'Изходен код в GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Версия $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Няма зададен API ключ. Моля, въведете го в настройките.';
 

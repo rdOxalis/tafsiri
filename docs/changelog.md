@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **An About section at the foot of Settings**, matching the one in BluesoundPlayer: the app name with its version and build commit, the **open source licences** of everything Tafsiri is built on, a link to the **source on GitHub**, and the existing "buy me a coffee" entry gathered in with them. The version moved out of the small centred line at the very bottom into the About entry, where someone looks for it — it is the first thing to check when the app and the source disagree. Translated into all 12 UI languages.
+
 ---
 
 ## [1.0.12] - 2026-08-14

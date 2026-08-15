@@ -41,6 +41,27 @@
   "appLanguageLabel": "App-taal",
   "warningNoApiKey": "Geen API-sleutel ingesteld voor de actieve aanbieder. Voeg hieronder uw sleutel toe.",
   "donateButton": "Trakteer me op een koffie",
+  "aboutSection": "Over",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Open-source-licenties",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Broncode op GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Versie {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Geen API-sleutel ingesteld. Voeg uw sleutel toe in Instellingen.",
   "errorApiError": "Vertaling mislukt. Probeer het opnieuw.",
   "errorNetwork": "Geen verbinding. Controleer uw internet.",

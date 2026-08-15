@@ -117,6 +117,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get donateButton => 'Postaw mi kawę';
 
   @override
+  String get aboutSection => 'Informacje';
+
+  @override
+  String get licensesButton => 'Licencje open source';
+
+  @override
+  String get sourceCodeButton => 'Kod źródłowy na GitHubie';
+
+  @override
+  String versionLabel(String version) {
+    return 'Wersja $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Brak klucza API. Dodaj swój klucz w Ustawieniach.';
 

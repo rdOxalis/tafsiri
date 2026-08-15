@@ -24,6 +24,7 @@ const kModeCorrect = 'correct';
 
 // External URLs
 const kPayPalDonateUrl = 'https://paypal.me/CarlDarkman';
+const kSourceCodeUrl = 'https://github.com/rdOxalis/tafsiri';
 const kMistralApiKeyUrl = 'https://console.mistral.ai/api-keys';
 const kClaudeApiKeyUrl = 'https://console.anthropic.com/settings/keys';
 const kOpenAiApiKeyUrl = 'https://platform.openai.com/api-keys';

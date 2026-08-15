@@ -41,6 +41,27 @@
   "appLanguageLabel": "Idioma de la aplicación",
   "warningNoApiKey": "No hay clave API para el proveedor activo. Por favor, añádela a continuación.",
   "donateButton": "Invítame a un café",
+  "aboutSection": "Acerca de",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Licencias de código abierto",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Código fuente en GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Versión {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "No hay clave API. Por favor, añádela en Ajustes.",
   "errorApiError": "Error en la traducción. Por favor, inténtalo de nuevo.",
   "errorNetwork": "Sin conexión. Por favor, comprueba tu internet.",

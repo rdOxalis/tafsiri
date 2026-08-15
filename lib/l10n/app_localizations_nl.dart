@@ -117,6 +117,20 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donateButton => 'Trakteer me op een koffie';
 
   @override
+  String get aboutSection => 'Over';
+
+  @override
+  String get licensesButton => 'Open-source-licenties';
+
+  @override
+  String get sourceCodeButton => 'Broncode op GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Versie $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Geen API-sleutel ingesteld. Voeg uw sleutel toe in Instellingen.';
 

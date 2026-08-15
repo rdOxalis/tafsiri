@@ -117,6 +117,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donateButton => 'Kauf mir einen Kaffee';
 
   @override
+  String get aboutSection => 'Über';
+
+  @override
+  String get licensesButton => 'Open-Source-Lizenzen';
+
+  @override
+  String get sourceCodeButton => 'Quellcode auf GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Kein API-Schlüssel hinterlegt. Bitte in den Einstellungen eintragen.';
 

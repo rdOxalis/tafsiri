@@ -41,6 +41,27 @@
   "appLanguageLabel": "App-Sprache",
   "warningNoApiKey": "Kein API-Schlüssel für den aktiven Anbieter hinterlegt. Bitte unten eintragen.",
   "donateButton": "Kauf mir einen Kaffee",
+  "aboutSection": "Über",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Open-Source-Lizenzen",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Quellcode auf GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Version {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Kein API-Schlüssel hinterlegt. Bitte in den Einstellungen eintragen.",
   "errorApiError": "Übersetzung fehlgeschlagen. Bitte erneut versuchen.",
   "errorNetwork": "Keine Verbindung. Bitte Internetverbindung prüfen.",

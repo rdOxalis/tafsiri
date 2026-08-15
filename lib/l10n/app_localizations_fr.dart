@@ -117,6 +117,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get donateButton => 'Offrez-moi un café';
 
   @override
+  String get aboutSection => 'À propos';
+
+  @override
+  String get licensesButton => 'Licences open source';
+
+  @override
+  String get sourceCodeButton => 'Code source sur GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Aucune clé API définie. Veuillez l\'ajouter dans les Paramètres.';
 

@@ -40,6 +40,27 @@
   "appLanguageLabel": "Lingua dell’app",
   "warningNoApiKey": "Nessuna chiave API impostata per il provider attivo. Inseriscila qui sotto.",
   "donateButton": "Offrimi un caffè",
+  "aboutSection": "Informazioni",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Licenze open source",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Codice sorgente su GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Versione {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Nessuna chiave API impostata. Inseriscila nelle impostazioni.",
   "errorApiError": "Traduzione non riuscita. Riprova.",
   "errorNetwork": "Nessuna connessione. Controlla la tua rete.",

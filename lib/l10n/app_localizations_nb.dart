@@ -117,6 +117,20 @@ class AppLocalizationsNb extends AppLocalizations {
   String get donateButton => 'Kjøp meg en kaffe';
 
   @override
+  String get aboutSection => 'Om';
+
+  @override
+  String get licensesButton => 'Åpen kildekode-lisenser';
+
+  @override
+  String get sourceCodeButton => 'Kildekode på GitHub';
+
+  @override
+  String versionLabel(String version) {
+    return 'Versjon $version';
+  }
+
+  @override
   String get errorNoApiKey =>
       'Ingen API-nøkkel angitt. Legg til nøkkelen din i Innstillinger.';
 

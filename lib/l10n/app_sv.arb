@@ -41,6 +41,27 @@
   "appLanguageLabel": "Appspråk",
   "warningNoApiKey": "Ingen API-nyckel angiven för den aktiva leverantören. Lägg till din nyckel nedan.",
   "donateButton": "Bjud mig på ett kaffe",
+  "aboutSection": "Om",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Licenser för öppen källkod",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Källkod på GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Version {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Ingen API-nyckel angiven. Lägg till din nyckel i Inställningar.",
   "errorApiError": "Översättningen misslyckades. Försök igen.",
   "errorNetwork": "Ingen anslutning. Kontrollera din internetanslutning.",

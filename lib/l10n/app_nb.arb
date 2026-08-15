@@ -41,6 +41,27 @@
   "appLanguageLabel": "Appspråk",
   "warningNoApiKey": "Ingen API-nøkkel angitt for den aktive leverandøren. Legg til nøkkelen din nedenfor.",
   "donateButton": "Kjøp meg en kaffe",
+  "aboutSection": "Om",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Åpen kildekode-lisenser",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Kildekode på GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Versjon {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Ingen API-nøkkel angitt. Legg til nøkkelen din i Innstillinger.",
   "errorApiError": "Oversettelse mislyktes. Prøv igjen.",
   "errorNetwork": "Ingen tilkobling. Kontroller internettilkoblingen din.",

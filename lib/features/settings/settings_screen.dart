@@ -240,7 +240,38 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
               const Divider(height: 32),
 
-              // --- Donate ---
+              // --- About ---
+              _SectionHeader(l10n.aboutSection),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.info_outline),
+                title: Text(l10n.appTitle),
+                // The build stamp lives here rather than in a lone centred
+                // line: it is the first thing to check when behaviour and
+                // source disagree (ADR-041), so it belongs where someone looks
+                // for the version rather than at the very bottom of a scroll.
+                subtitle: _appVersion.isEmpty
+                    ? null
+                    : Text(l10n.versionLabel(_appVersion)),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.description_outlined),
+                title: Text(l10n.licensesButton),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => showLicensePage(
+                  context: context,
+                  applicationName: l10n.appTitle,
+                  applicationVersion: _appVersion,
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.code),
+                title: Text(l10n.sourceCodeButton),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => _openUrl(kSourceCodeUrl),
+              ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.coffee_outlined),
@@ -249,24 +280,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 onTap: () => _showDonateDialog(context, l10n),
               ),
               const SizedBox(height: 16),
-
-              // --- Version ---
-              if (_appVersion.isNotEmpty)
-                Center(
-                  child: Text(
-                    'v$_appVersion',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                  ),
-                ),
-              const SizedBox(height: 8),
             ],
           );
         },
       ),
     );
+  }
+
+  /// Opens [url] in the browser, silently doing nothing when nothing can.
+  ///
+  /// A desktop with no handler registered is the realistic case, and a dead
+  /// tap is a smaller annoyance than an error about a link.
+  Future<void> _openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   void _showDonateDialog(BuildContext context, AppLocalizations l10n) {

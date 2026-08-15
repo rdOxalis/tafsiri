@@ -40,6 +40,27 @@
   "appLanguageLabel": "Език на приложението",
   "warningNoApiKey": "Няма зададен API ключ за активния доставчик. Моля, въведете го по-долу.",
   "donateButton": "Почерпете ме с кафе",
+  "aboutSection": "Относно",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Лицензи с отворен код",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Изходен код в GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Версия {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "Няма зададен API ключ. Моля, въведете го в настройките.",
   "errorApiError": "Преводът не бе успешен. Опитайте отново.",
   "errorNetwork": "Няма връзка. Проверете интернет връзката си.",

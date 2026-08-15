@@ -137,6 +137,27 @@
   "@donateButton": {
     "description": "Label for the PayPal donate button in settings"
   },
+  "aboutSection": "About",
+  "@aboutSection": {
+    "description": "Header of the About section at the bottom of Settings"
+  },
+  "licensesButton": "Open Source Licenses",
+  "@licensesButton": {
+    "description": "Opens the open-source licence list"
+  },
+  "sourceCodeButton": "Source code on GitHub",
+  "@sourceCodeButton": {
+    "description": "Opens the project on GitHub"
+  },
+  "versionLabel": "Version {version}",
+  "@versionLabel": {
+    "description": "Version and build commit, shown under the app name",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "errorNoApiKey": "No API key set. Please add your key in Settings.",
   "@errorNoApiKey": {
     "description": "Snackbar error when no API key is configured"
