@@ -54,6 +54,14 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: false
+  # Without this the app carries Flutter's own logo in the Dock, in Finder and
+  # in Spotlight — the template icon `flutter create` leaves behind, which is
+  # easy to miss because nothing on the desktop side ever regenerated it
+  # (ADR-054). Windows and Linux take their icons elsewhere: the Inno Setup
+  # script and install.sh respectively.
+  macos:
+    generate: true
+    image_path: "assets/icon/icon_1024.png"
   image_path: "assets/icon/icon_1024.png"
   adaptive_icon_background: "#00897B"
   adaptive_icon_foreground: "assets/icon/icon_1024.png"

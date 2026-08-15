@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-054: The macOS app carries its own icon
+**Date:** 2026-08-15
+**Status:** Accepted
+**Context:** Preparing the first installable macOS build raised the question of whether the logo comes along, and it did not: `macos/Runner/Assets.xcassets/AppIcon.appiconset/` still held the icons `flutter create` wrote on 2026-04-11 — Flutter's own logo. The app would have appeared in the Dock, in Finder and in Spotlight as Flutter. It went unnoticed because nothing forces the issue: `flutter_launcher_icons` was configured for `android: true, ios: false` and never asked about macOS, and the desktop platforms each take their icon from somewhere different — Windows from `windows/runner/resources/app_icon.ico`, which had been replaced by hand, and Linux from `assets/icon/` at install time via `install.sh`. macOS was the only one where nothing had ever regenerated the template.
+**Decision:** Add a `macos:` section to `flutter_launcher_icons` and generate the set from `assets/icon/icon_1024.png`, the same source Android and Linux use. The generated icons are committed like the rest of the platform scaffolding, so a fresh clone builds a correctly branded app without anyone remembering to run a generator. Note the config takes a map (`macos: {generate: true, image_path: …}`), not the boolean the Android entry uses — passing `true` fails with a cast error rather than being ignored, which is the friendlier of the two behaviours.
+**Consequences:** Checked the other platforms in the same pass rather than assuming: Windows was already correct, Linux is generated at install time from the shared source. Only macOS was wrong, and it is the one where it would have been most visible, since the icon appears in Spotlight results and the Dock rather than only in a Start menu entry. The wider point is small but recurring in this series: **`flutter create` leaves working defaults everywhere, and a default that works is one nobody checks** — the same shape as the entitlements in ADR-048 and the deployment target in ADR-053's neighbourhood, both also untouched template values that only surfaced when the platform was first taken seriously.
+
+---
+
 ## ADR-053: macOS installs by copying the app, and asks for the microphone only in the foreground
 **Date:** 2026-08-15
 **Status:** Accepted
