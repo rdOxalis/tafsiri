@@ -11,6 +11,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **An About section at the foot of Settings**, matching the one in BluesoundPlayer: the app name with its version and build commit, the **open source licences** of everything Tafsiri is built on, a link to the **source on GitHub**, and the existing "buy me a coffee" entry gathered in with them. The version moved out of the small centred line at the very bottom into the About entry, where someone looks for it — it is the first thing to check when the app and the source disagree. Translated into all 12 UI languages.
 - **Tesseract now appears on the licence page** (ADR-049). Flutter builds that list from the packages the app links, so the engine that actually does the reading — a separate program Tafsiri runs — was missing from it, while 210 other entries were there. Desktop only: on Android and iOS the reading is done by ML Kit, which was listed all along.
 
+### Added
+- **macOS has a build script** (ADR-053): `./build_macos.sh` builds a release app and installs it into `/Applications`, where Finder and Spotlight find it — `--user` puts it in `~/Applications` instead, and `--uninstall` removes it while leaving your settings and history alone. It refuses to run when Swift Package Manager is enabled, which `speech_to_text` cannot build under, rather than letting that surface as an unreadable Swift error.
+
 ### Fixed
 - **Image-to-text works on macOS**, and the app finds Tesseract wherever it is installed rather than only through `PATH` (ADR-051, ADR-052). A desktop app inherits none of your shell's environment, so a Homebrew install in `/opt/homebrew/bin` was invisible; and the App Sandbox refused to launch it at all, which is why macOS now ships unsandboxed. On Windows this also removes the need to put Tesseract on `PATH` by hand.
 

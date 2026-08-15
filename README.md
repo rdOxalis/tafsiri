@@ -117,14 +117,18 @@ Tafsiri also runs on the desktop. Translation, history, favourites, settings and
 
 This produces `build\windows\installer\tafsiri-<version>-windows-x64.exe`. It installs for the current user only, so Windows asks for no administrator rights. Uninstalling asks whether to keep your settings, API keys and translation history.
 
-**macOS** — needs Xcode with its command line tools and CocoaPods (`brew install cocoapods`). One setting is required first, because `speech_to_text` ships a Swift Package manifest that contradicts its own podspec and will not compile under Swift Package Manager:
+**macOS** — needs Xcode with its command line tools and CocoaPods (`brew install cocoapods`). One setting is required once per machine, because `speech_to_text` ships a Swift Package manifest that contradicts its own podspec and will not compile under Swift Package Manager:
 
 ```bash
 flutter config --no-enable-swift-package-manager
-flutter build macos --release --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
+./build_macos.sh              # builds and installs into /Applications
+./build_macos.sh --user       # ~/Applications instead, no admin rights
+./build_macos.sh --uninstall
 ```
 
-The result is `build/macos/Build/Products/Release/tafsiri.app`. The app is **not** sandboxed: image-to-text runs Tesseract as a child process, and the App Sandbox refuses that outright.
+The app then appears in Finder and Spotlight like any other. It is **not** sandboxed: image-to-text runs Tesseract as a child process, and the App Sandbox refuses that outright.
+
+The microphone asks for permission the first time. macOS only shows that prompt to an app in the **foreground**, so click the window first — and note that `flutter run` cannot foreground the app, which is why voice input appears broken when testing that way. If the prompt was ever refused, macOS never asks again: `tccutil reset SpeechRecognition ke.darkman.tafsiri` (and the same for `Microphone`).
 
 ---
 
