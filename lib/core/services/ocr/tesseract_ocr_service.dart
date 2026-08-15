@@ -271,7 +271,9 @@ class TesseractOcrService implements OcrService {
   }) async {
     final available = await _availableLanguages();
     final configured = selectLanguages(primaryLanguage, altLanguage, available);
-    ocrLog('--- recognise "$imagePath"');
+    // The binary first, before anything can fail: which one ran is the
+    // question every OCR diagnosis starts with.
+    ocrLog('--- recognise "$imagePath" using $_binary');
     ocrLog('installed: ${available.join(" | ")}');
     ocrLog('configured: -l ${configured.argument}'
         '${configured.missing.isEmpty ? "" : "  missing=${configured.missing}"}');
@@ -497,12 +499,17 @@ class TesseractOcrService implements OcrService {
 
   /// Trained data actually installed, as three-letter codes.
   Future<Set<String>> _availableLanguages() async {
+    final binary = _binary;
     final ProcessResult result;
     try {
-      result = await _run(_binary, ['--list-langs']);
+      result = await _run(binary, ['--list-langs']);
     } on ProcessException catch (e) {
+      // The resolved path, and the system's own wording. The difference
+      // between "No such file or directory" and "Operation not permitted"
+      // is the difference between a missing install and a sandbox refusing
+      // to start one that is right there (ADR-052).
       throw OcrUnavailableException(
-        'Tesseract is not installed or not on PATH ($executable): ${e.message}',
+        'Could not run Tesseract at $binary: ${e.message}',
       );
     }
 

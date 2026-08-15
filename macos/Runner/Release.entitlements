@@ -2,8 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Off, deliberately (ADR-052). Image-to-text runs Tesseract as a child
+	     process, and a sandboxed app is refused that: the first macOS attempt
+	     failed with "Operation not permitted" against a perfectly good
+	     Homebrew install — EPERM, not ENOENT, so the engine was found and the
+	     launch was denied. The sandbox is only required for the Mac App Store,
+	     which was never the plan; direct distribution asks for notarization and
+	     the Hardened Runtime instead, and neither of those blocks this.
+
+	     The keys below have no effect while this is false. They are kept
+	     accurate so that re-enabling the sandbox is one edit rather than a
+	     research exercise. -->
 	<key>com.apple.security.app-sandbox</key>
-	<true/>
+	<false/>
 
 	<!-- Outgoing connections. Without this the sandbox blocks every call to
 	     Mistral, Claude and ChatGPT, and the app can do nothing at all — this

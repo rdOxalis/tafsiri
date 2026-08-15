@@ -1,5 +1,15 @@
 # Architecture Decision Records
 
+## ADR-052: macOS ships without the App Sandbox
+**Date:** 2026-08-15
+**Status:** Accepted
+**Context:** The first working macOS build reported the engine as missing against a correct Homebrew install, and the wording settled it: `Tesseract is not installed or not on PATH (tesseract): **Operation not permitted**`. That is `EPERM`, not `ENOENT` — the binary was found and the launch was refused. Two candidate causes had been in play and this distinguishes them. The `PATH` inheritance problem is real (ADR-051): a macOS app launched from Finder, or by `flutter run` which uses `open`, gets `/usr/bin:/bin:/usr/sbin:/sbin` and cannot see `/opt/homebrew/bin`. But a missing file gives "No such file or directory". "Operation not permitted" is the App Sandbox denying `exec` — and it would equally deny the `stat` that ADR-051's search relies on, so that fix could not have helped here on its own.
+**Decision:** Set `com.apple.security.app-sandbox` to `false` in both entitlement files. The sandbox is required for the Mac App Store and nothing else; Tafsiri is distributed directly from GitHub, where Gatekeeper asks for notarization and the Hardened Runtime instead, neither of which prevents spawning a child process. The other entitlements are kept and kept accurate even though they have no effect while the sandbox is off, so that turning it back on is one edit rather than a research exercise. Debug matches release deliberately: a sandbox that applied only while developing would hide precisely the failure it causes.
+**Consequences:** Image-to-text can run on macOS at all, which was the point. The cost is real and worth naming: the app is no longer confined to a container, so a defect in it — or in Tesseract, which it now runs as a child — reaches the user's files with the user's own permissions. Against that, this app already asks to read arbitrary images, write backups outside its container by design (ADR-034), and execute a program the user installed; the sandbox was never providing much containment over that set. The Mac App Store is closed off as a distribution route while this stands, which was never planned. Reversing it means re-enabling the key and accepting that image-to-text stops working, unless Tesseract is bundled inside the app — the option rejected on size grounds in ADR-050, and the only thing that would make sandboxing viable here.
+
+---
+
+
 ## ADR-050: Tesseract stays a separate install on every desktop
 **Date:** 2026-08-15
 **Status:** Accepted — closes the bundling question left open by ADR-037
