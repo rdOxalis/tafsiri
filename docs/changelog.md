@@ -11,6 +11,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **An About section at the foot of Settings**, matching the one in BluesoundPlayer: the app name with its version and build commit, the **open source licences** of everything Tafsiri is built on, a link to the **source on GitHub**, and the existing "buy me a coffee" entry gathered in with them. The version moved out of the small centred line at the very bottom into the About entry, where someone looks for it — it is the first thing to check when the app and the source disagree. Translated into all 12 UI languages.
 - **Tesseract now appears on the licence page** (ADR-049). Flutter builds that list from the packages the app links, so the engine that actually does the reading — a separate program Tafsiri runs — was missing from it, while 210 other entries were there. Desktop only: on Android and iOS the reading is done by ML Kit, which was listed all along.
 
+### Changed
+- **The Windows setup instructions point at Tesseract's own releases** instead of the UB Mannheim build (ADR-050). The official project now ships `tesseract-ocr-w64-setup-*.exe` itself, and it is the newer of the two — 5.5.3 against 5.4.0. Tick the language and script data in the installer and image-to-text works. Tesseract stays a separate install on every desktop rather than being bundled: the twelve UI languages alone come to about 25 MB, against a 12 MB installer.
+
 ---
 
 ## [1.0.12] - 2026-08-14

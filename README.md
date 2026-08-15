@@ -141,11 +141,9 @@ sudo apt install tesseract-ocr-all
 
 ### Windows
 
-```powershell
-winget install UB-Mannheim.TesseractOCR
-```
+Download `tesseract-ocr-w64-setup-*.exe` from the [Tesseract releases](https://github.com/tesseract-ocr/tesseract/releases) and run it. In the installer, expand **Additional language data (download)** and **Additional script data (download)** and tick the top-level box of each — taking everything is simplest and saves coming back when you photograph a script you did not expect.
 
-In the installer, expand **Additional language data (download)** and **Additional script data (download)** and tick what you need — or the top-level box of each for all of it. You can also add data later by dropping `.traineddata` files from [tessdata_fast](https://github.com/tesseract-ocr/tessdata_fast) into `C:\Program Files\Tesseract-OCR\tessdata\` (script data goes in the `script\` subfolder).
+You can also add data later by dropping `.traineddata` files from [tessdata_fast](https://github.com/tesseract-ocr/tessdata_fast) into `C:\Program Files\Tesseract-OCR\tessdata\` (script data goes in the `script\` subfolder).
 
 Then make sure the install directory is on `PATH`. The installer offers a checkbox for it that is easy to miss:
 

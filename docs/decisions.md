@@ -1,5 +1,15 @@
 # Architecture Decision Records
 
+## ADR-050: Tesseract stays a separate install on every desktop
+**Date:** 2026-08-15
+**Status:** Accepted — closes the bundling question left open by ADR-037
+**Context:** Bundling the OCR engine has been in the backlog since Linux support landed, and two things had made it look inevitable. The macOS App Sandbox appeared to forbid a sandboxed app from running a Homebrew binary, and Windows has no package manager to lean on. Both premises weakened on inspection. **The sandbox is not compulsory:** it is required for the Mac App Store, and Tafsiri is distributed directly from GitHub — direct distribution needs notarization and the Hardened Runtime, neither of which prevents spawning a binary from `/opt/homebrew`. And Windows turns out to be a two-minute job: the *official* `tesseract-ocr/tesseract` releases now carry `tesseract-ocr-w64-setup-*.exe` themselves, currently 5.5.3, **newer** than the UB Mannheim build this project had been recommending. Tick the language and script data in the installer and it is done. Against that, the cost is concrete: on Linux the 52 KB binary drags in 57 shared libraries, and the data is the real weight — the twelve UI languages come to roughly 25 MB, and Cyrillic alone is another 28 MB, against a 12 MB installer.
+**Decision:** Do not bundle, on any platform. Linux installs `tesseract-ocr` from the distribution, Windows and macOS from the projects' own installers (`brew install tesseract tesseract-lang` on macOS). The app keeps finding the binary on `PATH`, and `install.sh` keeps warning when it is missing. The "look for a bundled copy next to the executable first" change, proposed as the prerequisite to bundling, is therefore **not built** — it would be code in service of a decision that went the other way.
+**Consequences:** Image-to-text needs one install the user performs, on every desktop, and the README now says exactly how per platform. Installers stay small and the build scripts stay free of a download-and-verify step like `windows/sqlite3.cmake`. Two things follow from this being a *choice* rather than a limitation: the licence entry added in ADR-049 stays attribution rather than obligation, since nothing of Tesseract's is distributed; and if macOS turns out to need the sandbox off for the subprocess to run, that is now a one-line entitlement change rather than an argument for reopening this. The decision is reversible — nothing here has been designed against bundling, only nothing has been built for it.
+
+---
+
+
 ## ADR-049: The licence page lists what the app runs, not only what it links
 **Date:** 2026-08-15
 **Status:** Accepted
