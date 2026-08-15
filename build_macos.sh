@@ -11,6 +11,7 @@
 #   ./build_macos.sh --rebuild    delete build/macos first
 #   ./build_macos.sh --user       install into ~/Applications instead
 #   ./build_macos.sh --no-install build only, leave it in build/
+#   ./build_macos.sh --package    build and zip it for a GitHub release
 #   ./build_macos.sh --uninstall  remove the installed app
 #
 # Requirements:
@@ -40,6 +41,7 @@ while [ $# -gt 0 ]; do
     case "$1" in
         --uninstall)  MODE="uninstall" ;;
         --no-install) MODE="build" ;;
+        --package)    MODE="package" ;;
         --rebuild)    REBUILD="yes" ;;
         --user)       INSTALL_DIR="$HOME/Applications" ;;
         -h|--help)    sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
@@ -131,6 +133,39 @@ install_app() {
     fi
 }
 
+# ----------------------------------------------------------------- package --
+
+# The version, without the build number Inno Setup also rejects.
+pubspec_version() {
+    sed -n 's/^version:[[:space:]]*\([^+]*\).*/\1/p' "$PROJECT_DIR/pubspec.yaml" \
+        | tr -d '[:space:]'
+}
+
+package_app() {
+    local version arch out
+    version="$(pubspec_version)"
+    [ -n "$version" ] || die "No version found in pubspec.yaml."
+
+    # Named after what the binary actually contains rather than what the build
+    # machine happens to be: Flutter builds for the host architecture, so an
+    # Apple silicon Mac produces an arm64-only app and saying "macos" alone
+    # would promise an Intel user something that will not start.
+    arch="$(lipo -archs "$BUILT_APP/Contents/MacOS/tafsiri" 2>/dev/null \
+            | tr ' ' '-' | tr -d '\n')"
+    [ -n "$arch" ] || arch="unknown"
+
+    out="$PROJECT_DIR/build/macos/tafsiri-$version-macos-$arch.zip"
+    rm -f "$out"
+
+    # ditto, not zip: it preserves symlinks inside the frameworks and the code
+    # signature, both of which a plain `zip -r` quietly mangles into an app that
+    # refuses to launch on someone else's machine.
+    info "Packaging ${out##*/}…"
+    ditto -c -k --sequesterRsrc --keepParent "$BUILT_APP" "$out"
+
+    PACKAGE_PATH="$out"
+}
+
 uninstall_app() {
     local removed="no"
     for dir in /Applications "$HOME/Applications"; do
@@ -163,6 +198,18 @@ build_app
 if [ "$MODE" = "build" ]; then
     info "Done."
     note "App: $BUILT_APP"
+    exit 0
+fi
+
+if [ "$MODE" = "package" ]; then
+    package_app
+    printf '\n'
+    info "Done."
+    note "Upload this to the release:"
+    note "  $PACKAGE_PATH"
+    note ""
+    note "It is ad-hoc signed and not notarized, so anyone else who downloads it"
+    note "gets a Gatekeeper warning and has to right-click - Open the first time."
     exit 0
 fi
 

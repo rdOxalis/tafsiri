@@ -7,11 +7,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Added
-- **An About section at the foot of Settings**, matching the one in BluesoundPlayer: the app name with its version and build commit, the **open source licences** of everything Tafsiri is built on, a link to the **source on GitHub**, and the existing "buy me a coffee" entry gathered in with them. The version moved out of the small centred line at the very bottom into the About entry, where someone looks for it — it is the first thing to check when the app and the source disagree. Translated into all 12 UI languages.
-- **Tesseract now appears on the licence page** (ADR-049). Flutter builds that list from the packages the app links, so the engine that actually does the reading — a separate program Tafsiri runs — was missing from it, while 210 other entries were there. Desktop only: on Android and iOS the reading is done by ML Kit, which was listed all along.
+---
+
+## [1.0.13] - 2026-08-15
 
 ### Added
+- **macOS is a supported platform.** Tafsiri builds, installs and runs on macOS: translation, history, favourites, backup, image-to-text and voice input all work. `./build_macos.sh` puts it in `/Applications`, where Finder and Spotlight find it. Clipboard image paste is the one desktop feature not there yet.
+- **An About section at the foot of Settings**, matching the one in BluesoundPlayer: the app name with its version and build commit, the **open source licences** of everything Tafsiri is built on, a link to the **source on GitHub**, and the existing "buy me a coffee" entry gathered in with them. The version moved out of the small centred line at the very bottom into the About entry, where someone looks for it — it is the first thing to check when the app and the source disagree. Translated into all 12 UI languages.
+- **Tesseract now appears on the licence page** (ADR-049). Flutter builds that list from the packages the app links, so the engine that actually does the reading — a separate program Tafsiri runs — was missing from it, while 210 other entries were there. Desktop only: on Android and iOS the reading is done by ML Kit, which was listed all along.
 - **The macOS app carries the Tafsiri icon** rather than Flutter's (ADR-054). The template icons from `flutter create` had never been regenerated, so the app would have shown up in the Dock, in Finder and in Spotlight as Flutter. Windows and Linux were already correct.
 - **macOS has a build script** (ADR-053): `./build_macos.sh` builds a release app and installs it into `/Applications`, where Finder and Spotlight find it — `--user` puts it in `~/Applications` instead, and `--uninstall` removes it while leaving your settings and history alone. It refuses to run when Swift Package Manager is enabled, which `speech_to_text` cannot build under, rather than letting that surface as an unreadable Swift error.
 
