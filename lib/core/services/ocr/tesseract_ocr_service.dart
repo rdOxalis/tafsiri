@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 
-import 'ocr_log.dart';
+import '../../diagnostics_log.dart';
 import 'ocr_service.dart';
 
 /// Runs a process and returns its result. Injectable so the parsing and the
@@ -273,9 +273,9 @@ class TesseractOcrService implements OcrService {
     final configured = selectLanguages(primaryLanguage, altLanguage, available);
     // The binary first, before anything can fail: which one ran is the
     // question every OCR diagnosis starts with.
-    ocrLog('--- recognise "$imagePath" using $_binary');
-    ocrLog('installed: ${available.join(" | ")}');
-    ocrLog('configured: -l ${configured.argument}'
+    diagLog('--- recognise "$imagePath" using $_binary');
+    diagLog('installed: ${available.join(" | ")}');
+    diagLog('configured: -l ${configured.argument}'
         '${configured.missing.isEmpty ? "" : "  missing=${configured.missing}"}');
 
     // Ask the image which script it is *before* choosing trained data. The
@@ -291,7 +291,7 @@ class TesseractOcrService implements OcrService {
       // Whatever this installation calls that trained data — or nothing, in
       // which case there is no point spawning a run that cannot succeed.
       final argument = scriptArgument(script, available);
-      ocrLog('script $script is not covered; script data resolves to '
+      diagLog('script $script is not covered; script data resolves to '
           '${argument ?? "NOTHING INSTALLED"}');
       // Nothing installed for this script: that is the one case where naming a
       // package is the right answer. Latin is exempt — any Latin language we
@@ -313,7 +313,7 @@ class TesseractOcrService implements OcrService {
         // script confidence 1.76, against ~4.5 for a genuinely Cyrillic page)
         // and the configured languages would have read it better. So fall
         // through and let them try (ADR-045).
-        ocrLog('script read unusable; falling back to ${configured.argument}');
+        diagLog('script read unusable; falling back to ${configured.argument}');
       }
     }
 
@@ -333,7 +333,7 @@ class TesseractOcrService implements OcrService {
       // confident result is not evidence that it was read correctly, and
       // returning it would hand the model fluent nonsense (ADR-038).
       if (script == null && unreadable.isNotEmpty) {
-        ocrLog('script unknown and $unreadable unreadable — refusing');
+        diagLog('script unknown and $unreadable unreadable — refusing');
         throw OcrLanguageMissingException(unreadable);
       }
       return page.text;
@@ -390,7 +390,7 @@ class TesseractOcrService implements OcrService {
     // The resolved path, not the configured name — when the two differ, which
     // is exactly when something went wrong, the log has to say which binary ran.
     final binary = _binary;
-    ocrLog('run: $binary ${arguments.join(" ")}');
+    diagLog('run: $binary ${arguments.join(" ")}');
 
     final ProcessResult result;
     try {
@@ -407,7 +407,7 @@ class TesseractOcrService implements OcrService {
     }
 
     if (result.exitCode != 0) {
-      ocrLog('  exit ${result.exitCode}: ${result.stderr}');
+      diagLog('  exit ${result.exitCode}: ${result.stderr}');
       return null;
     }
     final raw = '${result.stdout}';
@@ -415,10 +415,10 @@ class TesseractOcrService implements OcrService {
     // The raw length against the parsed length is the tell: plenty of output
     // and nothing parsed means the TSV did not look the way we expect, which
     // is a different problem from Tesseract having read nothing.
-    ocrLog('  ${raw.length} B out, text=${page.text.length} chars, '
+    diagLog('  ${raw.length} B out, text=${page.text.length} chars, '
         'confidence=${page.meanConfidence.toStringAsFixed(1)}');
     if (page.text.isEmpty && raw.isNotEmpty) {
-      ocrLog('  first line back: ${raw.split(RegExp(r"\r?\n")).first}');
+      diagLog('  first line back: ${raw.split(RegExp(r"\r?\n")).first}');
     }
     return page;
   }
@@ -450,10 +450,10 @@ class TesseractOcrService implements OcrService {
       if (result.exitCode != 0) return null;
       final osd = parseOsd('${result.stdout}\n${result.stderr}');
       if (osd == null || osd.confidence < kMinScriptConfidence) {
-        ocrLog('script not detected: ${osd ?? result.stdout}');
+        diagLog('script not detected: ${osd ?? result.stdout}');
         return null;
       }
-      ocrLog('script ${osd.script} (${osd.confidence})');
+      diagLog('script ${osd.script} (${osd.confidence})');
       return osd.script;
     } on ProcessException {
       return null;
@@ -556,7 +556,7 @@ class TesseractOcrService implements OcrService {
     // For a foreign script it produces noise, and the confidence gate then
     // turns `missing` into an actionable message rather than a dead end.
     if (available.contains('eng')) {
-      ocrLog('no trained data for $wanted, falling back to eng');
+      diagLog('no trained data for $wanted, falling back to eng');
       return TesseractLanguages(argument: 'eng', missing: missing);
     }
 

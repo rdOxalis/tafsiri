@@ -9,7 +9,7 @@ import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
 import '../../core/services/clipboard/clipboard_image_service_factory.dart';
-import '../../core/services/ocr/ocr_log.dart';
+import '../../core/diagnostics_log.dart';
 import '../../core/services/ocr/ocr_service.dart';
 import '../../core/services/ocr/ocr_service_factory.dart';
 import '../../core/services/ocr/tesseract_ocr_service.dart';
@@ -117,16 +117,25 @@ class TranslatorController extends Notifier<TranslatorState> {
   Future<void> _initStt() async {
     try {
       final available = await _stt.initialize(
-        onError: (e) => debugPrint('[STT] error: ${e.errorMsg}'),
+        onError: (e) => diagLog('stt: error ${e.errorMsg} '
+            '(permanent: ${e.permanent})'),
         onStatus: (s) {
           if (s == SpeechToText.notListeningStatus) {
             state = state.copyWith(isListening: false);
           }
         },
       );
+      // Logged whichever way it goes. `initialize` reporting false without
+      // throwing is the ordinary way this fails — the microphone then sits
+      // there greyed out and nothing anywhere says why, which is exactly the
+      // silence that cost four rounds on the OCR side (ADR-044).
+      diagLog('stt: initialize -> $available');
+      if (!available) {
+        diagLog('stt: has permission -> ${await _stt.hasPermission}');
+      }
       state = state.copyWith(isSttAvailable: available);
     } catch (e) {
-      debugPrint('[STT] init failed: $e');
+      diagLog('stt: initialize threw $e');
     }
   }
 
@@ -168,7 +177,7 @@ class TranslatorController extends Notifier<TranslatorState> {
     try {
       file = await ImagePicker().pickImage(source: source);
     } catch (e) {
-      ocrLog('image picker failed: $e');
+      diagLog('image picker failed: $e');
       state =
           state.copyWith(isOcrProcessing: false, ocrError: OcrFailure.failed);
       return;
@@ -196,17 +205,17 @@ class TranslatorController extends Notifier<TranslatorState> {
     // Logged before anything else, because "Ctrl+V does nothing" has two very
     // different causes — the keystroke never reaching here, or the clipboard
     // holding no image — and only one of them is a bug in this code.
-    ocrLog('clipboard: paste requested');
+    diagLog('clipboard: paste requested');
 
     final File? file;
     try {
       file = await ref.read(clipboardImageServiceProvider).readImage();
     } catch (e) {
-      ocrLog('clipboard: read failed: $e');
+      diagLog('clipboard: read failed: $e');
       return false;
     }
     if (file == null) {
-      ocrLog('clipboard: no image — falling back to text');
+      diagLog('clipboard: no image — falling back to text');
       return false;
     }
 
@@ -219,7 +228,7 @@ class TranslatorController extends Notifier<TranslatorState> {
       try {
         await file.parent.delete(recursive: true);
       } on IOException catch (e) {
-        ocrLog('clipboard: could not remove the temporary file: $e');
+        diagLog('clipboard: could not remove the temporary file: $e');
       }
     }
     return true;
@@ -236,14 +245,14 @@ class TranslatorController extends Notifier<TranslatorState> {
       final settings = ref.read(settingsProvider).valueOrNull;
       final primary = settings?.targetLanguage ?? kDefaultTargetLanguage;
       final alt = settings?.altLanguage ?? kDefaultAltLanguage;
-      ocrLog('settings: primary="$primary" alt="$alt"');
+      diagLog('settings: primary="$primary" alt="$alt"');
 
       final text = await ref.read(ocrServiceProvider).recogniseText(
             imagePath,
             primaryLanguage: primary,
             altLanguage: alt,
           );
-      ocrLog('OK: ${text.length} chars');
+      diagLog('OK: ${text.length} chars');
 
       state = state.copyWith(
         inputText: text,
@@ -252,20 +261,20 @@ class TranslatorController extends Notifier<TranslatorState> {
         clearError: true,
       );
     } on OcrLanguageMissingException catch (e) {
-      ocrLog('languageMissing: $e');
+      diagLog('languageMissing: $e');
       state = state.copyWith(
         isOcrProcessing: false,
         ocrError: OcrFailure.languageMissing,
         ocrErrorDetail: tesseractPackageHint(e.languageCodes),
       );
     } on OcrUnavailableException catch (e) {
-      ocrLog('engine unavailable: $e');
+      diagLog('engine unavailable: $e');
       state = state.copyWith(
         isOcrProcessing: false,
         ocrError: OcrFailure.engineMissing,
       );
     } catch (e) {
-      ocrLog('failed: $e');
+      diagLog('failed: $e');
       state = state.copyWith(
         isOcrProcessing: false,
         ocrError: OcrFailure.failed,

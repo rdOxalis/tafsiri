@@ -192,5 +192,6 @@ Write-Note '- tick the language and script data, and put it on PATH. Verified en
 Write-Note 'end on Windows (ADR-045). Voice input has a Windows implementation'
 Write-Note '(speech_to_text_windows, beta) and is still untested.'
 Write-Note ''
-Write-Note 'When recognition misbehaves, read %TEMP%\tafsiri-ocr.log - it records'
-Write-Note 'the languages found, the script detected and every command run.'
+Write-Note 'When something misbehaves, read %TEMP%\tafsiri.log - it records'
+Write-Note 'which binary ran, the languages found, the script detected, every'
+Write-Note 'command run, and whether speech recognition initialised.'

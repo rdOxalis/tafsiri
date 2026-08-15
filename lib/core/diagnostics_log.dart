@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-/// Appends OCR diagnostics to a file next to the system temp directory.
+/// Appends diagnostics to a file in the system temp directory.
 ///
 /// `debugPrint` alone is not enough on desktop. A Flutter **release** build on
 /// Windows is a GUI application: Dart binds its standard output at startup,
@@ -13,13 +13,13 @@ import 'package:flutter/foundation.dart';
 ///
 /// Writes are best-effort: a diagnostic that can break recognition is worse
 /// than no diagnostic.
-void ocrLog(String message) {
-  debugPrint('[OCR] $message');
+void diagLog(String message) {
+  debugPrint('[Tafsiri] $message');
   if (kIsWeb) return;
 
   try {
     final file = File('${Directory.systemTemp.path}${Platform.pathSeparator}'
-        'tafsiri-ocr.log');
+        'tafsiri.log');
 
     // Keep it small enough to paste into a bug report, and never let a long
     // session bury the run someone is actually looking at.
@@ -37,7 +37,7 @@ void ocrLog(String message) {
   }
 }
 
-/// Where [ocrLog] writes, for the message that tells a user where to look.
-String get ocrLogPath => kIsWeb
+/// Where [diagLog] writes, for the message that tells a user where to look.
+String get diagLogPath => kIsWeb
     ? ''
-    : '${Directory.systemTemp.path}${Platform.pathSeparator}tafsiri-ocr.log';
+    : '${Directory.systemTemp.path}${Platform.pathSeparator}tafsiri.log';

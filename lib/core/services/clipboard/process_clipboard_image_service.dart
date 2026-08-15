@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
-import '../ocr/ocr_log.dart';
+import '../../diagnostics_log.dart';
 import 'clipboard_image_service.dart';
 
 /// Runs a process. Injectable so the tool selection and parsing can be tested
@@ -66,7 +66,7 @@ class ProcessClipboardImageService implements ClipboardImageService {
       final bytes = await _bytes(tool, type);
       if (bytes == null || bytes.isEmpty) continue;
 
-      ocrLog('clipboard: ${tool.name} produced $type, ${bytes.length} B');
+      diagLog('clipboard: ${tool.name} produced $type, ${bytes.length} B');
       return _writeTemporary(bytes, type);
     }
     return null;
@@ -116,7 +116,7 @@ class ProcessClipboardImageService implements ClipboardImageService {
       await file.writeAsBytes(bytes, flush: true);
       return file;
     } on IOException catch (e) {
-      ocrLog('clipboard: could not write the image: $e');
+      diagLog('clipboard: could not write the image: $e');
       return null;
     }
   }

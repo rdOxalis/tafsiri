@@ -98,9 +98,9 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 ---
 
-## Desktop (Linux and Windows)
+## Desktop (Linux, Windows and macOS)
 
-Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there, and so does image-to-text once Tesseract is installed (see below). Pasting a screenshot with **Ctrl+V** works on Linux and Windows. Voice input is the one gap on Linux — `speech_to_text` has no implementation there, so the microphone button is not shown at all; on Windows and macOS it is.
+Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there, and so does image-to-text once Tesseract is installed (see below). Pasting a screenshot with **Ctrl+V** works on Linux and Windows — on macOS that is not implemented yet. Voice input is the one gap on Linux: `speech_to_text` has no implementation there, so the microphone button is not shown at all; on Windows and macOS it is.
 
 **Linux** — needs the Flutter SDK and `libgtk-3-dev`:
 
@@ -116,6 +116,15 @@ Tafsiri also runs on the desktop. Translation, history, favourites, settings and
 ```
 
 This produces `build\windows\installer\tafsiri-<version>-windows-x64.exe`. It installs for the current user only, so Windows asks for no administrator rights. Uninstalling asks whether to keep your settings, API keys and translation history.
+
+**macOS** — needs Xcode with its command line tools and CocoaPods (`brew install cocoapods`). One setting is required first, because `speech_to_text` ships a Swift Package manifest that contradicts its own podspec and will not compile under Swift Package Manager:
+
+```bash
+flutter config --no-enable-swift-package-manager
+flutter build macos --release --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
+```
+
+The result is `build/macos/Build/Products/Release/tafsiri.app`. The app is **not** sandboxed: image-to-text runs Tesseract as a child process, and the App Sandbox refuses that outright.
 
 ---
 
@@ -145,15 +154,15 @@ Download `tesseract-ocr-w64-setup-*.exe` from the [Tesseract releases](https://g
 
 You can also add data later by dropping `.traineddata` files from [tessdata_fast](https://github.com/tesseract-ocr/tessdata_fast) into `C:\Program Files\Tesseract-OCR\tessdata\` (script data goes in the `script\` subfolder).
 
-Then make sure the install directory is on `PATH`. The installer offers a checkbox for it that is easy to miss:
+Tafsiri looks in `C:\Program Files\Tesseract-OCR` by itself, so the installer's `PATH` checkbox is optional — tick it anyway if you want to use `tesseract` from a terminal.
 
-```powershell
-$dir = 'C:\Program Files\Tesseract-OCR'
-$old = [Environment]::GetEnvironmentVariable('Path','User')
-if ($old -notlike "*$dir*") {
-    [Environment]::SetEnvironmentVariable('Path', ($old.TrimEnd(';') + ';' + $dir), 'User')
-}
+### macOS
+
+```bash
+brew install tesseract tesseract-lang     # the engine and every language
 ```
+
+`tesseract-lang` covers all the languages and scripts, so there is nothing to choose. Tafsiri finds Homebrew in `/opt/homebrew/bin` and `/usr/local/bin` on its own — which matters, because an app launched from Finder inherits none of your shell's `PATH`.
 
 A program inherits `PATH` from whatever started it, and Explorer reads it once at login — so **sign out and back in** before launching Tafsiri from the Start menu, or start it from a fresh terminal to test straight away.
 
@@ -165,7 +174,7 @@ tesseract --list-langs
 
 Languages appear as ISO 639-2 codes (`deu`, `swa`, `bul`); script data appears as `script/Cyrillic` on Linux and `script\Cyrillic` on Windows. Both spellings are understood.
 
-When recognition does something unexpected, Tafsiri writes what it did to **`tafsiri-ocr.log`** in your temp directory — `%TEMP%` on Windows, `/tmp` on Linux. It records which languages were found, which script was detected and how sure it was, the exact command run, and how much text came back at what confidence.
+When image-to-text or voice input does something unexpected, Tafsiri writes what it did to **`tafsiri.log`** in your temp directory — `%TEMP%` on Windows, `/tmp` on Linux, and inside the app container on macOS (`~/Library/Containers/…/Data/tmp/`) if the sandbox is ever switched back on. It records which Tesseract binary was run and from where, which languages were found, which script was detected and how sure it was, the exact command, how much text came back at what confidence, and whether speech recognition initialised.
 
 One practical tip: **a cropped photo reads far better than a full screenshot.** Script detection on a whole window of Latin interface with a little Cyrillic in it is close to a coin toss — measured at 1.76 confidence against 10.0 for the same text cropped — and the recognition follows that guess.
 
