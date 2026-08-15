@@ -116,11 +116,11 @@ install_app() {
     # Replace rather than merge: an .app is a directory, and copying over an
     # older one leaves whatever the new build no longer ships.
     if [ -d "$TARGET" ]; then
-        info "Replacing the existing $TARGET…"
+        info "Replacing the existing ${TARGET}…"
         rm -rf "$TARGET"
     fi
 
-    info "Installing to $TARGET…"
+    info "Installing to ${TARGET}…"
     cp -R "$BUILT_APP" "$TARGET"
 
     # Spotlight picks new applications up on its own, but not always promptly,
@@ -135,7 +135,7 @@ uninstall_app() {
     local removed="no"
     for dir in /Applications "$HOME/Applications"; do
         if [ -d "$dir/$APP_NAME" ]; then
-            info "Removing $dir/$APP_NAME…"
+            info "Removing $dir/${APP_NAME}…"
             rm -rf "$dir/$APP_NAME"
             removed="yes"
         fi

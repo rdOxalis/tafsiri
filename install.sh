@@ -58,7 +58,7 @@ refresh_caches() {
 }
 
 do_uninstall() {
-    info "Removing $APP_NAME…"
+    info "Removing ${APP_NAME}…"
     remove_installed_files
     refresh_caches
     info "$APP_NAME has been removed."
@@ -290,7 +290,7 @@ do_install() {
         build_app
     fi
 
-    info "Installing to $INSTALL_DIR…"
+    info "Installing to ${INSTALL_DIR}…"
     remove_installed_files
     mkdir -p "$INSTALL_DIR"
     cp -r "$BUNDLE_DIR"/. "$INSTALL_DIR/"
