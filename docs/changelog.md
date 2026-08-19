@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- **Editing your text no longer wipes the result below it** (ADR-055). In correction mode the suggestions are there to be worked into your own sentence, and they disappeared on the first keystroke — so you had to memorise them or start over. They now stay until you press Improve (or Translate) again. Because a result that no longer belongs to the text above is misleading if nothing says so, two things point it out: a red dot on the Improve button, and a line above the result reading "No longer matches the text above". Type the original text back and both go away. Translated into all 12 UI languages.
+
 ---
 
 ## [1.0.13] - 2026-08-15

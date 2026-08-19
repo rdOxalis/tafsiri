@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Badilisha historia",
   "backupReplaceHistoryWarning": "Historia yako ya sasa ya tafsiri itafutwa na kubadilishwa na ile ya faili, badala ya kuunganishwa.",
   "backupImportConfirmMessageReplace": "Mipangilio yako ya sasa itabadilishwa na ile ya faili, na historia yako yote ya tafsiri itafutwa na kubadilishwa na ile ya nakala. Hatua hii haiwezi kutenduliwa.",
-  "backupImportedReplaced": "Historia imebadilishwa — tafsiri {added} zimerejeshwa"
+  "backupImportedReplaced": "Historia imebadilishwa — tafsiri {added} zimerejeshwa",
+  "outputStaleLabel": "Hayaendani tena na maandishi ya juu",
+  "outputStaleTooltip": "Maandishi ya juu yamebadilika — matokeo ya chini bado ni ya toleo lililotangulia."
 }

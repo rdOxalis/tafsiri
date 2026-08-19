@@ -303,4 +303,11 @@ class AppLocalizationsNb extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Logg erstattet — $added oversettelser gjenopprettet';
   }
+
+  @override
+  String get outputStaleLabel => 'Passer ikke lenger til teksten over';
+
+  @override
+  String get outputStaleTooltip =>
+      'Teksten over er endret — resultatet nedenfor er fra den forrige versjonen.';
 }

@@ -303,4 +303,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Cronologia sostituita — $added traduzioni ripristinate';
   }
+
+  @override
+  String get outputStaleLabel => 'Non corrisponde più al testo qui sopra';
+
+  @override
+  String get outputStaleTooltip =>
+      'Il testo qui sopra è cambiato — il risultato qui sotto è della versione precedente.';
 }

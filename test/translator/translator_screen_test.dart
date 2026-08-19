@@ -259,5 +259,44 @@ void main() {
 
       expect(find.text('Suggestions'), findsNothing);
     });
+
+    testWidgets('an edited input keeps the result and flags it (ADR-055)',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        const TranslatorScreen(),
+        state: const TranslatorState(
+          inputText: 'Tafadhali nipe siagi.',
+          outputText: 'Tafadhali nipe siagi.',
+          outputSourceText: 'Tafadhali nipe Butter.',
+          correctionNotes: '- Butter → siagi: German for "butter".',
+          isCorrectionResult: true,
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      // The suggestions the user is working from are still there …
+      expect(find.text('- Butter → siagi: German for "butter".'),
+          findsOneWidget);
+      // … and both the output area and the button say they are one step behind.
+      expect(find.text('No longer matches the text above'), findsOneWidget);
+      final badge = tester.widget<Badge>(find.byType(Badge));
+      expect(badge.isLabelVisible, isTrue);
+    });
+
+    testWidgets('a result matching the input carries no marker', (tester) async {
+      await tester.pumpWidget(_wrap(
+        const TranslatorScreen(),
+        state: const TranslatorState(
+          inputText: 'Hello',
+          outputText: 'Habari',
+          outputSourceText: 'Hello',
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('No longer matches the text above'), findsNothing);
+      final badge = tester.widget<Badge>(find.byType(Badge));
+      expect(badge.isLabelVisible, isFalse);
+    });
   });
 }

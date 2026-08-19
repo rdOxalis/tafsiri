@@ -90,10 +90,31 @@ class OutputArea extends ConsumerWidget {
     }
     if (state.outputText != null) {
       final notes = state.correctionNotes;
+      final scheme = Theme.of(context).colorScheme;
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // The result stays put while the input is edited (ADR-055), so it
+            // has to say for itself that it is one step behind.
+            if (state.isOutputStale) ...[
+              Row(
+                children: [
+                  Icon(Icons.history_toggle_off, size: 16, color: scheme.error),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      l10n.outputStaleLabel,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: scheme.error),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
             Text(state.outputText!,
                 style: Theme.of(context).textTheme.bodyLarge),
             if (state.isCorrectionResult && notes != null) ...[

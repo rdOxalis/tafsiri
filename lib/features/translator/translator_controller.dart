@@ -30,6 +30,12 @@ class TranslatorState {
   final String inputText;
   final String? outputText;
 
+  /// The input the current [outputText] was produced from (ADR-055).
+  ///
+  /// Kept so an edit above can be told from the result below without throwing
+  /// the result away — see [isOutputStale].
+  final String? outputSourceText;
+
   /// Improvement notes returned in correction mode (ADR-033), `null` otherwise.
   final String? correctionNotes;
 
@@ -49,9 +55,19 @@ class TranslatorState {
   /// What to install, for [OcrFailure.languageMissing].
   final String? ocrErrorDetail;
 
+  /// True while the result on screen belongs to an earlier version of the input.
+  ///
+  /// In correction mode the notes are the whole point of the result, and the
+  /// user works them into the text above — so the result has to survive the
+  /// editing and only say that it no longer matches (ADR-055).
+  bool get isOutputStale =>
+      outputText != null &&
+      inputText.trim() != (outputSourceText ?? '').trim();
+
   const TranslatorState({
     this.inputText = '',
     this.outputText,
+    this.outputSourceText,
     this.correctionNotes,
     this.isCorrectionResult = false,
     this.isLoading = false,
@@ -68,6 +84,7 @@ class TranslatorState {
   TranslatorState copyWith({
     String? inputText,
     String? outputText,
+    String? outputSourceText,
     String? correctionNotes,
     bool? isCorrectionResult,
     bool clearOutput = false,
@@ -86,6 +103,9 @@ class TranslatorState {
       TranslatorState(
         inputText: inputText ?? this.inputText,
         outputText: clearOutput ? null : outputText ?? this.outputText,
+        outputSourceText: clearOutput
+            ? null
+            : outputSourceText ?? this.outputSourceText,
         correctionNotes:
             clearOutput ? null : correctionNotes ?? this.correctionNotes,
         isCorrectionResult: clearOutput
@@ -286,8 +306,14 @@ class TranslatorController extends Notifier<TranslatorState> {
     state = state.copyWith(clearOcrError: true);
   }
 
+  /// Edits to the input leave the result standing (ADR-055).
+  ///
+  /// The result is what the user is editing *from* — in correction mode the
+  /// suggestions are worked into the text word by word, and wiping them on the
+  /// first keystroke took the reference away. It is only marked as no longer
+  /// matching ([TranslatorState.isOutputStale]) and replaced on the next run.
   void setInputText(String text) {
-    state = state.copyWith(inputText: text, clearOutput: true, clearError: true);
+    state = state.copyWith(inputText: text, clearError: true);
   }
 
   void loadHistoryEntry(
@@ -302,6 +328,7 @@ class TranslatorController extends Notifier<TranslatorState> {
       clearError: true,
     ).copyWith(
       outputText: resultText,
+      outputSourceText: sourceText,
       correctionNotes: notes,
       isCorrectionResult: mode == kModeCorrect,
     );
@@ -350,6 +377,7 @@ class TranslatorController extends Notifier<TranslatorState> {
       state = state.copyWith(
         isLoading: false,
         outputText: translation,
+        outputSourceText: input,
         correctionNotes: result.notes,
         isCorrectionResult: result.isCorrection,
         lastSourceLang: sourceLang ?? state.lastSourceLang,

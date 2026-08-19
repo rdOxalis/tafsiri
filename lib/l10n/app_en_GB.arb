@@ -392,5 +392,13 @@
         "example": "12"
       }
     }
+  },
+  "outputStaleLabel": "No longer matches the text above",
+  "@outputStaleLabel": {
+    "description": "Marker in the output area when the input was edited after the result was produced"
+  },
+  "outputStaleTooltip": "The text above has changed — the result below is from the previous version.",
+  "@outputStaleTooltip": {
+    "description": "Tooltip on the translate/improve button while the result is out of date"
   }
 }

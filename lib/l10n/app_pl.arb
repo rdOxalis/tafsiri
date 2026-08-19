@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Zastąp historię",
   "backupReplaceHistoryWarning": "Bieżąca historia tłumaczeń zostanie usunięta i zastąpiona tą z pliku, zamiast połączenia obu.",
   "backupImportConfirmMessageReplace": "Bieżące ustawienia zostaną zastąpione tymi z pliku, a cała historia tłumaczeń zostanie usunięta i zastąpiona tą z kopii. Tej operacji nie można cofnąć.",
-  "backupImportedReplaced": "Historia zastąpiona — przywrócono {added} tłumaczeń"
+  "backupImportedReplaced": "Historia zastąpiona — przywrócono {added} tłumaczeń",
+  "outputStaleLabel": "Nie pasuje już do tekstu powyżej",
+  "outputStaleTooltip": "Tekst powyżej został zmieniony — wynik poniżej pochodzi z poprzedniej wersji."
 }

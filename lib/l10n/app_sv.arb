@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Ersätt historik",
   "backupReplaceHistoryWarning": "Din nuvarande översättningshistorik raderas och ersätts av den från filen i stället för att slås ihop.",
   "backupImportConfirmMessageReplace": "Dina nuvarande inställningar ersätts med dem i filen, och hela din översättningshistorik raderas och ersätts med säkerhetskopians. Detta går inte att ångra.",
-  "backupImportedReplaced": "Historik ersatt — {added} översättningar återställda"
+  "backupImportedReplaced": "Historik ersatt — {added} översättningar återställda",
+  "outputStaleLabel": "Stämmer inte längre med texten ovan",
+  "outputStaleTooltip": "Texten ovan har ändrats — resultatet nedan är från den tidigare versionen."
 }

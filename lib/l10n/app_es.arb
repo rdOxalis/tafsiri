@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Reemplazar historial",
   "backupReplaceHistoryWarning": "Tu historial de traducciones actual se borra y se sustituye por el del archivo, en lugar de combinarlos.",
   "backupImportConfirmMessageReplace": "Tus ajustes actuales se sustituirán por los del archivo, y todo tu historial de traducciones se borrará y se sustituirá por el de la copia. Esto no se puede deshacer.",
-  "backupImportedReplaced": "Historial reemplazado: {added} traducciones restauradas"
+  "backupImportedReplaced": "Historial reemplazado: {added} traducciones restauradas",
+  "outputStaleLabel": "Ya no coincide con el texto de arriba",
+  "outputStaleTooltip": "El texto de arriba ha cambiado — el resultado de abajo es de la versión anterior."
 }

@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Remplacer l’historique",
   "backupReplaceHistoryWarning": "Votre historique de traduction actuel est supprimé et remplacé par celui du fichier, au lieu d’être fusionné.",
   "backupImportConfirmMessageReplace": "Vos réglages actuels seront remplacés par ceux du fichier, et tout votre historique de traduction sera supprimé et remplacé par celui de la sauvegarde. Cette action est irréversible.",
-  "backupImportedReplaced": "Historique remplacé — {added} traductions restaurées"
+  "backupImportedReplaced": "Historique remplacé — {added} traductions restaurées",
+  "outputStaleLabel": "Ne correspond plus au texte ci-dessus",
+  "outputStaleTooltip": "Le texte ci-dessus a changé — le résultat ci-dessous provient de la version précédente."
 }

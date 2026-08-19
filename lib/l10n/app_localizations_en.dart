@@ -302,6 +302,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'History replaced — $added translations restored';
   }
+
+  @override
+  String get outputStaleLabel => 'No longer matches the text above';
+
+  @override
+  String get outputStaleTooltip =>
+      'The text above has changed — the result below is from the previous version.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -602,4 +609,11 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String backupImportedReplaced(int added) {
     return 'History replaced — $added translations restored';
   }
+
+  @override
+  String get outputStaleLabel => 'No longer matches the text above';
+
+  @override
+  String get outputStaleTooltip =>
+      'The text above has changed — the result below is from the previous version.';
 }

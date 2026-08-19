@@ -658,6 +658,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'History replaced — {added} translations restored'**
   String backupImportedReplaced(int added);
+
+  /// Marker in the output area when the input was edited after the result was produced
+  ///
+  /// In en_GB, this message translates to:
+  /// **'No longer matches the text above'**
+  String get outputStaleLabel;
+
+  /// Tooltip on the translate/improve button while the result is out of date
+  ///
+  /// In en_GB, this message translates to:
+  /// **'The text above has changed — the result below is from the previous version.'**
+  String get outputStaleTooltip;
 }
 
 class _AppLocalizationsDelegate

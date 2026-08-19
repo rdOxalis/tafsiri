@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-055: The result survives an edit and says it is out of date
+**Date:** 2026-08-19
+**Status:** Accepted
+**Context:** Correction mode (ADR-033) answers with a corrected sentence *and* a list of suggestions, and the point of the suggestions is that the user works them into their own text — that is the whole exercise of learning a language. But every keystroke in the input field called `setInputText`, which cleared the output area: the moment you started applying the first suggestion, the suggestions vanished. You had to memorise them, or retype the text from scratch and press Improve again to see them once more. The clearing was right for plain translation, where the result is a product you take away and an out-of-date one is only noise; it is exactly wrong for correction, where the result is a reference you work *from*. The genuine concern behind the old behaviour stays valid, though: a result that silently no longer matches the text above is worse than no result at all.
+**Decision:** Keep the result, and mark it. `TranslatorState` gains `outputSourceText` — the input the current result was produced from — and a derived `isOutputStale`, true when the trimmed input no longer equals it. `setInputText` now only clears the error, never the output. The result is still cleared where clearing is the point: pressing Translate/Improve, clearing the input, starting voice input, and importing recognised text from an image — each replaces the input wholesale rather than editing it. Two signals report staleness, because one on its own is easy to miss: a dot badge in the error colour on the Translate/Improve button, whose tooltip explains it, and a line at the top of the output area reading "No longer matches the text above". Restoring the original text — including undoing an edit, or leaving only trailing whitespace behind — clears both.
+**Consequences:** The suggestions stay on screen while they are being applied, which is what correction mode was for. Reloading an entry from history sets `outputSourceText` to that entry's source text, so a reloaded pair is not immediately flagged. The comparison is a trimmed string equality, which is deliberately blunt: it says "different from what produced this", not "meaningfully different" — an edit and an undo of it come out equal, and that is the useful reading. Two new strings across all 13 ARB files (`outputStaleLabel`, `outputStaleTooltip`). The older test asserting that a new input clears the correction notes was asserting the behaviour this ADR removes, and was replaced by tests for the new one.
+
+---
+
 ## ADR-054: The macOS app carries its own icon
 **Date:** 2026-08-15
 **Status:** Accepted

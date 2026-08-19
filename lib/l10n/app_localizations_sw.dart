@@ -304,4 +304,11 @@ class AppLocalizationsSw extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Historia imebadilishwa — tafsiri $added zimerejeshwa';
   }
+
+  @override
+  String get outputStaleLabel => 'Hayaendani tena na maandishi ya juu';
+
+  @override
+  String get outputStaleTooltip =>
+      'Maandishi ya juu yamebadilika — matokeo ya chini bado ni ya toleo lililotangulia.';
 }

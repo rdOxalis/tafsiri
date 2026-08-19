@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Historie ersetzen",
   "backupReplaceHistoryWarning": "Dein aktueller Übersetzungsverlauf wird gelöscht und durch den aus der Datei ersetzt, statt beide zusammenzuführen.",
   "backupImportConfirmMessageReplace": "Deine aktuellen Einstellungen werden durch die aus der Datei ersetzt, und dein gesamter Übersetzungsverlauf wird gelöscht und durch den der Sicherung ersetzt. Das lässt sich nicht rückgängig machen.",
-  "backupImportedReplaced": "Verlauf ersetzt — {added} Übersetzungen wiederhergestellt"
+  "backupImportedReplaced": "Verlauf ersetzt — {added} Übersetzungen wiederhergestellt",
+  "outputStaleLabel": "Passt nicht mehr zum Text oben",
+  "outputStaleTooltip": "Der Text oben wurde geändert — das Ergebnis unten stammt noch von der vorherigen Fassung."
 }

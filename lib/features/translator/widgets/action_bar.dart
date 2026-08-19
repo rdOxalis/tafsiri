@@ -22,6 +22,8 @@ class ActionBar extends ConsumerWidget {
         ref.watch(translatorProvider.select((s) => s.isListening));
     final isOcrProcessing =
         ref.watch(translatorProvider.select((s) => s.isOcrProcessing));
+    final isOutputStale =
+        ref.watch(translatorProvider.select((s) => s.isOutputStale));
     final settings = ref.watch(settingsProvider).valueOrNull;
     final primaryLang = settings?.targetLanguage.isNotEmpty == true
         ? settings!.targetLanguage
@@ -99,23 +101,38 @@ class ActionBar extends ConsumerWidget {
                   },
           ),
           const Spacer(),
-          FilledButton.icon(
-            icon: isLoading
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
-                  )
-                // Deliberately not the spellcheck icon: that one marks the
-                // correction-mode toggle (a state), this button is the action.
-                : Icon(correctionMode ? Icons.auto_fix_high : Icons.translate),
-            label: Text(
-              correctionMode ? l10n.correctionButton : l10n.translateButton,
+          // The badge is the signal that the result below no longer belongs to
+          // the text above (ADR-055) — it sits on the button because that is
+          // where the answer to it is.
+          Tooltip(
+            message: isOutputStale
+                ? l10n.outputStaleTooltip
+                : (correctionMode
+                    ? l10n.correctionButton
+                    : l10n.translateButton),
+            child: Badge(
+              isLabelVisible: isOutputStale && !isLoading,
+              backgroundColor: Theme.of(context).colorScheme.error,
+              child: FilledButton.icon(
+                icon: isLoading
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, color: Colors.white),
+                      )
+                    // Deliberately not the spellcheck icon: that one marks the
+                    // correction-mode toggle (a state), this button is the action.
+                    : Icon(
+                        correctionMode ? Icons.auto_fix_high : Icons.translate),
+                label: Text(
+                  correctionMode ? l10n.correctionButton : l10n.translateButton,
+                ),
+                onPressed: isLoading
+                    ? null
+                    : () => ref.read(translatorProvider.notifier).translate(),
+              ),
             ),
-            onPressed: isLoading
-                ? null
-                : () => ref.read(translatorProvider.notifier).translate(),
           ),
         ],
       ),

@@ -303,4 +303,11 @@ class AppLocalizationsDa extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Historik erstattet — $added oversættelser gendannet';
   }
+
+  @override
+  String get outputStaleLabel => 'Passer ikke længere til teksten ovenfor';
+
+  @override
+  String get outputStaleTooltip =>
+      'Teksten ovenfor er ændret — resultatet nedenfor stammer fra den forrige version.';
 }

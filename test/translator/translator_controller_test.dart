@@ -48,7 +48,7 @@ void main() {
       expect(state.error, isNull);
     });
 
-    test('setInputText updates inputText and clears output', () {
+    test('setInputText updates inputText', () {
       SharedPreferences.setMockInitialValues({});
       final container = ProviderContainer();
       addTearDown(container.dispose);
@@ -308,7 +308,7 @@ void main() {
       expect(state.correctionNotes, isNull);
     });
 
-    test('a new input clears the previous correction notes', () async {
+    test('an edit keeps the correction result and marks it stale', () async {
       final container = makeContainer(
         mockService: mockService,
         prefs: {kPrefCorrectionMode: true},
@@ -327,12 +327,84 @@ void main() {
       await container.read(settingsProvider.future);
       container.read(translatorProvider.notifier).setInputText('Nipe Butter');
       await container.read(translatorProvider.notifier).translate();
-      expect(container.read(translatorProvider).correctionNotes, isNotNull);
+      expect(container.read(translatorProvider).isOutputStale, isFalse);
 
-      container.read(translatorProvider.notifier).setInputText('Something else');
+      container.read(translatorProvider.notifier).setInputText('Nipe siagi');
       final state = container.read(translatorProvider);
-      expect(state.correctionNotes, isNull);
-      expect(state.isCorrectionResult, isFalse);
+      expect(state.outputText, 'Nipe siagi.');
+      expect(state.correctionNotes, isNotNull);
+      expect(state.isCorrectionResult, isTrue);
+      expect(state.isOutputStale, isTrue);
+    });
+
+    test('typing the original text back clears the stale marker', () async {
+      final container = makeContainer(mockService: mockService);
+      addTearDown(container.dispose);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+      )).thenAnswer((_) async => 'LANG:en\nHabari');
+
+      await container.read(settingsProvider.future);
+      container.read(translatorProvider.notifier).setInputText('Hello');
+      await container.read(translatorProvider.notifier).translate();
+
+      container.read(translatorProvider.notifier).setInputText('Hello there');
+      expect(container.read(translatorProvider).isOutputStale, isTrue);
+
+      // Trailing whitespace is not an edit worth warning about.
+      container.read(translatorProvider.notifier).setInputText('Hello ');
+      expect(container.read(translatorProvider).isOutputStale, isFalse);
+    });
+
+    test('a run replaces the result and clears the stale marker', () async {
+      final container = makeContainer(mockService: mockService);
+      addTearDown(container.dispose);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+      )).thenAnswer((_) async => 'LANG:en\nHabari');
+
+      await container.read(settingsProvider.future);
+      container.read(translatorProvider.notifier).setInputText('Hello');
+      await container.read(translatorProvider.notifier).translate();
+      container.read(translatorProvider.notifier).setInputText('Good morning');
+      expect(container.read(translatorProvider).isOutputStale, isTrue);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+      )).thenAnswer((_) async => 'LANG:en\nHabari za asubuhi');
+
+      await container.read(translatorProvider.notifier).translate();
+      final state = container.read(translatorProvider);
+      expect(state.outputText, 'Habari za asubuhi');
+      expect(state.isOutputStale, isFalse);
+    });
+
+    test('an entry reloaded from history is not stale', () {
+      SharedPreferences.setMockInitialValues({});
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      container.read(translatorProvider.notifier).loadHistoryEntry(
+            'Nipe Butter',
+            'Nipe siagi.',
+            mode: kModeCorrect,
+            notes: '- Butter → siagi',
+          );
+      expect(container.read(translatorProvider).isOutputStale, isFalse);
     });
   });
 

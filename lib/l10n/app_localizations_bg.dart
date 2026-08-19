@@ -305,4 +305,11 @@ class AppLocalizationsBg extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Историята е заменена — $added превода са възстановени';
   }
+
+  @override
+  String get outputStaleLabel => 'Вече не съответства на текста по-горе';
+
+  @override
+  String get outputStaleTooltip =>
+      'Текстът по-горе е променен — резултатът по-долу е от предишната версия.';
 }

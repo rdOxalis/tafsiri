@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Erstatt logg",
   "backupReplaceHistoryWarning": "Din nåværende oversettelseslogg slettes og erstattes av den fra filen, i stedet for å slås sammen.",
   "backupImportConfirmMessageReplace": "Dine nåværende innstillinger erstattes av dem i filen, og hele oversettelsesloggen slettes og erstattes av sikkerhetskopiens. Dette kan ikke angres.",
-  "backupImportedReplaced": "Logg erstattet — {added} oversettelser gjenopprettet"
+  "backupImportedReplaced": "Logg erstattet — {added} oversettelser gjenopprettet",
+  "outputStaleLabel": "Passer ikke lenger til teksten over",
+  "outputStaleTooltip": "Teksten over er endret — resultatet nedenfor er fra den forrige versjonen."
 }

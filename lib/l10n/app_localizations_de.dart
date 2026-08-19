@@ -305,4 +305,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Verlauf ersetzt — $added Übersetzungen wiederhergestellt';
   }
+
+  @override
+  String get outputStaleLabel => 'Passt nicht mehr zum Text oben';
+
+  @override
+  String get outputStaleTooltip =>
+      'Der Text oben wurde geändert — das Ergebnis unten stammt noch von der vorherigen Fassung.';
 }

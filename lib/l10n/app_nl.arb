@@ -112,5 +112,7 @@
   "backupReplaceHistory": "Geschiedenis vervangen",
   "backupReplaceHistoryWarning": "Je huidige vertaalgeschiedenis wordt verwijderd en vervangen door die uit het bestand, in plaats van samengevoegd.",
   "backupImportConfirmMessageReplace": "Je huidige instellingen worden vervangen door die uit het bestand, en je volledige vertaalgeschiedenis wordt verwijderd en vervangen door die van de back-up. Dit kan niet ongedaan worden gemaakt.",
-  "backupImportedReplaced": "Geschiedenis vervangen — {added} vertalingen teruggezet"
+  "backupImportedReplaced": "Geschiedenis vervangen — {added} vertalingen teruggezet",
+  "outputStaleLabel": "Komt niet meer overeen met de tekst hierboven",
+  "outputStaleTooltip": "De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie."
 }

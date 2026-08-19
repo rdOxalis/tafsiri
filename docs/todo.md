@@ -174,6 +174,8 @@
 
 ## Done
 
+- [x] **Editing the input keeps the result, and flags it as out of date** (2026-08-19, ADR-055). Correction mode's suggestions used to vanish on the first keystroke, which is exactly when they are needed — they are what the user is typing *from*. The result now survives until the next run and reports that it no longer matches, by a badge on the Improve button and a line above the result itself.
+
 - [x] v1.0.5 — Version display, API key links, error details, F-Droid submission (2026-05-28)
   - App version shown at bottom of Settings screen (package_info_plus)
   - "Get API key →" link button for each provider below the key field

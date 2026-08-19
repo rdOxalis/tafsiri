@@ -302,4 +302,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String backupImportedReplaced(int added) {
     return 'Geschiedenis vervangen — $added vertalingen teruggezet';
   }
+
+  @override
+  String get outputStaleLabel =>
+      'Komt niet meer overeen met de tekst hierboven';
+
+  @override
+  String get outputStaleTooltip =>
+      'De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie.';
 }
