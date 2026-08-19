@@ -7,6 +7,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.14] - 2026-08-19
+
+### Added
+- **Linux has a Debian package** (ADR-056). `./build_deb.sh` produces `tafsiri_1.0.14_amd64.deb`, which installs with `sudo apt install ./tafsiri_1.0.14_amd64.deb` on Debian, Ubuntu, Mint and anything else built on them — no Flutter SDK, no build, and the menu entry, icons and `tafsiri` command come with it. `install.sh` is unchanged and stays the route for a per-user install from source. Tesseract is a recommendation rather than a dependency: without it everything works except image-to-text, which says so for itself. Uninstalling keeps your settings and history.
+
 ### Changed
 - **Editing your text no longer wipes the result below it** (ADR-055). In correction mode the suggestions are there to be worked into your own sentence, and they disappeared on the first keystroke — so you had to memorise them or start over. They now stay until you press Improve (or Translate) again. Because a result that no longer belongs to the text above is misleading if nothing says so, two things point it out: a red dot on the Improve button, and a line above the result reading "No longer matches the text above". Type the original text back and both go away. Translated into all 12 UI languages.
 

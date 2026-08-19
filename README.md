@@ -102,11 +102,19 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there, and so does image-to-text once Tesseract is installed (see below). Pasting a screenshot with **Ctrl+V** works on Linux and Windows — on macOS that is not implemented yet. Voice input is the one gap on Linux: `speech_to_text` has no implementation there, so the microphone button is not shown at all; on Windows and macOS it is.
 
-**Linux** — needs the Flutter SDK and `libgtk-3-dev`:
+**Linux** — on Debian, Ubuntu, Mint and their relatives, take the `.deb` from the [latest release](https://github.com/rdOxalis/tafsiri/releases/latest); it needs no Flutter SDK and no build:
+
+```bash
+sudo apt install ./tafsiri_<version>_amd64.deb
+sudo apt remove tafsiri          # settings and history are kept
+```
+
+To build from source instead, you need the Flutter SDK and `libgtk-3-dev`:
 
 ```bash
 ./install.sh          # builds and installs into ~/.local, no root required
 ./install.sh --uninstall
+./build_deb.sh        # builds the .deb into build/deb/ instead
 ```
 
 **Windows** — needs the Flutter SDK, Visual Studio 2022 with "Desktop development with C++", and [Inno Setup](https://jrsoftware.org/isinfo.php) 6.3+ for the installer:
