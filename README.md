@@ -1,8 +1,8 @@
 # Tafsiri
 
-**Tafsiri** is Swahili for *translation* — and that is exactly what this app does.
+**Tafsiri** is Swahili for *translation* — and that is exactly what this app does and more.
 
-Tafsiri is an Android, Linux, Windows, MacOS app for AI-powered text translation. It supports voice input, image-to-text (OCR), and a searchable translation history with favourites. The UI is available in 10 languages.
+Tafsiri is an Android, Linux, Windows, MacOS app for AI-powered text translation. It supports voice input, image-to-text (OCR), a great correction mode for learners and a searchable translation history with favorites. The UI is available in 12 languages, the languages to translate from and into are unlimited.
 
 ---
 
