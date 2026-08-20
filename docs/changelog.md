@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- **The macOS download is a .dmg** (ADR-057) instead of a zip. It opens into the familiar window with the app next to a shortcut to Applications, so there is nothing to read before installing it. This does not change Gatekeeper: the app is still ad-hoc signed rather than notarized, and a downloaded copy needs clearing once under System Settings → Privacy & Security → *Open Anyway*.
+
 ---
 
 ## [1.0.14] - 2026-08-19

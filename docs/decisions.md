@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-057: macOS ships as a .dmg, without a scripted Finder window
+**Date:** 2026-08-19
+**Status:** Accepted
+**Context:** 1.0.13 shipped macOS as a zip, because that was the least work and an `.app` is just a directory. A `.dmg` is what Mac users expect, and the reason usually given for it — "it is directly installable" — is not quite right: neither format installs anything, both end with the user dragging an app somewhere. The real difference is what the two *invite*. A zip expands into Downloads and people then run the app from there, which macOS answers with **app translocation**: a quarantined app launched from outside /Applications runs from a randomised read-only path, so anything it writes near itself silently goes nowhere. A disk image opens into a window holding the app beside a shortcut to /Applications, and that picture is the entire instruction — no README step anyone can skip.
+**Decision:** `--package` produces `tafsiri-<version>-macos-<arch>.dmg` via `hdiutil create -format UDZO` from a staging directory holding the app and a symlink to /Applications. The app is copied in with `ditto` rather than `cp`, for the same reason the zip used it: symlinks inside the frameworks and the code signature survive. **Deliberately no scripted window layout.** The usual polish — background image, icon positions — is done by mounting the image and driving Finder through AppleScript, which needs a GUI session and, on current macOS, triggers a TCC prompt for controlling Finder. After spending an afternoon on a TCC prompt that never appeared (ADR-053), adding a build step that depends on one is a poor trade for a background picture.
+**Consequences:** The download looks like a Mac application should, and lands where it belongs. What it explicitly does **not** change is Gatekeeper: the app is ad-hoc signed rather than notarized, so a downloaded `.dmg` still needs clearing once under System Settings → Privacy & Security → Open Anyway. Saying so in the script's closing notes matters, because "it is a dmg now" is exactly the kind of change that sounds like it should have fixed that. The zip form is dropped rather than kept alongside — one artefact per platform, and a choice between two files is a question nobody downloading wants to answer.
+
+---
+
 ## ADR-056: Linux ships a .deb, built by a script rather than by debhelper
 **Date:** 2026-08-19
 **Status:** Accepted

@@ -3,15 +3,17 @@
 # Tafsiri — build and install the macOS desktop app.
 #
 # Produces a release .app and copies it into /Applications, which is where
-# Finder looks and what Spotlight indexes. No installer format: on macOS an
-# application *is* a directory, so installing it means putting it somewhere.
+# Finder looks and what Spotlight indexes. Nothing is "installed" in the sense
+# other platforms mean: on macOS an application is a directory, so installing it
+# is putting it somewhere. --package wraps that same directory in a .dmg for
+# handing to someone else (ADR-057).
 #
 # Usage:
 #   ./build_macos.sh              build, then install
 #   ./build_macos.sh --rebuild    delete build/macos first
 #   ./build_macos.sh --user       install into ~/Applications instead
 #   ./build_macos.sh --no-install build only, leave it in build/
-#   ./build_macos.sh --package    build and zip it for a GitHub release
+#   ./build_macos.sh --package    build a .dmg for a GitHub release
 #   ./build_macos.sh --uninstall  remove the installed app
 #
 # Requirements:
@@ -154,14 +156,30 @@ package_app() {
             | tr ' ' '-' | tr -d '\n')"
     [ -n "$arch" ] || arch="unknown"
 
-    out="$PROJECT_DIR/build/macos/tafsiri-$version-macos-$arch.zip"
+    out="$PROJECT_DIR/build/macos/tafsiri-$version-macos-$arch.dmg"
     rm -f "$out"
 
-    # ditto, not zip: it preserves symlinks inside the frameworks and the code
-    # signature, both of which a plain `zip -r` quietly mangles into an app that
-    # refuses to launch on someone else's machine.
+    # A disk image rather than a zip (ADR-057). It is not more "installable" —
+    # neither format installs anything — but it opens into a window holding the
+    # app beside a shortcut to /Applications, and that picture is the whole
+    # instruction. A zip lands the app in Downloads, where people then run it
+    # from, and macOS answers that by launching it from a randomised read-only
+    # path (app translocation), which breaks anything that writes near itself.
+    local staging
+    staging="$(mktemp -d)"
+    # ditto, not cp: it preserves the symlinks inside the frameworks and the
+    # code signature, both of which a plain copy can quietly mangle into an app
+    # that refuses to launch on someone else's machine.
+    ditto "$BUILT_APP" "$staging/$APP_NAME"
+    ln -s /Applications "$staging/Applications"
+
     info "Packaging ${out##*/}…"
-    ditto -c -k --sequesterRsrc --keepParent "$BUILT_APP" "$out"
+    hdiutil create \
+        -volname "Tafsiri $version" \
+        -srcfolder "$staging" \
+        -ov -quiet -format UDZO \
+        "$out"
+    rm -rf "$staging"
 
     PACKAGE_PATH="$out"
 }
@@ -208,8 +226,11 @@ if [ "$MODE" = "package" ]; then
     note "Upload this to the release:"
     note "  $PACKAGE_PATH"
     note ""
-    note "It is ad-hoc signed and not notarized. Downloading it attaches a"
-    note "quarantine flag, so anyone else has to clear Gatekeeper once:"
+    note "Drag Tafsiri onto the Applications shortcut in the window that opens."
+    note ""
+    note "It is ad-hoc signed and not notarized, which a .dmg does not change."
+    note "Downloading it attaches a quarantine flag, so anyone else has to clear"
+    note "Gatekeeper once:"
     note "  System Settings - Privacy & Security - Open Anyway"
     note "or, in one step:"
     note "  xattr -dr com.apple.quarantine /Applications/tafsiri.app"
