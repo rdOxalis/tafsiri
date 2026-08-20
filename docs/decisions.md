@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-058: Android release artefacts come from a script that checks the signature
+**Date:** 2026-08-20
+**Status:** Accepted
+**Context:** Every platform had a build script except the one that ships to a store. The APK for each GitHub release, and the App Bundle for the Play Console, were produced by typing `flutter build …` with `--dart-define=TAFSIRI_BUILD=` remembered by hand — and getting that wrong is invisible until someone reads the version in Settings and finds a commit that does not match the release. The Play upload also has a hazard the other platforms do not: `android/app/build.gradle.kts` falls back to the **debug** signing config when `android/key.properties` is absent (ADR-036). That produces a release-looking artefact signed with a throwaway key, which Play rejects and which cannot be installed over an existing Tafsiri — and nothing about the build says so.
+**Decision:** `build_android.sh`, in the shape of the other three: `--apk`, `--aab` or both, the stamp taken from HEAD or given explicitly with `--stamp` when a release tag has been left behind by later commits. It refuses to start without `key.properties`, and then verifies the artefact that actually came out rather than trusting that configuration — reading the certificate owner and rejecting Android's debug identity. It reports the merged manifest's `versionCode`, `versionName` and `targetSdkVersion`, which are exactly the three values Play checks.
+**Consequences:** A release is now one command per platform. The signature check earned its place on first run, and in a way worth recording: it failed on a correctly signed bundle, because `keytool` **translates its output** and on this German machine prints `Eigentümer:` where the script looked for `Owner:`. Fixed with `LC_ALL=C`, but the more interesting part is the shape of the check. It requires a name it could read and *then* rejects the debug one; phrased the other way round — "fail if the output says Android Debug" — the translated output would have matched nothing and a debug-signed artefact would have passed. **A check that fails closed catches its own bugs; one that fails open hides them**, and this is the second time in this project that a locale or an encoding turned a validation into a rubber stamp (ADR-046).
+
+---
+
 ## ADR-057: macOS ships as a .dmg, without a scripted Finder window
 **Date:** 2026-08-19
 **Status:** Accepted

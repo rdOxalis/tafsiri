@@ -98,6 +98,17 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 ---
 
+## Building for Android
+
+```bash
+./build_android.sh          # the APK for a release and the AAB for Play
+./build_android.sh --apk    # just one of them
+```
+
+Needs `android/key.properties` with the upload key; without it Gradle signs the release with the debug key, and the script stops rather than hand you an artefact Play will reject.
+
+---
+
 ## Desktop (Linux, Windows and macOS)
 
 Tafsiri also runs on the desktop. Translation, history, favourites, settings and backup all work there, and so does image-to-text once Tesseract is installed (see below). Pasting a screenshot with **Ctrl+V** works on Linux and Windows — on macOS that is not implemented yet. Voice input is the one gap on Linux: `speech_to_text` has no implementation there, so the microphone button is not shown at all; on Windows and macOS it is.
