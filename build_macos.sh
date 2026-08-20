@@ -5,8 +5,8 @@
 # Produces a release .app and copies it into /Applications, which is where
 # Finder looks and what Spotlight indexes. Nothing is "installed" in the sense
 # other platforms mean: on macOS an application is a directory, so installing it
-# is putting it somewhere. --package wraps that same directory in a .dmg for
-# handing to someone else (ADR-057).
+# is putting it somewhere. --package wraps that same directory for handing to
+# someone else: a .dmg by default, a .zip on request (ADR-057).
 #
 # Usage:
 #   ./build_macos.sh              build, then install
@@ -14,6 +14,8 @@
 #   ./build_macos.sh --user       install into ~/Applications instead
 #   ./build_macos.sh --no-install build only, leave it in build/
 #   ./build_macos.sh --package    build a .dmg for a GitHub release
+#   ./build_macos.sh --package=zip    a .zip instead
+#   ./build_macos.sh --package=both   both formats
 #   ./build_macos.sh --uninstall  remove the installed app
 #
 # Requirements:
@@ -37,6 +39,8 @@ die()   { printf '\033[1;31m error:\033[0m %s\n' "$1" >&2; exit 1; }
 
 MODE="install"
 REBUILD="no"
+PACKAGE_FORMAT="dmg"
+PACKAGE_PATHS=()
 INSTALL_DIR="/Applications"
 
 while [ $# -gt 0 ]; do
@@ -44,9 +48,10 @@ while [ $# -gt 0 ]; do
         --uninstall)  MODE="uninstall" ;;
         --no-install) MODE="build" ;;
         --package)    MODE="package" ;;
+        --package=*)  MODE="package"; PACKAGE_FORMAT="${1#*=}" ;;
         --rebuild)    REBUILD="yes" ;;
         --user)       INSTALL_DIR="$HOME/Applications" ;;
-        -h|--help)    sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        -h|--help)    sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
         *)            die "Unknown option: $1" ;;
     esac
     shift
@@ -143,29 +148,35 @@ pubspec_version() {
         | tr -d '[:space:]'
 }
 
-package_app() {
-    local version arch out
+# The base name both formats share.
+#
+# Named after what the binary actually contains rather than what the build
+# machine happens to be: Flutter builds a universal binary here, but a
+# host-only build would otherwise be labelled for architectures it cannot run.
+package_basename() {
+    local version arch
     version="$(pubspec_version)"
     [ -n "$version" ] || die "No version found in pubspec.yaml."
 
-    # Named after what the binary actually contains rather than what the build
-    # machine happens to be: Flutter builds for the host architecture, so an
-    # Apple silicon Mac produces an arm64-only app and saying "macos" alone
-    # would promise an Intel user something that will not start.
     arch="$(lipo -archs "$BUILT_APP/Contents/MacOS/tafsiri" 2>/dev/null \
             | tr ' ' '-' | tr -d '\n')"
     [ -n "$arch" ] || arch="unknown"
 
-    out="$PROJECT_DIR/build/macos/tafsiri-$version-macos-$arch.dmg"
+    echo "tafsiri-$version-macos-$arch"
+}
+
+# A disk image: the app beside a shortcut to /Applications (ADR-057).
+#
+# Not more "installable" than a zip — neither format installs anything — but it
+# opens into a window whose picture is the whole instruction. A zip lands the
+# app in Downloads, where people then run it from, and macOS answers that by
+# launching it from a randomised read-only path (app translocation), which
+# breaks anything that writes near itself.
+package_dmg() {
+    local out staging
+    out="$PROJECT_DIR/build/macos/$(package_basename).dmg"
     rm -f "$out"
 
-    # A disk image rather than a zip (ADR-057). It is not more "installable" —
-    # neither format installs anything — but it opens into a window holding the
-    # app beside a shortcut to /Applications, and that picture is the whole
-    # instruction. A zip lands the app in Downloads, where people then run it
-    # from, and macOS answers that by launching it from a randomised read-only
-    # path (app translocation), which breaks anything that writes near itself.
-    local staging
     staging="$(mktemp -d)"
     # ditto, not cp: it preserves the symlinks inside the frameworks and the
     # code signature, both of which a plain copy can quietly mangle into an app
@@ -175,13 +186,35 @@ package_app() {
 
     info "Packaging ${out##*/}…"
     hdiutil create \
-        -volname "Tafsiri $version" \
+        -volname "Tafsiri $(pubspec_version)" \
         -srcfolder "$staging" \
         -ov -quiet -format UDZO \
         "$out"
     rm -rf "$staging"
 
-    PACKAGE_PATH="$out"
+    PACKAGE_PATHS+=("$out")
+}
+
+# A zip of the bare app, for anyone who would rather not mount an image — a
+# scripted download, or a machine where a disk image is awkward.
+package_zip() {
+    local out
+    out="$PROJECT_DIR/build/macos/$(package_basename).zip"
+    rm -f "$out"
+
+    info "Packaging ${out##*/}…"
+    ditto -c -k --sequesterRsrc --keepParent "$BUILT_APP" "$out"
+
+    PACKAGE_PATHS+=("$out")
+}
+
+package_app() {
+    case "$PACKAGE_FORMAT" in
+        dmg)  package_dmg ;;
+        zip)  package_zip ;;
+        both) package_dmg; package_zip ;;
+        *)    die "Unknown package format: $PACKAGE_FORMAT (dmg, zip or both)" ;;
+    esac
 }
 
 uninstall_app() {
@@ -223,10 +256,14 @@ if [ "$MODE" = "package" ]; then
     package_app
     printf '\n'
     info "Done."
-    note "Upload this to the release:"
-    note "  $PACKAGE_PATH"
+    note "Upload to the release:"
+    for artefact in "${PACKAGE_PATHS[@]}"; do
+        note "  $artefact"
+    done
     note ""
-    note "Drag Tafsiri onto the Applications shortcut in the window that opens."
+    note "From the .dmg: drag Tafsiri onto the Applications shortcut in the"
+    note "window that opens. From the .zip: move the app to /Applications"
+    note "yourself, or macOS runs it from a randomised read-only path."
     note ""
     note "It is ad-hoc signed and not notarized, which a .dmg does not change."
     note "Downloading it attaches a quarantine flag, so anyone else has to clear"

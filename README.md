@@ -132,6 +132,7 @@ flutter config --no-enable-swift-package-manager
 ./build_macos.sh              # builds and installs into /Applications
 ./build_macos.sh --user       # ~/Applications instead, no admin rights
 ./build_macos.sh --package    # a .dmg to hand to someone else
+./build_macos.sh --package=both  # …or a .dmg and a .zip
 ./build_macos.sh --uninstall
 ```
 
