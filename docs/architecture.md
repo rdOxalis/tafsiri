@@ -67,10 +67,10 @@ flowchart TD
 The system prompt — and with it the branch the model takes — is chosen by the
 `correctionMode` flag (ADR-033):
 
-| Correction mode | Input predominantly in primary language | Input in any other language |
+| Correction mode | Input predominantly in the learning language | Input in any other language |
 |---|---|---|
-| off | translate → secondary language | translate → primary language |
-| on  | **correct and improve, stay in the primary language** | translate → primary language |
+| off | translate → confident language | translate → learning language |
+| on  | **correct and improve, stay in the learning language** | translate → learning language |
 
 ---
 
@@ -386,7 +386,7 @@ NOTES:
 [the bullets — only in mode "correct"]
 ```
 
-Worked example — input `Tafadhali nipe Butter.` with primary Swahili, secondary English:
+Worked example — input `Tafadhali nipe Butter.` with Swahili as the learning language and English as the confident one:
 
 ```
 LANG:sw

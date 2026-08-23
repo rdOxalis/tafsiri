@@ -93,18 +93,18 @@ class AppLocalizationsSv extends AppLocalizations {
   String get providerSubtitle => 'ta med din egen API-nyckel';
 
   @override
-  String get targetLanguageLabel => 'Primärt språk';
+  String get targetLanguageLabel => 'Inlärningsspråk';
 
   @override
-  String get altLanguageLabel => 'Sekundärt språk';
+  String get altLanguageLabel => 'Säkert språk';
 
   @override
   String get targetLanguageInfo =>
-      'Primärt språk — språket du vill lära dig, eller det du behärskar sämst.';
+      'Inlärningsspråk — språket du vill lära dig, eller det du behärskar sämst. Allt du skriver översätts till det.';
 
   @override
   String get altLanguageInfo =>
-      'Sekundärt språk — språket du behärskar väl, och som din text översätts till när du skriver på det primära språket.';
+      'Säkert språk — språket du behärskar väl. Din text översätts till det när du skriver på inlärningsspråket.';
 
   @override
   String get appLanguageLabel => 'Appspråk';

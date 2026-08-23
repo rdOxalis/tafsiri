@@ -28,13 +28,13 @@
   "apiKeyOpenAI": "Ufunguo wa OpenAI API",
   "providerLabel": "Mtoa huduma wa AI",
   "providerSubtitle": "tumia ufunguo wako wa API",
-  "targetLanguageLabel": "Lugha ya Msingi",
-  "altLanguageLabel": "Lugha ya Pili",
-  "targetLanguageInfo": "Lugha ya msingi — lugha unayotaka kujifunza, au ambayo huimudu vizuri.",
+  "targetLanguageLabel": "Lugha Ninayojifunza",
+  "altLanguageLabel": "Lugha Ninayoimudu",
+  "targetLanguageInfo": "Lugha ninayojifunza — lugha unayotaka kujifunza, au ambayo huimudu vizuri. Kila unachoandika hutafsiriwa kwake.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Lugha ya pili — lugha unayoimudu vizuri, na ambayo maandishi yako hutafsiriwa kwake unapoandika kwa lugha ya msingi.",
+  "altLanguageInfo": "Lugha ninayoimudu — lugha unayoimudu vizuri. Maandishi yako hutafsiriwa kwake unapoandika kwa lugha unayojifunza.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

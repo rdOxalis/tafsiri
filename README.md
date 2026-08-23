@@ -14,15 +14,17 @@ Tafsiri is an Android, Linux, Windows, MacOS app for AI-powered text translation
 
 ## How It Works
 
-Tafsiri is built around two language slots: a **primary language** and a **secondary language**.
+Tafsiri is built around two language slots: a **learning language** and a **confident language**.
 
-- **Primary language** — the language you usually translate *into* (e.g. Swahili)
-- **Secondary language** — the fallback (e.g. English)
+- **Learning language** — the one you want to learn, or are less sure of; everything you enter is translated into it (e.g. Swahili)
+- **Confident language** — the one you speak well; your text lands here when you write in the learning language (e.g. English)
+
+Note which way round that is: the learning language is the *weaker* of the two, not your everyday one. It is the slot the app translates into, because that is the language you need help with.
 
 When you enter text, the app detects the source language automatically via AI. The translation logic then works like this:
 
-> If the input is already in the primary language → translate to the secondary language.  
-> Otherwise → translate to the primary language.
+> If the input is already in the learning language → translate to the confident language.  
+> Otherwise → translate to the learning language.
 
 This means you never have to flip a toggle or select a direction. You just type or speak, and the app figures out which way to translate. If you live between two languages — say Swahili and German, or English and French — the app adapts to each input automatically.
 
@@ -34,12 +36,12 @@ You configure both languages freely in Settings. There are no hardcoded language
 
 A toggle in the translator header switches Tafsiri from translating to coaching.
 
-When it is on, text written predominantly in your primary language is no longer translated into the secondary language — it is corrected and improved, and a **Suggestions** section explains every change. Words you substituted from another language because you did not know them are replaced with the right one:
+When it is on, text written predominantly in your learning language is no longer translated into the confident language — it is corrected and improved, and a **Suggestions** section explains every change. Words you substituted from another language because you did not know them are replaced with the right one:
 
 > **Tafadhali nipe Butter.** → *Tafadhali nipe siagi.*
 > — Butter → siagi: German for "butter".
 
-Input in any other language is still translated into your primary language, exactly as before. The setting persists across restarts, and the action button changes to "Improve" while it is active.
+Input in any other language is still translated into your learning language, exactly as before. The setting persists across restarts, and the action button changes to "Improve" while it is active.
 
 Corrections are stored in the history with their suggestions and marked with their own badge. The database migrates in place — existing entries are kept and counted as translations.
 
@@ -94,7 +96,7 @@ The free tier has a monthly token limit that resets each month. For typical tran
 - **Translation history** — every translation is saved locally in SQLite; tap any entry to reload it
 - **Favourites** — star entries to keep them accessible
 - **12 UI languages** — Swahili, German, English, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish, Italian, Bulgarian
-- **Correction Mode** - For learners. Switch to that mode and your message in (mostly) primary language will be improved. 
+- **Correction Mode** - For learners. Switch to that mode and your message in (mostly) learning language will be improved. 
 
 ---
 

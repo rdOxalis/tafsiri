@@ -28,13 +28,13 @@
   "apiKeyOpenAI": "OpenAI API-Schlüssel",
   "providerLabel": "KI-Anbieter",
   "providerSubtitle": "bring your own API-Key",
-  "targetLanguageLabel": "Primärsprache",
-  "altLanguageLabel": "Sekundärsprache",
-  "targetLanguageInfo": "Primärsprache – die Sprache, die Du lernen willst oder in der Du nicht so gut bist.",
+  "targetLanguageLabel": "Lernsprache",
+  "altLanguageLabel": "Sichere Sprache",
+  "targetLanguageInfo": "Lernsprache – die Sprache, die Du lernen willst oder in der Du nicht so sicher bist. Alles, was Du eingibst, wird dorthin übersetzt.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Sekundärsprache – die Sprache, die Du gut sprichst und in die übersetzt werden soll, wenn Du Primärsprache eingibst.",
+  "altLanguageInfo": "Sichere Sprache – die Sprache, die Du gut beherrschst. Dorthin wird übersetzt, wenn Du in der Lernsprache schreibst.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

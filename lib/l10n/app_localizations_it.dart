@@ -94,18 +94,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get providerSubtitle => 'usa la tua chiave API';
 
   @override
-  String get targetLanguageLabel => 'Lingua principale';
+  String get targetLanguageLabel => 'Lingua da imparare';
 
   @override
-  String get altLanguageLabel => 'Lingua secondaria';
+  String get altLanguageLabel => 'Lingua padroneggiata';
 
   @override
   String get targetLanguageInfo =>
-      'Lingua principale — la lingua che vuoi imparare o che padroneggi meno.';
+      'Lingua da imparare — la lingua che vuoi imparare o che padroneggi meno. Tutto ciò che scrivi viene tradotto in questa lingua.';
 
   @override
   String get altLanguageInfo =>
-      'Lingua secondaria — la lingua che parli bene e verso cui viene tradotto il testo quando scrivi nella lingua principale.';
+      'Lingua padroneggiata — la lingua che parli bene. Il testo viene tradotto in questa lingua quando scrivi nella lingua da imparare.';
 
   @override
   String get appLanguageLabel => 'Lingua dell’app';

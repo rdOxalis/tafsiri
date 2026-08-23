@@ -93,18 +93,18 @@ class AppLocalizationsDa extends AppLocalizations {
   String get providerSubtitle => 'brug din egen API-nøgle';
 
   @override
-  String get targetLanguageLabel => 'Primært sprog';
+  String get targetLanguageLabel => 'Læringssprog';
 
   @override
-  String get altLanguageLabel => 'Sekundært sprog';
+  String get altLanguageLabel => 'Sikkert sprog';
 
   @override
   String get targetLanguageInfo =>
-      'Primært sprog — det sprog, du vil lære, eller som du er mindst god til.';
+      'Læringssprog — det sprog, du vil lære, eller som du er mindst god til. Alt, hvad du skriver, oversættes til det.';
 
   @override
   String get altLanguageInfo =>
-      'Sekundært sprog — det sprog, du taler godt, og som din tekst oversættes til, når du skriver på det primære sprog.';
+      'Sikkert sprog — det sprog, du taler godt. Din tekst oversættes til det, når du skriver på læringssproget.';
 
   @override
   String get appLanguageLabel => 'App-sprog';

@@ -27,13 +27,13 @@
   "apiKeyOpenAI": "API ключ за OpenAI",
   "providerLabel": "Доставчик на ИИ",
   "providerSubtitle": "използвайте свой API ключ",
-  "targetLanguageLabel": "Основен език",
-  "altLanguageLabel": "Втори език",
-  "targetLanguageInfo": "Основен език — езикът, който искаш да научиш или който владееш по-слабо.",
+  "targetLanguageLabel": "Език за учене",
+  "altLanguageLabel": "Език, който владееш",
+  "targetLanguageInfo": "Език за учене — езикът, който искаш да научиш или който владееш по-слабо. Всичко, което въведеш, се превежда на него.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Втори език — езикът, който владееш добре и на който се превежда текстът, когато въведеш нещо на основния език.",
+  "altLanguageInfo": "Език, който владееш — езикът, който владееш добре. Текстът се превежда на него, когато пишеш на езика за учене.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

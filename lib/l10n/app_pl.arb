@@ -28,13 +28,13 @@
   "apiKeyOpenAI": "Klucz API OpenAI",
   "providerLabel": "Dostawca AI",
   "providerSubtitle": "użyj własnego klucza API",
-  "targetLanguageLabel": "Język podstawowy",
-  "altLanguageLabel": "Język dodatkowy",
-  "targetLanguageInfo": "Język główny — język, którego chcesz się uczyć lub który znasz słabiej.",
+  "targetLanguageLabel": "Język do nauki",
+  "altLanguageLabel": "Język znany",
+  "targetLanguageInfo": "Język do nauki — język, którego chcesz się uczyć lub który znasz słabiej. Wszystko, co wpiszesz, jest tłumaczone na ten język.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Język pomocniczy — język, który znasz dobrze i na który tłumaczony jest tekst, gdy wpiszesz coś w języku głównym.",
+  "altLanguageInfo": "Język znany — język, który znasz dobrze. Tekst jest tłumaczony na ten język, gdy piszesz w języku do nauki.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

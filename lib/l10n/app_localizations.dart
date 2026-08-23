@@ -287,28 +287,28 @@ abstract class AppLocalizations {
   /// **'bring your own API-Key'**
   String get providerSubtitle;
 
-  /// Label for the target language input field
+  /// Label for the learning language input field (stored as target_language)
   ///
   /// In en_GB, this message translates to:
-  /// **'Primary Language'**
+  /// **'Learning Language'**
   String get targetLanguageLabel;
 
-  /// Label for the alternative language input field
+  /// Label for the confident language input field (stored as alt_language)
   ///
   /// In en_GB, this message translates to:
-  /// **'Secondary Language'**
+  /// **'Confident Language'**
   String get altLanguageLabel;
 
-  /// Explains what the primary language setting decides
+  /// Explains what the learning language setting decides
   ///
   /// In en_GB, this message translates to:
-  /// **'Primary language — the language you want to learn, or the one you are less confident in.'**
+  /// **'Learning language — the language you want to learn, or the one you are less confident in. Everything you enter is translated into it.'**
   String get targetLanguageInfo;
 
-  /// Explains what the secondary language setting decides
+  /// Explains what the confident language setting decides
   ///
   /// In en_GB, this message translates to:
-  /// **'Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.'**
+  /// **'Confident language — the language you speak well. Your text is translated into it when you write in the learning language.'**
   String get altLanguageInfo;
 
   /// Label for the app UI language selector

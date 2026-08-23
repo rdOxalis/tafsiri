@@ -93,18 +93,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get providerSubtitle => 'bring your own API-Key';
 
   @override
-  String get targetLanguageLabel => 'Primärsprache';
+  String get targetLanguageLabel => 'Lernsprache';
 
   @override
-  String get altLanguageLabel => 'Sekundärsprache';
+  String get altLanguageLabel => 'Sichere Sprache';
 
   @override
   String get targetLanguageInfo =>
-      'Primärsprache – die Sprache, die Du lernen willst oder in der Du nicht so gut bist.';
+      'Lernsprache – die Sprache, die Du lernen willst oder in der Du nicht so sicher bist. Alles, was Du eingibst, wird dorthin übersetzt.';
 
   @override
   String get altLanguageInfo =>
-      'Sekundärsprache – die Sprache, die Du gut sprichst und in die übersetzt werden soll, wenn Du Primärsprache eingibst.';
+      'Sichere Sprache – die Sprache, die Du gut beherrschst. Dorthin wird übersetzt, wenn Du in der Lernsprache schreibst.';
 
   @override
   String get appLanguageLabel => 'App-Sprache';

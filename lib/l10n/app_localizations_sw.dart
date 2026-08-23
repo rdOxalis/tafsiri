@@ -93,18 +93,18 @@ class AppLocalizationsSw extends AppLocalizations {
   String get providerSubtitle => 'tumia ufunguo wako wa API';
 
   @override
-  String get targetLanguageLabel => 'Lugha ya Msingi';
+  String get targetLanguageLabel => 'Lugha Ninayojifunza';
 
   @override
-  String get altLanguageLabel => 'Lugha ya Pili';
+  String get altLanguageLabel => 'Lugha Ninayoimudu';
 
   @override
   String get targetLanguageInfo =>
-      'Lugha ya msingi — lugha unayotaka kujifunza, au ambayo huimudu vizuri.';
+      'Lugha ninayojifunza — lugha unayotaka kujifunza, au ambayo huimudu vizuri. Kila unachoandika hutafsiriwa kwake.';
 
   @override
   String get altLanguageInfo =>
-      'Lugha ya pili — lugha unayoimudu vizuri, na ambayo maandishi yako hutafsiriwa kwake unapoandika kwa lugha ya msingi.';
+      'Lugha ninayoimudu — lugha unayoimudu vizuri. Maandishi yako hutafsiriwa kwake unapoandika kwa lugha unayojifunza.';
 
   @override
   String get appLanguageLabel => 'Lugha ya Programu';

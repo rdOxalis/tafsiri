@@ -174,6 +174,8 @@
 
 ## Done
 
+- [x] **The language slots are named by role rather than by rank** (2026-08-23, ADR-059). "Primary/Secondary" read as "mine / the other one" in every language — in Swahili and Bulgarian it inverted the meaning outright — so testers set the two fields the wrong way round. Now "Learning language" / "Confident language" in all 12 UI languages, with the direction of translation spelled out in both explanations. Storage keys unchanged.
+
 - [x] **Editing the input keeps the result, and flags it as out of date** (2026-08-19, ADR-055). Correction mode's suggestions used to vanish on the first keystroke, which is exactly when they are needed — they are what the user is typing *from*. The result now survives until the next run and reports that it no longer matches, by a badge on the Improve button and a line above the result itself.
 
 - [x] v1.0.5 — Version display, API key links, error details, F-Droid submission (2026-05-28)

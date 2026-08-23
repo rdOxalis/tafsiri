@@ -28,13 +28,13 @@
   "apiKeyOpenAI": "Clave API de OpenAI",
   "providerLabel": "Proveedor de IA",
   "providerSubtitle": "trae tu propia clave API",
-  "targetLanguageLabel": "Idioma principal",
-  "altLanguageLabel": "Idioma secundario",
-  "targetLanguageInfo": "Idioma principal — el idioma que quieres aprender o en el que te desenvuelves peor.",
+  "targetLanguageLabel": "Idioma que aprendes",
+  "altLanguageLabel": "Idioma que dominas",
+  "targetLanguageInfo": "Idioma que aprendes — el idioma que quieres aprender o en el que te desenvuelves peor. Todo lo que escribes se traduce a él.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Idioma secundario — el idioma que dominas bien y al que se traduce tu texto cuando escribes en el idioma principal.",
+  "altLanguageInfo": "Idioma que dominas — el idioma que hablas bien. Tu texto se traduce a él cuando escribes en el idioma que aprendes.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

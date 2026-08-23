@@ -28,13 +28,13 @@
   "apiKeyOpenAI": "OpenAI API-sleutel",
   "providerLabel": "AI-aanbieder",
   "providerSubtitle": "gebruik je eigen API-sleutel",
-  "targetLanguageLabel": "Primaire taal",
-  "altLanguageLabel": "Secundaire taal",
-  "targetLanguageInfo": "Primaire taal — de taal die je wilt leren, of die je minder goed beheerst.",
+  "targetLanguageLabel": "Leertaal",
+  "altLanguageLabel": "Vertrouwde taal",
+  "targetLanguageInfo": "Leertaal — de taal die je wilt leren, of die je minder goed beheerst. Alles wat je invoert wordt hiernaartoe vertaald.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Secundaire taal — de taal die je goed spreekt, en waarnaar je tekst wordt vertaald als je de primaire taal invoert.",
+  "altLanguageInfo": "Vertrouwde taal — de taal die je goed spreekt. Je tekst wordt hiernaartoe vertaald wanneer je in de leertaal schrijft.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

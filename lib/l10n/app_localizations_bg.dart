@@ -94,18 +94,18 @@ class AppLocalizationsBg extends AppLocalizations {
   String get providerSubtitle => 'използвайте свой API ключ';
 
   @override
-  String get targetLanguageLabel => 'Основен език';
+  String get targetLanguageLabel => 'Език за учене';
 
   @override
-  String get altLanguageLabel => 'Втори език';
+  String get altLanguageLabel => 'Език, който владееш';
 
   @override
   String get targetLanguageInfo =>
-      'Основен език — езикът, който искаш да научиш или който владееш по-слабо.';
+      'Език за учене — езикът, който искаш да научиш или който владееш по-слабо. Всичко, което въведеш, се превежда на него.';
 
   @override
   String get altLanguageInfo =>
-      'Втори език — езикът, който владееш добре и на който се превежда текстът, когато въведеш нещо на основния език.';
+      'Език, който владееш — езикът, който владееш добре. Текстът се превежда на него, когато пишеш на езика за учене.';
 
   @override
   String get appLanguageLabel => 'Език на приложението';

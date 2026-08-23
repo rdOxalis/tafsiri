@@ -93,18 +93,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providerSubtitle => 'bring your own API-Key';
 
   @override
-  String get targetLanguageLabel => 'Primary Language';
+  String get targetLanguageLabel => 'Learning Language';
 
   @override
-  String get altLanguageLabel => 'Secondary Language';
+  String get altLanguageLabel => 'Confident Language';
 
   @override
   String get targetLanguageInfo =>
-      'Primary language — the language you want to learn, or the one you are less confident in.';
+      'Learning language — the language you want to learn, or the one you are less confident in. Everything you enter is translated into it.';
 
   @override
   String get altLanguageInfo =>
-      'Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.';
+      'Confident language — the language you speak well. Your text is translated into it when you write in the learning language.';
 
   @override
   String get appLanguageLabel => 'App Language';
@@ -400,18 +400,18 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get providerSubtitle => 'bring your own API-Key';
 
   @override
-  String get targetLanguageLabel => 'Primary Language';
+  String get targetLanguageLabel => 'Learning Language';
 
   @override
-  String get altLanguageLabel => 'Secondary Language';
+  String get altLanguageLabel => 'Confident Language';
 
   @override
   String get targetLanguageInfo =>
-      'Primary language — the language you want to learn, or the one you are less confident in.';
+      'Learning language — the language you want to learn, or the one you are less confident in. Everything you enter is translated into it.';
 
   @override
   String get altLanguageInfo =>
-      'Secondary language — the language you speak well, and the one your text is translated into when you enter the primary language.';
+      'Confident language — the language you speak well. Your text is translated into it when you write in the learning language.';
 
   @override
   String get appLanguageLabel => 'App Language';

@@ -93,18 +93,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get providerSubtitle => 'gebruik je eigen API-sleutel';
 
   @override
-  String get targetLanguageLabel => 'Primaire taal';
+  String get targetLanguageLabel => 'Leertaal';
 
   @override
-  String get altLanguageLabel => 'Secundaire taal';
+  String get altLanguageLabel => 'Vertrouwde taal';
 
   @override
   String get targetLanguageInfo =>
-      'Primaire taal — de taal die je wilt leren, of die je minder goed beheerst.';
+      'Leertaal — de taal die je wilt leren, of die je minder goed beheerst. Alles wat je invoert wordt hiernaartoe vertaald.';
 
   @override
   String get altLanguageInfo =>
-      'Secundaire taal — de taal die je goed spreekt, en waarnaar je tekst wordt vertaald als je de primaire taal invoert.';
+      'Vertrouwde taal — de taal die je goed spreekt. Je tekst wordt hiernaartoe vertaald wanneer je in de leertaal schrijft.';
 
   @override
   String get appLanguageLabel => 'App-taal';

@@ -93,18 +93,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get providerSubtitle => 'użyj własnego klucza API';
 
   @override
-  String get targetLanguageLabel => 'Język podstawowy';
+  String get targetLanguageLabel => 'Język do nauki';
 
   @override
-  String get altLanguageLabel => 'Język dodatkowy';
+  String get altLanguageLabel => 'Język znany';
 
   @override
   String get targetLanguageInfo =>
-      'Język główny — język, którego chcesz się uczyć lub który znasz słabiej.';
+      'Język do nauki — język, którego chcesz się uczyć lub który znasz słabiej. Wszystko, co wpiszesz, jest tłumaczone na ten język.';
 
   @override
   String get altLanguageInfo =>
-      'Język pomocniczy — język, który znasz dobrze i na który tłumaczony jest tekst, gdy wpiszesz coś w języku głównym.';
+      'Język znany — język, który znasz dobrze. Tekst jest tłumaczony na ten język, gdy piszesz w języku do nauki.';
 
   @override
   String get appLanguageLabel => 'Język aplikacji';

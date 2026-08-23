@@ -28,13 +28,13 @@
   "apiKeyOpenAI": "OpenAI API-nøgle",
   "providerLabel": "AI-udbyder",
   "providerSubtitle": "brug din egen API-nøgle",
-  "targetLanguageLabel": "Primært sprog",
-  "altLanguageLabel": "Sekundært sprog",
-  "targetLanguageInfo": "Primært sprog — det sprog, du vil lære, eller som du er mindst god til.",
+  "targetLanguageLabel": "Læringssprog",
+  "altLanguageLabel": "Sikkert sprog",
+  "targetLanguageInfo": "Læringssprog — det sprog, du vil lære, eller som du er mindst god til. Alt, hvad du skriver, oversættes til det.",
   "@targetLanguageInfo": {
     "description": "Explains what the primary language setting decides"
   },
-  "altLanguageInfo": "Sekundært sprog — det sprog, du taler godt, og som din tekst oversættes til, når du skriver på det primære sprog.",
+  "altLanguageInfo": "Sikkert sprog — det sprog, du taler godt. Din tekst oversættes til det, når du skriver på læringssproget.",
   "@altLanguageInfo": {
     "description": "Explains what the secondary language setting decides"
   },

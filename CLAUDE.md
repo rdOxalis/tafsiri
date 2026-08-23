@@ -186,8 +186,8 @@ Stored via `shared_preferences`.
 | `api_key_claude` | String | Anthropic API token |
 | `api_key_openai` | String | OpenAI API token |
 | `active_provider` | String | `'mistral'` \| `'claude'` \| `'openai'` |
-| `target_language` | String | Primary target language, e.g. `'Swahili'` |
-| `alt_language` | String | Fallback target language, e.g. `'English'` |
+| `target_language` | String | Learning language — the one being learnt, translated *into*, e.g. `'Swahili'` |
+| `alt_language` | String | Confident language — the one the user speaks well, e.g. `'English'` |
 | `app_locale` | String | UI locale, e.g. `'sw'`, `'de'`, `'en_GB'` |
 | `correction_mode` | bool | Correction mode on/off (toggle lives in the translator header) |
 

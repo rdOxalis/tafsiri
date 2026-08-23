@@ -93,18 +93,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get providerSubtitle => 'apportez votre propre clé API';
 
   @override
-  String get targetLanguageLabel => 'Langue principale';
+  String get targetLanguageLabel => 'Langue à apprendre';
 
   @override
-  String get altLanguageLabel => 'Langue secondaire';
+  String get altLanguageLabel => 'Langue maîtrisée';
 
   @override
   String get targetLanguageInfo =>
-      'Langue principale — la langue que vous voulez apprendre, ou celle que vous maîtrisez le moins.';
+      'Langue à apprendre — la langue que vous voulez apprendre, ou celle que vous maîtrisez le moins. Tout ce que vous saisissez y est traduit.';
 
   @override
   String get altLanguageInfo =>
-      'Langue secondaire — la langue que vous maîtrisez bien, et vers laquelle votre texte est traduit lorsque vous saisissez la langue principale.';
+      'Langue maîtrisée — la langue que vous parlez bien. Votre texte y est traduit lorsque vous écrivez dans la langue à apprendre.';
 
   @override
   String get appLanguageLabel => 'Langue de l\'application';
