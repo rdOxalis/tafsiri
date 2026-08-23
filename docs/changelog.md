@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.15] - 2026-08-23
+
 ### Added
 - **Android has a build script** (ADR-058). `./build_android.sh` produces the APK for the GitHub release and the App Bundle for the Play Console, stamps both with the commit they came from, and refuses to hand over anything signed with the debug key — which Gradle falls back to whenever `android/key.properties` is missing, producing an artefact Play rejects and that cannot be installed over an existing Tafsiri.
 
