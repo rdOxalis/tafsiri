@@ -14,6 +14,43 @@ void main() {
   const target = 'Swahili';
   const alt = 'English';
 
+  group('the language of everything that is not the translation (ADR-063)', () {
+    test('the rule leads the correction prompt and names English', () {
+      // A learner with Swahili and German configured got English notes: the
+      // instruction was real but buried, and English is what a model falls
+      // back to.
+      const german = 'Deutsch';
+      final prompt = AiService.buildCorrectionSystemPrompt(target, german);
+
+      expect(prompt, contains('THE LANGUAGE YOU WRITE IN'));
+      expect(prompt, contains('must be written in $german'));
+      expect(prompt, contains('Not in English, unless $german is English'));
+      // The prompt is itself in English, which is exactly the confusion.
+      expect(prompt, contains('says nothing about the language of your answer'));
+    });
+
+    test('the already-correct bullet is no longer an English literal', () {
+      final prompt = AiService.buildCorrectionSystemPrompt(target, 'Deutsch');
+
+      // It used to prescribe the exact string "- Already correct.", which is
+      // English whatever the learner configured.
+      expect(prompt, isNot(contains('"- Already correct."')));
+      expect(prompt, contains('do not copy these English words'));
+    });
+
+    test('the rule follows the configured language, whatever it is', () {
+      for (final alt in ['Deutsch', 'Kiswahili', 'français']) {
+        final prompt = AiService.buildCorrectionSystemPrompt(target, alt);
+        expect(prompt, contains('must be written in $alt'));
+      }
+    });
+
+    test('an English speaker is not told to avoid English', () {
+      final prompt = AiService.buildCorrectionSystemPrompt(target, 'English');
+      expect(prompt, contains('Not in English, unless English is English'));
+    });
+  });
+
   group('AiService.systemPromptFor', () {
     test('translation prompt is unchanged when correction mode is off', () {
       expect(
