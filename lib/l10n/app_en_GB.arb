@@ -400,5 +400,19 @@
   "outputStaleTooltip": "The text above has changed — the result below is from the previous version.",
   "@outputStaleTooltip": {
     "description": "Tooltip on the translate/improve button while the result is out of date"
+  },
+  "explanationsLabel": "Explanations",
+  "@explanationsLabel": {
+    "description": "Label of the explanations switch and of the section it produces"
+  },
+  "explanationsInfo": "Essential {language} words from this translation are explained below the result.",
+  "@explanationsInfo": {
+    "description": "Tooltip of the explanations switch; {language} is the learning language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Swahili"
+      }
+    }
   }
 }

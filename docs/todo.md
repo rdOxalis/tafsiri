@@ -4,6 +4,9 @@
 
 <!-- Move items here when actively working on them -->
 
+- [ ] **Release the explanations feature — but not yet** (ADR-060). The work is finished and green on the branch `feature/word-explanations`, deliberately not on `main`. **The gate: merge and release only once the Play Store tests for 1.0.15 have passed and that APK is published.** The reason is not caution about this feature but about what a merge would cost: while it sits on `main`, any fix 1.0.15 turns out to need would drag an untested feature into the release with it, and the Play track cannot be judged on a build that has since changed underneath it. Once 1.0.15 is out, merge to `main`, bump to 1.0.16, and release APK, AAB and .deb as usual.
+  - Still unverified either way, and cheapest to check during that wait: the section against **real API keys on all three providers** (ADR-060's one open risk — the base prompt says "never explain" and the appended section has to override it). Swahili is where the providers differ most, so it is the case worth trying first.
+
 - [ ] **(Android) Clipboard images for paste.** Ctrl+V / the paste button read images on Linux (ADR-040) and Windows (ADR-047); Android is the one left. Android carries images on the clipboard as `content://` URIs, which needs a small platform channel into `ClipboardManager` — the `ClipboardImageService` interface is already the seam. Worth doing: on a phone a screenshot is the most likely way an image arrives at all.
 
 - [ ] **Finish the macOS pass.** Building, translating, image-to-text, backup restore and voice input all confirmed working on 2026-08-15, installed via `./build_macos.sh`. Two things remain. **Clipboard image paste is not implemented** — `osascript -e 'the clipboard as «class PNGf»'` is the route, behind the same `ClipboardImageService` seam that Linux and Windows already use (ADR-047). And the app is **ad-hoc signed and not notarized**, so anyone who downloads it has to clear Gatekeeper once — System Settings → Privacy & Security → Open Anyway, or `xattr -dr com.apple.quarantine`. The right-click → Open shortcut that used to do this stopped working in macOS 15, so any instructions written from memory are likely wrong. Fixing it properly needs an Apple Developer account, the same open question as code-signing the Windows installer.
@@ -173,6 +176,8 @@
 ---
 
 ## Done
+
+- [x] **Explanations under a plain translation** (2026-08-30, ADR-060). Testers said the correction mode teaches them something and ordinary translation does not. A second header switch now adds a dictionary-style section for the essential words in the learning language — both directions, spelled-out grammatical terms rather than TUKI's abbreviations, one API call, off by default.
 
 - [x] **The language slots are named by role rather than by rank** (2026-08-23, ADR-059). "Primary/Secondary" read as "mine / the other one" in every language — in Swahili and Bulgarian it inverted the meaning outright — so testers set the two fields the wrong way round. Now "Learning language" / "Confident language" in all 12 UI languages, with the direction of translation spelled out in both explanations. Storage keys unchanged.
 

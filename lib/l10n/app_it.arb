@@ -113,5 +113,7 @@
   "backupImportConfirmMessageReplace": "Le impostazioni attuali verranno sostituite da quelle del file e l’intera cronologia delle traduzioni verrà eliminata e sostituita da quella del backup. L’operazione non può essere annullata.",
   "backupImportedReplaced": "Cronologia sostituita — {added} traduzioni ripristinate",
   "outputStaleLabel": "Non corrisponde più al testo qui sopra",
-  "outputStaleTooltip": "Il testo qui sopra è cambiato — il risultato qui sotto è della versione precedente."
+  "outputStaleTooltip": "Il testo qui sopra è cambiato — il risultato qui sotto è della versione precedente.",
+  "explanationsLabel": "Spiegazioni",
+  "explanationsInfo": "Le parole {language} essenziali di questa traduzione sono spiegate sotto il risultato."
 }

@@ -311,4 +311,12 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'El texto de arriba ha cambiado — el resultado de abajo es de la versión anterior.';
+
+  @override
+  String get explanationsLabel => 'Explicaciones';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Las palabras esenciales en $language de esta traducción se explican debajo del resultado.';
+  }
 }

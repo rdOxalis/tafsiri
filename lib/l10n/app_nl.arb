@@ -114,5 +114,7 @@
   "backupImportConfirmMessageReplace": "Je huidige instellingen worden vervangen door die uit het bestand, en je volledige vertaalgeschiedenis wordt verwijderd en vervangen door die van de back-up. Dit kan niet ongedaan worden gemaakt.",
   "backupImportedReplaced": "Geschiedenis vervangen — {added} vertalingen teruggezet",
   "outputStaleLabel": "Komt niet meer overeen met de tekst hierboven",
-  "outputStaleTooltip": "De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie."
+  "outputStaleTooltip": "De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie.",
+  "explanationsLabel": "Uitleg",
+  "explanationsInfo": "Belangrijke {language} woorden uit deze vertaling worden onder het resultaat uitgelegd."
 }

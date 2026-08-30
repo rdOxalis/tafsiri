@@ -20,6 +20,8 @@ abstract class AiService {
   /// With [correctionMode] the extended protocol of ADR-033 applies:
   ///   LANG:[iso-639-1]\nMODE:[correct|translate]\n[body]\nNOTES:\n[bullets]
   ///
+  /// With [explanations] a further EXPLAIN: section follows (ADR-060).
+  ///
   /// Callers (TranslatorController) are responsible for parsing the prefix.
   Future<String> translate({
     required String text,
@@ -27,6 +29,7 @@ abstract class AiService {
     required String altLanguage,
     required String apiKey,
     bool correctionMode = false,
+    bool explanations = false,
   });
 
   /// Picks the system prompt for the requested mode.
@@ -34,10 +37,47 @@ abstract class AiService {
     required String targetLanguage,
     required String altLanguage,
     required bool correctionMode,
-  }) =>
-      correctionMode
-          ? buildCorrectionSystemPrompt(targetLanguage, altLanguage)
-          : buildSystemPrompt(targetLanguage, altLanguage);
+    bool explanations = false,
+  }) {
+    final base = correctionMode
+        ? buildCorrectionSystemPrompt(targetLanguage, altLanguage)
+        : buildSystemPrompt(targetLanguage, altLanguage);
+    return explanations
+        ? '$base\n\n${buildExplanationsSection(targetLanguage, altLanguage)}'
+        : base;
+  }
+
+  /// The EXPLAIN: section appended to either prompt when the learner has the
+  /// explanations switch on (ADR-060).
+  ///
+  /// Appended rather than woven in, so the two features stay independent: the
+  /// translation and correction rules above are untouched by it, and turning
+  /// the switch off restores the exact prompt that shipped before.
+  ///
+  /// Grammatical terms are spelled out in $altLanguage instead of a
+  /// dictionary's abbreviations (TUKI's kt, nm, tde, tdw …). A learner who has
+  /// to look up the notation before reading the note has been handed a second
+  /// problem, and every language pair would need its own set.
+  static String buildExplanationsSection(
+    String targetLanguage,
+    String altLanguage,
+  ) {
+    return '''ONE EXCEPTION to the rules above — they say never to explain and to output only the translation; this section is the single exception and overrides them, but nothing else about them changes.
+
+Append an EXPLAIN: section — but ONLY when the exchange involves $targetLanguage at all, and NEVER in mode "correct" (there the NOTES: already explain the changes).
+
+The learner is learning $targetLanguage. Explain the essential $targetLanguage words of this exchange — whichever side they are on: the words of your translation when you translated INTO $targetLanguage, the words of the input when the input WAS $targetLanguage.
+
+Rules for the section:
+1. At most 5 entries, the words worth learning. Skip pronouns, articles, numbers, names and anything obvious to a beginner. Fewer is better than padding.
+2. One "- " bullet per word, written in $altLanguage, in this form:
+   - <word in $targetLanguage> (<part of speech>) — <meaning>
+3. Give the word in its dictionary form, and say so when the text used another: "- alisema (verb, past of sema) — he/she said".
+4. Spell grammatical terms out in $altLanguage — "noun", "verb", "adjective" — never abbreviations. For a noun in a language with noun classes, name the class: "(noun, class 9/10)". For a verb with derived forms worth knowing, add them on a second indented line with their meaning, e.g. "  · sababishia = to cause for someone, sababishwa = to be caused".
+5. No sentences about the text as a whole, no encouragement, no repetition of the translation.
+
+Place EXPLAIN: last, after everything else. Omit the whole section — the line included — when there is nothing worth explaining.''';
+  }
 
   /// System-role instructions for correction mode (ADR-033).
   ///

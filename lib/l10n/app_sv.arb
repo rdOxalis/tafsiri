@@ -114,5 +114,7 @@
   "backupImportConfirmMessageReplace": "Dina nuvarande inställningar ersätts med dem i filen, och hela din översättningshistorik raderas och ersätts med säkerhetskopians. Detta går inte att ångra.",
   "backupImportedReplaced": "Historik ersatt — {added} översättningar återställda",
   "outputStaleLabel": "Stämmer inte längre med texten ovan",
-  "outputStaleTooltip": "Texten ovan har ändrats — resultatet nedan är från den tidigare versionen."
+  "outputStaleTooltip": "Texten ovan har ändrats — resultatet nedan är från den tidigare versionen.",
+  "explanationsLabel": "Förklaringar",
+  "explanationsInfo": "Viktiga ord på {language} från den här översättningen förklaras under resultatet."
 }

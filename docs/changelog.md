@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Explanations under the translation** (ADR-060), for people who are learning rather than only translating. A second switch in the translator header — off by default — adds a dictionary-style section below the result: the essential words in the language you are learning, with their part of speech, their meaning and, where it helps, their derived forms. It works in both directions, explaining the words of the translation when you translate into your learning language and the words of your input when you started in it. Grammatical terms are written out in your confident language ("noun, class 9/10") rather than dictionary abbreviations. Costs one API call like any translation, and nothing at all while the switch is off. The section is saved with the entry, so reloading it from the history brings the explanations back.
+
 ---
 
 ## [1.0.15] - 2026-08-23

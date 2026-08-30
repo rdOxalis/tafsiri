@@ -39,6 +39,7 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
     required String? altLanguage,
     required String? apiKey,
     bool? correctionMode = false,
+    bool? explanations = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#translate, [], {
@@ -47,6 +48,7 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
               #altLanguage: altLanguage,
               #apiKey: apiKey,
               #correctionMode: correctionMode,
+              #explanations: explanations,
             }),
             returnValue: _i3.Future<String>.value(
               _i4.dummyValue<String>(
@@ -57,6 +59,7 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
                   #altLanguage: altLanguage,
                   #apiKey: apiKey,
                   #correctionMode: correctionMode,
+                  #explanations: explanations,
                 }),
               ),
             ),

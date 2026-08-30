@@ -309,6 +309,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'The text above has changed — the result below is from the previous version.';
+
+  @override
+  String get explanationsLabel => 'Explanations';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Essential $language words from this translation are explained below the result.';
+  }
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -616,4 +624,12 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   @override
   String get outputStaleTooltip =>
       'The text above has changed — the result below is from the previous version.';
+
+  @override
+  String get explanationsLabel => 'Explanations';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Essential $language words from this translation are explained below the result.';
+  }
 }

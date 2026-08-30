@@ -11,6 +11,7 @@ class SettingsState {
   final String altLanguage;
   final String sttLanguage; // ISO-639-1 code, empty = auto
   final bool correctionMode; // ADR-033
+  final bool explanationsMode; // ADR-060
 
   const SettingsState({
     required this.apiKeyMistral,
@@ -21,6 +22,7 @@ class SettingsState {
     required this.altLanguage,
     required this.sttLanguage,
     this.correctionMode = false,
+    this.explanationsMode = false,
   });
 
   const SettingsState.defaults()
@@ -31,7 +33,8 @@ class SettingsState {
         targetLanguage = kDefaultTargetLanguage,
         altLanguage = kDefaultAltLanguage,
         sttLanguage = '',
-        correctionMode = false;
+        correctionMode = false,
+        explanationsMode = false;
 
   bool get hasApiKeyForActiveProvider {
     switch (activeProvider) {
@@ -68,6 +71,7 @@ class SettingsState {
     String? altLanguage,
     String? sttLanguage,
     bool? correctionMode,
+    bool? explanationsMode,
   }) {
     return SettingsState(
       apiKeyMistral: apiKeyMistral ?? this.apiKeyMistral,
@@ -78,6 +82,7 @@ class SettingsState {
       altLanguage: altLanguage ?? this.altLanguage,
       sttLanguage: sttLanguage ?? this.sttLanguage,
       correctionMode: correctionMode ?? this.correctionMode,
+      explanationsMode: explanationsMode ?? this.explanationsMode,
     );
   }
 }
@@ -96,6 +101,7 @@ class SettingsController extends AsyncNotifier<SettingsState> {
       altLanguage: prefs.getString(kPrefAltLanguage) ?? kDefaultAltLanguage,
       sttLanguage: prefs.getString(kPrefSttLanguage) ?? '',
       correctionMode: prefs.getBool(kPrefCorrectionMode) ?? false,
+      explanationsMode: prefs.getBool(kPrefExplanationsMode) ?? false,
     );
   }
 
@@ -145,6 +151,12 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     state = AsyncData(state.requireValue.copyWith(correctionMode: enabled));
   }
 
+  Future<void> setExplanationsMode(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(kPrefExplanationsMode, enabled);
+    state = AsyncData(state.requireValue.copyWith(explanationsMode: enabled));
+  }
+
   /// Applies settings from a backup (ADR-034).
   ///
   /// [restoreApiKeys] is false when the backup was written without keys — the
@@ -161,6 +173,7 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     await prefs.setString(kPrefAltLanguage, restored.altLanguage);
     await prefs.setString(kPrefSttLanguage, restored.sttLanguage);
     await prefs.setBool(kPrefCorrectionMode, restored.correctionMode);
+    await prefs.setBool(kPrefExplanationsMode, restored.explanationsMode);
 
     if (restoreApiKeys) {
       await prefs.setString(kPrefApiKeyMistral, restored.apiKeyMistral);

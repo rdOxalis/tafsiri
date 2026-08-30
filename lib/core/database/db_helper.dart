@@ -8,8 +8,9 @@ class DbHelper {
 
   static Database? _db;
 
-  /// Current schema version. 2 adds `mode` and `notes` (ADR-033).
-  static const schemaVersion = 2;
+  /// Current schema version. 2 adds `mode` and `notes` (ADR-033), 3 adds
+  /// `explanations` (ADR-060).
+  static const schemaVersion = 3;
 
   /// Schema of the current version — shared with the tests so the two cannot
   /// drift apart.
@@ -24,7 +25,8 @@ class DbHelper {
             is_favourite INTEGER NOT NULL DEFAULT 0,
             created_at   TEXT    NOT NULL,
             mode         TEXT    NOT NULL DEFAULT 'translate',
-            notes        TEXT
+            notes        TEXT,
+            explanations TEXT
           )
         ''';
 
@@ -42,6 +44,12 @@ class DbHelper {
         "ADD COLUMN mode TEXT NOT NULL DEFAULT 'translate'",
       );
       await db.execute('ALTER TABLE translation_entry ADD COLUMN notes TEXT');
+    }
+    if (oldVersion < 3) {
+      // ADR-060: word explanations alongside a plain translation.
+      await db.execute(
+        'ALTER TABLE translation_entry ADD COLUMN explanations TEXT',
+      );
     }
   }
 

@@ -72,6 +72,8 @@ The system prompt — and with it the branch the model takes — is chosen by th
 | off | translate → confident language | translate → learning language |
 | on  | **correct and improve, stay in the learning language** | translate → learning language |
 
+With the explanations switch on (ADR-060) an `EXPLAIN:` section is appended to whichever prompt is in force — one request, not two — carrying the learning-language words of the exchange. It is suppressed in mode `correct`, where the `NOTES:` already explain, and omitted when there is nothing worth saying. Response protocol, in order: `LANG:` / `MODE:` / body / `NOTES:` / `EXPLAIN:`; the parser cuts `EXPLAIN:` off first because it is always last.
+
 ---
 
 ## Settings Data Flow
@@ -187,7 +189,7 @@ CREATE TABLE translation_entry (
 **Notes:**
 - `created_at` stored as `DateTime.now().toUtc().toIso8601String()` for consistent sorting.
 - `source_lang` is the 2-letter ISO 639-1 code extracted from the AI response `LANG:xx` prefix.
-- Schema version: 2. `mode` and `notes` were added in v2 (ADR-033); the v1→v2 `ALTER TABLE` defaults existing rows to `'translate'`. The DDL and the migration live in `DbHelper.createTableSql` / `DbHelper.migrate` and are shared with the tests — see ADR-014.
+- Schema version: 3. `mode` and `notes` were added in v2 (ADR-033), `explanations` in v3 (ADR-060); each `ALTER TABLE` leaves existing rows alone, defaulting the mode of older ones to `'translate'`. The DDL and the migration live in `DbHelper.createTableSql` / `DbHelper.migrate` and are shared with the tests — see ADR-014.
 
 ### Platform backends (ADR-031)
 
@@ -396,7 +398,7 @@ NOTES:
 - Butter → siagi: "Butter" is German/English; the Swahili word is "siagi".
 ```
 
-`AiResult.parse()` splits this into `sourceLang`, `mode`, `body` and `notes`. Both header lines and the `NOTES:` section are optional, so a plain `LANG:xx\n<translation>` response — everything the app produced before v2 — still parses, and the mode falls back to `translate`.
+`AiResult.parse()` splits this into `sourceLang`, `mode`, `body`, `notes` and `explanations`. Both header lines and both sections are optional, so a plain `LANG:xx\n<translation>` response — everything the app produced before v2 — still parses, and the mode falls back to `translate`. `EXPLAIN:` is cut off before `NOTES:` is looked for, because it always comes last.
 
 ---
 
@@ -545,7 +547,7 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | OpenAiService | `test/services/openai_service_test.dart` | 4 |
 | MistralService | `test/services/mistral_service_test.dart` | 4 |
 | TranslationDao (SQLite) | `test/database/translation_dao_test.dart` | 8 |
-| Schema migration v1→v2 | `test/database/db_migration_test.dart` | 1 |
+| Schema migration v1→v2, v2→v3 | `test/database/db_migration_test.dart` | 2 |
 | Desktop sqflite FFI wiring | `test/database/sqflite_desktop_test.dart` | 1 |
 | **Total** | | **95** |
 

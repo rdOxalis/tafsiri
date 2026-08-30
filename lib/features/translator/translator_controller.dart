@@ -39,6 +39,10 @@ class TranslatorState {
   /// Improvement notes returned in correction mode (ADR-033), `null` otherwise.
   final String? correctionNotes;
 
+  /// Dictionary-style word explanations (ADR-060), `null` when the switch is
+  /// off or the exchange had nothing worth explaining.
+  final String? explanations;
+
   /// True when the last result was a correction rather than a translation.
   final bool isCorrectionResult;
   final bool isLoading;
@@ -69,6 +73,7 @@ class TranslatorState {
     this.outputText,
     this.outputSourceText,
     this.correctionNotes,
+    this.explanations,
     this.isCorrectionResult = false,
     this.isLoading = false,
     this.error,
@@ -86,6 +91,7 @@ class TranslatorState {
     String? outputText,
     String? outputSourceText,
     String? correctionNotes,
+    String? explanations,
     bool? isCorrectionResult,
     bool clearOutput = false,
     bool? isLoading,
@@ -108,6 +114,7 @@ class TranslatorState {
             : outputSourceText ?? this.outputSourceText,
         correctionNotes:
             clearOutput ? null : correctionNotes ?? this.correctionNotes,
+        explanations: clearOutput ? null : explanations ?? this.explanations,
         isCorrectionResult: clearOutput
             ? false
             : isCorrectionResult ?? this.isCorrectionResult,
@@ -321,6 +328,7 @@ class TranslatorController extends Notifier<TranslatorState> {
     String resultText, {
     String mode = kModeTranslate,
     String? notes,
+    String? explanations,
   }) {
     state = state.copyWith(
       inputText: sourceText,
@@ -330,6 +338,7 @@ class TranslatorController extends Notifier<TranslatorState> {
       outputText: resultText,
       outputSourceText: sourceText,
       correctionNotes: notes,
+      explanations: explanations,
       isCorrectionResult: mode == kModeCorrect,
     );
   }
@@ -365,6 +374,7 @@ class TranslatorController extends Notifier<TranslatorState> {
         altLanguage: settings.altLanguage,
         apiKey: settings.activeApiKey,
         correctionMode: settings.correctionMode,
+        explanations: settings.explanationsMode,
       );
 
       final result = AiResult.parse(raw);
@@ -379,6 +389,7 @@ class TranslatorController extends Notifier<TranslatorState> {
         outputText: translation,
         outputSourceText: input,
         correctionNotes: result.notes,
+        explanations: result.explanations,
         isCorrectionResult: result.isCorrection,
         lastSourceLang: sourceLang ?? state.lastSourceLang,
         clearError: true,
@@ -397,6 +408,7 @@ class TranslatorController extends Notifier<TranslatorState> {
             createdAt: DateTime.now().toUtc(),
             mode: result.mode,
             notes: result.notes,
+            explanations: result.explanations,
           ),
         );
         ref.invalidate(historyProvider);
@@ -443,11 +455,15 @@ class AiResult {
   final String body;
   final String? notes;
 
+  /// The EXPLAIN: section (ADR-060), `null` when the model sent none.
+  final String? explanations;
+
   const AiResult({
     this.sourceLang,
     this.mode = kModeTranslate,
     required this.body,
     this.notes,
+    this.explanations,
   });
 
   bool get isCorrection => mode == kModeCorrect;
@@ -471,6 +487,17 @@ class AiResult {
       lines.removeAt(0);
     }
 
+    // EXPLAIN: comes last, so it is cut off first — whatever remains is then
+    // split into body and NOTES: exactly as before (ADR-060).
+    String? explanations;
+    final explainIndex =
+        lines.indexWhere((l) => l.trim().toUpperCase() == 'EXPLAIN:');
+    if (explainIndex >= 0) {
+      final section = lines.skip(explainIndex + 1).join('\n').trim();
+      explanations = section.isEmpty ? null : section;
+      lines.removeRange(explainIndex, lines.length);
+    }
+
     final notesIndex =
         lines.indexWhere((l) => l.trim().toUpperCase() == 'NOTES:');
     if (notesIndex < 0) {
@@ -478,6 +505,7 @@ class AiResult {
         sourceLang: sourceLang,
         mode: mode,
         body: lines.join('\n').trim(),
+        explanations: explanations,
       );
     }
 
@@ -487,6 +515,7 @@ class AiResult {
       mode: mode,
       body: lines.take(notesIndex).join('\n').trim(),
       notes: notes.isEmpty ? null : notes,
+      explanations: explanations,
     );
   }
 }

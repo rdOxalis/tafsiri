@@ -23,8 +23,24 @@ const _v1Schema = '''
   )
 ''';
 
+/// Schema as shipped in 1.0.9 … 1.0.15 (ADR-033, before ADR-060).
+const _v2Schema = '''
+  CREATE TABLE translation_entry (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_text  TEXT    NOT NULL,
+    result_text  TEXT    NOT NULL,
+    source_lang  TEXT    NOT NULL,
+    target_lang  TEXT    NOT NULL,
+    ai_provider  TEXT    NOT NULL,
+    is_favourite INTEGER NOT NULL DEFAULT 0,
+    created_at   TEXT    NOT NULL,
+    mode         TEXT    NOT NULL DEFAULT 'translate',
+    notes        TEXT
+  )
+''';
+
 void main() {
-  test('v1 → v2 migration adds mode/notes and keeps existing rows', () async {
+  test('v1 → v3 migration adds mode/notes and keeps existing rows', () async {
     databaseFactory = createDesktopDatabaseFactory();
 
     final db = await databaseFactory.openDatabase(
@@ -76,5 +92,55 @@ void main() {
     final correction = all.firstWhere((e) => e.isCorrection);
     expect(correction.resultText, 'Tafadhali nipe siagi.');
     expect(correction.notes, contains('siagi'));
+  });
+
+  test('v2 → v3 adds explanations and leaves earlier rows alone', () async {
+    databaseFactory = createDesktopDatabaseFactory();
+
+    final db = await databaseFactory.openDatabase(
+      inMemoryDatabasePath,
+      options: OpenDatabaseOptions(
+        version: 2,
+        onCreate: (db, _) => db.execute(_v2Schema),
+      ),
+    );
+    addTearDown(db.close);
+
+    // A row written by an app version that knew nothing about explanations.
+    await db.insert('translation_entry', {
+      'source_text': 'Hello',
+      'result_text': 'Habari',
+      'source_lang': 'en',
+      'target_lang': 'Swahili',
+      'ai_provider': 'claude',
+      'is_favourite': 0,
+      'created_at': DateTime.now().toUtc().toIso8601String(),
+      'mode': kModeTranslate,
+    });
+
+    await DbHelper.migrate(db, 2, DbHelper.schemaVersion);
+
+    final dao = TranslationDao(db);
+    final migrated = await dao.getAll();
+    expect(migrated.single.resultText, 'Habari');
+    expect(migrated.single.explanations, isNull);
+
+    await dao.insert(TranslationEntry(
+      sourceText: 'Please give me the butter.',
+      resultText: 'Tafadhali nipe siagi.',
+      sourceLang: 'en',
+      targetLang: 'Swahili',
+      aiProvider: 'claude',
+      createdAt: DateTime.now().toUtc(),
+      explanations: '- siagi (noun, class 9/10) — butter',
+    ));
+
+    final all = await dao.getAll();
+    expect(all, hasLength(2));
+    final withWords = all.firstWhere((e) => e.explanations != null);
+    expect(withWords.explanations, contains('class 9/10'));
+    // A plain translation carrying explanations is still a translation.
+    expect(withWords.mode, kModeTranslate);
+    expect(withWords.isCorrection, isFalse);
   });
 }

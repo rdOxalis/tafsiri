@@ -90,6 +90,7 @@ class OutputArea extends ConsumerWidget {
     }
     if (state.outputText != null) {
       final notes = state.correctionNotes;
+      final explanations = state.explanations;
       final scheme = Theme.of(context).colorScheme;
       return SingleChildScrollView(
         child: Column(
@@ -139,6 +140,32 @@ class OutputArea extends ConsumerWidget {
               ),
               const SizedBox(height: 4),
               Text(notes, style: Theme.of(context).textTheme.bodyMedium),
+            ],
+            // Word explanations (ADR-060). Below the correction notes when
+            // both are present: the notes are about this text, the
+            // explanations about the vocabulary in it.
+            if (explanations != null) ...[
+              const SizedBox(height: 12),
+              const Divider(height: 1),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Icon(
+                    Icons.menu_book_outlined,
+                    size: 16,
+                    color: scheme.tertiary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.explanationsLabel,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: scheme.tertiary,
+                        ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(explanations, style: Theme.of(context).textTheme.bodyMedium),
             ],
           ],
         ),

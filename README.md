@@ -47,6 +47,21 @@ Corrections are stored in the history with their suggestions and marked with the
 
 ---
 
+## Explanations
+
+A second switch in the translator header, off by default. With it on, a plain translation carries a short dictionary-style section underneath:
+
+> **Tafadhali nipe siagi.**
+> 📖 Explanations
+> - siagi (noun, class 9/10) — butter
+> - tafadhali (adverb) — please
+
+It explains the words in the language you are **learning**, whichever side of the exchange they are on: the words of the translation when you translate into it, the words of your own text when you started in it. Grammatical terms are written out in your confident language rather than dictionary abbreviations, because a notation you have to look up first is a second problem, not an explanation. At most five entries, and none at all when there is nothing worth explaining.
+
+It costs one API call, the same as any translation — nothing extra — and nothing at all while the switch is off. The section is stored with the entry, so reloading it from the history brings it back.
+
+---
+
 ## Bring Your Own API Key
 
 Tafsiri does not have a backend. There is no subscription, no account, no server in between. The app talks directly to the AI provider of your choice using your own API key.
@@ -97,6 +112,7 @@ The free tier has a monthly token limit that resets each month. For typical tran
 - **Favourites** — star entries to keep them accessible
 - **12 UI languages** — Swahili, German, English, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish, Italian, Bulgarian
 - **Correction Mode** - For learners. Switch to that mode and your message in (mostly) learning language will be improved. 
+- **Explanations** - For learners. A second switch adds a dictionary-style note on the essential words of the language you are learning, under the translation.
 
 ---
 

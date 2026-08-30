@@ -162,7 +162,10 @@ void main() {
         findsOneWidget,
       );
       expect(
-        tester.widget<FilterChip>(find.byType(FilterChip)).selected,
+        tester
+            .widget<FilterChip>(
+                find.widgetWithText(FilterChip, 'Correction mode (off)'))
+            .selected,
         isFalse,
       );
       expect(find.text('Translate'), findsOneWidget);
@@ -172,10 +175,12 @@ void main() {
       await tester.pumpWidget(_wrap(const TranslatorScreen()));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(FilterChip));
+      await tester.tap(find.widgetWithText(FilterChip, 'Correction mode (off)'));
       await tester.pumpAndSettle();
 
-      final chip = tester.widget<FilterChip>(find.byType(FilterChip));
+      final chipFinder =
+          find.widgetWithText(FilterChip, 'Correction mode (on)');
+      final chip = tester.widget<FilterChip>(chipFinder);
       expect(chip.selected, isTrue);
       expect(
         find.widgetWithText(FilterChip, 'Correction mode (on)'),
@@ -183,8 +188,7 @@ void main() {
       );
       // Selected chip is filled with the primary colour, not the near-invisible
       // default container tint.
-      final scheme = Theme.of(tester.element(find.byType(FilterChip)))
-          .colorScheme;
+      final scheme = Theme.of(tester.element(chipFinder)).colorScheme;
       expect(chip.selectedColor, scheme.primary);
 
       final prefs = await SharedPreferences.getInstance();
@@ -281,6 +285,60 @@ void main() {
       expect(find.text('No longer matches the text above'), findsOneWidget);
       final badge = tester.widget<Badge>(find.byType(Badge));
       expect(badge.isLabelVisible, isTrue);
+    });
+
+    testWidgets('the explanations section renders under the result (ADR-060)',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        const TranslatorScreen(),
+        state: const TranslatorState(
+          inputText: 'Please give me the butter.',
+          outputText: 'Tafadhali nipe siagi.',
+          outputSourceText: 'Please give me the butter.',
+          explanations: '- siagi (noun, class 9/10) — butter',
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Tafadhali nipe siagi.'), findsOneWidget);
+      expect(find.text('- siagi (noun, class 9/10) — butter'), findsOneWidget);
+      // The heading, and no correction heading beside it: a plain translation
+      // with explanations is still a translation.
+      expect(find.text('Explanations'), findsWidgets);
+      expect(find.text('Suggestions'), findsNothing);
+    });
+
+    testWidgets('no section when the model sent no explanations',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        const TranslatorScreen(),
+        state: const TranslatorState(outputText: 'Habari'),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.menu_book_outlined), findsOneWidget);
+      // …the one match is the header chip, not a section heading.
+      expect(
+        find.widgetWithText(FilterChip, 'Explanations (off)'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('the explanations switch persists', (tester) async {
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(FilterChip, 'Explanations (off)'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.widgetWithText(FilterChip, 'Explanations (on)'),
+        findsOneWidget,
+      );
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool(kPrefExplanationsMode), isTrue);
+      // The two switches are independent.
+      expect(prefs.getBool(kPrefCorrectionMode), isNot(isTrue));
     });
 
     testWidgets('a result matching the input carries no marker', (tester) async {

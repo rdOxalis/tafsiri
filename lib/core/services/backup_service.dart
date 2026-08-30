@@ -76,6 +76,7 @@ class BackupService {
         kPrefAltLanguage: settings.altLanguage,
         kPrefSttLanguage: settings.sttLanguage,
         kPrefCorrectionMode: settings.correctionMode,
+        kPrefExplanationsMode: settings.explanationsMode,
       },
       'includesApiKeys': includeApiKeys,
       if (includeApiKeys)
@@ -128,6 +129,7 @@ class BackupService {
           _str(settingsMap[kPrefAltLanguage], fallback: defaults.altLanguage),
       sttLanguage: _str(settingsMap[kPrefSttLanguage]),
       correctionMode: settingsMap[kPrefCorrectionMode] == true,
+      explanationsMode: settingsMap[kPrefExplanationsMode] == true,
     );
 
     final rawHistory = decoded['history'];
@@ -168,6 +170,7 @@ class BackupService {
         'createdAt': e.createdAt.toUtc().toIso8601String(),
         'mode': e.mode,
         if (e.notes != null) 'notes': e.notes,
+        if (e.explanations != null) 'explanations': e.explanations,
       };
 
   /// Returns `null` for an unusable row so one bad entry cannot fail a restore.
@@ -189,6 +192,8 @@ class BackupService {
           DateTime.tryParse(_str(map['createdAt']))?.toUtc() ?? DateTime.now().toUtc(),
       mode: map['mode'] == kModeCorrect ? kModeCorrect : kModeTranslate,
       notes: map['notes'] is String ? map['notes'] as String : null,
+      explanations:
+          map['explanations'] is String ? map['explanations'] as String : null,
     );
   }
 

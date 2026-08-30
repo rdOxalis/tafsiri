@@ -20,6 +20,7 @@ class ClaudeService implements AiService {
     required String altLanguage,
     required String apiKey,
     bool correctionMode = false,
+    bool explanations = false,
   }) async {
     debugPrint('[ClaudeService] translate — key=${maskApiKey(apiKey)}, '
         'correction=$correctionMode');
@@ -38,6 +39,7 @@ class ClaudeService implements AiService {
           targetLanguage: targetLanguage,
           altLanguage: altLanguage,
           correctionMode: correctionMode,
+          explanations: explanations,
         ),
         'messages': [
           {

@@ -670,6 +670,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'The text above has changed — the result below is from the previous version.'**
   String get outputStaleTooltip;
+
+  /// Label of the explanations switch and of the section it produces
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Explanations'**
+  String get explanationsLabel;
+
+  /// Tooltip of the explanations switch; {language} is the learning language
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Essential {language} words from this translation are explained below the result.'**
+  String explanationsInfo(String language);
 }
 
 class _AppLocalizationsDelegate

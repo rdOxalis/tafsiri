@@ -114,5 +114,7 @@
   "backupImportConfirmMessageReplace": "Vos réglages actuels seront remplacés par ceux du fichier, et tout votre historique de traduction sera supprimé et remplacé par celui de la sauvegarde. Cette action est irréversible.",
   "backupImportedReplaced": "Historique remplacé — {added} traductions restaurées",
   "outputStaleLabel": "Ne correspond plus au texte ci-dessus",
-  "outputStaleTooltip": "Le texte ci-dessus a changé — le résultat ci-dessous provient de la version précédente."
+  "outputStaleTooltip": "Le texte ci-dessus a changé — le résultat ci-dessous provient de la version précédente.",
+  "explanationsLabel": "Explications",
+  "explanationsInfo": "Les mots {language} essentiels de cette traduction sont expliqués sous le résultat."
 }

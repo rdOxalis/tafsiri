@@ -159,6 +159,7 @@ class HistoryScreen extends ConsumerWidget {
           entry.resultText,
           mode: entry.mode,
           notes: entry.notes,
+          explanations: entry.explanations,
         );
     ref.read(selectedTabProvider.notifier).state = 0;
   }

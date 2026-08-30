@@ -114,5 +114,7 @@
   "backupImportConfirmMessageReplace": "Tus ajustes actuales se sustituirán por los del archivo, y todo tu historial de traducciones se borrará y se sustituirá por el de la copia. Esto no se puede deshacer.",
   "backupImportedReplaced": "Historial reemplazado: {added} traducciones restauradas",
   "outputStaleLabel": "Ya no coincide con el texto de arriba",
-  "outputStaleTooltip": "El texto de arriba ha cambiado — el resultado de abajo es de la versión anterior."
+  "outputStaleTooltip": "El texto de arriba ha cambiado — el resultado de abajo es de la versión anterior.",
+  "explanationsLabel": "Explicaciones",
+  "explanationsInfo": "Las palabras esenciales en {language} de esta traducción se explican debajo del resultado."
 }

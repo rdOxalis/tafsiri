@@ -312,4 +312,12 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Текстът по-горе е променен — резултатът по-долу е от предишната версия.';
+
+  @override
+  String get explanationsLabel => 'Обяснения';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Важните думи на $language от този превод се обясняват под резултата.';
+  }
 }

@@ -311,4 +311,12 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Maandishi ya juu yamebadilika — matokeo ya chini bado ni ya toleo lililotangulia.';
+
+  @override
+  String get explanationsLabel => 'Maelezo';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Maneno muhimu ya $language kutoka kwa tafsiri hii yanaelezwa chini ya matokeo.';
+  }
 }

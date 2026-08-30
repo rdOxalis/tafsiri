@@ -393,6 +393,72 @@ void main() {
       expect(state.isOutputStale, isFalse);
     });
 
+    test('explanations reach the state and the saved entry (ADR-060)',
+        () async {
+      final container = makeContainer(
+        mockService: mockService,
+        prefs: {kPrefExplanationsMode: true},
+      );
+      addTearDown(container.dispose);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: anyNamed('explanations'),
+      )).thenAnswer((_) async => 'LANG:en\nTafadhali nipe siagi.\n'
+          'EXPLAIN:\n- siagi (noun, class 9/10) — butter');
+
+      await container.read(settingsProvider.future);
+      container
+          .read(translatorProvider.notifier)
+          .setInputText('Please give me the butter.');
+      await container.read(translatorProvider.notifier).translate();
+
+      final state = container.read(translatorProvider);
+      expect(state.outputText, 'Tafadhali nipe siagi.');
+      expect(state.explanations, contains('class 9/10'));
+      // The switch has to reach the service, or the section never comes back.
+      verify(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: true,
+      )).called(1);
+    });
+
+    test('the switch stays off unless it was set', () async {
+      final container = makeContainer(mockService: mockService);
+      addTearDown(container.dispose);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: anyNamed('explanations'),
+      )).thenAnswer((_) async => 'LANG:en\nHabari');
+
+      await container.read(settingsProvider.future);
+      container.read(translatorProvider.notifier).setInputText('Hello');
+      await container.read(translatorProvider.notifier).translate();
+
+      expect(container.read(translatorProvider).explanations, isNull);
+      verify(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: false,
+      )).called(1);
+    });
+
     test('an entry reloaded from history is not stale', () {
       SharedPreferences.setMockInitialValues({});
       final container = ProviderContainer();
@@ -416,6 +482,33 @@ void main() {
       expect(result.isCorrection, isTrue);
       expect(result.body, 'Nipe siagi.');
       expect(result.notes, isNull);
+    });
+
+    test('cuts an EXPLAIN section off a plain translation (ADR-060)', () {
+      final result = AiResult.parse(
+        'LANG:en\nTafadhali nipe siagi.\n'
+        'EXPLAIN:\n- siagi (noun, class 9/10) — butter',
+      );
+      expect(result.body, 'Tafadhali nipe siagi.');
+      expect(result.notes, isNull);
+      expect(result.explanations, '- siagi (noun, class 9/10) — butter');
+    });
+
+    test('splits NOTES and EXPLAIN when both are present', () {
+      final result = AiResult.parse(
+        'LANG:sw\nMODE:correct\nNipe siagi.\n'
+        'NOTES:\n- Butter → siagi\n'
+        'EXPLAIN:\n- siagi (noun, class 9/10) — butter',
+      );
+      expect(result.body, 'Nipe siagi.');
+      expect(result.notes, '- Butter → siagi');
+      expect(result.explanations, '- siagi (noun, class 9/10) — butter');
+    });
+
+    test('an empty EXPLAIN section reads as none at all', () {
+      final result = AiResult.parse('LANG:en\nHabari\nEXPLAIN:');
+      expect(result.body, 'Habari');
+      expect(result.explanations, isNull);
     });
 
     test('accepts the headers in reverse order', () {
