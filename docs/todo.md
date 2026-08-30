@@ -176,6 +176,10 @@
 
 ## Done
 
+- [x] **Notes come back in the confident language, not English** (2026-08-30, ADR-063). Swahili + Deutsch configured, notes in English: the rule was buried in the prompt and the "already correct" bullet was prescribed as an English literal. The rule now leads the prompt and names English as the mistake.
+
+- [x] **A restored API key shows up in the field** (2026-08-30, ADR-064). The restore worked; the screen just kept showing the old, empty value, which looks identical to a failed import. The fields now follow the stored settings without disturbing typing.
+
 - [x] **A one-word input is translated rather than answered** (2026-08-30, ADR-061). "Korrektur" came back as "tell me what to correct, I am waiting". The text is now fenced in a tag and both prompts state that whatever is inside it is content, never an instruction. Mitigation, not a guarantee — prompt-level rules are followed with high probability, not certainty.
 
 - [x] **The backup panel scopes its switches to the right action** (2026-08-30, ADR-062). Two switches above two buttons said nothing about which applied where, and the restore ignored the keys switch entirely — it always overwrote the device's API keys when the file had any. Now two blocks, each with its own options and its own button, and a restore-keys choice that actually reaches `import()`.

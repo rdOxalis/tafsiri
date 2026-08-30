@@ -27,7 +27,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _mistralVisible = false;
   bool _claudeVisible = false;
   bool _openAiVisible = false;
-  bool _initialized = false;
+
+  /// The settings the fields were last filled from, so a later change can be
+  /// told from what the user is typing (ADR-064).
+  SettingsState? _shown;
   String _appVersion = '';
 
   @override
@@ -53,14 +56,31 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     super.dispose();
   }
 
+  /// Fills the text fields from [s], and keeps doing so when the settings
+  /// change underneath them — a restore used to leave every field showing what
+  /// it showed before, so an imported API key looked like it had not arrived
+  /// (ADR-064).
+  ///
+  /// A field is only overwritten when the *stored* value actually changed and
+  /// the field is not already showing it. Typing therefore survives: the
+  /// keystroke writes the setting, the new value equals what is on screen, and
+  /// the controller — with the cursor in it — is left alone.
   void _syncControllers(SettingsState s) {
-    if (_initialized) return;
-    _mistralController.text = s.apiKeyMistral;
-    _claudeController.text = s.apiKeyClaude;
-    _openAiController.text = s.apiKeyOpenAI;
-    _targetLangController.text = s.targetLanguage;
-    _altLangController.text = s.altLanguage;
-    _initialized = true;
+    void apply(TextEditingController c, String value, String? previous) {
+      if (previous == value) return;
+      if (c.text == value) return;
+      c.value = TextEditingValue(
+        text: value,
+        selection: TextSelection.collapsed(offset: value.length),
+      );
+    }
+
+    apply(_mistralController, s.apiKeyMistral, _shown?.apiKeyMistral);
+    apply(_claudeController, s.apiKeyClaude, _shown?.apiKeyClaude);
+    apply(_openAiController, s.apiKeyOpenAI, _shown?.apiKeyOpenAI);
+    apply(_targetLangController, s.targetLanguage, _shown?.targetLanguage);
+    apply(_altLangController, s.altLanguage, _shown?.altLanguage);
+    _shown = s;
   }
 
   @override
@@ -68,13 +88,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     final settingsAsync = ref.watch(settingsProvider);
 
+    // The first fill happens in the data branch below, where the value is
+    // already there. Every later one arrives here, outside the build phase:
+    // writing to a controller mid-build would mark a listening TextField dirty
+    // while it is being built.
+    ref.listen(settingsProvider, (_, next) {
+      final value = next.valueOrNull;
+      if (value != null) _syncControllers(value);
+    });
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
       body: settingsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(e.toString())),
         data: (settings) {
-          _syncControllers(settings);
+          if (_shown == null) _syncControllers(settings);
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
