@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-065: The notes heading is shown in the two configured languages
+**Date:** 2026-08-30
+**Status:** Accepted
+**Context:** With the app's interface in English but Swahili and German configured, the correction notes read `Suggestions` above `- bereits korrekt`. The notes themselves follow the confident language (ADR-063); their heading followed the *interface* language, which is a third language that has nothing to do with the translation. It is also the wrong opportunity to waste: the heading is one of the few pieces of interface a learner reads on every single result, so it can teach a word instead of merely labelling a section.
+**Decision:** Render the heading as **learning language · confident language** — `Mapendekezo · Vorschläge` — taken from Tafsiri's own translations rather than from the model, so it can only ever be wording a translator wrote. The free-text language field is matched the way `kTesseractLanguageCodes` already matches it: English name, native name or two-letter code. A language Tafsiri is not translated into contributes nothing rather than falling back to English, identical terms collapse to one (Danish and Norwegian both say *Forslag*, and `Forslag · Forslag` is noise), and if neither side is known the interface language is used, which is what was shown before.
+**Consequences:** `bilingualTerm` takes the string getter rather than a fixed key, so the same helper serves the word-explanations heading of ADR-060 on its branch, and anything similar later. It is a pure function over an `AppLocalizations` lookup, which makes the interesting cases — unknown language, duplicate term, odd spelling — testable without a widget. Two existing widget tests changed their expected text, which is the honest signal that this is a visible change: with the defaults (Swahili, English) the heading now reads `Mapendekezo · Suggestions`. The limit is the twelve UI languages: a learner of Turkish sees only their confident language's word. That is the right failure — the alternative would be machine-translating our own interface, which is exactly the thing this app does not do to text it cannot vouch for.
+
+---
+
 ## ADR-064: The settings fields show what is stored, not what was stored on opening
 **Date:** 2026-08-30
 **Status:** Accepted

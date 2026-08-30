@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/language_terms.dart';
 import '../../settings/settings_controller.dart';
 import '../translator_controller.dart';
 
@@ -12,8 +13,17 @@ class OutputArea extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(translatorProvider);
-    final correctionMode = ref.watch(
-      settingsProvider.select((s) => s.valueOrNull?.correctionMode ?? false),
+    final settings = ref.watch(settingsProvider).valueOrNull;
+    final correctionMode = settings?.correctionMode ?? false;
+
+    // The heading is one of the few pieces of interface a learner reads every
+    // time, so it is shown in the two languages they configured rather than in
+    // the app's own (ADR-065).
+    final notesTitle = bilingualTerm(
+      learningLanguage: settings?.targetLanguage ?? '',
+      confidentLanguage: settings?.altLanguage ?? '',
+      term: (l) => l.correctionNotesTitle,
+      fallback: l10n,
     );
 
     return Padding(
@@ -28,7 +38,13 @@ class OutputArea extends ConsumerWidget {
             Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 48, 12),
-                child: _buildBody(context, l10n, state, correctionMode),
+                child: _buildBody(
+                  context,
+                  l10n,
+                  state,
+                  correctionMode,
+                  notesTitle,
+                ),
               ),
             ),
             if (state.outputText != null && !state.isLoading)
@@ -60,6 +76,7 @@ class OutputArea extends ConsumerWidget {
     AppLocalizations l10n,
     TranslatorState state,
     bool correctionMode,
+    String notesTitle,
   ) {
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -130,7 +147,7 @@ class OutputArea extends ConsumerWidget {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    l10n.correctionNotesTitle,
+                    notesTitle,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),

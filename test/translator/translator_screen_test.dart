@@ -243,7 +243,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Tafadhali nipe siagi.'), findsOneWidget);
-      expect(find.text('Suggestions'), findsOneWidget);
+      // The heading follows the two configured languages rather than the app's
+      // own (ADR-065); the defaults here are Swahili and English.
+      expect(find.text('Mapendekezo · Suggestions'), findsOneWidget);
       expect(
         find.text('- Butter → siagi: German for "butter".'),
         findsOneWidget,
@@ -257,7 +259,7 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      expect(find.text('Suggestions'), findsNothing);
+      expect(find.text('Mapendekezo · Suggestions'), findsNothing);
     });
 
     testWidgets('an edited input keeps the result and flags it (ADR-055)',

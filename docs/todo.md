@@ -176,6 +176,8 @@
 
 ## Done
 
+- [x] **The notes heading is bilingual** (2026-08-30, ADR-065). `Suggestions` sat above German notes because the heading followed the app's interface language. It now reads `Mapendekezo · Vorschläge` — learning language first — from Tafsiri's own translations.
+
 - [x] **Notes come back in the confident language, not English** (2026-08-30, ADR-063). Swahili + Deutsch configured, notes in English: the rule was buried in the prompt and the "already correct" bullet was prescribed as an English literal. The rule now leads the prompt and names English as the mistake.
 
 - [x] **A restored API key shows up in the field** (2026-08-30, ADR-064). The restore worked; the screen just kept showing the old, empty value, which looks identical to a failed import. The fields now follow the stored settings without disturbing typing.

@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- **The "Suggestions" heading appears in your two languages** (ADR-065), not in the app's interface language: `Mapendekezo · Vorschläge` for someone learning Swahili from German. The words come from Tafsiri's own translations, so they are always wording a translator wrote. A language Tafsiri is not translated into is simply left out, and if both are unknown the interface language is used as before.
+
 ### Fixed
 - **The notes are written in your confident language** (ADR-063). With Swahili and German configured, the correction notes still came back in English — the instruction was in the prompt but buried in a rule halfway down, and English is what an AI falls back to. It is now the first thing the prompt says, and it names English as the specific mistake to avoid. The "already correct" line was worse than buried: it was prescribed as English text, so the commonest case of all was guaranteed to come back in the wrong language. Your app language never played a part in this and is still never sent to the provider — it changes the interface, never a translation.
 - **A restored API key is visible immediately** (ADR-064). Restoring a backup into an install with no key set worked, but the field stayed empty until the screen was rebuilt, so it looked as though nothing had been imported. The settings fields now follow what is stored — the language fields too, which had the same fault — while leaving whatever you are typing alone.
