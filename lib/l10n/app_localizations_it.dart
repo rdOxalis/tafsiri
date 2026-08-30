@@ -310,4 +310,41 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Il testo qui sopra è cambiato — il risultato qui sotto è della versione precedente.';
+
+  @override
+  String get backupSaveGroup => 'Salva un backup';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Scrive le impostazioni e la cronologia delle traduzioni in un file a tua scelta.';
+
+  @override
+  String get backupRestoreGroup => 'Ripristina da un backup';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Legge un file a tua scelta. Le tue impostazioni vengono sempre sostituite da quelle contenute nel file.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Disattivato: il file non contiene chiavi e le reinserisci dopo il ripristino.';
+
+  @override
+  String get backupRestoreKeys => 'Ripristina le chiavi API';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Solo se il file ne contiene. Disattivato mantiene le chiavi già presenti su questo dispositivo.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Disattivato: il backup viene unito alla tua cronologia, non si perde nulla.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'Verranno usate le chiavi API del file, se ne contiene.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Le tue chiavi API attuali vengono mantenute, anche se il file ne contiene altre.';
 }

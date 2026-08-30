@@ -113,5 +113,15 @@
   "backupImportConfirmMessageReplace": "Le impostazioni attuali verranno sostituite da quelle del file e l’intera cronologia delle traduzioni verrà eliminata e sostituita da quella del backup. L’operazione non può essere annullata.",
   "backupImportedReplaced": "Cronologia sostituita — {added} traduzioni ripristinate",
   "outputStaleLabel": "Non corrisponde più al testo qui sopra",
-  "outputStaleTooltip": "Il testo qui sopra è cambiato — il risultato qui sotto è della versione precedente."
+  "outputStaleTooltip": "Il testo qui sopra è cambiato — il risultato qui sotto è della versione precedente.",
+  "backupSaveGroup": "Salva un backup",
+  "backupSaveGroupExplain": "Scrive le impostazioni e la cronologia delle traduzioni in un file a tua scelta.",
+  "backupRestoreGroup": "Ripristina da un backup",
+  "backupRestoreGroupExplain": "Legge un file a tua scelta. Le tue impostazioni vengono sempre sostituite da quelle contenute nel file.",
+  "backupIncludeKeysHint": "Disattivato: il file non contiene chiavi e le reinserisci dopo il ripristino.",
+  "backupRestoreKeys": "Ripristina le chiavi API",
+  "backupRestoreKeysHint": "Solo se il file ne contiene. Disattivato mantiene le chiavi già presenti su questo dispositivo.",
+  "backupMergeHistoryHint": "Disattivato: il backup viene unito alla tua cronologia, non si perde nulla.",
+  "backupImportConfirmKeysYes": "Verranno usate le chiavi API del file, se ne contiene.",
+  "backupImportConfirmKeysNo": "Le tue chiavi API attuali vengono mantenute, anche se il file ne contiene altre."
 }

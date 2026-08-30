@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Tus ajustes actuales se sustituirán por los del archivo, y todo tu historial de traducciones se borrará y se sustituirá por el de la copia. Esto no se puede deshacer.",
   "backupImportedReplaced": "Historial reemplazado: {added} traducciones restauradas",
   "outputStaleLabel": "Ya no coincide con el texto de arriba",
-  "outputStaleTooltip": "El texto de arriba ha cambiado — el resultado de abajo es de la versión anterior."
+  "outputStaleTooltip": "El texto de arriba ha cambiado — el resultado de abajo es de la versión anterior.",
+  "backupSaveGroup": "Guardar una copia",
+  "backupSaveGroupExplain": "Escribe tus ajustes y tu historial de traducciones en un archivo que elijas.",
+  "backupRestoreGroup": "Restaurar desde una copia",
+  "backupRestoreGroupExplain": "Lee un archivo que elijas. Tus ajustes se sustituyen siempre por los del archivo.",
+  "backupIncludeKeysHint": "Desactivado: el archivo no contiene claves y las vuelves a introducir tras restaurar.",
+  "backupRestoreKeys": "Restaurar claves de API",
+  "backupRestoreKeysHint": "Solo si el archivo las contiene. Desactivado conserva las claves que ya hay en este dispositivo.",
+  "backupMergeHistoryHint": "Desactivado: la copia se combina con tu historial, no se pierde nada.",
+  "backupImportConfirmKeysYes": "Se usarán las claves de API del archivo, si las contiene.",
+  "backupImportConfirmKeysNo": "Se conservan tus claves de API actuales, aunque el archivo contenga otras."
 }

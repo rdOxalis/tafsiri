@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Deine aktuellen Einstellungen werden durch die aus der Datei ersetzt, und dein gesamter Übersetzungsverlauf wird gelöscht und durch den der Sicherung ersetzt. Das lässt sich nicht rückgängig machen.",
   "backupImportedReplaced": "Verlauf ersetzt — {added} Übersetzungen wiederhergestellt",
   "outputStaleLabel": "Passt nicht mehr zum Text oben",
-  "outputStaleTooltip": "Der Text oben wurde geändert — das Ergebnis unten stammt noch von der vorherigen Fassung."
+  "outputStaleTooltip": "Der Text oben wurde geändert — das Ergebnis unten stammt noch von der vorherigen Fassung.",
+  "backupSaveGroup": "Sicherung speichern",
+  "backupSaveGroupExplain": "Schreibt Deine Einstellungen und den Übersetzungsverlauf in eine Datei Deiner Wahl.",
+  "backupRestoreGroup": "Aus einer Sicherung wiederherstellen",
+  "backupRestoreGroupExplain": "Liest eine Datei Deiner Wahl. Deine Einstellungen werden dabei immer durch die aus der Datei ersetzt.",
+  "backupIncludeKeysHint": "Aus: Die Datei enthält keine Schlüssel, und Du gibst sie nach dem Wiederherstellen erneut ein.",
+  "backupRestoreKeys": "API-Schlüssel wiederherstellen",
+  "backupRestoreKeysHint": "Nur wenn die Datei welche enthält. Aus behält die Schlüssel, die auf diesem Gerät stehen.",
+  "backupMergeHistoryHint": "Aus: Die Sicherung wird in Deinen Verlauf eingefügt, es geht nichts verloren.",
+  "backupImportConfirmKeysYes": "API-Schlüssel aus der Datei werden übernommen, sofern sie welche enthält.",
+  "backupImportConfirmKeysNo": "Deine aktuellen API-Schlüssel bleiben erhalten, auch wenn die Datei andere enthält."
 }

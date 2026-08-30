@@ -309,4 +309,41 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Tekst powyżej został zmieniony — wynik poniżej pochodzi z poprzedniej wersji.';
+
+  @override
+  String get backupSaveGroup => 'Zapisz kopię zapasową';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Zapisuje Twoje ustawienia i historię tłumaczeń do wybranego pliku.';
+
+  @override
+  String get backupRestoreGroup => 'Przywróć z kopii zapasowej';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Odczytuje wybrany plik. Twoje ustawienia są zawsze zastępowane tymi z pliku.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Wyłączone: plik nie zawiera kluczy, wpiszesz je ponownie po przywróceniu.';
+
+  @override
+  String get backupRestoreKeys => 'Przywróć klucze API';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Tylko jeśli plik je zawiera. Wyłączone zachowuje klucze już obecne na tym urządzeniu.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Wyłączone: kopia zostaje scalona z Twoją historią, nic nie ginie.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'Klucze API z pliku zostaną użyte, jeśli plik je zawiera.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Twoje obecne klucze API zostaną zachowane, nawet jeśli plik zawiera inne.';
 }

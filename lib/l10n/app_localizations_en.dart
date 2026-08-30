@@ -309,6 +309,43 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'The text above has changed — the result below is from the previous version.';
+
+  @override
+  String get backupSaveGroup => 'Save a backup';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Writes your settings and translation history to a file you choose.';
+
+  @override
+  String get backupRestoreGroup => 'Restore from a backup';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Reads a file you choose. Your settings are always replaced by the ones in it.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Off: the file holds no keys, and you enter them again after restoring.';
+
+  @override
+  String get backupRestoreKeys => 'Restore API keys';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Only if the file contains any. Off keeps the keys already on this device.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Off: the backup is merged into your history, nothing is lost.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'API keys from the file will be used, if it contains any.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Your current API keys are kept, even if the file contains others.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -616,4 +653,41 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   @override
   String get outputStaleTooltip =>
       'The text above has changed — the result below is from the previous version.';
+
+  @override
+  String get backupSaveGroup => 'Save a backup';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Writes your settings and translation history to a file you choose.';
+
+  @override
+  String get backupRestoreGroup => 'Restore from a backup';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Reads a file you choose. Your settings are always replaced by the ones in it.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Off: the file holds no keys, and you enter them again after restoring.';
+
+  @override
+  String get backupRestoreKeys => 'Restore API keys';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Only if the file contains any. Off keeps the keys already on this device.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Off: the backup is merged into your history, nothing is lost.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'API keys from the file will be used, if it contains any.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Your current API keys are kept, even if the file contains others.';
 }

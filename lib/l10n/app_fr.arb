@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Vos réglages actuels seront remplacés par ceux du fichier, et tout votre historique de traduction sera supprimé et remplacé par celui de la sauvegarde. Cette action est irréversible.",
   "backupImportedReplaced": "Historique remplacé — {added} traductions restaurées",
   "outputStaleLabel": "Ne correspond plus au texte ci-dessus",
-  "outputStaleTooltip": "Le texte ci-dessus a changé — le résultat ci-dessous provient de la version précédente."
+  "outputStaleTooltip": "Le texte ci-dessus a changé — le résultat ci-dessous provient de la version précédente.",
+  "backupSaveGroup": "Enregistrer une sauvegarde",
+  "backupSaveGroupExplain": "Écrit vos paramètres et votre historique de traduction dans un fichier de votre choix.",
+  "backupRestoreGroup": "Restaurer depuis une sauvegarde",
+  "backupRestoreGroupExplain": "Lit un fichier de votre choix. Vos paramètres sont toujours remplacés par ceux qu'il contient.",
+  "backupIncludeKeysHint": "Désactivé : le fichier ne contient aucune clé, vous les saisissez à nouveau après la restauration.",
+  "backupRestoreKeys": "Restaurer les clés API",
+  "backupRestoreKeysHint": "Seulement si le fichier en contient. Désactivé, les clés déjà présentes sur cet appareil sont conservées.",
+  "backupMergeHistoryHint": "Désactivé : la sauvegarde est fusionnée avec votre historique, rien n'est perdu.",
+  "backupImportConfirmKeysYes": "Les clés API du fichier seront utilisées, s'il en contient.",
+  "backupImportConfirmKeysNo": "Vos clés API actuelles sont conservées, même si le fichier en contient d'autres."
 }

@@ -22,6 +22,8 @@
 
 ## Backlog
 
+- [ ] **Watch whether the input-is-data rule holds in the wild** (ADR-061). The fencing and the prompt rule are tested, but only against the request that is sent — no test can prove a model obeys them. If another "it answered me instead of translating" report arrives, the next lever is a check on the response: a reply that is suspiciously conversational for a short input could be retried once with a stricter instruction. Not worth building before there is a second case.
+
 - [ ] **(Windows) Bump the pinned SQLite version when it matters.** `windows/sqlite3.cmake` pins 3.53.4 with one SHA3-256 per architecture; a bump means editing four values from sqlite.org's download page. (ADR-035)
 - [ ] **(Windows, optional) Code-sign the installer.** Unsigned, SmartScreen warns on first run. Needs a paid certificate. (ADR-035)
 - [ ] **(Linux, optional) Packaging beyond Debian.** `./build_deb.sh` covers Debian, Ubuntu and Mint since 1.0.14 (ADR-056), and `install.sh` covers a per-user install from source. Fedora/Arch users and anyone else still have only the tarball — an AppImage or a Flatpak would cover them all at once. Also open, and cheaper: an apt repository, so the .deb updates itself instead of being downloaded again. (ADR-032, ADR-056)
@@ -173,6 +175,10 @@
 ---
 
 ## Done
+
+- [x] **A one-word input is translated rather than answered** (2026-08-30, ADR-061). "Korrektur" came back as "tell me what to correct, I am waiting". The text is now fenced in a tag and both prompts state that whatever is inside it is content, never an instruction. Mitigation, not a guarantee — prompt-level rules are followed with high probability, not certainty.
+
+- [x] **The backup panel scopes its switches to the right action** (2026-08-30, ADR-062). Two switches above two buttons said nothing about which applied where, and the restore ignored the keys switch entirely — it always overwrote the device's API keys when the file had any. Now two blocks, each with its own options and its own button, and a restore-keys choice that actually reaches `import()`.
 
 - [x] **The language slots are named by role rather than by rank** (2026-08-23, ADR-059). "Primary/Secondary" read as "mine / the other one" in every language — in Swahili and Bulgarian it inverted the meaning outright — so testers set the two fields the wrong way round. Now "Learning language" / "Confident language" in all 12 UI languages, with the direction of translation spelled out in both explanations. Storage keys unchanged.
 

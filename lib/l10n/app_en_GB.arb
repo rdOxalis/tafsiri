@@ -400,5 +400,45 @@
   "outputStaleTooltip": "The text above has changed — the result below is from the previous version.",
   "@outputStaleTooltip": {
     "description": "Tooltip on the translate/improve button while the result is out of date"
+  },
+  "backupSaveGroup": "Save a backup",
+  "@backupSaveGroup": {
+    "description": "Heading of the save half of the backup panel"
+  },
+  "backupSaveGroupExplain": "Writes your settings and translation history to a file you choose.",
+  "@backupSaveGroupExplain": {
+    "description": "One-line explanation under the save heading"
+  },
+  "backupRestoreGroup": "Restore from a backup",
+  "@backupRestoreGroup": {
+    "description": "Heading of the restore half of the backup panel"
+  },
+  "backupRestoreGroupExplain": "Reads a file you choose. Your settings are always replaced by the ones in it.",
+  "@backupRestoreGroupExplain": {
+    "description": "One-line explanation under the restore heading"
+  },
+  "backupIncludeKeysHint": "Off: the file holds no keys, and you enter them again after restoring.",
+  "@backupIncludeKeysHint": {
+    "description": "Hint under the include-keys switch while it is off"
+  },
+  "backupRestoreKeys": "Restore API keys",
+  "@backupRestoreKeys": {
+    "description": "Label of the switch deciding whether a restore takes the keys from the file"
+  },
+  "backupRestoreKeysHint": "Only if the file contains any. Off keeps the keys already on this device.",
+  "@backupRestoreKeysHint": {
+    "description": "Hint under the restore-keys switch"
+  },
+  "backupMergeHistoryHint": "Off: the backup is merged into your history, nothing is lost.",
+  "@backupMergeHistoryHint": {
+    "description": "Hint under the replace-history switch while it is off"
+  },
+  "backupImportConfirmKeysYes": "API keys from the file will be used, if it contains any.",
+  "@backupImportConfirmKeysYes": {
+    "description": "Line in the restore dialog when keys will be taken from the file"
+  },
+  "backupImportConfirmKeysNo": "Your current API keys are kept, even if the file contains others.",
+  "@backupImportConfirmKeysNo": {
+    "description": "Line in the restore dialog when the current keys are kept"
   }
 }

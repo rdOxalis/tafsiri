@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Je huidige instellingen worden vervangen door die uit het bestand, en je volledige vertaalgeschiedenis wordt verwijderd en vervangen door die van de back-up. Dit kan niet ongedaan worden gemaakt.",
   "backupImportedReplaced": "Geschiedenis vervangen — {added} vertalingen teruggezet",
   "outputStaleLabel": "Komt niet meer overeen met de tekst hierboven",
-  "outputStaleTooltip": "De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie."
+  "outputStaleTooltip": "De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie.",
+  "backupSaveGroup": "Back-up opslaan",
+  "backupSaveGroupExplain": "Schrijft je instellingen en vertaalgeschiedenis naar een bestand dat je kiest.",
+  "backupRestoreGroup": "Herstellen uit een back-up",
+  "backupRestoreGroupExplain": "Leest een bestand dat je kiest. Je instellingen worden altijd vervangen door die uit het bestand.",
+  "backupIncludeKeysHint": "Uit: het bestand bevat geen sleutels, en je voert ze na het herstellen opnieuw in.",
+  "backupRestoreKeys": "API-sleutels herstellen",
+  "backupRestoreKeysHint": "Alleen als het bestand ze bevat. Uit behoudt de sleutels die al op dit apparaat staan.",
+  "backupMergeHistoryHint": "Uit: de back-up wordt samengevoegd met je geschiedenis, er gaat niets verloren.",
+  "backupImportConfirmKeysYes": "API-sleutels uit het bestand worden overgenomen, als het die bevat.",
+  "backupImportConfirmKeysNo": "Je huidige API-sleutels blijven behouden, ook als het bestand andere bevat."
 }

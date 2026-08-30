@@ -311,4 +311,41 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Maandishi ya juu yamebadilika — matokeo ya chini bado ni ya toleo lililotangulia.';
+
+  @override
+  String get backupSaveGroup => 'Hifadhi nakala';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Huandika mipangilio yako na historia ya tafsiri kwenye faili unayochagua.';
+
+  @override
+  String get backupRestoreGroup => 'Rejesha kutoka kwa nakala';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Husoma faili unayochagua. Mipangilio yako hubadilishwa kila mara na ile iliyo kwenye faili.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Imezimwa: faili haina funguo, na utaziweka tena baada ya kurejesha.';
+
+  @override
+  String get backupRestoreKeys => 'Rejesha funguo za API';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Ni ikiwa tu faili ina funguo. Ikizimwa, funguo zilizopo kwenye kifaa hiki hubaki.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Imezimwa: nakala huunganishwa kwenye historia yako, hakuna kinachopotea.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'Funguo za API kutoka kwenye faili zitatumika, ikiwa zipo.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Funguo zako za API za sasa zitabaki, hata kama faili ina nyingine.';
 }

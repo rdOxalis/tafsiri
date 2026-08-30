@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Bieżące ustawienia zostaną zastąpione tymi z pliku, a cała historia tłumaczeń zostanie usunięta i zastąpiona tą z kopii. Tej operacji nie można cofnąć.",
   "backupImportedReplaced": "Historia zastąpiona — przywrócono {added} tłumaczeń",
   "outputStaleLabel": "Nie pasuje już do tekstu powyżej",
-  "outputStaleTooltip": "Tekst powyżej został zmieniony — wynik poniżej pochodzi z poprzedniej wersji."
+  "outputStaleTooltip": "Tekst powyżej został zmieniony — wynik poniżej pochodzi z poprzedniej wersji.",
+  "backupSaveGroup": "Zapisz kopię zapasową",
+  "backupSaveGroupExplain": "Zapisuje Twoje ustawienia i historię tłumaczeń do wybranego pliku.",
+  "backupRestoreGroup": "Przywróć z kopii zapasowej",
+  "backupRestoreGroupExplain": "Odczytuje wybrany plik. Twoje ustawienia są zawsze zastępowane tymi z pliku.",
+  "backupIncludeKeysHint": "Wyłączone: plik nie zawiera kluczy, wpiszesz je ponownie po przywróceniu.",
+  "backupRestoreKeys": "Przywróć klucze API",
+  "backupRestoreKeysHint": "Tylko jeśli plik je zawiera. Wyłączone zachowuje klucze już obecne na tym urządzeniu.",
+  "backupMergeHistoryHint": "Wyłączone: kopia zostaje scalona z Twoją historią, nic nie ginie.",
+  "backupImportConfirmKeysYes": "Klucze API z pliku zostaną użyte, jeśli plik je zawiera.",
+  "backupImportConfirmKeysNo": "Twoje obecne klucze API zostaną zachowane, nawet jeśli plik zawiera inne."
 }

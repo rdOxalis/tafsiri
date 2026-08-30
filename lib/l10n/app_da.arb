@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Dine nuværende indstillinger erstattes af dem i filen, og hele din oversættelseshistorik slettes og erstattes af sikkerhedskopiens. Det kan ikke fortrydes.",
   "backupImportedReplaced": "Historik erstattet — {added} oversættelser gendannet",
   "outputStaleLabel": "Passer ikke længere til teksten ovenfor",
-  "outputStaleTooltip": "Teksten ovenfor er ændret — resultatet nedenfor stammer fra den forrige version."
+  "outputStaleTooltip": "Teksten ovenfor er ændret — resultatet nedenfor stammer fra den forrige version.",
+  "backupSaveGroup": "Gem en sikkerhedskopi",
+  "backupSaveGroupExplain": "Skriver dine indstillinger og din oversættelseshistorik til en fil, du vælger.",
+  "backupRestoreGroup": "Gendan fra en sikkerhedskopi",
+  "backupRestoreGroupExplain": "Læser en fil, du vælger. Dine indstillinger erstattes altid af dem i filen.",
+  "backupIncludeKeysHint": "Fra: filen indeholder ingen nøgler, og du indtaster dem igen efter gendannelsen.",
+  "backupRestoreKeys": "Gendan API-nøgler",
+  "backupRestoreKeysHint": "Kun hvis filen indeholder nogen. Fra beholder de nøgler, der allerede er på denne enhed.",
+  "backupMergeHistoryHint": "Fra: sikkerhedskopien flettes ind i din historik, intet går tabt.",
+  "backupImportConfirmKeysYes": "API-nøgler fra filen bliver brugt, hvis den indeholder nogen.",
+  "backupImportConfirmKeysNo": "Dine nuværende API-nøgler beholdes, også selvom filen indeholder andre."
 }

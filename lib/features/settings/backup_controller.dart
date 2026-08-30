@@ -97,7 +97,14 @@ class BackupController extends Notifier<bool> {
 
   /// [replaceHistory] wipes the existing history instead of merging the backup
   /// into it — destructive, so the UI confirms it separately.
-  Future<BackupResult> import({bool replaceHistory = false}) async {
+  ///
+  /// [restoreApiKeys] is the user's answer to "take the keys from the file
+  /// too?" (ADR-062). It can only ever take keys away from the file, never
+  /// invent them: a file written without keys restores none either way.
+  Future<BackupResult> import({
+    bool replaceHistory = false,
+    bool restoreApiKeys = true,
+  }) async {
     if (state) return const BackupCancelled();
     state = true;
     try {
@@ -106,9 +113,10 @@ class BackupController extends Notifier<bool> {
 
       final contents = BackupService.parse(raw);
 
+      final keysRestored = restoreApiKeys && contents.hasApiKeys;
       await ref.read(settingsProvider.notifier).restore(
             contents.settings,
-            restoreApiKeys: contents.hasApiKeys,
+            restoreApiKeys: keysRestored,
           );
 
       final dao = await ref.read(translationDaoProvider.future);
@@ -118,11 +126,12 @@ class BackupController extends Notifier<bool> {
       ref.invalidate(historyProvider);
 
       debugPrint('[Backup] imported $added of ${contents.history.length} '
-          'entries, replace=$replaceHistory, keys=${contents.hasApiKeys}');
+          'entries, replace=$replaceHistory, keys=$keysRestored '
+          '(file has keys: ${contents.hasApiKeys})');
       return BackupImported(
         entriesAdded: added,
         entriesSkipped: contents.history.length - added,
-        apiKeysRestored: contents.hasApiKeys,
+        apiKeysRestored: keysRestored,
         historyReplaced: replaceHistory,
       );
     } on BackupFormatException catch (e) {

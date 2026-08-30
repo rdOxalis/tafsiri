@@ -670,6 +670,66 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'The text above has changed — the result below is from the previous version.'**
   String get outputStaleTooltip;
+
+  /// Heading of the save half of the backup panel
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Save a backup'**
+  String get backupSaveGroup;
+
+  /// One-line explanation under the save heading
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Writes your settings and translation history to a file you choose.'**
+  String get backupSaveGroupExplain;
+
+  /// Heading of the restore half of the backup panel
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Restore from a backup'**
+  String get backupRestoreGroup;
+
+  /// One-line explanation under the restore heading
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Reads a file you choose. Your settings are always replaced by the ones in it.'**
+  String get backupRestoreGroupExplain;
+
+  /// Hint under the include-keys switch while it is off
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Off: the file holds no keys, and you enter them again after restoring.'**
+  String get backupIncludeKeysHint;
+
+  /// Label of the switch deciding whether a restore takes the keys from the file
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Restore API keys'**
+  String get backupRestoreKeys;
+
+  /// Hint under the restore-keys switch
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Only if the file contains any. Off keeps the keys already on this device.'**
+  String get backupRestoreKeysHint;
+
+  /// Hint under the replace-history switch while it is off
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Off: the backup is merged into your history, nothing is lost.'**
+  String get backupMergeHistoryHint;
+
+  /// Line in the restore dialog when keys will be taken from the file
+  ///
+  /// In en_GB, this message translates to:
+  /// **'API keys from the file will be used, if it contains any.'**
+  String get backupImportConfirmKeysYes;
+
+  /// Line in the restore dialog when the current keys are kept
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Your current API keys are kept, even if the file contains others.'**
+  String get backupImportConfirmKeysNo;
 }
 
 class _AppLocalizationsDelegate

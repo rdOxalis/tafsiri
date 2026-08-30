@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Mipangilio yako ya sasa itabadilishwa na ile ya faili, na historia yako yote ya tafsiri itafutwa na kubadilishwa na ile ya nakala. Hatua hii haiwezi kutenduliwa.",
   "backupImportedReplaced": "Historia imebadilishwa — tafsiri {added} zimerejeshwa",
   "outputStaleLabel": "Hayaendani tena na maandishi ya juu",
-  "outputStaleTooltip": "Maandishi ya juu yamebadilika — matokeo ya chini bado ni ya toleo lililotangulia."
+  "outputStaleTooltip": "Maandishi ya juu yamebadilika — matokeo ya chini bado ni ya toleo lililotangulia.",
+  "backupSaveGroup": "Hifadhi nakala",
+  "backupSaveGroupExplain": "Huandika mipangilio yako na historia ya tafsiri kwenye faili unayochagua.",
+  "backupRestoreGroup": "Rejesha kutoka kwa nakala",
+  "backupRestoreGroupExplain": "Husoma faili unayochagua. Mipangilio yako hubadilishwa kila mara na ile iliyo kwenye faili.",
+  "backupIncludeKeysHint": "Imezimwa: faili haina funguo, na utaziweka tena baada ya kurejesha.",
+  "backupRestoreKeys": "Rejesha funguo za API",
+  "backupRestoreKeysHint": "Ni ikiwa tu faili ina funguo. Ikizimwa, funguo zilizopo kwenye kifaa hiki hubaki.",
+  "backupMergeHistoryHint": "Imezimwa: nakala huunganishwa kwenye historia yako, hakuna kinachopotea.",
+  "backupImportConfirmKeysYes": "Funguo za API kutoka kwenye faili zitatumika, ikiwa zipo.",
+  "backupImportConfirmKeysNo": "Funguo zako za API za sasa zitabaki, hata kama faili ina nyingine."
 }

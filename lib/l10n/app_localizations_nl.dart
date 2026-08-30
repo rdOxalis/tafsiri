@@ -310,4 +310,41 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'De tekst hierboven is gewijzigd — het resultaat hieronder is van de vorige versie.';
+
+  @override
+  String get backupSaveGroup => 'Back-up opslaan';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Schrijft je instellingen en vertaalgeschiedenis naar een bestand dat je kiest.';
+
+  @override
+  String get backupRestoreGroup => 'Herstellen uit een back-up';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Leest een bestand dat je kiest. Je instellingen worden altijd vervangen door die uit het bestand.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Uit: het bestand bevat geen sleutels, en je voert ze na het herstellen opnieuw in.';
+
+  @override
+  String get backupRestoreKeys => 'API-sleutels herstellen';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Alleen als het bestand ze bevat. Uit behoudt de sleutels die al op dit apparaat staan.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Uit: de back-up wordt samengevoegd met je geschiedenis, er gaat niets verloren.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'API-sleutels uit het bestand worden overgenomen, als het die bevat.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Je huidige API-sleutels blijven behouden, ook als het bestand andere bevat.';
 }

@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **A word is translated, not answered** (ADR-061). Entering "Korrektur" on its own could come back as "tell me what you want corrected, I am waiting" — the app handed your text to the AI as if you were talking to it, so anything that reads like a question or a command could be obeyed instead of translated. Your text is now fenced off and both prompts say plainly that whatever is inside it is content to translate, never an instruction. Named after the case that was reported, because a rule with a concrete example is followed more reliably than an abstract one.
+- **The backup panel says which switch belongs to which button** (ADR-062). "Include API keys" and "Replace history" used to sit together above both buttons, and nobody could tell what applied to saving and what to restoring — replacing the history applies to restoring only. Saving and restoring are now two separate blocks, each with its own options and its own button. Restoring has gained a switch of its own for the keys, and this one matters: until now a restore silently overwrote the API keys on your device whenever the file contained any, with no way to decline. It defaults to on, so a restore after a reinstall still brings your keys back — but you can now turn it off and keep the keys you already have. Every switch says what it does in both positions, and the restore dialog repeats it before you commit.
+
 ---
 
 ## [1.0.15] - 2026-08-23

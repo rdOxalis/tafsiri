@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Dina nuvarande inställningar ersätts med dem i filen, och hela din översättningshistorik raderas och ersätts med säkerhetskopians. Detta går inte att ångra.",
   "backupImportedReplaced": "Historik ersatt — {added} översättningar återställda",
   "outputStaleLabel": "Stämmer inte längre med texten ovan",
-  "outputStaleTooltip": "Texten ovan har ändrats — resultatet nedan är från den tidigare versionen."
+  "outputStaleTooltip": "Texten ovan har ändrats — resultatet nedan är från den tidigare versionen.",
+  "backupSaveGroup": "Spara en säkerhetskopia",
+  "backupSaveGroupExplain": "Skriver dina inställningar och din översättningshistorik till en fil du väljer.",
+  "backupRestoreGroup": "Återställ från en säkerhetskopia",
+  "backupRestoreGroupExplain": "Läser en fil du väljer. Dina inställningar ersätts alltid av dem i filen.",
+  "backupIncludeKeysHint": "Av: filen innehåller inga nycklar, och du anger dem igen efter återställningen.",
+  "backupRestoreKeys": "Återställ API-nycklar",
+  "backupRestoreKeysHint": "Bara om filen innehåller några. Av behåller nycklarna som redan finns på den här enheten.",
+  "backupMergeHistoryHint": "Av: säkerhetskopian sammanfogas med din historik, inget går förlorat.",
+  "backupImportConfirmKeysYes": "API-nycklar från filen används, om den innehåller några.",
+  "backupImportConfirmKeysNo": "Dina nuvarande API-nycklar behålls, även om filen innehåller andra."
 }

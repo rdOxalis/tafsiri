@@ -311,4 +311,41 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Le texte ci-dessus a changé — le résultat ci-dessous provient de la version précédente.';
+
+  @override
+  String get backupSaveGroup => 'Enregistrer une sauvegarde';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Écrit vos paramètres et votre historique de traduction dans un fichier de votre choix.';
+
+  @override
+  String get backupRestoreGroup => 'Restaurer depuis une sauvegarde';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Lit un fichier de votre choix. Vos paramètres sont toujours remplacés par ceux qu\'il contient.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Désactivé : le fichier ne contient aucune clé, vous les saisissez à nouveau après la restauration.';
+
+  @override
+  String get backupRestoreKeys => 'Restaurer les clés API';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Seulement si le fichier en contient. Désactivé, les clés déjà présentes sur cet appareil sont conservées.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Désactivé : la sauvegarde est fusionnée avec votre historique, rien n\'est perdu.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'Les clés API du fichier seront utilisées, s\'il en contient.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Vos clés API actuelles sont conservées, même si le fichier en contient d\'autres.';
 }

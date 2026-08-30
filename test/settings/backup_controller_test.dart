@@ -208,6 +208,69 @@ void main() {
           'sk-from-backup');
     });
 
+    test('declining the keys keeps the ones on this device (ADR-062)',
+        () async {
+      final source = makeContainer(prefs: {kPrefApiKeyClaude: 'sk-from-backup'});
+      await source.read(settingsProvider.future);
+      await source.read(backupProvider.notifier).export(includeApiKeys: true);
+      fileIo.toRead = fileIo.written;
+
+      final target = makeContainer(prefs: {kPrefApiKeyClaude: 'sk-mine'});
+      await target.read(settingsProvider.future);
+      final result = await target
+          .read(backupProvider.notifier)
+          .import(restoreApiKeys: false);
+
+      // The file has keys and they are deliberately not taken.
+      expect((result as BackupImported).apiKeysRestored, isFalse);
+      expect(target.read(settingsProvider).requireValue.apiKeyClaude, 'sk-mine');
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString(kPrefApiKeyClaude), 'sk-mine');
+      // Everything else still restored.
+      expect(result.entriesAdded, isNonNegative);
+    });
+
+    test('asking for keys a keyless file does not have restores none',
+        () async {
+      final source = makeContainer(prefs: {kPrefApiKeyClaude: 'sk-from-backup'});
+      await source.read(settingsProvider.future);
+      await source.read(backupProvider.notifier).export(includeApiKeys: false);
+      fileIo.toRead = fileIo.written;
+
+      final target = makeContainer(prefs: {kPrefApiKeyClaude: 'sk-mine'});
+      await target.read(settingsProvider.future);
+      final result = await target
+          .read(backupProvider.notifier)
+          .import(restoreApiKeys: true);
+
+      // The switch can only ever take keys away from a file, never invent them.
+      expect((result as BackupImported).apiKeysRestored, isFalse);
+      expect(target.read(settingsProvider).requireValue.apiKeyClaude, 'sk-mine');
+    });
+
+    test('the two restore choices are independent', () async {
+      final source = makeContainer(prefs: {kPrefApiKeyClaude: 'sk-from-backup'});
+      await source.read(settingsProvider.future);
+      await source.read(backupProvider.notifier).export(includeApiKeys: true);
+      fileIo.toRead = fileIo.written;
+
+      await dao.insert(_entry('Local', DateTime.utc(2026, 8, 12, 9)));
+      final target = makeContainer(prefs: {kPrefApiKeyClaude: 'sk-mine'});
+      await target.read(settingsProvider.future);
+      final result = await target.read(backupProvider.notifier).import(
+            replaceHistory: true,
+            restoreApiKeys: false,
+          );
+
+      // History replaced, keys kept — the combination the old UI could not
+      // express, because one switch stood for both actions.
+      expect((result as BackupImported).historyReplaced, isTrue);
+      expect(result.apiKeysRestored, isFalse);
+      expect(target.read(settingsProvider).requireValue.apiKeyClaude, 'sk-mine');
+      final remaining = await dao.getAll();
+      expect(remaining.any((e) => e.sourceText == 'Local'), isFalse);
+    });
+
     test('importing the same file twice adds nothing the second time',
         () async {
       await dao.insert(_entry('Hello', DateTime.utc(2026, 8, 12, 6)));

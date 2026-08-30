@@ -111,11 +111,19 @@ flowchart TD
 
     IO2[BackupFileIo.open] --> BP[BackupService.parse]
     BP -->|settings| SCR[SettingsController.restore]
+    BP -->|api keys| RK{restore keys?}
+    RK -->|yes · default, if the file has any| SCR
+    RK -->|no| KEEP[keys on this device are kept]
     BP -->|history| RM{replace history?}
     RM -->|no · default| DM[TranslationDao.insertMissing]
     RM -->|yes| DR[TranslationDao.replaceAllWith]
     DM & DR --> HP[invalidate historyProvider]
 ```
+
+The three choices are asked in the place they apply (ADR-062): *include keys*
+belongs to the save half of the panel, *restore keys* and *replace history* to
+the restore half. `restoreApiKeys` can only decline keys the file holds — it
+never invents keys a keyless backup does not contain.
 
 Document shape:
 
@@ -355,7 +363,7 @@ LANG:[ISO-639-1 code of the detected source language]
 [the complete translation]
 ```
 
-**User message** (`buildUserMessage(text)`): the raw input text only.
+**User message** (`buildUserMessage(text)`): the input text, unchanged, fenced in `<text_to_translate>` tags (ADR-061). The fence is the only addition — nothing is trimmed or escaped — and both system prompts open with the shared `inputIsDataRule`, which states that everything inside the tags is content to translate rather than an instruction to follow. Without it a bare word such as "Korrektur" was answered instead of translated.
 
 The `LANG:xx` prefix is stripped by `AiResult.parse()` before display. The code is stored as `lastSourceLang` for STT locale mapping (see ADR-013, ADR-021).
 

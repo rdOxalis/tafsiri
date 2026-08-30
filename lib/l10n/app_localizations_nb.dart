@@ -310,4 +310,41 @@ class AppLocalizationsNb extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Teksten over er endret — resultatet nedenfor er fra den forrige versjonen.';
+
+  @override
+  String get backupSaveGroup => 'Lagre en sikkerhetskopi';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Skriver innstillingene og oversettelsesloggen din til en fil du velger.';
+
+  @override
+  String get backupRestoreGroup => 'Gjenopprett fra en sikkerhetskopi';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Leser en fil du velger. Innstillingene dine erstattes alltid av dem i filen.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Av: filen inneholder ingen nøkler, og du skriver dem inn igjen etter gjenopprettingen.';
+
+  @override
+  String get backupRestoreKeys => 'Gjenopprett API-nøkler';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Bare hvis filen inneholder noen. Av beholder nøklene som allerede finnes på denne enheten.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Av: sikkerhetskopien flettes inn i loggen din, ingenting går tapt.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'API-nøkler fra filen blir brukt, hvis den inneholder noen.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Dine nåværende API-nøkler beholdes, selv om filen inneholder andre.';
 }

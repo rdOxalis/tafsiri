@@ -114,5 +114,15 @@
   "backupImportConfirmMessageReplace": "Dine nåværende innstillinger erstattes av dem i filen, og hele oversettelsesloggen slettes og erstattes av sikkerhetskopiens. Dette kan ikke angres.",
   "backupImportedReplaced": "Logg erstattet — {added} oversettelser gjenopprettet",
   "outputStaleLabel": "Passer ikke lenger til teksten over",
-  "outputStaleTooltip": "Teksten over er endret — resultatet nedenfor er fra den forrige versjonen."
+  "outputStaleTooltip": "Teksten over er endret — resultatet nedenfor er fra den forrige versjonen.",
+  "backupSaveGroup": "Lagre en sikkerhetskopi",
+  "backupSaveGroupExplain": "Skriver innstillingene og oversettelsesloggen din til en fil du velger.",
+  "backupRestoreGroup": "Gjenopprett fra en sikkerhetskopi",
+  "backupRestoreGroupExplain": "Leser en fil du velger. Innstillingene dine erstattes alltid av dem i filen.",
+  "backupIncludeKeysHint": "Av: filen inneholder ingen nøkler, og du skriver dem inn igjen etter gjenopprettingen.",
+  "backupRestoreKeys": "Gjenopprett API-nøkler",
+  "backupRestoreKeysHint": "Bare hvis filen inneholder noen. Av beholder nøklene som allerede finnes på denne enheten.",
+  "backupMergeHistoryHint": "Av: sikkerhetskopien flettes inn i loggen din, ingenting går tapt.",
+  "backupImportConfirmKeysYes": "API-nøkler fra filen blir brukt, hvis den inneholder noen.",
+  "backupImportConfirmKeysNo": "Dine nåværende API-nøkler beholdes, selv om filen inneholder andre."
 }

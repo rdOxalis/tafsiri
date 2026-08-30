@@ -505,10 +505,15 @@ class _BackupPanel extends ConsumerStatefulWidget {
 }
 
 class _BackupPanelState extends ConsumerState<_BackupPanel> {
-  /// Both default to off and are deliberately not persisted: each is the
-  /// riskier choice of its pair, so it has to be asked for every time rather
+  /// Deliberately not persisted: each choice is asked again every time rather
   /// than happening because a switch remembered.
+  ///
+  /// Their defaults differ because the risk sits on opposite sides (ADR-062).
+  /// Writing keys into a file is the risky direction, so saving defaults to
+  /// leaving them out. Restoring keys is what someone reinstalling the app is
+  /// there for, so it defaults to on and the switch exists to decline.
   bool _includeApiKeys = false;
+  bool _restoreApiKeys = true;
   bool _replaceHistory = false;
 
   @override
@@ -517,78 +522,134 @@ class _BackupPanelState extends ConsumerState<_BackupPanel> {
     final busy = ref.watch(backupProvider);
     final theme = Theme.of(context);
 
+    // One block per action, each with its own options directly above its own
+    // button. The switches used to sit together above both buttons, which left
+    // no way to tell which one applied to what — and "Replace history" applies
+    // to only one of them (ADR-062).
+    Widget group({
+      required IconData icon,
+      required String title,
+      required String explain,
+      required List<Widget> options,
+      required Widget button,
+    }) =>
+        Container(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: theme.colorScheme.outlineVariant),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(icon, size: 18, color: theme.colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text(title, style: theme.textTheme.titleSmall),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                explain,
+                style: theme.textTheme.bodySmall
+                    ?.copyWith(color: theme.colorScheme.outline),
+              ),
+              ...options,
+              const SizedBox(height: 8),
+              SizedBox(width: double.infinity, child: button),
+            ],
+          ),
+        );
+
+    Widget option({
+      required bool value,
+      required String title,
+      String? hint,
+      String? warning,
+      required ValueChanged<bool> onChanged,
+    }) =>
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          value: value,
+          title: Text(title, style: theme.textTheme.bodyMedium),
+          subtitle: warning != null
+              ? Text(
+                  warning,
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(color: theme.colorScheme.error),
+                )
+              : (hint == null
+                  ? null
+                  : Text(
+                      hint,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: theme.colorScheme.outline),
+                    )),
+          onChanged: busy ? null : onChanged,
+        );
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           l10n.backupExplain,
           style: theme.textTheme.bodySmall
               ?.copyWith(color: theme.colorScheme.outline),
         ),
-        const SizedBox(height: 8),
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          value: _includeApiKeys,
-          title: Text(l10n.backupIncludeKeys),
-          subtitle: _includeApiKeys
-              ? Text(
-                  l10n.backupIncludeKeysWarning,
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: theme.colorScheme.error),
-                )
-              : null,
-          onChanged: busy ? null : (v) => setState(() => _includeApiKeys = v),
-          secondary: Icon(
-            Icons.save_alt,
-            size: 18,
-            color: theme.colorScheme.outline,
-          ),
-        ),
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          value: _replaceHistory,
-          title: Text(l10n.backupReplaceHistory),
-          subtitle: _replaceHistory
-              ? Text(
-                  l10n.backupReplaceHistoryWarning,
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: theme.colorScheme.error),
-                )
-              : null,
-          onChanged: busy ? null : (v) => setState(() => _replaceHistory = v),
-          secondary: Icon(
-            Icons.settings_backup_restore,
-            size: 18,
-            color: theme.colorScheme.outline,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            Expanded(
-              child: FilledButton.tonalIcon(
-                icon: busy
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.save_alt),
-                label: Text(l10n.backupExportButton),
-                onPressed: busy ? null : _export,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.settings_backup_restore),
-                label: Text(l10n.backupImportButton),
-                onPressed: busy ? null : _import,
-              ),
+        const SizedBox(height: 12),
+        group(
+          icon: Icons.save_alt,
+          title: l10n.backupSaveGroup,
+          explain: l10n.backupSaveGroupExplain,
+          options: [
+            option(
+              value: _includeApiKeys,
+              title: l10n.backupIncludeKeys,
+              hint: l10n.backupIncludeKeysHint,
+              warning: _includeApiKeys ? l10n.backupIncludeKeysWarning : null,
+              onChanged: (v) => setState(() => _includeApiKeys = v),
             ),
           ],
+          button: FilledButton.tonalIcon(
+            icon: busy
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.save_alt),
+            label: Text(l10n.backupExportButton),
+            onPressed: busy ? null : _export,
+          ),
+        ),
+        const SizedBox(height: 12),
+        group(
+          icon: Icons.settings_backup_restore,
+          title: l10n.backupRestoreGroup,
+          explain: l10n.backupRestoreGroupExplain,
+          options: [
+            option(
+              value: _restoreApiKeys,
+              title: l10n.backupRestoreKeys,
+              hint: l10n.backupRestoreKeysHint,
+              onChanged: (v) => setState(() => _restoreApiKeys = v),
+            ),
+            option(
+              value: _replaceHistory,
+              title: l10n.backupReplaceHistory,
+              hint: l10n.backupMergeHistoryHint,
+              warning:
+                  _replaceHistory ? l10n.backupReplaceHistoryWarning : null,
+              onChanged: (v) => setState(() => _replaceHistory = v),
+            ),
+          ],
+          button: OutlinedButton.icon(
+            icon: const Icon(Icons.settings_backup_restore),
+            label: Text(l10n.backupImportButton),
+            onPressed: busy ? null : _import,
+          ),
         ),
       ],
     );
@@ -618,9 +679,25 @@ class _BackupPanelState extends ConsumerState<_BackupPanel> {
           color: _replaceHistory ? theme.colorScheme.error : null,
         ),
         title: Text(l10n.backupImportConfirmTitle),
-        content: Text(_replaceHistory
-            ? l10n.backupImportConfirmMessageReplace
-            : l10n.backupImportConfirmMessage),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(_replaceHistory
+                ? l10n.backupImportConfirmMessageReplace
+                : l10n.backupImportConfirmMessage),
+            const SizedBox(height: 8),
+            // Says what the two switches will do, so the answer is visible at
+            // the moment of deciding rather than only above the button.
+            Text(
+              _restoreApiKeys
+                  ? l10n.backupImportConfirmKeysYes
+                  : l10n.backupImportConfirmKeysNo,
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.outline),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -643,7 +720,10 @@ class _BackupPanelState extends ConsumerState<_BackupPanel> {
 
     final result = await ref
         .read(backupProvider.notifier)
-        .import(replaceHistory: _replaceHistory);
+        .import(
+          replaceHistory: _replaceHistory,
+          restoreApiKeys: _restoreApiKeys,
+        );
     if (!mounted) return;
     _report(result);
   }

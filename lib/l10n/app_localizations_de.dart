@@ -312,4 +312,41 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Der Text oben wurde geändert — das Ergebnis unten stammt noch von der vorherigen Fassung.';
+
+  @override
+  String get backupSaveGroup => 'Sicherung speichern';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Schreibt Deine Einstellungen und den Übersetzungsverlauf in eine Datei Deiner Wahl.';
+
+  @override
+  String get backupRestoreGroup => 'Aus einer Sicherung wiederherstellen';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Liest eine Datei Deiner Wahl. Deine Einstellungen werden dabei immer durch die aus der Datei ersetzt.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Aus: Die Datei enthält keine Schlüssel, und Du gibst sie nach dem Wiederherstellen erneut ein.';
+
+  @override
+  String get backupRestoreKeys => 'API-Schlüssel wiederherstellen';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Nur wenn die Datei welche enthält. Aus behält die Schlüssel, die auf diesem Gerät stehen.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Aus: Die Sicherung wird in Deinen Verlauf eingefügt, es geht nichts verloren.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'API-Schlüssel aus der Datei werden übernommen, sofern sie welche enthält.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Deine aktuellen API-Schlüssel bleiben erhalten, auch wenn die Datei andere enthält.';
 }

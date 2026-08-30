@@ -312,4 +312,41 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get outputStaleTooltip =>
       'Текстът по-горе е променен — резултатът по-долу е от предишната версия.';
+
+  @override
+  String get backupSaveGroup => 'Запазване на резервно копие';
+
+  @override
+  String get backupSaveGroupExplain =>
+      'Записва настройките и историята на преводите ти във файл по твой избор.';
+
+  @override
+  String get backupRestoreGroup => 'Възстановяване от резервно копие';
+
+  @override
+  String get backupRestoreGroupExplain =>
+      'Чете избран от теб файл. Настройките ти винаги се заменят с тези във файла.';
+
+  @override
+  String get backupIncludeKeysHint =>
+      'Изключено: файлът не съдържа ключове и ги въвеждаш отново след възстановяването.';
+
+  @override
+  String get backupRestoreKeys => 'Възстановяване на API ключовете';
+
+  @override
+  String get backupRestoreKeysHint =>
+      'Само ако файлът съдържа такива. Изключено запазва ключовете, които вече са на това устройство.';
+
+  @override
+  String get backupMergeHistoryHint =>
+      'Изключено: резервното копие се слива с историята ти, нищо не се губи.';
+
+  @override
+  String get backupImportConfirmKeysYes =>
+      'Ще бъдат използвани API ключовете от файла, ако съдържа такива.';
+
+  @override
+  String get backupImportConfirmKeysNo =>
+      'Текущите ти API ключове се запазват, дори файлът да съдържа други.';
 }
