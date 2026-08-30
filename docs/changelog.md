@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.16] - 2026-08-30
+
 ### Changed
 - **The "Suggestions" heading appears in your two languages** (ADR-065), not in the app's interface language: `Mapendekezo · Vorschläge` for someone learning Swahili from German. The words come from Tafsiri's own translations, so they are always wording a translator wrote. A language Tafsiri is not translated into is simply left out, and if both are unknown the interface language is used as before.
 
