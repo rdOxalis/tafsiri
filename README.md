@@ -61,12 +61,42 @@ API keys are stored locally on your device and never transmitted anywhere other 
 
 ---
 
+## What It Actually Costs
+
+Paying per use puts people off, and usually for a reason that turns out not to apply: most of us have only ever met the subscription model, where an app charges a monthly fee whether you open it or not, and around €5 a month is normal for a translation app. So "bring your own API key" reads as *another* subscription, on top of a setup step.
+
+It is not. An API key is metered credit. You are billed for the text you actually send and receive, priced per million tokens — roughly per million word-pieces. A translation is a few hundred of them. Nothing accrues on the days you do not use the app.
+
+Here is what that works out to. Tafsiri's prompts are a fixed size and can be measured, so these are calculated from the real thing rather than guessed. The rates are Anthropic's for Claude Haiku 4.5, the model Tafsiri uses: $1 per million tokens in, $5 per million out.
+
+| One request | sent | returned | cost |
+|---|---|---|---|
+| Translation | ~410 tokens | ~50 tokens | **$0.0007** |
+| Correction with suggestions | ~780 tokens | ~150 tokens | **$0.0015** |
+| Translation with word explanations *(coming)* | ~710 tokens | ~250 tokens | **$0.0020** |
+
+Fractions of a cent are hard to picture, so scaled up to a month of steady use — thirty requests every single day, which is a lot of translating:
+
+| A month at 30 requests a day | cost |
+|---|---|
+| All plain translations | **$0.63** |
+| All corrections | **$1.35** |
+| All translations with explanations *(coming)* | **$1.80** |
+
+Under two dollars a month for the heaviest mode, run every day. Mixed real use lands nearer a dollar. ChatGPT via `gpt-4o-mini` is cheaper still, and Mistral's free tier costs nothing at all.
+
+**What you get for it** is the part worth weighing against a subscription. Not word-for-word substitution, but a translation that reads as the language is actually spoken. Correction mode, which does not merely translate but rewrites what you wrote the way a native speaker would and explains every change. Explanations of the essential words, with their part of speech and their derived forms, coming with the next release. That is a tutor's work, and it costs about what one coffee a year costs.
+
+**Two honest caveats.** Providers sell credit in blocks rather than by the cent — typically from $5 — so that is what you load up front, not what you spend per month; at the rates above it lasts a long time. And published rates change: [Anthropic](https://www.anthropic.com/pricing#api), [OpenAI](https://openai.com/api/pricing/) and [Mistral](https://mistral.ai/pricing) each list their current ones. Every provider's console shows what you have actually spent, and lets you set a hard spending limit — worth doing on day one.
+
+---
+
 ## Supported AI Providers
 
 | Provider | Model used | Free tier |
 |---|---|---|
 | **Mistral AI** | `mistral-small-latest` | Yes — generous free tier |
-| **Anthropic Claude** | `claude-haiku-*` | No — pay as you go |
+| **Anthropic Claude** | `claude-haiku-4-5` | No — pay as you go |
 | **OpenAI ChatGPT** | `gpt-4o-mini` | No — pay as you go |
 
 **Mistral is the recommended starting point** if you want to try the app for free.
