@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-069: Both Linux release artefacts come from the packaging script
+**Date:** 2026-09-05
+**Status:** Accepted
+**Context:** ADR-066 removed the build machine's home directory from the plugin libraries in the `.deb`. It fixed the `.deb` only. The `.tar.gz` next to it on every release was rolled by hand — `tar` over `build/linux/x64/release/bundle` — which is outside the packaging step, so it never saw `fix_plugin_runpaths` and carried `/home/ralf/…/linux/flutter/ephemeral` in three libraries. Found while building 1.0.18, by checking the tarball the way the `.deb` had been checked rather than by assuming the earlier fix covered both.
+**Decision:** `build_deb.sh` produces both artefacts, both by default, staging the tarball into its own versioned directory and running the same `fix_plugin_runpaths` over it. `--deb-only` skips it. The script keeps its name even though it now makes two things; renaming it would break the README, `install.sh`'s sibling relationship and anyone's muscle memory for a cosmetic gain.
+**Consequences:** The defect could not have been caught by a test — nothing in the Dart suite can see an artefact that a shell script produces — and it was not caught by lintian either, because lintian only ever ran on the `.deb`. What actually prevents the next one is that there is no longer a hand-rolled step to forget: an artefact that ships is an artefact the script made. Everything already released as a `.tar.gz` up to and including 1.0.17 still carries the path. It is cosmetic rather than exploitable, the same judgement as ADR-066, so those are left as they are rather than re-cut.
+
+---
+
 ## ADR-068: The privacy policy is reachable from the first screen, not only from Settings
 **Date:** 2026-09-05
 **Status:** Accepted

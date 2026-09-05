@@ -161,7 +161,7 @@ To build from source instead, you need the Flutter SDK and `libgtk-3-dev`:
 ```bash
 ./install.sh          # builds and installs into ~/.local, no root required
 ./install.sh --uninstall
-./build_deb.sh        # builds the .deb into build/deb/ instead
+./build_deb.sh        # builds the .deb and the .tar.gz into build/deb/ instead
 ```
 
 **Windows** — needs the Flutter SDK, Visual Studio 2022 with "Desktop development with C++", and [Inno Setup](https://jrsoftware.org/isinfo.php) 6.3+ for the installer:

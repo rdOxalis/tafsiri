@@ -10,6 +10,12 @@
 #   ./build_deb.sh              build if needed, then package
 #   ./build_deb.sh --rebuild    force a clean rebuild first
 #   ./build_deb.sh --no-build   package the existing bundle, do not build
+#   ./build_deb.sh --deb-only   skip the .tar.gz
+#
+# Produces both Linux release artefacts: the .deb, and the .tar.gz for
+# distributions the .deb does not serve. Both by default and from one script,
+# because the tarball used to be made by hand and quietly missed the RUNPATH
+# fix the .deb had been given.
 #
 
 set -euo pipefail
@@ -234,6 +240,37 @@ fix_plugin_runpaths() {
     done
 }
 
+# The .tar.gz for anyone not on a Debian derivative: the same bundle, laid out
+# under one versioned directory so it unpacks into its own folder rather than
+# over the current one.
+#
+# It gets the same RUNPATH treatment as the .deb, from the same function. It
+# did not, for four releases: the fix lived in the packaging step and the
+# tarball was rolled by hand outside it, so every download carried the build
+# machine's home directory while the .deb next to it was clean (ADR-069).
+tarball() {
+    local version stamp
+    version="$(pubspec_version)"
+    [ -n "$version" ] || die "Could not read the version from pubspec.yaml."
+    stamp="$(cat "$BUNDLE_DIR/$STAMP_FILE" 2>/dev/null || build_stamp)"
+
+    local name="$BINARY_NAME-$version-linux-x64"
+    local root="$OUT_DIR/$name"
+    rm -rf "$root"
+    mkdir -p "$OUT_DIR"
+
+    info "Assembling the tarball tree…"
+    cp -r "$BUNDLE_DIR" "$root"
+    rm -f "$root/$STAMP_FILE"
+    fix_plugin_runpaths "$root/lib"
+
+    tar -czf "$OUT_DIR/$name.tar.gz" -C "$OUT_DIR" "$name"
+    rm -rf "$root"
+
+    info "Done: $OUT_DIR/$name.tar.gz ($(du -h "$OUT_DIR/$name.tar.gz" | cut -f1), built from $stamp)"
+    echo "  Unpack it and run ./$name/$BINARY_NAME — no installation, no root."
+}
+
 package() {
     local version stamp
     version="$(pubspec_version)"
@@ -295,13 +332,15 @@ package() {
 
 REBUILD="no"
 DO_BUILD="yes"
+WANT_TARBALL="yes"
 
 while [ $# -gt 0 ]; do
     case "$1" in
         --rebuild)  REBUILD="yes" ;;
         --no-build) DO_BUILD="no" ;;
+        --deb-only) WANT_TARBALL="no" ;;
         -h|--help)
-            sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+            sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
             exit 0 ;;
         *) die "Unknown option: $1 (try --help)" ;;
     esac
@@ -318,3 +357,5 @@ elif [ ! -x "$BUNDLE_DIR/$BINARY_NAME" ]; then
 fi
 
 package
+[ "$WANT_TARBALL" = "yes" ] && tarball
+exit 0
