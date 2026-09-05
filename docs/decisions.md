@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-068: The privacy policy is reachable from the first screen, not only from Settings
+**Date:** 2026-09-05
+**Status:** Accepted
+**Context:** The privacy policy existed as `docs/privacy-policy.md` and was linked from the README and the store listing, but nowhere in the app itself. Someone using Tafsiri had no way to reach it without leaving for a browser and knowing where to look. Reviewing it also turned up a dead link inside it: Mistral moved their policy to `legal.mistral.ai` and the old address now returns 404, so the one provider we recommend to newcomers was the one whose terms could not be read.
+**Decision:** Two entries, deliberately not one. Settings → About gets a row next to the licences and the source link, which is where someone goes when they are looking for it on purpose. The translator screen gets a quiet footer under the output area, which serves the other case entirely: being told that a policy exists without having gone looking. That is the one that costs something — a few pixels off the two text areas — and it is why the footer is `labelSmall` in the muted variant colour rather than a second button competing with Translate. Both open `kPrivacyPolicyUrl`, which points at the rendered file in the repository rather than at a separate site, so the policy is versioned alongside the app it describes. The launcher moved to `lib/shared/open_url.dart` so both callers share one behaviour, including its silence when no browser is registered.
+**Consequences:** Available in all 13 UI languages as `privacyPolicyButton`. A test asserts the footer sits below the action button and carries the small muted style, because the way this regresses is by quietly growing into a second call to action. Links are the one thing here that break without a line changing on our side, so a further test guards what a test can see: that the app's URL still matches the file in the repository, and that the addresses known to have died do not return. It cannot check that the far ends are alive — that stays a manual pass, and the Mistral 404 is the evidence that it is worth making.
+
+---
+
 ## ADR-067: The Claude model is named by alias, not by dated snapshot
 **Date:** 2026-09-05
 **Status:** Accepted

@@ -13,7 +13,7 @@ Tafsiri is an AI-powered translation app. This policy explains what data is proc
 ### Text you enter for translation
 Text entered into the translation field is sent to the AI provider you have configured (Mistral, Anthropic Claude, or OpenAI ChatGPT) via their respective APIs. This is necessary to perform the translation. Please refer to the privacy policies of these providers for details on how they handle your data:
 
-- Mistral AI: https://mistral.ai/privacy-policy
+- Mistral AI: https://legal.mistral.ai/terms/privacy-policy
 - Anthropic (Claude): https://www.anthropic.com/privacy
 - OpenAI (ChatGPT): https://openai.com/policies/privacy-policy
 

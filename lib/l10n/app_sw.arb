@@ -49,6 +49,7 @@
   "@licensesButton": {
     "description": "Opens the open-source licence list"
   },
+  "privacyPolicyButton": "Sera ya faragha",
   "sourceCodeButton": "Msimbo wa chanzo kwenye GitHub",
   "@sourceCodeButton": {
     "description": "Opens the project on GitHub"

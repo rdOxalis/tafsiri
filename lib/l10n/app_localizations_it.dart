@@ -124,6 +124,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get licensesButton => 'Licenze open source';
 
   @override
+  String get privacyPolicyButton => 'Informativa sulla privacy';
+
+  @override
   String get sourceCodeButton => 'Codice sorgente su GitHub';
 
   @override

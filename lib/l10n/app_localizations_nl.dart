@@ -123,6 +123,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get licensesButton => 'Open-source-licenties';
 
   @override
+  String get privacyPolicyButton => 'Privacybeleid';
+
+  @override
   String get sourceCodeButton => 'Broncode op GitHub';
 
   @override

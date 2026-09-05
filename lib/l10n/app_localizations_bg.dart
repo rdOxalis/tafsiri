@@ -124,6 +124,9 @@ class AppLocalizationsBg extends AppLocalizations {
   String get licensesButton => 'Лицензи с отворен код';
 
   @override
+  String get privacyPolicyButton => 'Политика за поверителност';
+
+  @override
   String get sourceCodeButton => 'Изходен код в GitHub';
 
   @override

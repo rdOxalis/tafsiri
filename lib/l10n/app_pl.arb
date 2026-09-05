@@ -49,6 +49,7 @@
   "@licensesButton": {
     "description": "Opens the open-source licence list"
   },
+  "privacyPolicyButton": "Polityka prywatności",
   "sourceCodeButton": "Kod źródłowy na GitHubie",
   "@sourceCodeButton": {
     "description": "Opens the project on GitHub"

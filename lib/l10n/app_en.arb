@@ -145,6 +145,10 @@
   "@licensesButton": {
     "description": "Opens the open-source licence list"
   },
+  "privacyPolicyButton": "Privacy policy",
+  "@privacyPolicyButton": {
+    "description": "Opens the privacy policy in the browser"
+  },
   "sourceCodeButton": "Source code on GitHub",
   "@sourceCodeButton": {
     "description": "Opens the project on GitHub"

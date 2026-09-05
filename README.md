@@ -245,7 +245,7 @@ One practical tip: **a cropped photo reads far better than a full screenshot.** 
 
 Camera and microphone are used entirely on-device — Google ML Kit OCR and Android STT on the phone, Tesseract on the desktop. Reading the clipboard is local too. No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
 
-Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md)
+Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md) — also linked from inside the app, at the foot of the translator screen and in Settings under About.
 
 ---
 

@@ -9,7 +9,7 @@ import 'package:tafsiri/l10n/app_localizations.dart';
 
 /// The About section at the foot of Settings: the version someone is asked for
 /// when reporting a bug, the licence list the dependencies oblige us to show,
-/// and the way back to the source.
+/// the way back to the source, and the privacy policy (ADR-068).
 void main() {
   setUp(() {
     SharedPreferences.setMockInitialValues({});
@@ -53,6 +53,7 @@ void main() {
     expect(find.text('About'), findsOneWidget);
     expect(find.text('Version 1.0.12+12'), findsOneWidget);
     expect(find.text('Open Source Licences'), findsOneWidget);
+    expect(find.text('Privacy policy'), findsOneWidget);
     expect(find.text('Source code on GitHub'), findsOneWidget);
     // The donate entry moved into this section rather than being replaced.
     expect(find.text('Buy me a coffee'), findsOneWidget);

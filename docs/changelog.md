@@ -7,14 +7,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.18] - 2026-09-05
+
 ### Added
+- **The privacy policy is reachable from inside the app** (ADR-068), in two places for two different situations. A quiet link at the foot of the translator screen, which tells you a policy exists without your having gone looking for one, and an entry in Settings under About next to the licences, which is where you go when you are looking for it on purpose. Both open the policy on GitHub, where it is versioned with the app it describes. Translated into all 13 UI languages.
 - **The README says what a month of use actually costs.** Paying per request puts people off, largely because the subscription model is the only one most of us have met — so "bring your own API key" reads as another monthly fee rather than as metered credit that accrues nothing on the days the app is unused. The new section works it out from Tafsiri's real prompt sizes: fractions of a cent per request, and between $0.63 and $1.80 for a month at thirty requests every day, depending on the mode. It states plainly that none of that money reaches us: Tafsiri is open source and free, there are no referral links or revenue share, and the contract is between the user and the provider they name in Settings. It also names the two things a table of rates hides — that credit is sold in blocks of about $5 up front, and that published rates change — and points at each provider's own pricing page.
 
 ### Fixed
+- **The link to Mistral's privacy policy no longer leads nowhere.** Mistral moved their policy to a new address and the old one returns "page not found" — so of the three providers, the one recommended to newcomers was the one whose terms could not actually be read. A test now guards the addresses known to have died, though only a person clicking them can confirm the new ones are alive.
 - **Claude keeps working when Anthropic updates the model** (ADR-067). The app asked for a dated snapshot of Claude Haiku, which is a specific version that gets retired eventually — and when it did, translation via Claude would have stopped working on every device that had not been updated, with nothing anyone could do about it. It now names the model without the date, which follows the current version. Mistral and ChatGPT were already set up this way.
 
 ### Changed
-- **The Debian package no longer carries the build machine's home directory** (ADR-066). The plugin libraries came out of the Flutter build with a library search path naming the directory they were compiled in, and that string shipped inside every `.deb`. It never affected anything — the app resolves its libraries through the main binary's own path first, verified with the build tree hidden — but a distributed package should not know where it was built. `build_deb.sh` now rewrites that path to `$ORIGIN` and requires `patchelf` to do it.
+- **The Debian package no longer carries the build machine's home directory** (ADR-066). The plugin libraries came out of the Flutter build with a library search path naming the directory they were compiled in, and that string shipped inside every `.deb`. It never affected anything — the app resolves its libraries through the main binary's own path first, verified with the build tree hidden — but a distributed package should not know where it was built. `build_deb.sh` now rewrites that path to `$ORIGIN` and requires `patchelf` to do it. The corrected package was re-uploaded to the 1.0.17 release, so it is already in users' hands.
 
 ---
 

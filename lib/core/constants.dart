@@ -25,6 +25,12 @@ const kModeCorrect = 'correct';
 // External URLs
 const kPayPalDonateUrl = 'https://paypal.me/CarlDarkman';
 const kSourceCodeUrl = 'https://github.com/rdOxalis/tafsiri';
+
+/// The privacy policy, reachable from the translator screen and from Settings
+/// (ADR-068). Points at the rendered file in the repository rather than at a
+/// separate site, so it is versioned with the app it describes.
+const kPrivacyPolicyUrl =
+    'https://github.com/rdOxalis/tafsiri/blob/main/docs/privacy-policy.md';
 const kMistralApiKeyUrl = 'https://console.mistral.ai/api-keys';
 const kClaudeApiKeyUrl = 'https://console.anthropic.com/settings/keys';
 const kOpenAiApiKeyUrl = 'https://platform.openai.com/api-keys';

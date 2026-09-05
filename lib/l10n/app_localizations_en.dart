@@ -123,6 +123,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get licensesButton => 'Open Source Licenses';
 
   @override
+  String get privacyPolicyButton => 'Privacy policy';
+
+  @override
   String get sourceCodeButton => 'Source code on GitHub';
 
   @override
@@ -465,6 +468,9 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get licensesButton => 'Open Source Licences';
+
+  @override
+  String get privacyPolicyButton => 'Privacy policy';
 
   @override
   String get sourceCodeButton => 'Source code on GitHub';

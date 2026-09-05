@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/constants.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/open_url.dart';
 import '../settings/settings_controller.dart';
 import 'translator_controller.dart';
 import 'widgets/action_bar.dart';
@@ -57,6 +59,7 @@ class TranslatorScreen extends ConsumerWidget {
           const Expanded(child: InputArea()),
           const ActionBar(),
           const Expanded(child: OutputArea()),
+          const _PrivacyPolicyFooter(),
         ],
       ),
     );
@@ -104,6 +107,46 @@ class _CorrectionModeToggle extends ConsumerWidget {
             ?.copyWith(color: on ? scheme.onPrimary : null),
         onSelected: (value) =>
             ref.read(settingsProvider.notifier).setCorrectionMode(value),
+      ),
+    );
+  }
+}
+
+/// The privacy policy, one tap from the screen the app opens on (ADR-068).
+///
+/// It is also in Settings under About, which is where someone goes looking for
+/// it deliberately. This is for the other case: being told, without having
+/// gone looking, that there is a policy and where it is. That is why it is
+/// worth the few pixels it costs the two text areas above.
+///
+/// Deliberately quiet — `labelSmall` at reduced opacity — so it reads as a
+/// footer rather than as a control competing with Translate.
+class _PrivacyPolicyFooter extends StatelessWidget {
+  const _PrivacyPolicyFooter();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Center(
+        child: TextButton(
+          onPressed: () => openExternalUrl(kPrivacyPolicyUrl),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            l10n.privacyPolicyButton,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              decoration: TextDecoration.underline,
+              decorationColor: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
       ),
     );
   }

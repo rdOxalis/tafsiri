@@ -123,6 +123,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get licensesButton => 'Licenser för öppen källkod';
 
   @override
+  String get privacyPolicyButton => 'Integritetspolicy';
+
+  @override
   String get sourceCodeButton => 'Källkod på GitHub';
 
   @override

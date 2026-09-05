@@ -341,6 +341,12 @@ abstract class AppLocalizations {
   /// **'Open Source Licences'**
   String get licensesButton;
 
+  /// No description provided for @privacyPolicyButton.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicyButton;
+
   /// Opens the project on GitHub
   ///
   /// In en_GB, this message translates to:

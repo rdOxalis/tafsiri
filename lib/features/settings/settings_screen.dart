@@ -7,6 +7,7 @@ import '../../core/constants.dart';
 import '../../core/locale_notifier.dart';
 import '../../core/services/backup_service.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/open_url.dart';
 import 'backup_controller.dart';
 import 'settings_controller.dart';
 
@@ -296,10 +297,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.privacy_tip_outlined),
+                title: Text(l10n.privacyPolicyButton),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => openExternalUrl(kPrivacyPolicyUrl),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.code),
                 title: Text(l10n.sourceCodeButton),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => _openUrl(kSourceCodeUrl),
+                onTap: () => openExternalUrl(kSourceCodeUrl),
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -314,17 +322,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         },
       ),
     );
-  }
-
-  /// Opens [url] in the browser, silently doing nothing when nothing can.
-  ///
-  /// A desktop with no handler registered is the realistic case, and a dead
-  /// tap is a smaller annoyance than an error about a link.
-  Future<void> _openUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
   }
 
   void _showDonateDialog(BuildContext context, AppLocalizations l10n) {

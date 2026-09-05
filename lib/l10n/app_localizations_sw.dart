@@ -123,6 +123,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get licensesButton => 'Leseni za chanzo huria';
 
   @override
+  String get privacyPolicyButton => 'Sera ya faragha';
+
+  @override
   String get sourceCodeButton => 'Msimbo wa chanzo kwenye GitHub';
 
   @override

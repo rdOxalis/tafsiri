@@ -48,6 +48,7 @@
   "@licensesButton": {
     "description": "Opens the open-source licence list"
   },
+  "privacyPolicyButton": "Политика за поверителност",
   "sourceCodeButton": "Изходен код в GitHub",
   "@sourceCodeButton": {
     "description": "Opens the project on GitHub"

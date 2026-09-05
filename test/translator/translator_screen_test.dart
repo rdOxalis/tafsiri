@@ -94,6 +94,42 @@ void main() {
       );
     });
 
+    testWidgets('the privacy policy is one tap from the first screen',
+        (tester) async {
+      // Reachable without going looking for it (ADR-068): Settings has it too,
+      // but that only serves someone who already knows to search there.
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pump();
+
+      expect(find.text('Privacy policy'), findsOneWidget);
+      expect(
+        find.ancestor(
+          of: find.text('Privacy policy'),
+          matching: find.byType(TextButton),
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('the footer stays out of the way of Translate', (tester) async {
+      // A second full-strength button at the foot of the screen would compete
+      // with the action. It is labelSmall in the muted variant colour, not the
+      // body style, and it sits below the output area rather than beside it.
+      await tester.pumpWidget(_wrap(const TranslatorScreen()));
+      await tester.pump();
+
+      final context = tester.element(find.text('Privacy policy'));
+      final theme = Theme.of(context);
+      final label = tester.widget<Text>(find.text('Privacy policy'));
+      expect(label.style?.fontSize, theme.textTheme.labelSmall?.fontSize);
+      expect(label.style?.color, theme.colorScheme.onSurfaceVariant);
+
+      expect(
+        tester.getTopLeft(find.text('Privacy policy')).dy,
+        greaterThan(tester.getBottomLeft(find.byType(FilledButton)).dy),
+      );
+    });
+
     /// The platform override has to be cleared inside the test body: the test
     /// framework asserts every foundation debug variable is unset when the body
     /// returns, which is before `addTearDown` callbacks run.
