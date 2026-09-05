@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.17] - 2026-09-05
+
 ### Fixed
 - **Swahili interface corrected after tester reports.** Thirteen strings, three of them outright errors. The "How translation works" dialog said `yatatafsirishwa` — the causative-passive, "will be made to translate" — where the passive `yatatafsiriwa`, "will be translated", was meant. "Buy me a coffee" was `Nununulie`, a non-word; it is `Ninunulie kahawa`, the same object-prefix construction as `Nipe`. Both language explanations sent the translation `kwake`, "to him or her", instead of `kwa lugha hiyo`, into the language. The explanation of the learning language now says `usiyoizungumza vizuri`, "which you do not speak well", replacing a `hu-` prefix that could be read as its own opposite. Smaller ones: the Translator tab is `Kitafsiri` to match the dialog that already used it, the Improve button is `Boresha` rather than merely "correct", Delete is `Ondoa` so it no longer shares `Futa` with Clear, `kwenye` replaces `kwa` for things and places, and a `tu` moved to where "only if" lives — after `ikiwa` — rather than where it meant "contains only keys". Gallery stays "Gallery" by decision.
 
