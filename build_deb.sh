@@ -212,6 +212,28 @@ CONTROL
     # one more thing to get wrong.
 }
 
+# The plugin libraries leave the Flutter build with a RUNPATH naming
+# linux/flutter/ephemeral on the machine that built them. Harmless at runtime —
+# the main binary's $ORIGIN/lib satisfies every soname before a plugin's own
+# search path is ever consulted, verified with the build tree hidden — but a
+# builder's home directory has no place in a distributed package, and lintian
+# rightly objects. $ORIGIN is what they should have said: libflutter_linux_gtk.so
+# sits right beside them (ADR-066).
+#
+# A hard requirement rather than a warning: this is exactly the kind of finding
+# a warning trains everyone to scroll past.
+fix_plugin_runpaths() {
+    local libdir="$1" so
+    command -v patchelf >/dev/null 2>&1 \
+        || die "patchelf is needed to remove the build path from the plugin
+             libraries. Install it with:
+             sudo apt install patchelf"
+    for so in "$libdir"/*_plugin.so; do
+        [ -f "$so" ] || continue
+        patchelf --set-rpath '$ORIGIN' "$so"
+    done
+}
+
 package() {
     local version stamp
     version="$(pubspec_version)"
@@ -231,6 +253,7 @@ package() {
     mkdir -p "$libdir"
     cp -r "$BUNDLE_DIR"/. "$libdir/"
     rm -f "$libdir/$STAMP_FILE"
+    fix_plugin_runpaths "$libdir/lib"
 
     find "$libdir" -type f -exec chmod 644 {} +
     find "$libdir" -type d -exec chmod 755 {} +
@@ -253,7 +276,7 @@ package() {
     find "$root" -type d -exec chmod 755 {} +
 
     local deb="$OUT_DIR/${PACKAGE}_${version}_amd64.deb"
-    info "Building $deb…"
+    info "Building ${deb}…"
     # --root-owner-group makes every file root:root without needing fakeroot,
     # which is what a package installed system-wide has to be owned by.
     dpkg-deb --root-owner-group --build "$root" "$deb" >/dev/null

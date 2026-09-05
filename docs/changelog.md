@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- **The Debian package no longer carries the build machine's home directory** (ADR-066). The plugin libraries came out of the Flutter build with a library search path naming the directory they were compiled in, and that string shipped inside every `.deb`. It never affected anything — the app resolves its libraries through the main binary's own path first, verified with the build tree hidden — but a distributed package should not know where it was built. `build_deb.sh` now rewrites that path to `$ORIGIN` and requires `patchelf` to do it.
+
 ---
 
 ## [1.0.17] - 2026-09-05

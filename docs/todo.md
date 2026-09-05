@@ -41,6 +41,7 @@
 - [ ] **(Optional) FOSS-store distribution via IzzyOnDroid.** If a FOSS-store presence is ever wanted, IzzyOnDroid builds from GitHub release APKs and allows ML Kit / NonFree deps — keeps OCR, unlike the official F-Droid repo. (ADR-030)
 
 ### Done
+- [x] Debian package: plugin libraries no longer carry the build machine's home directory as RUNPATH — rewritten to `$ORIGIN` at packaging time. Verified harmless before and after with the build tree hidden; fixed for hygiene, not function. `patchelf` is now required to build the .deb. (2026-09-05, ADR-066)
 - [x] macOS: builds, runs, translates, reads images and takes dictation. Needed a deployment target of 12.0, CocoaPods instead of Swift Package Manager, the App Sandbox off so Tesseract can be launched, a search for the binary because a GUI app inherits no PATH, and the knowledge that macOS only shows a permission prompt to a foregrounded app. `build_macos.sh` installs it. (2026-08-15, ADR-048, ADR-051 to ADR-053)
 - [x] Decided **not** to bundle Tesseract on any desktop: the official releases now ship a Windows installer newer than UB Mannheim's, macOS has Homebrew, Linux has apt — against 25 MB of language data and 57 shared libraries on Linux. README says how per platform. (2026-08-15, ADR-050)
 - [x] Clipboard paste on Windows via PowerShell, confirmed by hand on Windows against a real clipboard. (2026-08-14, ADR-047)
