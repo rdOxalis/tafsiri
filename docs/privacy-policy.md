@@ -61,4 +61,4 @@ We may update this policy. The current version is always available at this URL. 
 ## Contact
 
 If you have questions about this privacy policy, contact us at:
-**rduenkelmann@googlemail.com**
+**mail@njerahouse.com**
