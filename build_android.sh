@@ -96,10 +96,30 @@ report_manifest() {
 # Phrased the other way round, as "fail if it says Android Debug", a translated
 # output would match nothing and a debug-signed artefact would sail through.
 assert_release_signed() {
-    local artefact="$1" owner
-    owner="$(unzip -p "$artefact" 'META-INF/*.RSA' 2>/dev/null \
-        | LC_ALL=C keytool -printcert 2>/dev/null \
-        | sed -n 's/^Owner: *//p' | head -1)"
+    local artefact="$1" owner=""
+    case "$artefact" in
+        *.apk)
+            # An APK carries a v2/v3 signature block, not a META-INF/*.RSA entry
+            # — only an AAB still has the JAR-style file — so only apksigner can
+            # read it. The first time this check met an APK, unzip found nothing,
+            # pipefail failed the pipeline, and set -e ended the script inside
+            # the assignment before die could say a word. Hence the || true on
+            # each pipeline: let the empty result reach the case below, which
+            # can explain itself.
+            local apksigner
+            apksigner="$(ls "${ANDROID_HOME:-$HOME/Android/Sdk}"/build-tools/*/apksigner \
+                2>/dev/null | sort -V | tail -1 || true)"
+            [ -n "$apksigner" ] \
+                || die "apksigner not found under \${ANDROID_HOME:-~/Android/Sdk}/build-tools."
+            owner="$("$apksigner" verify --print-certs "$artefact" 2>/dev/null \
+                | sed -n 's/^Signer #1 certificate DN: *//p' | head -1 || true)"
+            ;;
+        *)
+            owner="$(unzip -p "$artefact" 'META-INF/*.RSA' 2>/dev/null \
+                | LC_ALL=C keytool -printcert 2>/dev/null \
+                | sed -n 's/^Owner: *//p' | head -1 || true)"
+            ;;
+    esac
 
     case "$owner" in
         "")                die "Could not read the signature of ${artefact##*/}." ;;
