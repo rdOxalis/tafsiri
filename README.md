@@ -67,6 +67,10 @@ Paying per use puts people off, and usually for a reason that turns out not to a
 
 It is not. An API key is metered credit. You are billed for the text you actually send and receive, priced per million tokens — roughly per million word-pieces. A translation is a few hundred of them. Nothing accrues on the days you do not use the app.
 
+**None of it reaches us.** Tafsiri is open source and free, there is nothing to buy here and no revenue share behind any of it — no referral links, no affiliate codes, no cut of what you spend. The links below go to the providers' plain pricing pages. The contract you enter into is with the third party you name in Settings — Mistral AI, Anthropic or OpenAI — under their terms, their billing and their privacy policy. We are not a party to it and cannot see it: your key stays on your device, and we have no account through which your usage would even be visible to us. The one thing in the app that could ever send money our way is the “buy me a coffee” button in Settings, which is voluntary, unrelated to your usage, and changes nothing if you never press it.
+
+We build it this way because we use the same bring-your-own-key method ourselves and think the pricing is fair. That is a judgement, and judgements expire. If it stops being true — rates rise sharply, a free tier disappears, terms turn unreasonable — we will say so in this section, change the approach, or both.
+
 Here is what that works out to. Tafsiri's prompts are a fixed size and can be measured, so these are calculated from the real thing rather than guessed. The rates are Anthropic's for Claude Haiku 4.5, the model Tafsiri uses: $1 per million tokens in, $5 per million out.
 
 | One request | sent | returned | cost |
