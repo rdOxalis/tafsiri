@@ -1,6 +1,6 @@
 # Privacy Policy — Tafsiri
 
-**Last updated:** 2026-05-03
+**Last updated:** 2026-09-05
 
 ## Overview
 
