@@ -36,7 +36,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get imageButton => 'Ingizo la picha';
 
   @override
-  String get navTranslator => 'Kutafsiri';
+  String get navTranslator => 'Kitafsiri';
 
   @override
   String get navHistory => 'Historia';
@@ -63,7 +63,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get cancel => 'Ghairi';
 
   @override
-  String get delete => 'Futa';
+  String get delete => 'Ondoa';
 
   @override
   String get undoDelete => 'Tendua';
@@ -100,11 +100,11 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get targetLanguageInfo =>
-      'Lugha ninayojifunza — lugha unayotaka kujifunza, au ambayo huimudu vizuri. Kila unachoandika hutafsiriwa kwake.';
+      'Lugha ninayojifunza — lugha unayotaka kujifunza, au usiyoizungumza vizuri. Kila unachoandika hutafsiriwa kwa lugha hiyo.';
 
   @override
   String get altLanguageInfo =>
-      'Lugha ninayoimudu — lugha unayoimudu vizuri. Maandishi yako hutafsiriwa kwake unapoandika kwa lugha unayojifunza.';
+      'Lugha ninayoimudu — lugha unayoimudu vizuri. Maandishi yako hutafsiriwa kwa lugha hiyo unapoandika kwa lugha unayojifunza.';
 
   @override
   String get appLanguageLabel => 'Lugha ya Programu';
@@ -114,7 +114,7 @@ class AppLocalizationsSw extends AppLocalizations {
       'Hakuna ufunguo wa API kwa mtoa huduma aliyechaguliwa. Tafadhali ongeza ufunguo wako hapa chini.';
 
   @override
-  String get donateButton => 'Nununulie kahawa';
+  String get donateButton => 'Ninunulie kahawa';
 
   @override
   String get aboutSection => 'Kuhusu';
@@ -142,7 +142,7 @@ class AppLocalizationsSw extends AppLocalizations {
       'Hakuna muunganisho. Tafadhali angalia intaneti yako.';
 
   @override
-  String get errorOcrFailed => 'Haikuweza kutoa maandishi kutoka kwa picha.';
+  String get errorOcrFailed => 'Haikuweza kutoa maandishi kutoka kwenye picha.';
 
   @override
   String get errorOcrEngineMissing =>
@@ -170,7 +170,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get ocrSourceCamera => 'Kamera';
 
   @override
-  String get ocrSourceGallery => 'Picha';
+  String get ocrSourceGallery => 'Gallery';
 
   @override
   String get sttLanguageLabel => 'Utambuzi wa Sauti (Maikrofoni)';
@@ -182,17 +182,17 @@ class AppLocalizationsSw extends AppLocalizations {
   String get translationLanguagesSection => 'Lugha za Tafsiri';
 
   @override
-  String get translationInfoTitle => 'Jinsi inavyofanya kazi';
+  String get translationInfoTitle => 'Jinsi tafsiri inavyofanya kazi';
 
   @override
   String get translationInfoPart1 =>
-      'Maandishi yaliyoingizwa yatatafsirishwa kwa ';
+      'Maandishi yaliyoingizwa yatatafsiriwa kwa ';
 
   @override
   String get translationInfoPart2 => '. Ikiwa maandishi tayari ni ';
 
   @override
-  String get translationInfoPart3 => ', yatatafsirishwa kwa ';
+  String get translationInfoPart3 => ', yatatafsiriwa kwa ';
 
   @override
   String get translationInfoPart4 => '.';
@@ -208,7 +208,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get correctionModeLabel => 'Hali ya kusahihisha';
 
   @override
-  String get correctionButton => 'Sahihisha';
+  String get correctionButton => 'Boresha';
 
   @override
   String get correctionNotesTitle => 'Mapendekezo';
@@ -320,7 +320,7 @@ class AppLocalizationsSw extends AppLocalizations {
       'Huandika mipangilio yako na historia ya tafsiri kwenye faili unayochagua.';
 
   @override
-  String get backupRestoreGroup => 'Rejesha kutoka kwa nakala';
+  String get backupRestoreGroup => 'Rejesha kutoka kwenye nakala';
 
   @override
   String get backupRestoreGroupExplain =>
@@ -335,7 +335,7 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get backupRestoreKeysHint =>
-      'Ni ikiwa tu faili ina funguo. Ikizimwa, funguo zilizopo kwenye kifaa hiki hubaki.';
+      'Ikiwa tu faili ina funguo. Ikizimwa, funguo zilizopo kwenye kifaa hiki hubaki.';
 
   @override
   String get backupMergeHistoryHint =>
