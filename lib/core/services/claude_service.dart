@@ -4,7 +4,16 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'ai_service.dart';
 
-const _model = 'claude-haiku-4-5-20251001';
+/// The model alias, deliberately without a date suffix (ADR-067).
+///
+/// A dated snapshot pins one exact version and is eventually retired; the
+/// alias follows the current version of the same model. For an app that sits
+/// on people's phones for months between updates, that is the safer of the
+/// two: a retired snapshot breaks translation in the field for everyone who
+/// has not updated, and no release we make afterwards reaches them any faster.
+/// A silently updated model translates a little differently, which is a far
+/// cheaper failure. Mistral and OpenAI are already on aliases here.
+const _model = 'claude-haiku-4-5';
 const _endpoint = 'https://api.anthropic.com/v1/messages';
 const _apiVersion = '2023-06-01';
 

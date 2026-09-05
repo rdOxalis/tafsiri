@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Claude keeps working when Anthropic updates the model** (ADR-067). The app asked for a dated snapshot of Claude Haiku, which is a specific version that gets retired eventually — and when it did, translation via Claude would have stopped working on every device that had not been updated, with nothing anyone could do about it. It now names the model without the date, which follows the current version. Mistral and ChatGPT were already set up this way.
+
 ### Changed
 - **The Debian package no longer carries the build machine's home directory** (ADR-066). The plugin libraries came out of the Flutter build with a library search path naming the directory they were compiled in, and that string shipped inside every `.deb`. It never affected anything — the app resolves its libraries through the main binary's own path first, verified with the build tree hidden — but a distributed package should not know where it was built. `build_deb.sh` now rewrites that path to `$ORIGIN` and requires `patchelf` to do it.
 

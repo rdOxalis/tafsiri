@@ -1,5 +1,14 @@
 # Architecture Decision Records
 
+## ADR-067: The Claude model is named by alias, not by dated snapshot
+**Date:** 2026-09-05
+**Status:** Accepted
+**Context:** `claude_service.dart` asked for `claude-haiku-4-5-20251001`. Anthropic serves two forms of identifier: a dated snapshot, which pins one exact version and is eventually retired, and an alias, which follows the current version of that model. The reference documentation lists the current identifiers without date suffixes and warns specifically against appending one. Noticed while estimating a month of API cost, not while looking for it. Two things made it worth changing rather than noting. Tafsiri sits on people's phones and desktops for months between updates, so a retired snapshot does not fail on a build machine where someone would see it — it fails in the field, for everyone who has not updated, and no release made afterwards reaches them any sooner. And the project's own convention was already the other way: Mistral is `mistral-small-latest` and OpenAI is `gpt-4o-mini`, both aliases. Claude was the only pinned one of the three.
+**Decision:** Use `claude-haiku-4-5`. The trade-off is real and goes the other way for some projects: a pinned snapshot never changes underneath you, which matters when output must be reproducible. Here it does not. A silently updated model translates a little differently, which for a translation aid is a cheap failure; an unavailable model translates not at all, which is not. A test pins the identifier and additionally asserts it carries no `-YYYYMMDD` suffix, because the dated form is exactly what a language model recalls from training and writes back in without noticing.
+**Consequences:** Claude keeps working across model updates without a release. Output may shift when Anthropic updates the snapshot behind the alias, which is invisible in tests here since every AI test runs against a mocked HTTP client — the manual pass against real keys in the todo is still the only thing that would catch a regression in translation quality. Nothing else in the app names a model; the two other providers were already correct.
+
+---
+
 ## ADR-066: The Debian package carries no trace of the machine that built it
 **Date:** 2026-09-05
 **Status:** Accepted

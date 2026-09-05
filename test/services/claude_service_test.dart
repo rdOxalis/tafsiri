@@ -111,5 +111,43 @@ void main() {
       expect(captured['x-api-key'], apiKey);
       expect(captured['anthropic-version'], isNotNull);
     });
+
+    test('names the model without a date suffix', () async {
+      // A dated snapshot pins one version and is eventually retired, which
+      // would break translation on every phone that has not updated. The alias
+      // follows the current version instead (ADR-067). Pinned as a test
+      // because the dated form is what a model recalls from training and
+      // writes back in without noticing.
+      when(mockClient.post(
+        any,
+        headers: anyNamed('headers'),
+        body: anyNamed('body'),
+      )).thenAnswer((_) async => http.Response(
+            jsonEncode({
+              'content': [
+                {'type': 'text', 'text': 'LANG:en\nHabari'},
+              ],
+            }),
+            200,
+          ));
+
+      await service.translate(
+        text: input,
+        targetLanguage: target,
+        altLanguage: alt,
+        apiKey: apiKey,
+      );
+
+      final body = verify(mockClient.post(
+        any,
+        headers: anyNamed('headers'),
+        body: captureAnyNamed('body'),
+      )).captured.first as String;
+      final model = (jsonDecode(body) as Map<String, dynamic>)['model'] as String;
+
+      expect(model, 'claude-haiku-4-5');
+      expect(model, isNot(matches(RegExp(r'-\d{8}$'))),
+          reason: 'a date-suffixed snapshot gets retired; the alias does not');
+    });
   });
 }
