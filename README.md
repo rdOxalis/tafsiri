@@ -12,6 +12,12 @@ Tafsiri is an Android, Linux, Windows, MacOS app for AI-powered text translation
 
 ---
 
+## Become a Tester
+
+Want early access to new features before they're released? Join our closed beta on Google Play — see [TESTING.md](TESTING.md) for how to get started.
+
+---
+
 ## How It Works
 
 Tafsiri is built around two language slots: a **learning language** and a **confident language**.
