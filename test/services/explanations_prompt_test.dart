@@ -122,6 +122,50 @@ void main() {
       expect('THE LANGUAGE YOU WRITE IN'.allMatches(prompt).length, 1);
     });
 
+    // The regression that adding the rule caused, the first time: it went
+    // between the base prompt and the section, so "ONE EXCEPTION to the rules
+    // above" pointed at the language rule instead of at "never explain, output
+    // only the translation". ChatGPT then produced no section at all.
+    test('nothing comes between the override and the rules it overrides', () {
+      final prompt = AiService.systemPromptFor(
+        targetLanguage: target,
+        altLanguage: 'German',
+        correctionMode: false,
+        explanations: true,
+      );
+
+      expect(
+        prompt,
+        startsWith(
+          '${AiService.buildSystemPrompt(target, 'German')}\n\nONE EXCEPTION',
+        ),
+      );
+    });
+
+    test('the language rule sits among the rules of the section', () {
+      final section = AiService.buildExplanationsSection(target, 'German');
+
+      // Before the formatting rules it reinforces, after the "what to
+      // explain" paragraph — not floating outside the section entirely.
+      expect(
+        section.indexOf('THE LANGUAGE YOU WRITE IN'),
+        lessThan(section.indexOf('Rules for the section:')),
+      );
+      expect(
+        section.indexOf('ONE EXCEPTION'),
+        lessThan(section.indexOf('THE LANGUAGE YOU WRITE IN')),
+      );
+      // …and it can be left out, for the prompt that already has one.
+      expect(
+        AiService.buildExplanationsSection(
+          target,
+          'German',
+          withLanguageRule: false,
+        ),
+        isNot(contains('THE LANGUAGE YOU WRITE IN')),
+      );
+    });
+
     test('the examples are labelled as shapes, not as wording to copy', () {
       final section = AiService.buildExplanationsSection(target, 'German');
 

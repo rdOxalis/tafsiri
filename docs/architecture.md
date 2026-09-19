@@ -72,7 +72,7 @@ The system prompt — and with it the branch the model takes — is chosen by th
 | off | translate → confident language | translate → learning language |
 | on  | **correct and improve, stay in the learning language** | translate → learning language |
 
-With the explanations switch on (ADR-060) an `EXPLAIN:` section is appended to whichever prompt is in force — one request, not two — carrying the learning-language words of the exchange. On the translation side the `outputLanguageRule` of ADR-063 is prepended along with it (ADR-070); the correction prompt already leads with that rule and is left alone, so there is exactly one copy in every configuration. It is suppressed in mode `correct`, where the `NOTES:` already explain, and omitted when there is nothing worth saying. Response protocol, in order: `LANG:` / `MODE:` / body / `NOTES:` / `EXPLAIN:`; the parser cuts `EXPLAIN:` off first because it is always last.
+With the explanations switch on (ADR-060) an `EXPLAIN:` section is appended to whichever prompt is in force — one request, not two — carrying the learning-language words of the exchange. The section carries the `outputLanguageRule` of ADR-063 inside itself on the translation side (ADR-070); the correction prompt already leads with that rule and is left alone, so there is exactly one copy in every configuration. Nothing may be inserted between the base prompt and the section: it opens with "ONE EXCEPTION to the rules above", and that phrase has to reach the rules it overrides. It is suppressed in mode `correct`, where the `NOTES:` already explain, and omitted when there is nothing worth saying. Response protocol, in order: `LANG:` / `MODE:` / body / `NOTES:` / `EXPLAIN:`; the parser cuts `EXPLAIN:` off first because it is always last.
 
 ---
 
@@ -555,7 +555,7 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | Bilingual notes heading (ADR-065) | `test/translator/bilingual_heading_test.dart` | 6 |
 | Paste into the input area | `test/translator/input_area_paste_test.dart` | 3 |
 | Correction prompt routing (ADR-033) | `test/services/correction_prompt_test.dart` | 10 |
-| Explanations prompt and parsing (ADR-060, ADR-070) | `test/services/explanations_prompt_test.dart` | 11 |
+| Explanations prompt and parsing (ADR-060, ADR-070) | `test/services/explanations_prompt_test.dart` | 13 |
 | Input is data, not an instruction (ADR-061) | `test/services/input_is_data_test.dart` | 7 |
 | Backup format (ADR-034) | `test/services/backup_service_test.dart` | 12 |
 | Backup export/import cycle (ADR-034) | `test/settings/backup_controller_test.dart` | 16 |
@@ -573,7 +573,7 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | Desktop sqflite FFI wiring | `test/database/sqflite_desktop_test.dart` | 1 |
 | Privacy policy links (ADR-068) | `test/privacy_policy_link_test.dart` | 2 |
 | Build info | `test/build_info_test.dart` | 2 |
-| **Total** | | **239** |
+| **Total** | | **241** |
 
 Run: `flutter test`
 

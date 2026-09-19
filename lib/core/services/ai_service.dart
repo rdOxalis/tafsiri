@@ -44,14 +44,17 @@ abstract class AiService {
         : buildSystemPrompt(targetLanguage, altLanguage);
     if (!explanations) return base;
 
-    // The explanations are the first thing the plain translation prompt ever
-    // produced that is not the translation, so they are the first thing that
-    // needs a language rule (ADR-070). The correction prompt already leads
-    // with one (ADR-063) and must not get a second copy.
-    final languageRule =
-        correctionMode ? '' : '${outputLanguageRule(altLanguage)}\n\n';
-    return '$base\n\n$languageRule'
-        '${buildExplanationsSection(targetLanguage, altLanguage)}';
+    // The language rule goes INSIDE the section, not between it and the base
+    // prompt (ADR-070). "ONE EXCEPTION to the rules above" has to stay next
+    // to the rules it overrides — put anything in that seam and the sentence
+    // points at the wrong paragraph. The correction prompt already leads with
+    // the rule (ADR-063) and must not get a second copy.
+    return '$base\n\n'
+        '${buildExplanationsSection(
+      targetLanguage,
+      altLanguage,
+      withLanguageRule: !correctionMode,
+    )}';
   }
 
   /// The EXPLAIN: section appended to either prompt when the learner has the
@@ -73,15 +76,16 @@ abstract class AiService {
   /// times over before anyone ran it against a real key.
   static String buildExplanationsSection(
     String targetLanguage,
-    String altLanguage,
-  ) {
+    String altLanguage, {
+    bool withLanguageRule = true,
+  }) {
     return '''ONE EXCEPTION to the rules above — they say never to explain and to output only the translation; this section is the single exception and overrides them, but nothing else about them changes.
 
 Append an EXPLAIN: section — but ONLY when the exchange involves $targetLanguage at all, and NEVER in mode "correct" (there the NOTES: already explain the changes).
 
 The learner is learning $targetLanguage. Explain the essential $targetLanguage words of this exchange — whichever side they are on: the words of your translation when you translated INTO $targetLanguage, the words of the input when the input WAS $targetLanguage.
 
-Rules for the section:
+${withLanguageRule ? '${outputLanguageRule(altLanguage)}\n\n' : ''}Rules for the section:
 1. At most 5 entries, the words worth learning. Skip pronouns, articles, numbers, names and anything obvious to a beginner. Fewer is better than padding.
 2. One "- " bullet per word, written in $altLanguage, in this form:
    - <word in $targetLanguage> (<part of speech>) — <meaning>
