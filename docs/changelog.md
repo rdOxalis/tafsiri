@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.19] - 2026-09-19
+
 ### Changed
 - **ChatGPT now uses `gpt-5.6-luna` instead of `gpt-4o-mini`** (ADR-071). The old model did not produce the new explanations at all, and it misreported the detected language of the input — which matters beyond the display, because that is what sets the microphone's recognition language and what every history entry records. Four candidates were tried against the real prompt before choosing, and newer turned out not to mean better: one of them answered in Swahili and invented a grammatical term. The new model costs about four tenths more per request — roughly 25 cents a month at thirty translations a day, against 17 — and ChatGPT remains the cheapest of the three paid options.
 
