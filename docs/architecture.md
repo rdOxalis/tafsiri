@@ -577,6 +577,28 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 
 Run: `flutter test`
 
+### Probing a prompt against a live provider
+
+Tests and the probe answer two different questions, and neither can answer the
+other's. A test shows that a rule **is in** the prompt; only a real request
+shows whether a model **follows** it. `tools/probe_prompt.sh` fires the app's
+own prompt at a provider's API without building or installing anything:
+
+```bash
+read -rs OPENAI_API_KEY && export OPENAI_API_KEY
+tools/probe_prompt.sh                          # every provider with a key set
+tools/probe_prompt.sh -p openai -r 3           # ChatGPT, three runs
+tools/probe_prompt.sh -p mistral -c            # the correction prompt
+tools/probe_prompt.sh -p openai -m gpt-4o-mini # a different model
+```
+
+The prompt comes from `tools/dump_prompt.dart`, which calls
+`AiService.systemPromptFor` directly, and each provider's model is read out of
+its own service file — so the probe cannot drift away from what the app sends.
+Keys are taken from the environment and never echoed. ADR-070 and ADR-071 were
+both settled this way; in both cases the measurement contradicted the guess.
+
+
 ---
 
 ## F-Droid Distribution
