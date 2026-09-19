@@ -4,8 +4,16 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'ai_service.dart';
 
-const _model = 'gpt-4o-mini';
+/// ADR-071. Named by alias, never by dated snapshot — the lesson of ADR-067.
+const _model = 'gpt-5.6-luna';
 const _endpoint = 'https://api.openai.com/v1/chat/completions';
+
+/// This model reasons before it answers, and charges for the thinking.
+/// Measured on the explanations prompt: "none" produced the same answer as
+/// "low" for a third of the output tokens, because the prompt already says
+/// what a good bullet looks like (ADR-071). Translation is not a task that
+/// wants deliberation.
+const _reasoningEffort = 'none';
 
 class OpenAiService implements AiService {
   OpenAiService({http.Client? client}) : _client = client ?? http.Client();
@@ -32,7 +40,10 @@ class OpenAiService implements AiService {
       },
       body: jsonEncode({
         'model': _model,
-        'max_tokens': 4096,
+        // Not 'max_tokens' — every GPT-5 model rejects that name outright.
+        // gpt-4o-mini accepted both, so this is the safe one either way.
+        'max_completion_tokens': 4096,
+        'reasoning_effort': _reasoningEffort,
         'messages': [
           {
             'role': 'system',

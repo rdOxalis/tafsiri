@@ -71,6 +71,39 @@ void main() {
       );
     });
 
+    // ADR-071. The model swap is two changes, not one: every GPT-5 model
+    // rejects 'max_tokens' outright, so shipping the new alias with the old
+    // parameter name would have taken ChatGPT down for everyone.
+    test('names the model by alias and sends the parameters it accepts',
+        () async {
+      when(mockClient.post(any,
+              headers: anyNamed('headers'), body: anyNamed('body')))
+          .thenAnswer((_) async => successResponse('LANG:en\nHabari'));
+
+      await service.translate(
+        text: input,
+        targetLanguage: target,
+        altLanguage: alt,
+        apiKey: apiKey,
+      );
+
+      final body = jsonDecode(verify(mockClient.post(
+        any,
+        headers: anyNamed('headers'),
+        body: captureAnyNamed('body'),
+      )).captured.first as String) as Map<String, dynamic>;
+
+      expect(body['model'], 'gpt-5.6-luna');
+      // No dated snapshot: one gets retired and the app stops working on
+      // every device that has not been updated (ADR-067).
+      expect(RegExp(r'\d{4}-\d{2}-\d{2}').hasMatch(body['model'] as String),
+          isFalse);
+      expect(body['max_completion_tokens'], 4096);
+      expect(body.containsKey('max_tokens'), isFalse);
+      // Reasoning costs output tokens; the prompt does that work instead.
+      expect(body['reasoning_effort'], 'none');
+    });
+
     test('sends Bearer token in Authorization header', () async {
       when(mockClient.post(any,
               headers: anyNamed('headers'), body: anyNamed('body')))

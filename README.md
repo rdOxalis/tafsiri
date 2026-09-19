@@ -108,7 +108,7 @@ Fractions of a cent are hard to picture, so scaled up to a month of steady use �
 | All corrections | **$1.35** |
 | All translations with explanations *(coming)* | **$1.80** |
 
-Under two dollars a month for the heaviest mode, run every day. Mixed real use lands nearer a dollar. ChatGPT via `gpt-4o-mini` is cheaper still, and Mistral's free tier costs nothing at all.
+Under two dollars a month for the heaviest mode, run every day. Mixed real use lands nearer a dollar. ChatGPT via `gpt-5.6-luna` is cheaper still — around a quarter of a dollar a month at thirty translations a day, explanations included — and Mistral's free tier costs nothing at all.
 
 **What you get for it** is the part worth weighing against a subscription. Not word-for-word substitution, but a translation that reads as the language is actually spoken. Correction mode, which does not merely translate but rewrites what you wrote the way a native speaker would and explains every change. Explanations of the essential words, with their part of speech and their derived forms, coming with the next release. That is a tutor's work, and it costs about what one coffee a year costs.
 
@@ -122,7 +122,7 @@ Under two dollars a month for the heaviest mode, run every day. Mixed real use l
 |---|---|---|
 | **Mistral AI** | `mistral-small-latest` | Yes — generous free tier |
 | **Anthropic Claude** | `claude-haiku-4-5` | No — pay as you go |
-| **OpenAI ChatGPT** | `gpt-4o-mini` | No — pay as you go |
+| **OpenAI ChatGPT** | `gpt-5.6-luna` | No — pay as you go |
 
 **Mistral is the recommended starting point** if you want to try the app for free.
 

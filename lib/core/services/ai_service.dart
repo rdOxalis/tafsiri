@@ -85,10 +85,12 @@ Append an EXPLAIN: section — but ONLY when the exchange involves $targetLangua
 
 The learner is learning $targetLanguage. Explain the essential $targetLanguage words of this exchange — whichever side they are on: the words of your translation when you translated INTO $targetLanguage, the words of the input when the input WAS $targetLanguage.
 
-${withLanguageRule ? '${outputLanguageRule(altLanguage)}\n\n' : ''}Rules for the section:
+${withLanguageRule ? '${outputLanguageRule(altLanguage)}\n\n' : ''}Two languages are wrong here, not one. Not English — and not $targetLanguage either. $targetLanguage appears exactly once per bullet, as the headword being explained; the part of speech beside it and the meaning after it are $altLanguage. A bullet whose meaning repeats its own headword has explained nothing.
+
+Rules for the section:
 1. At most 5 entries, the words worth learning. Skip pronouns, articles, numbers, names and anything obvious to a beginner. Fewer is better than padding.
-2. One "- " bullet per word, written in $altLanguage, in this form:
-   - <word in $targetLanguage> (<part of speech>) — <meaning>
+2. One "- " bullet per word, written in $altLanguage, in this form — every part of it except the headword itself:
+   - <the $targetLanguage word> (<its part of speech, named in $altLanguage>) — <what it means, in $altLanguage>
 3. Give the word in its dictionary form, and say so when the text used another. Shape, written here in English: "- alisema (verb, past of sema) — he/she said".
 4. Spell grammatical terms out — never abbreviations — and write them in $altLanguage: the $altLanguage words for "noun", "verb", "adjective", not these English ones. For a noun in a language with noun classes name the class as well, so that the English "(noun, class 9/10)" is said in $altLanguage instead. For a verb with derived forms worth knowing, add them on a second indented line with their meaning, in English "  · sababishia = to cause for someone, sababishwa = to be caused".
 5. No sentences about the text as a whole, no encouragement, no repetition of the translation.

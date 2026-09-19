@@ -166,6 +166,48 @@ void main() {
       );
     });
 
+    // Mistral wrote the whole section in Swahili — "- lugha (nomino, ngeli
+    // 9/10) — lugha" — glossing each headword with itself. The generic
+    // language rule only ever named English as the wrong language, because
+    // that is the one ADR-063 was written for. Here the learning language is
+    // the other way to get it wrong, and the bullet template said nothing
+    // about the language of its own placeholders.
+    test('both wrong languages are named, and the template labels itself', () {
+      final section = AiService.buildExplanationsSection(target, 'German');
+
+      expect(section, contains('Two languages are wrong here, not one'));
+      expect(section, contains('not $target either'));
+      expect(
+        section,
+        contains('A bullet whose meaning repeats its own headword'),
+      );
+      // The placeholders say which language they are in, where the model is
+      // actually looking while it writes the line.
+      expect(section, contains('<its part of speech, named in German>'));
+      expect(section, contains('<what it means, in German>'));
+    });
+
+    // Mistral wrote the whole section in Swahili — "- lugha (nomino, ngeli
+    // 9/10) — lugha" — glossing each headword with itself. The generic
+    // language rule only ever named English as the wrong language, because
+    // that is the one ADR-063 was written for; here the learning language is
+    // the other way to get it wrong, and the bullet template said nothing
+    // about the language of its own placeholders (ADR-071).
+    test('both wrong languages are named, and the template labels itself', () {
+      final section = AiService.buildExplanationsSection(target, 'German');
+
+      expect(section, contains('Two languages are wrong here, not one'));
+      expect(section, contains('not $target either'));
+      expect(
+        section,
+        contains('A bullet whose meaning repeats its own headword'),
+      );
+      // The placeholders say which language they are in, which is where the
+      // model is looking while it writes the line.
+      expect(section, contains('<its part of speech, named in German>'));
+      expect(section, contains('<what it means, in German>'));
+    });
+
     test('the examples are labelled as shapes, not as wording to copy', () {
       final section = AiService.buildExplanationsSection(target, 'German');
 

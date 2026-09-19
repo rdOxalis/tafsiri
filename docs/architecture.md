@@ -555,13 +555,13 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | Bilingual notes heading (ADR-065) | `test/translator/bilingual_heading_test.dart` | 6 |
 | Paste into the input area | `test/translator/input_area_paste_test.dart` | 3 |
 | Correction prompt routing (ADR-033) | `test/services/correction_prompt_test.dart` | 10 |
-| Explanations prompt and parsing (ADR-060, ADR-070) | `test/services/explanations_prompt_test.dart` | 13 |
+| Explanations prompt and parsing (ADR-060, ADR-070, ADR-071) | `test/services/explanations_prompt_test.dart` | 14 |
 | Input is data, not an instruction (ADR-061) | `test/services/input_is_data_test.dart` | 7 |
 | Backup format (ADR-034) | `test/services/backup_service_test.dart` | 12 |
 | Backup export/import cycle (ADR-034) | `test/settings/backup_controller_test.dart` | 16 |
 | Backup panel layout (ADR-062) | `test/settings/backup_panel_test.dart` | 3 |
 | ClaudeService | `test/services/claude_service_test.dart` | 5 |
-| OpenAiService | `test/services/openai_service_test.dart` | 4 |
+| OpenAiService | `test/services/openai_service_test.dart` | 5 |
 | MistralService | `test/services/mistral_service_test.dart` | 4 |
 | Clipboard images (ADR-040, ADR-047) | `test/services/clipboard_image_service_test.dart` | 9 |
 | Clipboard images on Windows (ADR-047) | `test/services/powershell_clipboard_image_service_test.dart` | 8 |
@@ -573,7 +573,7 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | Desktop sqflite FFI wiring | `test/database/sqflite_desktop_test.dart` | 1 |
 | Privacy policy links (ADR-068) | `test/privacy_policy_link_test.dart` | 2 |
 | Build info | `test/build_info_test.dart` | 2 |
-| **Total** | | **241** |
+| **Total** | | **244** |
 
 Run: `flutter test`
 
