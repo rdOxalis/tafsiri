@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **The explanations are written in your confident language, not in English** (ADR-070). Found the first time the new section met a real API key. With Swahili being learnt and German as the confident language, ChatGPT returned the whole section in English — "lugha (noun, class 9/10) — language" — and Claude, which got the meanings right in German, still labelled the words "noun", "adjective" and "verb". Two things were missing at once. The rule that says which language to write in existed, but only in correction mode; plain translation never needed one until this section came along. And every example in the prompt was an English sample held out to be copied, which is the more concrete of the two orders a model is given. Both are fixed: the rule now applies wherever the section does, and the examples say that they are examples.
+
 ### Added
 - **Explanations under the translation** (ADR-060), for people who are learning rather than only translating. A second switch in the translator header — off by default — adds a dictionary-style section below the result: the essential words in the language you are learning, with their part of speech, their meaning and, where it helps, their derived forms. It works in both directions, explaining the words of the translation when you translate into your learning language and the words of your input when you started in it. Grammatical terms are written out in your confident language ("noun, class 9/10") rather than dictionary abbreviations. Costs one API call like any translation, and nothing at all while the switch is off. The section is saved with the entry, so reloading it from the history brings the explanations back.
 

@@ -76,6 +76,7 @@ void main() {
       // Spelled out rather than dictionary abbreviations — the whole point of
       // not copying TUKI's kt / nm / tde / tdw notation.
       expect(section, contains('never abbreviations'));
+      // The noun class is still demanded; only the app does not supply it.
       expect(section, contains('noun, class 9/10'));
       // A cap, so the section cannot bury the translation.
       expect(section, contains('At most 5 entries'));
@@ -83,6 +84,54 @@ void main() {
       expect(section, contains('Omit the whole section'));
       // It has to override "never explain" from the base prompt.
       expect(section, contains('ONE EXCEPTION'));
+    });
+
+    // ADR-070 — ChatGPT wrote the whole section in English with Swahili and
+    // German configured, and Claude wrote the grammatical terms in English
+    // while getting the meanings right. Two causes, both of them ADR-063's:
+    // the leading language rule was missing from this path, and every example
+    // in the section was an English literal offered up to be copied.
+    test('the translation prompt gains the language rule with the section', () {
+      final withSection = AiService.systemPromptFor(
+        targetLanguage: target,
+        altLanguage: 'German',
+        correctionMode: false,
+        explanations: true,
+      );
+      final without = AiService.systemPromptFor(
+        targetLanguage: target,
+        altLanguage: 'German',
+        correctionMode: false,
+        explanations: false,
+      );
+
+      expect(withSection, contains(AiService.outputLanguageRule('German')));
+      // …and only because the section is there. With the switch off the
+      // prompt stays byte-for-byte what it always was (ADR-060).
+      expect(without, isNot(contains('THE LANGUAGE YOU WRITE IN')));
+    });
+
+    test('the correction prompt does not get a second copy of that rule', () {
+      final prompt = AiService.systemPromptFor(
+        targetLanguage: target,
+        altLanguage: 'German',
+        correctionMode: true,
+        explanations: true,
+      );
+
+      expect('THE LANGUAGE YOU WRITE IN'.allMatches(prompt).length, 1);
+    });
+
+    test('the examples are labelled as shapes, not as wording to copy', () {
+      final section = AiService.buildExplanationsSection(target, 'German');
+
+      // The specific failure: "noun"/"verb"/"adjective" came back verbatim.
+      expect(section, contains('not these English ones'));
+      expect(
+        section,
+        contains('Every example above is written in English'),
+      );
+      expect(section, contains('They show you the shape, never the wording'));
     });
   });
 

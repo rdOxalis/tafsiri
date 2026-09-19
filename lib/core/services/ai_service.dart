@@ -42,9 +42,16 @@ abstract class AiService {
     final base = correctionMode
         ? buildCorrectionSystemPrompt(targetLanguage, altLanguage)
         : buildSystemPrompt(targetLanguage, altLanguage);
-    return explanations
-        ? '$base\n\n${buildExplanationsSection(targetLanguage, altLanguage)}'
-        : base;
+    if (!explanations) return base;
+
+    // The explanations are the first thing the plain translation prompt ever
+    // produced that is not the translation, so they are the first thing that
+    // needs a language rule (ADR-070). The correction prompt already leads
+    // with one (ADR-063) and must not get a second copy.
+    final languageRule =
+        correctionMode ? '' : '${outputLanguageRule(altLanguage)}\n\n';
+    return '$base\n\n$languageRule'
+        '${buildExplanationsSection(targetLanguage, altLanguage)}';
   }
 
   /// The EXPLAIN: section appended to either prompt when the learner has the
@@ -58,6 +65,12 @@ abstract class AiService {
   /// dictionary's abbreviations (TUKI's kt, nm, tde, tdw …). A learner who has
   /// to look up the notation before reading the note has been handed a second
   /// problem, and every language pair would need its own set.
+  ///
+  /// Every example here is in English, because these instructions are, and the
+  /// section says so in as many words (ADR-070). Prescribing an English
+  /// literal makes models copy it — ADR-063 found exactly that with the
+  /// "already correct" bullet, and this section repeated the mistake three
+  /// times over before anyone ran it against a real key.
   static String buildExplanationsSection(
     String targetLanguage,
     String altLanguage,
@@ -72,9 +85,11 @@ Rules for the section:
 1. At most 5 entries, the words worth learning. Skip pronouns, articles, numbers, names and anything obvious to a beginner. Fewer is better than padding.
 2. One "- " bullet per word, written in $altLanguage, in this form:
    - <word in $targetLanguage> (<part of speech>) — <meaning>
-3. Give the word in its dictionary form, and say so when the text used another: "- alisema (verb, past of sema) — he/she said".
-4. Spell grammatical terms out in $altLanguage — "noun", "verb", "adjective" — never abbreviations. For a noun in a language with noun classes, name the class: "(noun, class 9/10)". For a verb with derived forms worth knowing, add them on a second indented line with their meaning, e.g. "  · sababishia = to cause for someone, sababishwa = to be caused".
+3. Give the word in its dictionary form, and say so when the text used another. Shape, written here in English: "- alisema (verb, past of sema) — he/she said".
+4. Spell grammatical terms out — never abbreviations — and write them in $altLanguage: the $altLanguage words for "noun", "verb", "adjective", not these English ones. For a noun in a language with noun classes name the class as well, so that the English "(noun, class 9/10)" is said in $altLanguage instead. For a verb with derived forms worth knowing, add them on a second indented line with their meaning, in English "  · sababishia = to cause for someone, sababishwa = to be caused".
 5. No sentences about the text as a whole, no encouragement, no repetition of the translation.
+
+Every example above is written in English because these instructions are. They show you the shape, never the wording. The only $targetLanguage in your output is the headword of each bullet; everything around it — part of speech, noun class, meaning, derived forms — is $altLanguage.
 
 Place EXPLAIN: last, after everything else. Omit the whole section — the line included — when there is nothing worth explaining.''';
   }
