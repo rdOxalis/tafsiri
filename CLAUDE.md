@@ -153,7 +153,8 @@ CREATE TABLE translation_entry (
   is_favourite INTEGER NOT NULL DEFAULT 0,
   created_at   TEXT    NOT NULL,   -- ISO 8601
   mode         TEXT    NOT NULL DEFAULT 'translate',  -- 'translate' | 'correct'
-  notes        TEXT               -- improvement notes, correction entries only
+  notes        TEXT,              -- improvement notes, correction entries only
+  explanations TEXT               -- word explanations, when the switch was on
 );
 ```
 
@@ -169,8 +170,9 @@ class TranslationEntry {
   final String aiProvider;
   final bool isFavourite;
   final DateTime createdAt;
-  final String mode;    // 'translate' | 'correct'
-  final String? notes;  // improvement notes, correction entries only
+  final String mode;          // 'translate' | 'correct'
+  final String? notes;        // improvement notes, correction entries only
+  final String? explanations; // word explanations (ADR-060)
 }
 ```
 
@@ -190,6 +192,7 @@ Stored via `shared_preferences`.
 | `alt_language` | String | Confident language — the one the user speaks well, e.g. `'English'` |
 | `app_locale` | String | UI locale, e.g. `'sw'`, `'de'`, `'en_GB'` |
 | `correction_mode` | bool | Correction mode on/off (toggle lives in the translator header) |
+| `explanations_mode` | bool | Word explanations on/off (second toggle in the translator header, ADR-060) |
 
 API keys are **never logged in plain text**. Always mask in logs: `sk-****`.
 
@@ -236,6 +239,7 @@ abstract class AiService {
     required String altLanguage,
     required String apiKey,
     bool correctionMode = false,
+    bool explanations = false,
   });
 }
 ```

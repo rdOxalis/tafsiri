@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Nur wenn die Datei welche enthält. Aus behält die Schlüssel, die auf diesem Gerät stehen.",
   "backupMergeHistoryHint": "Aus: Die Sicherung wird in Deinen Verlauf eingefügt, es geht nichts verloren.",
   "backupImportConfirmKeysYes": "API-Schlüssel aus der Datei werden übernommen, sofern sie welche enthält.",
-  "backupImportConfirmKeysNo": "Deine aktuellen API-Schlüssel bleiben erhalten, auch wenn die Datei andere enthält."
+  "backupImportConfirmKeysNo": "Deine aktuellen API-Schlüssel bleiben erhalten, auch wenn die Datei andere enthält.",
+  "explanationsLabel": "Erklärungen",
+  "explanationsInfo": "Wichtige Wörter auf {language} aus dieser Übersetzung werden unter dem Ergebnis erklärt."
 }

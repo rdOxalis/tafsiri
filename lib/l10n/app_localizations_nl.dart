@@ -350,4 +350,12 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get backupImportConfirmKeysNo =>
       'Je huidige API-sleutels blijven behouden, ook als het bestand andere bevat.';
+
+  @override
+  String get explanationsLabel => 'Uitleg';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Belangrijke $language woorden uit deze vertaling worden onder het resultaat uitgelegd.';
+  }
 }

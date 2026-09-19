@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Ikiwa tu faili ina funguo. Ikizimwa, funguo zilizopo kwenye kifaa hiki hubaki.",
   "backupMergeHistoryHint": "Imezimwa: nakala huunganishwa kwenye historia yako, hakuna kinachopotea.",
   "backupImportConfirmKeysYes": "Funguo za API kutoka kwenye faili zitatumika, ikiwa zipo.",
-  "backupImportConfirmKeysNo": "Funguo zako za API za sasa zitabaki, hata kama faili ina nyingine."
+  "backupImportConfirmKeysNo": "Funguo zako za API za sasa zitabaki, hata kama faili ina nyingine.",
+  "explanationsLabel": "Maelezo",
+  "explanationsInfo": "Maneno muhimu ya {language} kutoka kwa tafsiri hii yanaelezwa chini ya matokeo."
 }

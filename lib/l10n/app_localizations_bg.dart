@@ -352,4 +352,12 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get backupImportConfirmKeysNo =>
       'Текущите ти API ключове се запазват, дори файлът да съдържа други.';
+
+  @override
+  String get explanationsLabel => 'Обяснения';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Важните думи на $language от този превод се обясняват под резултата.';
+  }
 }

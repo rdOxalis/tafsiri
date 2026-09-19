@@ -352,4 +352,12 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get backupImportConfirmKeysNo =>
       'Deine aktuellen API-Schlüssel bleiben erhalten, auch wenn die Datei andere enthält.';
+
+  @override
+  String get explanationsLabel => 'Erklärungen';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Wichtige Wörter auf $language aus dieser Übersetzung werden unter dem Ergebnis erklärt.';
+  }
 }

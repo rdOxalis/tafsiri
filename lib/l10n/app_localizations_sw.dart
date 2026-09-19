@@ -351,4 +351,12 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get backupImportConfirmKeysNo =>
       'Funguo zako za API za sasa zitabaki, hata kama faili ina nyingine.';
+
+  @override
+  String get explanationsLabel => 'Maelezo';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Maneno muhimu ya $language kutoka kwa tafsiri hii yanaelezwa chini ya matokeo.';
+  }
 }

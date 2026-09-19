@@ -124,5 +124,7 @@
   "backupRestoreKeysHint": "Solo se il file ne contiene. Disattivato mantiene le chiavi già presenti su questo dispositivo.",
   "backupMergeHistoryHint": "Disattivato: il backup viene unito alla tua cronologia, non si perde nulla.",
   "backupImportConfirmKeysYes": "Verranno usate le chiavi API del file, se ne contiene.",
-  "backupImportConfirmKeysNo": "Le tue chiavi API attuali vengono mantenute, anche se il file ne contiene altre."
+  "backupImportConfirmKeysNo": "Le tue chiavi API attuali vengono mantenute, anche se il file ne contiene altre.",
+  "explanationsLabel": "Spiegazioni",
+  "explanationsInfo": "Le parole {language} essenziali di questa traduzione sono spiegate sotto il risultato."
 }

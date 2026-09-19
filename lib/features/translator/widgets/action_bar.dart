@@ -32,6 +32,7 @@ class ActionBar extends ConsumerWidget {
         ? settings!.altLanguage
         : '…';
     final correctionMode = settings?.correctionMode ?? false;
+    final explanationsMode = settings?.explanationsMode ?? false;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -48,6 +49,7 @@ class ActionBar extends ConsumerWidget {
               primaryLang,
               secondaryLang,
               correctionMode: correctionMode,
+              explanationsMode: explanationsMode,
             ),
           ),
           // Microphone — absent on Linux, the one target `speech_to_text` has
@@ -146,6 +148,7 @@ class ActionBar extends ConsumerWidget {
     String primaryLang,
     String secondaryLang, {
     required bool correctionMode,
+    required bool explanationsMode,
   }) {
     void goToSettings() {
       ref.read(selectedTabProvider.notifier).state = 2;
@@ -193,6 +196,17 @@ class ActionBar extends ConsumerWidget {
                   const Icon(Icons.spellcheck, size: 18),
                   const SizedBox(width: 8),
                   Expanded(child: Text(l10n.correctionModeInfo(primaryLang))),
+                ],
+              ),
+            ],
+            if (explanationsMode) ...[
+              const SizedBox(height: 12),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.menu_book_outlined, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(l10n.explanationsInfo(primaryLang))),
                 ],
               ),
             ],

@@ -16,6 +16,10 @@ class TranslationEntry {
   /// Improvement notes — only set for [kModeCorrect] entries.
   final String? notes;
 
+  /// Dictionary-style word explanations (ADR-060), `null` when the entry was
+  /// produced with the explanations switch off.
+  final String? explanations;
+
   const TranslationEntry({
     this.id,
     required this.sourceText,
@@ -27,6 +31,7 @@ class TranslationEntry {
     required this.createdAt,
     this.mode = kModeTranslate,
     this.notes,
+    this.explanations,
   });
 
   bool get isCorrection => mode == kModeCorrect;
@@ -42,6 +47,7 @@ class TranslationEntry {
         'created_at': createdAt.toUtc().toIso8601String(),
         'mode': mode,
         'notes': notes,
+        'explanations': explanations,
       };
 
   factory TranslationEntry.fromMap(Map<String, dynamic> map) =>
@@ -56,6 +62,7 @@ class TranslationEntry {
         createdAt: DateTime.parse(map['created_at'] as String),
         mode: map['mode'] as String? ?? kModeTranslate,
         notes: map['notes'] as String?,
+        explanations: map['explanations'] as String?,
       );
 
   TranslationEntry copyWith({bool? isFavourite}) => TranslationEntry(

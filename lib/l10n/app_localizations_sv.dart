@@ -350,4 +350,12 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get backupImportConfirmKeysNo =>
       'Dina nuvarande API-nycklar behålls, även om filen innehåller andra.';
+
+  @override
+  String get explanationsLabel => 'Förklaringar';
+
+  @override
+  String explanationsInfo(String language) {
+    return 'Viktiga ord på $language från den här översättningen förklaras under resultatet.';
+  }
 }

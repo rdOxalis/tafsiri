@@ -736,6 +736,18 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'Your current API keys are kept, even if the file contains others.'**
   String get backupImportConfirmKeysNo;
+
+  /// Label of the explanations switch and of the section it produces
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Explanations'**
+  String get explanationsLabel;
+
+  /// Tooltip of the explanations switch; {language} is the learning language
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Essential {language} words from this translation are explained below the result.'**
+  String explanationsInfo(String language);
 }
 
 class _AppLocalizationsDelegate

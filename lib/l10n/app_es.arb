@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Solo si el archivo las contiene. Desactivado conserva las claves que ya hay en este dispositivo.",
   "backupMergeHistoryHint": "Desactivado: la copia se combina con tu historial, no se pierde nada.",
   "backupImportConfirmKeysYes": "Se usarán las claves de API del archivo, si las contiene.",
-  "backupImportConfirmKeysNo": "Se conservan tus claves de API actuales, aunque el archivo contenga otras."
+  "backupImportConfirmKeysNo": "Se conservan tus claves de API actuales, aunque el archivo contenga otras.",
+  "explanationsLabel": "Explicaciones",
+  "explanationsInfo": "Las palabras esenciales en {language} de esta traducción se explican debajo del resultado."
 }

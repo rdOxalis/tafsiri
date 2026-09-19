@@ -363,5 +363,7 @@
   "backupRestoreKeysHint": "Only if the file contains any. Off keeps the keys already on this device.",
   "backupMergeHistoryHint": "Off: the backup is merged into your history, nothing is lost.",
   "backupImportConfirmKeysYes": "API keys from the file will be used, if it contains any.",
-  "backupImportConfirmKeysNo": "Your current API keys are kept, even if the file contains others."
+  "backupImportConfirmKeysNo": "Your current API keys are kept, even if the file contains others.",
+  "explanationsLabel": "Explanations",
+  "explanationsInfo": "Essential {language} words from this translation are explained below the result."
 }

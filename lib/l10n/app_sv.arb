@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Bara om filen innehåller några. Av behåller nycklarna som redan finns på den här enheten.",
   "backupMergeHistoryHint": "Av: säkerhetskopian sammanfogas med din historik, inget går förlorat.",
   "backupImportConfirmKeysYes": "API-nycklar från filen används, om den innehåller några.",
-  "backupImportConfirmKeysNo": "Dina nuvarande API-nycklar behålls, även om filen innehåller andra."
+  "backupImportConfirmKeysNo": "Dina nuvarande API-nycklar behålls, även om filen innehåller andra.",
+  "explanationsLabel": "Förklaringar",
+  "explanationsInfo": "Viktiga ord på {language} från den här översättningen förklaras under resultatet."
 }

@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Alleen als het bestand ze bevat. Uit behoudt de sleutels die al op dit apparaat staan.",
   "backupMergeHistoryHint": "Uit: de back-up wordt samengevoegd met je geschiedenis, er gaat niets verloren.",
   "backupImportConfirmKeysYes": "API-sleutels uit het bestand worden overgenomen, als het die bevat.",
-  "backupImportConfirmKeysNo": "Je huidige API-sleutels blijven behouden, ook als het bestand andere bevat."
+  "backupImportConfirmKeysNo": "Je huidige API-sleutels blijven behouden, ook als het bestand andere bevat.",
+  "explanationsLabel": "Uitleg",
+  "explanationsInfo": "Belangrijke {language} woorden uit deze vertaling worden onder het resultaat uitgelegd."
 }

@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Seulement si le fichier en contient. Désactivé, les clés déjà présentes sur cet appareil sont conservées.",
   "backupMergeHistoryHint": "Désactivé : la sauvegarde est fusionnée avec votre historique, rien n'est perdu.",
   "backupImportConfirmKeysYes": "Les clés API du fichier seront utilisées, s'il en contient.",
-  "backupImportConfirmKeysNo": "Vos clés API actuelles sont conservées, même si le fichier en contient d'autres."
+  "backupImportConfirmKeysNo": "Vos clés API actuelles sont conservées, même si le fichier en contient d'autres.",
+  "explanationsLabel": "Explications",
+  "explanationsInfo": "Les mots {language} essentiels de cette traduction sont expliqués sous le résultat."
 }

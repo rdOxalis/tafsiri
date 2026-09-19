@@ -72,6 +72,8 @@ The system prompt — and with it the branch the model takes — is chosen by th
 | off | translate → confident language | translate → learning language |
 | on  | **correct and improve, stay in the learning language** | translate → learning language |
 
+With the explanations switch on (ADR-060) an `EXPLAIN:` section is appended to whichever prompt is in force — one request, not two — carrying the learning-language words of the exchange. It is suppressed in mode `correct`, where the `NOTES:` already explain, and omitted when there is nothing worth saying. Response protocol, in order: `LANG:` / `MODE:` / body / `NOTES:` / `EXPLAIN:`; the parser cuts `EXPLAIN:` off first because it is always last.
+
 ---
 
 ## Settings Data Flow
@@ -195,7 +197,7 @@ CREATE TABLE translation_entry (
 **Notes:**
 - `created_at` stored as `DateTime.now().toUtc().toIso8601String()` for consistent sorting.
 - `source_lang` is the 2-letter ISO 639-1 code extracted from the AI response `LANG:xx` prefix.
-- Schema version: 2. `mode` and `notes` were added in v2 (ADR-033); the v1→v2 `ALTER TABLE` defaults existing rows to `'translate'`. The DDL and the migration live in `DbHelper.createTableSql` / `DbHelper.migrate` and are shared with the tests — see ADR-014.
+- Schema version: 3. `mode` and `notes` were added in v2 (ADR-033), `explanations` in v3 (ADR-060); each `ALTER TABLE` leaves existing rows alone, defaulting the mode of older ones to `'translate'`. The DDL and the migration live in `DbHelper.createTableSql` / `DbHelper.migrate` and are shared with the tests — see ADR-014.
 
 ### Platform backends (ADR-031)
 
@@ -404,7 +406,7 @@ NOTES:
 - Butter → siagi: "Butter" is German/English; the Swahili word is "siagi".
 ```
 
-`AiResult.parse()` splits this into `sourceLang`, `mode`, `body` and `notes`. Both header lines and the `NOTES:` section are optional, so a plain `LANG:xx\n<translation>` response — everything the app produced before v2 — still parses, and the mode falls back to `translate`.
+`AiResult.parse()` splits this into `sourceLang`, `mode`, `body`, `notes` and `explanations`. Both header lines and both sections are optional, so a plain `LANG:xx\n<translation>` response — everything the app produced before v2 — still parses, and the mode falls back to `translate`. `EXPLAIN:` is cut off before `NOTES:` is looked for, because it always comes last.
 
 ---
 
@@ -544,18 +546,34 @@ Production keystore is **not** committed to git. Reference via `android/key.prop
 | Test suite | File | Tests |
 |------------|------|-------|
 | SettingsController | `test/settings_controller_test.dart` | 10 |
-| TranslatorController + `AiResult.parse` | `test/translator/translator_controller_test.dart` | 20 |
-| TranslatorScreen widgets | `test/translator/translator_screen_test.dart` | 12 |
-| Correction prompt routing (ADR-033) | `test/services/correction_prompt_test.dart` | 6 |
+| Settings fields follow the stored state (ADR-064) | `test/settings/settings_fields_follow_state_test.dart` | 3 |
+| Language ordering in the pickers | `test/settings/language_ordering_test.dart` | 7 |
+| About section (ADR-068) | `test/settings/about_section_test.dart` | 2 |
+| Licences screen | `test/settings/licenses_test.dart` | 3 |
+| TranslatorController + `AiResult.parse` | `test/translator/translator_controller_test.dart` | 28 |
+| TranslatorScreen widgets | `test/translator/translator_screen_test.dart` | 21 |
+| Bilingual notes heading (ADR-065) | `test/translator/bilingual_heading_test.dart` | 6 |
+| Paste into the input area | `test/translator/input_area_paste_test.dart` | 3 |
+| Correction prompt routing (ADR-033) | `test/services/correction_prompt_test.dart` | 10 |
+| Explanations prompt and parsing (ADR-060) | `test/services/explanations_prompt_test.dart` | 8 |
+| Input is data, not an instruction (ADR-061) | `test/services/input_is_data_test.dart` | 7 |
 | Backup format (ADR-034) | `test/services/backup_service_test.dart` | 12 |
-| Backup export/import cycle (ADR-034) | `test/settings/backup_controller_test.dart` | 13 |
-| ClaudeService | `test/services/claude_service_test.dart` | 4 |
+| Backup export/import cycle (ADR-034) | `test/settings/backup_controller_test.dart` | 16 |
+| Backup panel layout (ADR-062) | `test/settings/backup_panel_test.dart` | 3 |
+| ClaudeService | `test/services/claude_service_test.dart` | 5 |
 | OpenAiService | `test/services/openai_service_test.dart` | 4 |
 | MistralService | `test/services/mistral_service_test.dart` | 4 |
+| Clipboard images (ADR-040, ADR-047) | `test/services/clipboard_image_service_test.dart` | 9 |
+| Clipboard images on Windows (ADR-047) | `test/services/powershell_clipboard_image_service_test.dart` | 8 |
+| Tesseract OCR service (ADR-037, ADR-038) | `test/services/tesseract_ocr_service_test.dart` | 37 |
+| Tesseract binary lookup | `test/services/tesseract_lookup_test.dart` | 10 |
+| Tesseract OCR against real images | `test/services/tesseract_ocr_integration_test.dart` | 5 |
 | TranslationDao (SQLite) | `test/database/translation_dao_test.dart` | 8 |
-| Schema migration v1→v2 | `test/database/db_migration_test.dart` | 1 |
+| Schema migration v1→v2, v2→v3 | `test/database/db_migration_test.dart` | 2 |
 | Desktop sqflite FFI wiring | `test/database/sqflite_desktop_test.dart` | 1 |
-| **Total** | | **95** |
+| Privacy policy links (ADR-068) | `test/privacy_policy_link_test.dart` | 2 |
+| Build info | `test/build_info_test.dart` | 2 |
+| **Total** | | **236** |
 
 Run: `flutter test`
 

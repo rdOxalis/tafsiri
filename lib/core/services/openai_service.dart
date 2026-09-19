@@ -19,6 +19,7 @@ class OpenAiService implements AiService {
     required String altLanguage,
     required String apiKey,
     bool correctionMode = false,
+    bool explanations = false,
   }) async {
     debugPrint('[OpenAiService] translate — key=${maskApiKey(apiKey)}, '
         'correction=$correctionMode');
@@ -39,6 +40,7 @@ class OpenAiService implements AiService {
               targetLanguage: targetLanguage,
               altLanguage: altLanguage,
               correctionMode: correctionMode,
+              explanations: explanations,
             ),
           },
           {

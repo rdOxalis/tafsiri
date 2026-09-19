@@ -125,5 +125,7 @@
   "backupRestoreKeysHint": "Bare hvis filen inneholder noen. Av beholder nøklene som allerede finnes på denne enheten.",
   "backupMergeHistoryHint": "Av: sikkerhetskopien flettes inn i loggen din, ingenting går tapt.",
   "backupImportConfirmKeysYes": "API-nøkler fra filen blir brukt, hvis den inneholder noen.",
-  "backupImportConfirmKeysNo": "Dine nåværende API-nøkler beholdes, selv om filen inneholder andre."
+  "backupImportConfirmKeysNo": "Dine nåværende API-nøkler beholdes, selv om filen inneholder andre.",
+  "explanationsLabel": "Forklaringer",
+  "explanationsInfo": "Viktige ord på {language} fra denne oversettelsen forklares under resultatet."
 }

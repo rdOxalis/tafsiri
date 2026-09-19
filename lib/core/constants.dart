@@ -12,6 +12,7 @@ const kPrefTargetLanguage = 'target_language';
 const kPrefAltLanguage = 'alt_language';
 const kPrefAppLocale = 'app_locale';
 const kPrefCorrectionMode = 'correction_mode';
+const kPrefExplanationsMode = 'explanations_mode';
 
 // Default setting values
 const kDefaultTargetLanguage = 'Swahili';
