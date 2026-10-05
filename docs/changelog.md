@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **A plural marked only on the verb is no longer read as a singular** (ADR-072). In Swahili a noun like *paka* is both "cat" and "cats", and only the verb says which — `Salim aliwapatia paka chakula` means he fed several. Tafsiri translated it as one. Both prompts now open with the rule that number and person may be marked away from the noun, and that where the noun is ambiguous the agreement decides. The rule names no language: the same error exists wherever agreement outranks a noun's own form.
+
 ---
 
 ## [1.0.19] - 2026-09-19

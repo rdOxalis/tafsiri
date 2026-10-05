@@ -1,0 +1,27 @@
+# Number agreement that is marked on the verb, not on the noun (ADR-072).
+#
+# From the field report in docs/tafsiri-swahili-numerus-fehler.md. Swahili is
+# the case at hand because N-class nouns (paka, mbwa, rafiki) look identical
+# in singular and plural, so the only carrier of number is the subject or
+# object prefix — exactly the marking a translation can drop without leaving
+# any trace in its output.
+#
+# Columns, tab separated:
+#   id  sentence  expect  forbid  what it checks
+# expect/forbid are extended regexes matched case-insensitively against the
+# German translation, each wrapped in word boundaries by the runner. Use "-"
+# for no forbid. Singular rows forbid the plural form on purpose: "Katze" is a
+# substring of "Katzen", so presence alone would pass either way.
+#
+obj-sg	Salim alimpatia paka chakula	Katze	Katzen	object singular -m-
+obj-pl	Salim aliwapatia paka chakula	Katzen	-	object plural -wa-
+perf-pl	Salim ameshawapatia paka chakula	Katzen	-	-me- + -sha- + -wa-, stem -patia
+perf-pl-pa	Salim ameshawapa paka chakula	Katzen	-	same, bare stem -pa
+subj-sg	Mbwa analala	Hund	Hunde	subject singular a-
+subj-pl	Mbwa wanalala	Hunde	-	subject plural wa-
+obj-sg-mw	Nilimwona rafiki	Freund(in)?	Freunde	object singular -mw-
+obj-pl-wa	Niliwaona rafiki	Freunde	-	object plural -wa-
+adj-sg	Paka mdogo analala	Katze	Katzen	adjective agreement, singular
+adj-pl	Paka wadogo wanalala	Katzen	-	adjective agreement, plural
+wa-2pl	Niliwakuta mkitembea	euch	sie|ihnen	-wa- = 2nd plural, resolved by m- on the second verb
+wa-3pl	Niliwakuta wakitembea	sie|ihnen	euch	-wa- = 3rd plural, resolved by wa- on the second verb

@@ -21,6 +21,8 @@
 #   tools/probe_prompt.sh -p openai -m gpt-4o-mini # try another model
 #   tools/probe_prompt.sh -c                       # the correction prompt
 #   tools/probe_prompt.sh -p openai -x '{"reasoning_effort":"low"}'
+#   tools/probe_prompt.sh -g off                   # without the agreement rule
+#   tools/probe_prompt.sh --content-only           # just the model's answer
 #
 set -uo pipefail
 
@@ -36,6 +38,8 @@ MODEL=''
 RUNS=1
 EXTRA='{}'
 RAW=0
+AGREEMENT='on'
+CONTENT_ONLY=0
 
 usage() { sed -n '3,26p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
 
@@ -51,6 +55,8 @@ while [ $# -gt 0 ]; do
     -c|--correction) MODE='correct'; shift ;;
     -n|--no-explanations) EXPLAIN='off'; shift ;;
     --raw)          RAW=1; shift ;;
+    -g|--agreement) AGREEMENT="$2"; shift 2 ;;
+    --content-only) CONTENT_ONLY=1; shift ;;
     -h|--help)      usage 0 ;;
     *) echo "unknown option: $1" >&2; usage 1 ;;
   esac
@@ -65,7 +71,7 @@ echo "$EXTRA" | jq -e . >/dev/null 2>&1 || { echo "--extra is not valid JSON: $E
 # from what ships. Same for the model: it is read out of the service file
 # rather than repeated here, and only -m overrides it.
 PROMPT="$(cd "$ROOT" && dart run tools/dump_prompt.dart \
-            "$LEARN" "$CONFIDENT" "$MODE" "$EXPLAIN" "$TEXT")" || exit 1
+            "$LEARN" "$CONFIDENT" "$MODE" "$EXPLAIN" "$TEXT" "$AGREEMENT")" || exit 1
 
 model_of() { # <service file>
   sed -n "s/^const _model = '\(.*\)';/\1/p" "$ROOT/lib/core/services/$1"
@@ -107,9 +113,11 @@ probe() { # <provider> <model> <run>
   out=$(curl -s "$url" -H "$key_header" -H 'content-type: application/json' \
         -H 'anthropic-version: 2023-06-01' -d "$body")
 
-  echo "=================================================================="
-  echo "$provider | $model | $MODE | explanations $EXPLAIN | run $run"
-  echo "------------------------------------------------------------------"
+  if [ "$CONTENT_ONLY" = 0 ]; then
+    echo "=================================================================="
+    echo "$provider | $model | $MODE | explanations $EXPLAIN | agreement $AGREEMENT | run $run"
+    echo "------------------------------------------------------------------"
+  fi
   if [ "$RAW" = 1 ]; then echo "$out" | jq .; return 0; fi
 
   # OpenAI and Mistral answer in .choices[0].message.content, Claude in
@@ -117,7 +125,10 @@ probe() { # <provider> <model> <run>
   content=$(echo "$out" | jq -r '.choices[0].message.content // .content[0].text // empty')
   if [ -n "$content" ]; then
     echo "$content"
-    echo "--- tokens: $(echo "$out" | jq -r '.usage.prompt_tokens // .usage.input_tokens // "?"') in / $(echo "$out" | jq -r '.usage.completion_tokens // .usage.output_tokens // "?"') out"
+    # Counts go to stderr under --content-only, so a caller can grade stdout
+    # without stripping anything off the end.
+    local tokens="--- tokens: $(echo "$out" | jq -r '.usage.prompt_tokens // .usage.input_tokens // "?"') in / $(echo "$out" | jq -r '.usage.completion_tokens // .usage.output_tokens // "?"') out"
+    if [ "$CONTENT_ONLY" = 1 ]; then echo "$tokens" >&2; else echo "$tokens"; fi
   else
     echo "NO CONTENT — response was:"
     echo "$out" | jq . 2>/dev/null || echo "$out"
