@@ -37,9 +37,19 @@ def matches(text, pattern):
     return re.search(rf"\b(?:{body})\b", text, flags) is not None
 
 
+GERMAN = re.compile(
+    r"\b(der|die|das|den|dem|des|ein|eine|einem|einen|hat|habe|haben|ist|sind"
+    r"|war|ich|er|sie|es|und|gab|gegeben|schläft|schlafen|sah|traf|Futter"
+    r"|Essen|Katze|Katzen|Hund|Hunde|Freund|Freunde)\b", re.IGNORECASE)
+
+
 def grade(text, expect, forbid):
     if not text or text.startswith("NO CONTENT") or text.startswith("(skipped"):
         return "ERROR"
+    if not GERMAN.search(text):
+        # Not German at all: cannot be graded for number, and must not pass a
+        # singular row just by containing none of the plural's letters.
+        return "NOTRANS"
     if not matches(text, expect):
         return "FAIL"
     if forbid != "-" and matches(text, forbid):

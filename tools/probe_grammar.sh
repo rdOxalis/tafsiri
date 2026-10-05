@@ -23,6 +23,7 @@
 #   tools/probe_grammar.sh -r 3                  # three runs per sentence
 #   tools/probe_grammar.sh --analysis on         # analyse before translating
 #   tools/probe_grammar.sh -i obj-pl,perf-pl     # only these fixture rows
+#   tools/probe_grammar.sh -p mistral -s 3       # pause 3s, for a rate-limited key
 #
 # Every answer, graded, lands in build/probe/ as a TSV — the summary on screen
 # is for reading, that file is for comparing two runs later.
@@ -40,6 +41,7 @@ RUNS=1
 AGREEMENT='on'
 ANALYSIS='off'
 ONLY=''
+SLEEP=0
 LEARN='Swahili'
 CONFIDENT='German'
 
@@ -54,6 +56,7 @@ while [ $# -gt 0 ]; do
     -g|--agreement) AGREEMENT="$2"; shift 2 ;;
     --analysis)     ANALYSIS="$2"; shift 2 ;;
     -i|--only)      ONLY=",$2,"; shift 2 ;;
+    -s|--sleep)     SLEEP="$2"; shift 2 ;;
     -l|--learn)     LEARN="$2"; shift 2 ;;
     -a|--confident) CONFIDENT="$2"; shift 2 ;;
     -f|--fixture)   FIXTURE="$2"; shift 2 ;;
@@ -97,6 +100,19 @@ key_for() { # <provider>
     openai)  echo "${OPENAI_API_KEY:-}" ;;
     mistral) echo "${MISTRAL_API_KEY:-}" ;;
   esac
+}
+
+# Did it translate at all? A free-tier model answered "Salim aliwapatia paka
+# chakula" with "Salim aliwapa paka chakula" — Swahili, slightly mangled — and
+# another returned German that had nothing to do with the sentence. Neither can
+# be graded for number, and two of them passed a singular row by accident
+# because the row only looks for "Katze". A row that carries no German at all
+# is reported as NOTRANS rather than scored.
+GERMAN='der|die|das|den|dem|des|ein|eine|einem|einen|hat|habe|haben|ist|sind|war|ich|er|sie|es|und|gab|gegeben|schläft|schlafen|sah|traf|Futter|Essen|Katze|Katzen|Hund|Hunde|Freund|Freunde'
+
+looks_translated() { # <text>
+  [ "$CONFIDENT" = 'German' ] || return 0   # only German is checked for now
+  grep -qiE "\\b($GERMAN)\\b" <<<"$1"
 }
 
 # A pattern is matched case-insensitively unless it is prefixed with "cs:".
@@ -147,6 +163,8 @@ run_one() { # <provider> <agreement>
       if [ -z "$body" ] || [[ "$body" == NO\ CONTENT* ]] \
          || [[ "$body" == \(skipped* ]]; then
         verdict='ERROR'; errors=$((errors + 1))
+      elif ! looks_translated "$body"; then
+        verdict='NOTRANS'; fail=$((fail + 1))
       elif ! matches "$body" "$expect"; then
         verdict='FAIL'; fail=$((fail + 1))
       elif [ "$forbid" != '-' ] && matches "$body" "$forbid"; then
@@ -159,6 +177,7 @@ run_one() { # <provider> <agreement>
         "$provider" "$model" "$agreement" "$ANALYSIS" "$run" "$id" "$verdict" \
         "${tok_in:-?}" "${tok_out:-?}" "$sentence" "$body" >> "$RESULTS"
 
+      [ "$SLEEP" != 0 ] && sleep "$SLEEP"
       if [ "$verdict" = 'pass' ]; then
         printf '  pass  %-11s %s\n' "$id" "$sentence"
       else
@@ -170,7 +189,7 @@ run_one() { # <provider> <agreement>
   done < "$FIXTURE"
 
   echo "  ----------------------------------------------------------------"
-  echo "  $provider, rule $agreement, analysis $ANALYSIS: $pass passed, $fail failed, $errors errored"
+  echo "  $provider, rule $agreement, analysis $ANALYSIS: $pass passed, $fail failed (NOTRANS included), $errors errored"
   echo "  tokens, mean per request: $(awk -F'\t' -v m="$model" -v a="$agreement" -v an="$ANALYSIS" \
     '$2==m && $3==a && $4==an && $8!="?" {i+=$8; o+=$9; n++} END {if (n) printf "%d in / %d out", i/n, o/n; else print "not recorded"}' "$RESULTS")"
 }
