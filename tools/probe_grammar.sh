@@ -130,10 +130,15 @@ matches() { # <text> <pattern>
 
 run_one() { # <provider> <agreement>
   local provider="$1" agreement="$2" model
+  if [ -n "$MODEL" ]; then
+    model="$MODEL"
+  else
+    # Same source as the app and as probe_prompt.sh: lib/core/ai_models.dart.
+    model=$(cd "$ROOT" && dart run tools/dump_prompt.dart x y translate off t \
+              2>/dev/null | jq -r --arg p "$provider" '.models[$p]')
+  fi
   case "$provider" in
-    claude)  model="${MODEL:-$(sed -n "s/^const _model = '\(.*\)';/\1/p" "$ROOT/lib/core/services/claude_service.dart")}" ;;
-    openai)  model="${MODEL:-$(sed -n "s/^const _model = '\(.*\)';/\1/p" "$ROOT/lib/core/services/openai_service.dart")}" ;;
-    mistral) model="${MODEL:-$(sed -n "s/^const _model = '\(.*\)';/\1/p" "$ROOT/lib/core/services/mistral_service.dart")}" ;;
+    claude|openai|mistral) ;;
     *) echo "unknown provider: $provider" >&2; return 1 ;;
   esac
 

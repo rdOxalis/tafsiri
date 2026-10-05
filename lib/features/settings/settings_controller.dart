@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/ai_models.dart';
 import '../../core/constants.dart';
 
 class SettingsState {
@@ -13,6 +14,10 @@ class SettingsState {
   final bool correctionMode; // ADR-033
   final bool explanationsMode; // ADR-060
 
+  /// The chosen model per provider, keyed by provider (ADR-073). A provider
+  /// missing from the map simply has not been chosen for yet.
+  final Map<String, String> models;
+
   const SettingsState({
     required this.apiKeyMistral,
     required this.apiKeyClaude,
@@ -23,6 +28,7 @@ class SettingsState {
     required this.sttLanguage,
     this.correctionMode = false,
     this.explanationsMode = false,
+    this.models = const {},
   });
 
   const SettingsState.defaults()
@@ -34,7 +40,8 @@ class SettingsState {
         altLanguage = kDefaultAltLanguage,
         sttLanguage = '',
         correctionMode = false,
-        explanationsMode = false;
+        explanationsMode = false,
+        models = const {};
 
   bool get hasApiKeyForActiveProvider {
     switch (activeProvider) {
@@ -48,6 +55,17 @@ class SettingsState {
         return false;
     }
   }
+
+  /// The model to send for [provider] — the user's choice, or the default.
+  ///
+  /// Goes through [resolveModel], so a value from a newer version of the app
+  /// or from a model since withdrawn falls back instead of being sent to an
+  /// API that would reject it.
+  String modelFor(String provider) =>
+      resolveModel(provider, models[provider] ?? '');
+
+  /// The model for the provider that is currently selected.
+  String get activeModel => modelFor(activeProvider);
 
   String get activeApiKey {
     switch (activeProvider) {
@@ -72,6 +90,7 @@ class SettingsState {
     String? sttLanguage,
     bool? correctionMode,
     bool? explanationsMode,
+    Map<String, String>? models,
   }) {
     return SettingsState(
       apiKeyMistral: apiKeyMistral ?? this.apiKeyMistral,
@@ -83,6 +102,7 @@ class SettingsState {
       sttLanguage: sttLanguage ?? this.sttLanguage,
       correctionMode: correctionMode ?? this.correctionMode,
       explanationsMode: explanationsMode ?? this.explanationsMode,
+      models: models ?? this.models,
     );
   }
 }
@@ -102,7 +122,17 @@ class SettingsController extends AsyncNotifier<SettingsState> {
       sttLanguage: prefs.getString(kPrefSttLanguage) ?? '',
       correctionMode: prefs.getBool(kPrefCorrectionMode) ?? false,
       explanationsMode: prefs.getBool(kPrefExplanationsMode) ?? false,
+      models: _readModels(prefs),
     );
+  }
+
+  static Map<String, String> _readModels(SharedPreferences prefs) {
+    final models = <String, String>{};
+    for (final provider in kModelsByProvider.keys) {
+      final stored = prefs.getString('$kPrefModelPrefix$provider');
+      if (stored != null && stored.isNotEmpty) models[provider] = stored;
+    }
+    return models;
   }
 
   Future<void> setApiKey(String provider, String key) async {
@@ -145,6 +175,19 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     state = AsyncData(state.requireValue.copyWith(sttLanguage: code));
   }
 
+  /// Records the model chosen for [provider] (ADR-073).
+  ///
+  /// Only the provider's own entry changes: someone comparing two providers
+  /// must not have the other one's choice reset underneath them.
+  Future<void> setModel(String provider, String modelId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('$kPrefModelPrefix$provider', modelId);
+    final current = state.requireValue;
+    state = AsyncData(current.copyWith(
+      models: {...current.models, provider: modelId},
+    ));
+  }
+
   Future<void> setCorrectionMode(bool enabled) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(kPrefCorrectionMode, enabled);
@@ -174,6 +217,9 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     await prefs.setString(kPrefSttLanguage, restored.sttLanguage);
     await prefs.setBool(kPrefCorrectionMode, restored.correctionMode);
     await prefs.setBool(kPrefExplanationsMode, restored.explanationsMode);
+    for (final entry in restored.models.entries) {
+      await prefs.setString('$kPrefModelPrefix${entry.key}', entry.value);
+    }
 
     if (restoreApiKeys) {
       await prefs.setString(kPrefApiKeyMistral, restored.apiKeyMistral);

@@ -373,6 +373,7 @@ class TranslatorController extends Notifier<TranslatorState> {
         targetLanguage: settings.targetLanguage,
         altLanguage: settings.altLanguage,
         apiKey: settings.activeApiKey,
+        model: settings.activeModel,
         correctionMode: settings.correctionMode,
         explanations: settings.explanationsMode,
       );

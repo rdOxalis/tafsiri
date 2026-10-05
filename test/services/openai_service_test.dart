@@ -17,6 +17,7 @@ void main() {
 
   group('OpenAiService', () {
     const apiKey = 'sk-test-key';
+    const model = 'gpt-5.6-luna';
     const target = 'Swahili';
     const alt = 'English';
     const input = 'Hello';
@@ -42,6 +43,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       expect(result, 'LANG:en\nHabari');
@@ -54,7 +56,7 @@ void main() {
 
       expect(
         () => service.translate(
-            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey),
+            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey, model: model),
         throwsA(isA<AiApiException>().having((e) => e.statusCode, 'statusCode', 401)),
       );
     });
@@ -66,7 +68,7 @@ void main() {
 
       expect(
         () => service.translate(
-            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey),
+            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey, model: model),
         throwsA(isA<AiApiException>().having((e) => e.statusCode, 'statusCode', 500)),
       );
     });
@@ -85,6 +87,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       final body = jsonDecode(verify(mockClient.post(
@@ -114,6 +117,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       final captured = verify(mockClient.post(

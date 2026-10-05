@@ -359,4 +359,20 @@ class AppLocalizationsSw extends AppLocalizations {
   String explanationsInfo(String language) {
     return 'Maneno muhimu ya $language kutoka kwa tafsiri hii yanaelezwa chini ya matokeo.';
   }
+
+  @override
+  String get modelLabel => 'Modeli';
+
+  @override
+  String get modelHint =>
+      'Modeli yenye nguvu zaidi hutafsiri sarufi kwa uhakika zaidi na hugharimu zaidi kwa kila ombi. Chaguo lako huhifadhiwa kwa kila mtoa huduma.';
+
+  @override
+  String get modelTierBest => 'ubora wa juu';
+
+  @override
+  String get modelTierEconomy => 'gharama ndogo';
+
+  @override
+  String get modelTierFree => 'kiwango cha bure';
 }

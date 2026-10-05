@@ -254,6 +254,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
         explanations: true,
       );
       expect(sentSystemPrompt(), contains('EXPLAIN:'));
@@ -272,6 +273,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
         explanations: true,
       );
       expect(sentSystemPrompt(), contains('EXPLAIN:'));
@@ -290,6 +292,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
         explanations: true,
       );
       expect(sentSystemPrompt(), contains('EXPLAIN:'));
@@ -306,6 +309,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
       );
       expect(sentSystemPrompt(), isNot(contains('EXPLAIN:')));
     });

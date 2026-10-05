@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'ai_service.dart';
 
-const _model = 'mistral-small-latest';
+
 const _endpoint = 'https://api.mistral.ai/v1/chat/completions';
 
 class MistralService implements AiService {
@@ -18,6 +18,7 @@ class MistralService implements AiService {
     required String targetLanguage,
     required String altLanguage,
     required String apiKey,
+    required String model,
     bool correctionMode = false,
     bool explanations = false,
   }) async {
@@ -31,7 +32,7 @@ class MistralService implements AiService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'model': _model,
+        'model': model,
         'max_tokens': 4096,
         'messages': [
           {

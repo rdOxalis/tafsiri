@@ -357,6 +357,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String explanationsInfo(String language) {
     return 'Essential $language words from this translation are explained below the result.';
   }
+
+  @override
+  String get modelLabel => 'Model';
+
+  @override
+  String get modelHint =>
+      'A stronger model translates grammar more reliably and costs more per request. Your choice is kept per provider.';
+
+  @override
+  String get modelTierBest => 'best quality';
+
+  @override
+  String get modelTierEconomy => 'lower cost';
+
+  @override
+  String get modelTierFree => 'free tier';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -712,4 +728,20 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String explanationsInfo(String language) {
     return 'Essential $language words from this translation are explained below the result.';
   }
+
+  @override
+  String get modelLabel => 'Model';
+
+  @override
+  String get modelHint =>
+      'A stronger model translates grammar more reliably and costs more per request. Your choice is kept per provider.';
+
+  @override
+  String get modelTierBest => 'best quality';
+
+  @override
+  String get modelTierEconomy => 'lower cost';
+
+  @override
+  String get modelTierFree => 'free tier';
 }

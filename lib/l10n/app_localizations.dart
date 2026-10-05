@@ -748,6 +748,36 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'Essential {language} words from this translation are explained below the result.'**
   String explanationsInfo(String language);
+
+  /// Label of the model selector in Settings
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Model'**
+  String get modelLabel;
+
+  /// Hint under the model selector, explaining the trade-off
+  ///
+  /// In en_GB, this message translates to:
+  /// **'A stronger model translates grammar more reliably and costs more per request. Your choice is kept per provider.'**
+  String get modelHint;
+
+  /// Short note beside the strongest model of a provider
+  ///
+  /// In en_GB, this message translates to:
+  /// **'best quality'**
+  String get modelTierBest;
+
+  /// Short note beside a cheaper, weaker model
+  ///
+  /// In en_GB, this message translates to:
+  /// **'lower cost'**
+  String get modelTierEconomy;
+
+  /// Short note beside a model usable with a provider's free credit
+  ///
+  /// In en_GB, this message translates to:
+  /// **'free tier'**
+  String get modelTierFree;
 }
 
 class _AppLocalizationsDelegate

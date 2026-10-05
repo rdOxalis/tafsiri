@@ -7,6 +7,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **You choose the model, per provider** (ADR-073). Settings now offers the models each provider has, with a word on what each one costs you: *best quality*, *lower cost*, *free tier*. The choice is kept per provider, so comparing two of them does not reset the other, and it travels in your backup.
+
+### Changed
+- **Claude now defaults to Sonnet 5.5 instead of Haiku 4.5** (ADR-073). Measured against Swahili sentences whose plural sits on the verb rather than the noun, Haiku got 67% right and Sonnet 100% — and the failure is invisible in the result, since "Salim gave the cat food" reads perfectly well when four cats were fed. That roughly doubles the cost, from about $1.80 to $3.53 a month at thirty requests a day in the heaviest mode, and the README's cost section has been rewritten rather than left standing. Haiku is one tap away in Settings if you prefer the cheaper one.
+
 ### Fixed
 - **A plural marked only on the verb is no longer read as a singular** (ADR-072). In Swahili a noun like *paka* is both "cat" and "cats", and only the verb says which — `Salim aliwapatia paka chakula` means he fed several. Tafsiri translated it as one. Both prompts now open with the rule that number and person may be marked away from the noun, and that where the noun is ambiguous the agreement decides. The rule names no language: the same error exists wherever agreement outranks a noun's own form. Measured against all three providers: it lifts Mistral from 0 of 12 test sentences to 5, and changes nothing for Claude or ChatGPT — so the Swahili object-prefix case the report found is still open, and is being worked on separately.
 

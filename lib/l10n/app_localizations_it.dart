@@ -358,4 +358,20 @@ class AppLocalizationsIt extends AppLocalizations {
   String explanationsInfo(String language) {
     return 'Le parole $language essenziali di questa traduzione sono spiegate sotto il risultato.';
   }
+
+  @override
+  String get modelLabel => 'Modello';
+
+  @override
+  String get modelHint =>
+      'Un modello più potente traduce la grammatica in modo più affidabile e costa di più per richiesta. La tua scelta viene salvata per ogni provider.';
+
+  @override
+  String get modelTierBest => 'qualità migliore';
+
+  @override
+  String get modelTierEconomy => 'più economico';
+
+  @override
+  String get modelTierFree => 'piano gratuito';
 }

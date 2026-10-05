@@ -5,7 +5,7 @@ import '../constants.dart';
 import 'ai_service.dart';
 
 /// ADR-071. Named by alias, never by dated snapshot — the lesson of ADR-067.
-const _model = 'gpt-5.6-luna';
+
 const _endpoint = 'https://api.openai.com/v1/chat/completions';
 
 /// This model reasons before it answers, and charges for the thinking.
@@ -26,6 +26,7 @@ class OpenAiService implements AiService {
     required String targetLanguage,
     required String altLanguage,
     required String apiKey,
+    required String model,
     bool correctionMode = false,
     bool explanations = false,
   }) async {
@@ -39,7 +40,7 @@ class OpenAiService implements AiService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'model': _model,
+        'model': model,
         // Not 'max_tokens' — every GPT-5 model rejects that name outright.
         // gpt-4o-mini accepted both, so this is the safe one either way.
         'max_completion_tokens': 4096,

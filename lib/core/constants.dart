@@ -14,6 +14,10 @@ const kPrefAppLocale = 'app_locale';
 const kPrefCorrectionMode = 'correction_mode';
 const kPrefExplanationsMode = 'explanations_mode';
 
+/// One per provider, so a choice survives switching back and forth
+/// (ADR-073). Suffixed with the provider key.
+const kPrefModelPrefix = 'model_';
+
 // Default setting values
 const kDefaultTargetLanguage = 'Swahili';
 const kDefaultAltLanguage = 'English';

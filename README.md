@@ -92,23 +92,19 @@ It is not. An API key is metered credit. You are billed for the text you actuall
 
 We build it this way because we use the same bring-your-own-key method ourselves and think the pricing is fair. That is a judgement, and judgements expire. If it stops being true — rates rise sharply, a free tier disappears, terms turn unreasonable — we will say so in this section, change the approach, or both.
 
-Here is what that works out to. Tafsiri's prompts are a fixed size and can be measured, so these are calculated from the real thing rather than guessed. The rates are Anthropic's for Claude Haiku 4.5, the model Tafsiri uses: $1 per million tokens in, $5 per million out.
+Here is what that works out to. Tafsiri's prompts are a fixed size and can be measured, so these are calculated from the real thing rather than guessed. The rates are Anthropic's: **$2 per million tokens in and $10 per million out for Claude Sonnet 5.5**, the default, and **$1 / $5 for Claude Haiku 4.5**, which Settings offers instead.
 
-| One request | sent | returned | cost |
-|---|---|---|---|
-| Translation | ~410 tokens | ~50 tokens | **$0.0007** |
-| Correction with suggestions | ~780 tokens | ~150 tokens | **$0.0015** |
-| Translation with word explanations *(coming)* | ~710 tokens | ~250 tokens | **$0.0020** |
+Fractions of a cent are hard to picture, so here is a month of steady use — thirty requests every single day, which is a lot of translating:
 
-Fractions of a cent are hard to picture, so scaled up to a month of steady use — thirty requests every single day, which is a lot of translating:
+| A month at 30 requests a day | Sonnet 5.5 *(default)* | Haiku 4.5 |
+|---|---|---|
+| All plain translations | **$1.19** | $0.59 |
+| All corrections with suggestions | **$2.75** | $1.38 |
+| All translations with word explanations | **$3.53** | $1.76 |
 
-| A month at 30 requests a day | cost |
-|---|---|
-| All plain translations | **$0.63** |
-| All corrections | **$1.35** |
-| All translations with explanations *(coming)* | **$1.80** |
+One request is a fraction of a cent either way — $0.0013 for a translation on Sonnet, $0.0007 on Haiku. Mixed real use lands well below the table.
 
-Under two dollars a month for the heaviest mode, run every day. Mixed real use lands nearer a dollar. ChatGPT via `gpt-5.6-luna` is cheaper still — around a quarter of a dollar a month at thirty translations a day, explanations included — and Mistral's free tier costs nothing at all.
+The default used to be Haiku, and moving to Sonnet roughly doubles the bill. It is the right default anyway: Haiku loses grammatical number that is marked on the verb instead of the noun, and that is a mistake you cannot see in the result — the German reads perfectly well, it is just about one cat instead of four. If you would rather have the cheaper one, Settings offers it under the provider. That is what the choice is there for. ChatGPT via `gpt-5.6-luna` is cheaper still — around a quarter of a dollar a month at thirty translations a day, explanations included — and Mistral's free tier costs nothing at all.
 
 **What you get for it** is the part worth weighing against a subscription. Not word-for-word substitution, but a translation that reads as the language is actually spoken. Correction mode, which does not merely translate but rewrites what you wrote the way a native speaker would and explains every change. Explanations of the essential words, with their part of speech and their derived forms, coming with the next release. That is a tutor's work, and it costs about what one coffee a year costs.
 
@@ -118,13 +114,15 @@ Under two dollars a month for the heaviest mode, run every day. Mixed real use l
 
 ## Supported AI Providers
 
-| Provider | Model used | Free tier |
+| Provider | Models you can choose | Free tier |
 |---|---|---|
-| **Mistral AI** | `mistral-small-latest` | Yes — generous free tier |
-| **Anthropic Claude** | `claude-haiku-4-5` | No — pay as you go |
+| **Mistral AI** | `mistral-small-latest` *(free tier)* · `mistral-medium-latest` | Yes — generous free tier |
+| **Anthropic Claude** | **`claude-sonnet-5-5`** · `claude-haiku-4-5` *(cheaper)* | No — pay as you go |
 | **OpenAI ChatGPT** | `gpt-5.6-luna` | No — pay as you go |
 
-**Mistral is the recommended starting point** if you want to try the app for free.
+The model is chosen per provider in Settings; the one in bold is the default. The choice is not cosmetic. Measured against a set of Swahili sentences whose plural is marked on the verb rather than on the noun, the cheaper Claude got **67%** right and Sonnet **100%** — so the default is the one that does not quietly turn several cats into one.
+
+**Mistral is the recommended starting point** if you want to try the app for free — with one caveat worth knowing before you judge the app by it: on those same sentences Mistral's free model scored **31%** and its paid one **89%**. The free tier is fine for seeing how Tafsiri works. For actually learning Swahili, Claude or ChatGPT.
 
 ---
 

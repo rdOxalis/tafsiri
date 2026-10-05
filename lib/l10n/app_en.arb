@@ -365,5 +365,10 @@
   "backupImportConfirmKeysYes": "API keys from the file will be used, if it contains any.",
   "backupImportConfirmKeysNo": "Your current API keys are kept, even if the file contains others.",
   "explanationsLabel": "Explanations",
-  "explanationsInfo": "Essential {language} words from this translation are explained below the result."
+  "explanationsInfo": "Essential {language} words from this translation are explained below the result.",
+  "modelLabel": "Model",
+  "modelHint": "A stronger model translates grammar more reliably and costs more per request. Your choice is kept per provider.",
+  "modelTierBest": "best quality",
+  "modelTierEconomy": "lower cost",
+  "modelTierFree": "free tier"
 }

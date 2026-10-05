@@ -22,12 +22,17 @@ abstract class AiService {
   ///
   /// With [explanations] a further EXPLAIN: section follows (ADR-060).
   ///
+  /// [model] is the user's choice for this provider (ADR-073); the service
+  /// does not pick one, so that what a measurement ran against and what ships
+  /// cannot drift apart.
+  ///
   /// Callers (TranslatorController) are responsible for parsing the prefix.
   Future<String> translate({
     required String text,
     required String targetLanguage,
     required String altLanguage,
     required String apiKey,
+    required String model,
     bool correctionMode = false,
     bool explanations = false,
   });

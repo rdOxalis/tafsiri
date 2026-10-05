@@ -13,7 +13,7 @@ import 'ai_service.dart';
 /// has not updated, and no release we make afterwards reaches them any faster.
 /// A silently updated model translates a little differently, which is a far
 /// cheaper failure. Mistral and OpenAI are already on aliases here.
-const _model = 'claude-haiku-4-5';
+
 const _endpoint = 'https://api.anthropic.com/v1/messages';
 const _apiVersion = '2023-06-01';
 
@@ -28,6 +28,7 @@ class ClaudeService implements AiService {
     required String targetLanguage,
     required String altLanguage,
     required String apiKey,
+    required String model,
     bool correctionMode = false,
     bool explanations = false,
   }) async {
@@ -42,7 +43,7 @@ class ClaudeService implements AiService {
         'content-type': 'application/json',
       },
       body: jsonEncode({
-        'model': _model,
+        'model': model,
         'max_tokens': 4096,
         'system': AiService.systemPromptFor(
           targetLanguage: targetLanguage,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../core/build_info.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../core/ai_models.dart';
 import '../../core/constants.dart';
 import '../../core/locale_notifier.dart';
 import '../../core/services/backup_service.dart';
@@ -262,6 +263,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 _GetApiKeyButton(url: kOpenAiApiKeyUrl, label: l10n.getApiKeyButton),
               ],
 
+              // --- Model for the active provider (ADR-073) ---
+              _ModelPicker(provider: settings.activeProvider),
+
               const Divider(height: 32),
 
               // --- Backup (ADR-034) ---
@@ -514,6 +518,87 @@ class _FieldInfoButton extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Which model the active provider uses (ADR-073).
+///
+/// Shown for the active provider only, under its key field, because that is
+/// where someone is already deciding about that provider. A provider with one
+/// model shows a line rather than a menu — a dropdown with a single entry
+/// invites a choice that does not exist.
+class _ModelPicker extends ConsumerWidget {
+  const _ModelPicker({required this.provider});
+
+  final String provider;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final models = modelsFor(provider);
+    if (models.isEmpty) return const SizedBox.shrink();
+
+    final settings = ref.watch(settingsProvider).valueOrNull;
+    if (settings == null) return const SizedBox.shrink();
+    final selected = settings.modelFor(provider);
+
+    String noteFor(ModelTier tier) => switch (tier) {
+          ModelTier.best => l10n.modelTierBest,
+          ModelTier.economy => l10n.modelTierEconomy,
+          ModelTier.free => l10n.modelTierFree,
+        };
+
+    final current = models.firstWhere((m) => m.id == selected,
+        orElse: () => models.first);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (models.length == 1)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              leading: const Icon(Icons.memory, size: 20),
+              title: Text(l10n.modelLabel),
+              subtitle: Text('${current.label} · ${noteFor(current.tier)}'),
+            )
+          else
+            DropdownButtonFormField<String>(
+              // Keyed because the screen carries other dropdowns — speech
+              // recognition and the interface language — and a test that says
+              // "the dropdown" would pick whichever came first.
+              key: const Key('modelPicker'),
+              initialValue: current.id,
+              decoration: InputDecoration(
+                labelText: l10n.modelLabel,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.memory, size: 20),
+              ),
+              items: [
+                for (final model in models)
+                  DropdownMenuItem(
+                    value: model.id,
+                    child: Text('${model.label} · ${noteFor(model.tier)}'),
+                  ),
+              ],
+              onChanged: (id) {
+                if (id != null) {
+                  ref.read(settingsProvider.notifier).setModel(provider, id);
+                }
+              },
+            ),
+          const SizedBox(height: 4),
+          Text(
+            l10n.modelHint,
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: theme.colorScheme.outline),
+          ),
+        ],
       ),
     );
   }

@@ -193,6 +193,7 @@ Stored via `shared_preferences`.
 | `app_locale` | String | UI locale, e.g. `'sw'`, `'de'`, `'en_GB'` |
 | `correction_mode` | bool | Correction mode on/off (toggle lives in the translator header) |
 | `explanations_mode` | bool | Word explanations on/off (second toggle in the translator header, ADR-060) |
+| `model_<provider>` | String | Model chosen for that provider, e.g. `model_claude` = `'claude-sonnet-5-5'` (ADR-073). Absent means the default from `lib/core/ai_models.dart`. |
 
 API keys are **never logged in plain text**. Always mask in logs: `sk-****`.
 

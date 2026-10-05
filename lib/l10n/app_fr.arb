@@ -127,5 +127,10 @@
   "backupImportConfirmKeysYes": "Les clés API du fichier seront utilisées, s'il en contient.",
   "backupImportConfirmKeysNo": "Vos clés API actuelles sont conservées, même si le fichier en contient d'autres.",
   "explanationsLabel": "Explications",
-  "explanationsInfo": "Les mots {language} essentiels de cette traduction sont expliqués sous le résultat."
+  "explanationsInfo": "Les mots {language} essentiels de cette traduction sont expliqués sous le résultat.",
+  "modelLabel": "Modèle",
+  "modelHint": "Un modèle plus puissant traduit la grammaire de façon plus fiable et coûte plus cher par requête. Votre choix est conservé par fournisseur.",
+  "modelTierBest": "meilleure qualité",
+  "modelTierEconomy": "moins cher",
+  "modelTierFree": "offre gratuite"
 }

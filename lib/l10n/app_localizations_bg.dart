@@ -360,4 +360,20 @@ class AppLocalizationsBg extends AppLocalizations {
   String explanationsInfo(String language) {
     return 'Важните думи на $language от този превод се обясняват под резултата.';
   }
+
+  @override
+  String get modelLabel => 'Модел';
+
+  @override
+  String get modelHint =>
+      'По-силен модел превежда граматиката по-надеждно и струва повече на заявка. Изборът ти се запазва за всеки доставчик.';
+
+  @override
+  String get modelTierBest => 'най-добро качество';
+
+  @override
+  String get modelTierEconomy => 'по-евтино';
+
+  @override
+  String get modelTierFree => 'безплатно ниво';
 }

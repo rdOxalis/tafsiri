@@ -455,5 +455,25 @@
         "example": "Swahili"
       }
     }
+  },
+  "modelLabel": "Model",
+  "@modelLabel": {
+    "description": "Label of the model selector in Settings"
+  },
+  "modelHint": "A stronger model translates grammar more reliably and costs more per request. Your choice is kept per provider.",
+  "@modelHint": {
+    "description": "Hint under the model selector, explaining the trade-off"
+  },
+  "modelTierBest": "best quality",
+  "@modelTierBest": {
+    "description": "Short note beside the strongest model of a provider"
+  },
+  "modelTierEconomy": "lower cost",
+  "@modelTierEconomy": {
+    "description": "Short note beside a cheaper, weaker model"
+  },
+  "modelTierFree": "free tier",
+  "@modelTierFree": {
+    "description": "Short note beside a model usable with a provider's free credit"
   }
 }

@@ -17,6 +17,7 @@ void main() {
 
   group('ClaudeService', () {
     const apiKey = 'sk-test-key';
+    const model = 'claude-haiku-4-5';
     const target = 'Swahili';
     const alt = 'English';
     const input = 'Hello';
@@ -40,6 +41,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       expect(result, 'LANG:en\nHabari');
@@ -58,6 +60,7 @@ void main() {
           targetLanguage: target,
           altLanguage: alt,
           apiKey: apiKey,
+          model: model,
         ),
         throwsA(isA<AiApiException>().having((e) => e.statusCode, 'statusCode', 401)),
       );
@@ -76,6 +79,7 @@ void main() {
           targetLanguage: target,
           altLanguage: alt,
           apiKey: apiKey,
+          model: model,
         ),
         throwsA(isA<AiApiException>().having((e) => e.statusCode, 'statusCode', 500)),
       );
@@ -100,6 +104,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       final captured = verify(mockClient.post(
@@ -112,12 +117,12 @@ void main() {
       expect(captured['anthropic-version'], isNotNull);
     });
 
-    test('names the model without a date suffix', () async {
-      // A dated snapshot pins one version and is eventually retired, which
-      // would break translation on every phone that has not updated. The alias
-      // follows the current version instead (ADR-067). Pinned as a test
-      // because the dated form is what a model recalls from training and
-      // writes back in without noticing.
+    test('sends the model it was given, unaltered', () async {
+      // The service no longer chooses: the model comes from the user's
+      // settings (ADR-073), so what a measurement ran against and what ships
+      // cannot drift apart. Which identifiers may be chosen, and that none of
+      // them carries a date suffix (ADR-067), is pinned in
+      // test/core/ai_models_test.dart instead.
       when(mockClient.post(
         any,
         headers: anyNamed('headers'),
@@ -136,6 +141,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: 'claude-sonnet-5-5',
       );
 
       final body = verify(mockClient.post(
@@ -143,11 +149,9 @@ void main() {
         headers: anyNamed('headers'),
         body: captureAnyNamed('body'),
       )).captured.first as String;
-      final model = (jsonDecode(body) as Map<String, dynamic>)['model'] as String;
+      final sent = (jsonDecode(body) as Map<String, dynamic>)['model'] as String;
 
-      expect(model, 'claude-haiku-4-5');
-      expect(model, isNot(matches(RegExp(r'-\d{8}$'))),
-          reason: 'a date-suffixed snapshot gets retired; the alias does not');
+      expect(sent, 'claude-sonnet-5-5');
     });
   });
 }

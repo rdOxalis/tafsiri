@@ -358,4 +358,20 @@ class AppLocalizationsSv extends AppLocalizations {
   String explanationsInfo(String language) {
     return 'Viktiga ord på $language från den här översättningen förklaras under resultatet.';
   }
+
+  @override
+  String get modelLabel => 'Modell';
+
+  @override
+  String get modelHint =>
+      'En starkare modell översätter grammatik mer tillförlitligt och kostar mer per förfrågan. Ditt val sparas per leverantör.';
+
+  @override
+  String get modelTierBest => 'bästa kvalitet';
+
+  @override
+  String get modelTierEconomy => 'billigare';
+
+  @override
+  String get modelTierFree => 'gratisnivå';
 }

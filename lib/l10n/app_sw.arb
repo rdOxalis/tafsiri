@@ -127,5 +127,10 @@
   "backupImportConfirmKeysYes": "Funguo za API kutoka kwenye faili zitatumika, ikiwa zipo.",
   "backupImportConfirmKeysNo": "Funguo zako za API za sasa zitabaki, hata kama faili ina nyingine.",
   "explanationsLabel": "Maelezo",
-  "explanationsInfo": "Maneno muhimu ya {language} kutoka kwa tafsiri hii yanaelezwa chini ya matokeo."
+  "explanationsInfo": "Maneno muhimu ya {language} kutoka kwa tafsiri hii yanaelezwa chini ya matokeo.",
+  "modelLabel": "Modeli",
+  "modelHint": "Modeli yenye nguvu zaidi hutafsiri sarufi kwa uhakika zaidi na hugharimu zaidi kwa kila ombi. Chaguo lako huhifadhiwa kwa kila mtoa huduma.",
+  "modelTierBest": "ubora wa juu",
+  "modelTierEconomy": "gharama ndogo",
+  "modelTierFree": "kiwango cha bure"
 }

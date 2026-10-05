@@ -127,5 +127,10 @@
   "backupImportConfirmKeysYes": "API-sleutels uit het bestand worden overgenomen, als het die bevat.",
   "backupImportConfirmKeysNo": "Je huidige API-sleutels blijven behouden, ook als het bestand andere bevat.",
   "explanationsLabel": "Uitleg",
-  "explanationsInfo": "Belangrijke {language} woorden uit deze vertaling worden onder het resultaat uitgelegd."
+  "explanationsInfo": "Belangrijke {language} woorden uit deze vertaling worden onder het resultaat uitgelegd.",
+  "modelLabel": "Model",
+  "modelHint": "Een sterker model vertaalt grammatica betrouwbaarder en kost meer per aanvraag. Je keuze wordt per aanbieder bewaard.",
+  "modelTierBest": "beste kwaliteit",
+  "modelTierEconomy": "goedkoper",
+  "modelTierFree": "gratis niveau"
 }

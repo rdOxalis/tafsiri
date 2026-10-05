@@ -38,6 +38,7 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
     required String? targetLanguage,
     required String? altLanguage,
     required String? apiKey,
+    required String? model,
     bool? correctionMode = false,
     bool? explanations = false,
   }) =>
@@ -47,6 +48,7 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
               #targetLanguage: targetLanguage,
               #altLanguage: altLanguage,
               #apiKey: apiKey,
+              #model: model,
               #correctionMode: correctionMode,
               #explanations: explanations,
             }),
@@ -58,6 +60,7 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
                   #targetLanguage: targetLanguage,
                   #altLanguage: altLanguage,
                   #apiKey: apiKey,
+                  #model: model,
                   #correctionMode: correctionMode,
                   #explanations: explanations,
                 }),

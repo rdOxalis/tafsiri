@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tafsiri/core/ai_models.dart';
 import 'package:tafsiri/core/constants.dart';
 import 'package:tafsiri/core/services/ai_service.dart';
 import 'package:tafsiri/core/services/ai_service_factory.dart';
@@ -76,6 +77,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:en\nHabari');
 
@@ -101,6 +103,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:de\nLine one\nLine two');
 
@@ -122,6 +125,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'Habari');
 
@@ -143,6 +147,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenThrow(const AiApiException(401, 'unauthorized'));
 
@@ -164,6 +169,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenThrow(const SocketException('no connection'));
 
@@ -199,6 +205,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       ));
     });
@@ -217,6 +224,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       ));
     });
@@ -233,6 +241,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:sw\nMODE:correct\nTafadhali nipe siagi.');
 
@@ -247,6 +256,7 @@ void main() {
         targetLanguage: 'Swahili',
         altLanguage: 'English',
         apiKey: 'sk-test',
+        model: anyNamed('model'),
         correctionMode: true,
       )).called(1);
     });
@@ -263,6 +273,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:sw\n'
           'MODE:correct\n'
@@ -295,6 +306,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:de\nMODE:translate\nHabari');
 
@@ -320,6 +332,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async =>
           'LANG:sw\nMODE:correct\nNipe siagi.\nNOTES:\n- Butter → siagi');
@@ -346,6 +359,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:en\nHabari');
 
@@ -370,6 +384,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:en\nHabari');
 
@@ -384,6 +399,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
       )).thenAnswer((_) async => 'LANG:en\nHabari za asubuhi');
 
@@ -406,6 +422,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
         explanations: anyNamed('explanations'),
       )).thenAnswer((_) async => 'LANG:en\nTafadhali nipe siagi.\n'
@@ -426,6 +443,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
         explanations: true,
       )).called(1);
@@ -440,6 +458,7 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
         explanations: anyNamed('explanations'),
       )).thenAnswer((_) async => 'LANG:en\nHabari');
@@ -454,8 +473,70 @@ void main() {
         targetLanguage: anyNamed('targetLanguage'),
         altLanguage: anyNamed('altLanguage'),
         apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
         correctionMode: anyNamed('correctionMode'),
         explanations: false,
+      )).called(1);
+    });
+
+    test('the chosen model reaches the service (ADR-073)', () async {
+      final container = makeContainer(
+        mockService: mockService,
+        prefs: {'${kPrefModelPrefix}claude': 'claude-haiku-4-5'},
+      );
+      addTearDown(container.dispose);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: anyNamed('explanations'),
+      )).thenAnswer((_) async => 'LANG:en\nHabari');
+
+      await container.read(settingsProvider.future);
+      container.read(translatorProvider.notifier).setInputText('Hello');
+      await container.read(translatorProvider.notifier).translate();
+
+      verify(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        model: 'claude-haiku-4-5',
+        correctionMode: anyNamed('correctionMode'),
+        explanations: anyNamed('explanations'),
+      )).called(1);
+    });
+
+    test('with no choice stored, the default model is sent', () async {
+      final container = makeContainer(mockService: mockService);
+      addTearDown(container.dispose);
+
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: anyNamed('explanations'),
+      )).thenAnswer((_) async => 'LANG:en\nHabari');
+
+      await container.read(settingsProvider.future);
+      container.read(translatorProvider.notifier).setInputText('Hello');
+      await container.read(translatorProvider.notifier).translate();
+
+      verify(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        model: defaultModelFor(kProviderClaude),
+        correctionMode: anyNamed('correctionMode'),
+        explanations: anyNamed('explanations'),
       )).called(1);
     });
 

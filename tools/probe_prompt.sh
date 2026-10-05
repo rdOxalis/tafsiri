@@ -77,8 +77,12 @@ PROMPT="$(cd "$ROOT" && dart run tools/dump_prompt.dart \
             "$LEARN" "$CONFIDENT" "$MODE" "$EXPLAIN" "$TEXT" \
             "$AGREEMENT" "$ANALYSIS")" || exit 1
 
-model_of() { # <service file>
-  sed -n "s/^const _model = '\(.*\)';/\1/p" "$ROOT/lib/core/services/$1"
+# Read from the prompt dump, which gets them from lib/core/ai_models.dart —
+# the same place the app does. They used to be scraped out of each service
+# file with sed, until ADR-073 moved the choice into settings and the
+# constants disappeared, which would have left the probe testing nothing.
+model_of() { # <provider>
+  echo "$PROMPT" | jq -r --arg p "$1" '.models[$p]'
 }
 
 # Bodies mirror lib/core/services/*_service.dart. They differ in more than the
@@ -148,9 +152,9 @@ probe() { # <provider> <model> <run>
 any=0
 for provider in ${PROVIDERS//,/ }; do
   case "$provider" in
-    openai)  default_model=$(model_of openai_service.dart) ;;
-    mistral) default_model=$(model_of mistral_service.dart) ;;
-    claude)  default_model=$(model_of claude_service.dart) ;;
+    openai)  default_model=$(model_of openai) ;;
+    mistral) default_model=$(model_of mistral) ;;
+    claude)  default_model=$(model_of claude) ;;
     *) echo "unknown provider: $provider" >&2; exit 1 ;;
   esac
   for ((i = 1; i <= RUNS; i++)); do

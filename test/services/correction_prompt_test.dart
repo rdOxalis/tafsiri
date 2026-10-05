@@ -120,6 +120,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
         correctionMode: true,
       );
 
@@ -137,6 +138,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
         correctionMode: true,
       );
 
@@ -166,6 +168,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
         correctionMode: true,
       );
 
@@ -183,6 +186,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
       );
 
       final json = jsonDecode(capturedBody()) as Map<String, dynamic>;

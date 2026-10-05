@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:tafsiri/core/ai_models.dart';
 import 'package:tafsiri/core/constants.dart';
 import 'package:tafsiri/core/database/dao_provider.dart';
 import 'package:tafsiri/core/database/db_helper.dart';
@@ -269,6 +270,43 @@ void main() {
       expect(target.read(settingsProvider).requireValue.apiKeyClaude, 'sk-mine');
       final remaining = await dao.getAll();
       expect(remaining.any((e) => e.sourceText == 'Local'), isFalse);
+    });
+
+    test('the model choice travels in the backup (ADR-073)', () async {
+      final source = makeContainer(prefs: {
+        '${kPrefModelPrefix}claude': 'claude-haiku-4-5',
+        '${kPrefModelPrefix}mistral': 'mistral-medium-latest',
+      });
+      await source.read(settingsProvider.future);
+      await source.read(backupProvider.notifier).export(includeApiKeys: false);
+      fileIo.toRead = fileIo.written;
+
+      final target = makeContainer();
+      await target.read(settingsProvider.future);
+      await target.read(backupProvider.notifier).import();
+
+      final settings = target.read(settingsProvider).requireValue;
+      expect(settings.modelFor(kProviderClaude), 'claude-haiku-4-5');
+      expect(settings.modelFor(kProviderMistral), 'mistral-medium-latest');
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('${kPrefModelPrefix}claude'), 'claude-haiku-4-5');
+    });
+
+    test('a backup written before model choice restores the defaults',
+        () async {
+      // Older files carry no model keys at all; they must not leave the app
+      // with an empty model to send.
+      fileIo.toRead = '''
+{"app":"tafsiri-backup","formatVersion":1,"createdAt":"2026-08-12T06:00:00Z",
+ "settings":{"active_provider":"claude","target_language":"Swahili",
+ "alt_language":"English"},"includesApiKeys":false,"history":[]}''';
+
+      final target = makeContainer();
+      await target.read(settingsProvider.future);
+      await target.read(backupProvider.notifier).import();
+
+      final settings = target.read(settingsProvider).requireValue;
+      expect(settings.modelFor(kProviderClaude), defaultModelFor(kProviderClaude));
     });
 
     test('importing the same file twice adds nothing the second time',

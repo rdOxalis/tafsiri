@@ -17,6 +17,7 @@ void main() {
 
   group('MistralService', () {
     const apiKey = 'mk-test-key';
+    const model = 'mistral-small-latest';
     const target = 'Swahili';
     const alt = 'English';
     const input = 'Guten Tag';
@@ -42,6 +43,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       expect(result, 'LANG:de\nHabari ya asubuhi');
@@ -54,7 +56,11 @@ void main() {
 
       expect(
         () => service.translate(
-            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey),
+            text: input,
+            targetLanguage: target,
+            altLanguage: alt,
+            apiKey: apiKey,
+            model: model),
         throwsA(isA<AiApiException>().having((e) => e.statusCode, 'statusCode', 401)),
       );
     });
@@ -66,7 +72,7 @@ void main() {
 
       expect(
         () => service.translate(
-            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey),
+            text: input, targetLanguage: target, altLanguage: alt, apiKey: apiKey, model: model),
         throwsA(isA<AiApiException>().having((e) => e.statusCode, 'statusCode', 429)),
       );
     });
@@ -81,6 +87,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: apiKey,
+        model: model,
       );
 
       final captured = verify(mockClient.post(

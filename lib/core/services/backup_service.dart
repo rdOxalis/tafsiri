@@ -77,6 +77,9 @@ class BackupService {
         kPrefSttLanguage: settings.sttLanguage,
         kPrefCorrectionMode: settings.correctionMode,
         kPrefExplanationsMode: settings.explanationsMode,
+        // One entry per provider that has a choice stored (ADR-073).
+        for (final e in settings.models.entries)
+          '$kPrefModelPrefix${e.key}': e.value,
       },
       'includesApiKeys': includeApiKeys,
       if (includeApiKeys)
@@ -130,6 +133,11 @@ class BackupService {
       sttLanguage: _str(settingsMap[kPrefSttLanguage]),
       correctionMode: settingsMap[kPrefCorrectionMode] == true,
       explanationsMode: settingsMap[kPrefExplanationsMode] == true,
+      models: {
+        for (final e in settingsMap.entries)
+          if (e.key.startsWith(kPrefModelPrefix) && e.value is String)
+            e.key.substring(kPrefModelPrefix.length): e.value as String,
+      },
     );
 
     final rawHistory = decoded['history'];

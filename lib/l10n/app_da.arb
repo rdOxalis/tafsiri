@@ -127,5 +127,10 @@
   "backupImportConfirmKeysYes": "API-nøgler fra filen bliver brugt, hvis den indeholder nogen.",
   "backupImportConfirmKeysNo": "Dine nuværende API-nøgler beholdes, også selvom filen indeholder andre.",
   "explanationsLabel": "Forklaringer",
-  "explanationsInfo": "Vigtige ord på {language} fra denne oversættelse forklares under resultatet."
+  "explanationsInfo": "Vigtige ord på {language} fra denne oversættelse forklares under resultatet.",
+  "modelLabel": "Model",
+  "modelHint": "En stærkere model oversætter grammatik mere pålideligt og koster mere pr. forespørgsel. Dit valg gemmes pr. udbyder.",
+  "modelTierBest": "bedste kvalitet",
+  "modelTierEconomy": "billigere",
+  "modelTierFree": "gratis niveau"
 }

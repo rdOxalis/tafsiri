@@ -84,6 +84,7 @@ void main() {
         targetLanguage: target,
         altLanguage: alt,
         apiKey: 'sk-test',
+        model: 'test-model',
       );
       expect(sentUserMessage(), '<text_to_translate>\nKorrektur\n</text_to_translate>');
     });
@@ -110,6 +111,7 @@ void main() {
           targetLanguage: target,
           altLanguage: alt,
           apiKey: 'sk-test',
+        model: 'test-model',
         );
         // Read once: verify() consumes the recorded call.
         final sent = sentUserMessage();

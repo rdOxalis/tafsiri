@@ -11,6 +11,8 @@
 // ignore_for_file: avoid_print
 import 'dart:convert';
 
+import 'package:tafsiri/core/ai_models.dart';
+import 'package:tafsiri/core/constants.dart';
 import 'package:tafsiri/core/services/ai_service.dart';
 
 void main(List<String> args) {
@@ -34,5 +36,12 @@ void main(List<String> args) {
       analysisFirst: analysis == 'on',
     ),
     'user': AiService.buildUserMessage(text),
+    // The models each provider would actually use, so the probe reads them
+    // from the app rather than from a constant it would have to chase
+    // (ADR-073 moved them out of the service files).
+    'models': {
+      for (final p in [kProviderClaude, kProviderOpenAI, kProviderMistral])
+        p: defaultModelFor(p),
+    },
   }));
 }
