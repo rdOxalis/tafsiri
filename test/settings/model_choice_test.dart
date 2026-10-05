@@ -78,6 +78,52 @@ void main() {
     });
   });
 
+  group('upgrading an existing installation', () {
+    // An app update never clears app data: same package, same signing key, so
+    // SharedPreferences survives. What is new here is that a key the app has
+    // never written is read for the first time, and that must not disturb what
+    // is already stored.
+    test('keeps the API key, and starts on the default model', () async {
+      SharedPreferences.setMockInitialValues({
+        kPrefApiKeyClaude: 'sk-set-before-the-update',
+        kPrefActiveProvider: kProviderClaude,
+        kPrefTargetLanguage: 'Swahili',
+        kPrefAltLanguage: 'Deutsch',
+        kPrefCorrectionMode: true,
+        // No model_* key: this installation predates the choice.
+      });
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      final settings = await container.read(settingsProvider.future);
+
+      expect(settings.apiKeyClaude, 'sk-set-before-the-update');
+      expect(settings.activeProvider, kProviderClaude);
+      expect(settings.targetLanguage, 'Swahili');
+      expect(settings.altLanguage, 'Deutsch');
+      expect(settings.correctionMode, isTrue);
+      // And the model that fixes the defect this release is about.
+      expect(settings.activeModel, 'claude-sonnet-5-5');
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString(kPrefApiKeyClaude), 'sk-set-before-the-update');
+    });
+
+    test('reading the models does not write anything', () async {
+      SharedPreferences.setMockInitialValues({
+        kPrefApiKeyMistral: 'sk-mistral',
+      });
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      await container.read(settingsProvider.future);
+
+      // The default is served, not stored: nothing is written until the user
+      // picks, so a later change of default still reaches existing installs.
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('${kPrefModelPrefix}claude'), isNull);
+      expect(prefs.getString(kPrefApiKeyMistral), 'sk-mistral');
+    });
+  });
+
   group('the settings screen', () {
     Widget wrap(ProviderContainer container) => UncontrolledProviderScope(
           container: container,
