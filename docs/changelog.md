@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.20] - 2026-10-05
+
 ### Added
 - **You choose the model, per provider** (ADR-073). Settings now offers the models each provider has, with a word on what each one costs you: *best quality*, *lower cost*, *free tier*. The choice is kept per provider, so comparing two of them does not reset the other, and it travels in your backup.
 
