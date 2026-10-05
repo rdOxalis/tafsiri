@@ -13,15 +13,24 @@
 # for no forbid. Singular rows forbid the plural form on purpose: "Katze" is a
 # substring of "Katzen", so presence alone would pass either way.
 #
+# A field may start with "cs:" to be matched case-sensitively. One row needs
+# it: polite "Sie" is a correct rendering of a 2nd-person plural, while "sie"
+# is the 3rd-person reading the row exists to catch, and nothing but case
+# tells them apart.
+#
+# Two rows accept "ihnen" beside "Katzen". The row asks whether the plural
+# survived, and "Salim hat ihnen Futter gegeben" answers yes — it drops the
+# noun, which is a faithfulness fault worth its own fixture, not a number one.
+#
 obj-sg	Salim alimpatia paka chakula	Katze	Katzen	object singular -m-
-obj-pl	Salim aliwapatia paka chakula	Katzen	-	object plural -wa-
-perf-pl	Salim ameshawapatia paka chakula	Katzen	-	-me- + -sha- + -wa-, stem -patia
-perf-pl-pa	Salim ameshawapa paka chakula	Katzen	-	same, bare stem -pa
+obj-pl	Salim aliwapatia paka chakula	Katzen|ihnen	-	object plural -wa-
+perf-pl	Salim ameshawapatia paka chakula	Katzen|ihnen	-	-me- + -sha- + -wa-, stem -patia
+perf-pl-pa	Salim ameshawapa paka chakula	Katzen|ihnen	-	same, bare stem -pa
 subj-sg	Mbwa analala	Hund	Hunde	subject singular a-
 subj-pl	Mbwa wanalala	Hunde	-	subject plural wa-
 obj-sg-mw	Nilimwona rafiki	Freund(in)?	Freunde	object singular -mw-
 obj-pl-wa	Niliwaona rafiki	Freunde	-	object plural -wa-
 adj-sg	Paka mdogo analala	Katze	Katzen	adjective agreement, singular
 adj-pl	Paka wadogo wanalala	Katzen	-	adjective agreement, plural
-wa-2pl	Niliwakuta mkitembea	euch	sie|ihnen	-wa- = 2nd plural, resolved by m- on the second verb
+wa-2pl	Niliwakuta mkitembea	cs:euch|Sie	cs:sie|ihnen	-wa- = 2nd plural, resolved by m- on the second verb
 wa-3pl	Niliwakuta wakitembea	sie|ihnen	euch	-wa- = 3rd plural, resolved by wa- on the second verb

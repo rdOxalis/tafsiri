@@ -68,7 +68,7 @@ case "$AGREEMENT" in on|off|both) ;; *) echo "-g takes on, off or both" >&2; exi
 [ -n "$PROVIDERS" ] || PROVIDERS='claude openai mistral'
 mkdir -p "$OUT_DIR"
 RESULTS="$OUT_DIR/grammar-$(date +%Y%m%d-%H%M%S).tsv"
-printf 'provider\tmodel\tagreement\tanalysis\trun\tid\tverdict\tsentence\ttranslation\n' \
+printf 'provider\tmodel\tagreement\tanalysis\trun\tid\tverdict\ttok_in\ttok_out\tsentence\ttranslation\n' \
   > "$RESULTS"
 
 # The translation only. The LANG: header drives the microphone locale rather
@@ -99,6 +99,19 @@ key_for() { # <provider>
   esac
 }
 
+# A pattern is matched case-insensitively unless it is prefixed with "cs:".
+# Exactly one row needs the distinction, and it needs it badly: polite "Sie"
+# is a correct rendering of a 2nd-person plural, "sie" is the 3rd-person
+# reading the row exists to catch, and only case tells them apart.
+matches() { # <text> <pattern>
+  local text="$1" pattern="$2"
+  if [ "${pattern#cs:}" != "$pattern" ]; then
+    grep -qE "\\b(${pattern#cs:})\\b" <<<"$text"
+  else
+    grep -qiE "\\b($pattern)\\b" <<<"$text"
+  fi
+}
+
 run_one() { # <provider> <agreement>
   local provider="$1" agreement="$2" model
   case "$provider" in
@@ -113,34 +126,38 @@ run_one() { # <provider> <agreement>
   echo "$provider | $model | agreement $agreement | analysis $ANALYSIS | $RUNS run(s)"
   echo "=================================================================="
 
-  local pass=0 fail=0 err=0
+  local pass=0 fail=0 errors=0
   while IFS=$'\t' read -r id sentence expect forbid note; do
     case "$id" in ''|\#*) continue ;; esac
     [ -n "$ONLY" ] && [[ "$ONLY" != *",$id,"* ]] && continue
 
     for ((run = 1; run <= RUNS; run++)); do
-      local raw body verdict
-      raw="$(mktemp)"
+      local raw err body verdict tok_in tok_out
+      raw="$(mktemp)"; err="$(mktemp)"
       "$ROOT/tools/probe_prompt.sh" -p "$provider" -t "$sentence" \
         -l "$LEARN" -a "$CONFIDENT" -n -g "$agreement" --analysis "$ANALYSIS" \
-        ${MODEL:+-m "$MODEL"} -x "$EXTRA" --content-only > "$raw" 2>/dev/null
+        ${MODEL:+-m "$MODEL"} -x "$EXTRA" --content-only > "$raw" 2>"$err"
       body="$(body_of "$raw" | tr '\n' ' ' | sed 's/  */ /g; s/^ //; s/ $//')"
-      rm -f "$raw"
+      # The counts arrive on stderr under --content-only. They are what the
+      # cost side of any model decision rests on, so they go in the file.
+      tok_in=$(sed -n 's/^--- tokens: \([0-9?]*\) in.*/\1/p' "$err" | head -1)
+      tok_out=$(sed -n 's/.*\/ \([0-9?]*\) out$/\1/p' "$err" | head -1)
+      rm -f "$raw" "$err"
 
       if [ -z "$body" ] || [[ "$body" == NO\ CONTENT* ]] \
          || [[ "$body" == \(skipped* ]]; then
-        verdict='ERROR'; err=$((err + 1))
-      elif ! grep -qiE "\\b($expect)\\b" <<<"$body"; then
+        verdict='ERROR'; errors=$((errors + 1))
+      elif ! matches "$body" "$expect"; then
         verdict='FAIL'; fail=$((fail + 1))
-      elif [ "$forbid" != '-' ] && grep -qiE "\\b($forbid)\\b" <<<"$body"; then
+      elif [ "$forbid" != '-' ] && matches "$body" "$forbid"; then
         verdict='FAIL'; fail=$((fail + 1))
       else
         verdict='pass'; pass=$((pass + 1))
       fi
 
-      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
         "$provider" "$model" "$agreement" "$ANALYSIS" "$run" "$id" "$verdict" \
-        "$sentence" "$body" >> "$RESULTS"
+        "${tok_in:-?}" "${tok_out:-?}" "$sentence" "$body" >> "$RESULTS"
 
       if [ "$verdict" = 'pass' ]; then
         printf '  pass  %-11s %s\n' "$id" "$sentence"
@@ -153,7 +170,9 @@ run_one() { # <provider> <agreement>
   done < "$FIXTURE"
 
   echo "  ----------------------------------------------------------------"
-  echo "  $provider, rule $agreement: $pass passed, $fail failed, $err errored"
+  echo "  $provider, rule $agreement, analysis $ANALYSIS: $pass passed, $fail failed, $errors errored"
+  echo "  tokens, mean per request: $(awk -F'\t' -v m="$model" -v a="$agreement" -v an="$ANALYSIS" \
+    '$2==m && $3==a && $4==an && $8!="?" {i+=$8; o+=$9; n++} END {if (n) printf "%d in / %d out", i/n, o/n; else print "not recorded"}' "$RESULTS")"
 }
 
 ran=0
