@@ -73,6 +73,17 @@ body_of() {
     | sed '/^[[:space:]]*$/d'
 }
 
+# A provider without a key would otherwise score twelve failures, because the
+# skip notice arrives on stdout where the translation is expected. Check first,
+# say so once, and spend no requests.
+key_for() { # <provider>
+  case "$1" in
+    claude)  echo "${ANTHROPIC_API_KEY:-}" ;;
+    openai)  echo "${OPENAI_API_KEY:-}" ;;
+    mistral) echo "${MISTRAL_API_KEY:-}" ;;
+  esac
+}
+
 run_one() { # <provider> <agreement>
   local provider="$1" agreement="$2" model
   case "$provider" in
@@ -100,7 +111,8 @@ run_one() { # <provider> <agreement>
       body="$(body_of "$raw" | tr '\n' ' ' | sed 's/  */ /g; s/^ //; s/ $//')"
       rm -f "$raw"
 
-      if [ -z "$body" ] || [[ "$body" == NO\ CONTENT* ]]; then
+      if [ -z "$body" ] || [[ "$body" == NO\ CONTENT* ]] \
+         || [[ "$body" == \(skipped* ]]; then
         verdict='ERROR'; err=$((err + 1))
       elif ! grep -qiE "\\b($expect)\\b" <<<"$body"; then
         verdict='FAIL'; fail=$((fail + 1))
@@ -128,12 +140,31 @@ run_one() { # <provider> <agreement>
   echo "  $provider, rule $agreement: $pass passed, $fail failed, $err errored"
 }
 
+ran=0
 for provider in ${PROVIDERS//,/ }; do
+  if [ -z "$(key_for "$provider")" ]; then
+    echo
+    echo "$provider: skipped — no key in the environment."
+    case "$provider" in
+      claude)  echo "  read -rs ANTHROPIC_API_KEY && export ANTHROPIC_API_KEY" ;;
+      openai)  echo "  read -rs OPENAI_API_KEY && export OPENAI_API_KEY" ;;
+      mistral) echo "  read -rs MISTRAL_API_KEY && export MISTRAL_API_KEY" ;;
+    esac
+    continue
+  fi
+  ran=1
   case "$AGREEMENT" in
     both) run_one "$provider" off; run_one "$provider" on ;;
     *)    run_one "$provider" "$AGREEMENT" ;;
   esac
 done
+
+if [ "$ran" = 0 ]; then
+  rm -f "$RESULTS"
+  echo
+  echo "Nothing ran — no keys. Export at least one of the three above."
+  exit 1
+fi
 
 echo
 echo "Every answer: $RESULTS"
