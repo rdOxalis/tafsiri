@@ -21,6 +21,8 @@
 #   tools/probe_grammar.sh -p openai -x '{"reasoning_effort":"low"}'
 #   tools/probe_grammar.sh -p claude -m claude-sonnet-4-5
 #   tools/probe_grammar.sh -r 3                  # three runs per sentence
+#   tools/probe_grammar.sh --analysis on         # analyse before translating
+#   tools/probe_grammar.sh -i obj-pl,perf-pl     # only these fixture rows
 #
 # Every answer, graded, lands in build/probe/ as a TSV — the summary on screen
 # is for reading, that file is for comparing two runs later.
@@ -36,6 +38,8 @@ MODEL=''
 EXTRA='{}'
 RUNS=1
 AGREEMENT='on'
+ANALYSIS='off'
+ONLY=''
 LEARN='Swahili'
 CONFIDENT='German'
 
@@ -48,6 +52,8 @@ while [ $# -gt 0 ]; do
     -r|--runs)      RUNS="$2"; shift 2 ;;
     -x|--extra)     EXTRA="$2"; shift 2 ;;
     -g|--agreement) AGREEMENT="$2"; shift 2 ;;
+    --analysis)     ANALYSIS="$2"; shift 2 ;;
+    -i|--only)      ONLY=",$2,"; shift 2 ;;
     -l|--learn)     LEARN="$2"; shift 2 ;;
     -a|--confident) CONFIDENT="$2"; shift 2 ;;
     -f|--fixture)   FIXTURE="$2"; shift 2 ;;
@@ -62,13 +68,22 @@ case "$AGREEMENT" in on|off|both) ;; *) echo "-g takes on, off or both" >&2; exi
 [ -n "$PROVIDERS" ] || PROVIDERS='claude openai mistral'
 mkdir -p "$OUT_DIR"
 RESULTS="$OUT_DIR/grammar-$(date +%Y%m%d-%H%M%S).tsv"
-printf 'provider\tmodel\tagreement\trun\tid\tverdict\tsentence\ttranslation\n' > "$RESULTS"
+printf 'provider\tmodel\tagreement\tanalysis\trun\tid\tverdict\tsentence\ttranslation\n' \
+  > "$RESULTS"
 
 # The translation only. The LANG: header drives the microphone locale rather
 # than being part of the text, and NOTES:/EXPLAIN: are commentary — grading
 # either would let a correct word in the wrong place pass.
 body_of() {
-  sed -e '/^LANG:/d' -e '/^MODE:/d' "$1" \
+  # With --analysis on the answer carries its reasoning before a TRANSLATION:
+  # line. Grading that would be worthless: it names the right markers in
+  # English while the German below it may still say the wrong thing.
+  local src="$1"
+  if grep -qE '^TRANSLATION:[[:space:]]*$' "$1"; then
+    src="$(mktemp)"
+    sed -n '/^TRANSLATION:[[:space:]]*$/,$p' "$1" | sed '1d' > "$src"
+  fi
+  sed -e '/^LANG:/d' -e '/^MODE:/d' "$src" \
     | sed -n '/^\(NOTES\|EXPLAIN\):[[:space:]]*$/q;p' \
     | sed '/^[[:space:]]*$/d'
 }
@@ -95,18 +110,19 @@ run_one() { # <provider> <agreement>
 
   echo
   echo "=================================================================="
-  echo "$provider | $model | agreement rule $agreement | $RUNS run(s)"
+  echo "$provider | $model | agreement $agreement | analysis $ANALYSIS | $RUNS run(s)"
   echo "=================================================================="
 
   local pass=0 fail=0 err=0
   while IFS=$'\t' read -r id sentence expect forbid note; do
     case "$id" in ''|\#*) continue ;; esac
+    [ -n "$ONLY" ] && [[ "$ONLY" != *",$id,"* ]] && continue
 
     for ((run = 1; run <= RUNS; run++)); do
       local raw body verdict
       raw="$(mktemp)"
       "$ROOT/tools/probe_prompt.sh" -p "$provider" -t "$sentence" \
-        -l "$LEARN" -a "$CONFIDENT" -n -g "$agreement" \
+        -l "$LEARN" -a "$CONFIDENT" -n -g "$agreement" --analysis "$ANALYSIS" \
         ${MODEL:+-m "$MODEL"} -x "$EXTRA" --content-only > "$raw" 2>/dev/null
       body="$(body_of "$raw" | tr '\n' ' ' | sed 's/  */ /g; s/^ //; s/ $//')"
       rm -f "$raw"
@@ -122,8 +138,8 @@ run_one() { # <provider> <agreement>
         verdict='pass'; pass=$((pass + 1))
       fi
 
-      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
-        "$provider" "$model" "$agreement" "$run" "$id" "$verdict" \
+      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+        "$provider" "$model" "$agreement" "$ANALYSIS" "$run" "$id" "$verdict" \
         "$sentence" "$body" >> "$RESULTS"
 
       if [ "$verdict" = 'pass' ]; then

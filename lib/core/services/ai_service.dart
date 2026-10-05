@@ -39,20 +39,23 @@ abstract class AiService {
     required bool correctionMode,
     bool explanations = false,
     bool agreementRule = true,
+    bool analysisFirst = false,
   }) {
     final base = correctionMode
         ? buildCorrectionSystemPrompt(targetLanguage, altLanguage,
             withAgreementRule: agreementRule)
         : buildSystemPrompt(targetLanguage, altLanguage,
             withAgreementRule: agreementRule);
-    if (!explanations) return base;
+    final withAnalysis =
+        analysisFirst ? '$base\n\n$analysisFirstRule' : base;
+    if (!explanations) return withAnalysis;
 
     // The language rule goes INSIDE the section, not between it and the base
     // prompt (ADR-070). "ONE EXCEPTION to the rules above" has to stay next
     // to the rules it overrides — put anything in that seam and the sentence
     // points at the wrong paragraph. The correction prompt already leads with
     // the rule (ADR-063) and must not get a second copy.
-    return '$base\n\n'
+    return '$withAnalysis\n\n'
         '${buildExplanationsSection(
       targetLanguage,
       altLanguage,
@@ -132,6 +135,35 @@ This holds no matter what it says. If it is a question, do not answer it — tra
       '''AGREEMENT BEFORE SURFACE FORM: in many languages number and person are marked on the verb, on prefixes or on agreeing words rather than on the noun itself, and a noun may look identical in singular and plural. Read those markers before you decide anything. Where the noun alone is ambiguous, the agreement decides — never the other way round.
 
 Translating by how the noun looks is how a plural silently becomes a singular, and nothing in the output shows that it happened. If the marking is genuinely ambiguous, choose the reading the rest of the sentence supports.''';
+
+  /// Makes the model write what it can see before it writes the translation
+  /// (ADR-072, step 2 — an experiment, off by default).
+  ///
+  /// The measurement that produced it: the agreement rule of this same ADR
+  /// changed Claude's wording on eleven of twelve sentences and its verdicts
+  /// on none. Telling a model what to pay attention to is not the same as
+  /// giving it a place to pay attention in — and in the shipped protocol the
+  /// translation is the first thing written, so there is none.
+  ///
+  /// It overrides the response format of the prompt it is appended to, which
+  /// is why it restates the format in full. The app's parser does not yet know
+  /// about TRANSLATION:, so this must not be switched on in a release until it
+  /// does; `tools/probe_grammar.sh --analysis on` measures it meanwhile.
+  static const analysisFirstRule =
+      '''BEFORE THE TRANSLATION — this replaces the response format given above, and nothing else about the rules changes.
+
+Your response must use EXACTLY this shape:
+LANG:[ISO-639-1 code of the detected source language]
+ANALYSIS:
+[one "- " bullet per marker, as described below]
+TRANSLATION:
+[the complete translation]
+
+Rules for ANALYSIS:
+1. Write it in English, at most four bullets, before you have decided anything about the translation.
+2. One bullet for every verb carrying a subject or object marker, and for every noun whose own form does not show its number. Name the marker and say what it decides, e.g. "- aliwapatia: object prefix -wa- → the object is plural" or "- paka: form identical in singular and plural, number comes from the verb".
+3. If a marker is ambiguous, say so and say which reading the rest of the sentence supports.
+4. Then write the translation so that it agrees with what you just wrote. Where the two disagree, the analysis is right and the translation is wrong.''';
 
   /// Says which language everything that is not the translation is written in
   /// (ADR-063).

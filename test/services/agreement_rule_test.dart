@@ -79,6 +79,54 @@ void main() {
     }
   });
 
+  group('the analysis-first variant (ADR-072, step 2)', () {
+    test('is off unless asked for', () {
+      // It must stay off in every shipped build: the app's parser does not
+      // know the TRANSLATION: line, so switching it on would put the model's
+      // reasoning into the output area and into the saved history.
+      for (final correction in [false, true]) {
+        for (final explain in [false, true]) {
+          expect(
+            AiService.systemPromptFor(
+              targetLanguage: target,
+              altLanguage: alt,
+              correctionMode: correction,
+              explanations: explain,
+            ),
+            isNot(contains('TRANSLATION:')),
+            reason: 'correction=$correction explanations=$explain',
+          );
+        }
+      }
+    });
+
+    test('restates the response format it replaces', () {
+      final prompt = AiService.systemPromptFor(
+        targetLanguage: target,
+        altLanguage: alt,
+        correctionMode: false,
+        analysisFirst: true,
+      );
+      expect(prompt, contains('ANALYSIS:'));
+      expect(prompt, contains('TRANSLATION:'));
+      // The analysis has to come before the translation, which is the entire
+      // point — in the shipped protocol the translation is written first.
+      expect(prompt.indexOf('ANALYSIS:'), lessThan(prompt.indexOf('TRANSLATION:')));
+      expect(prompt, contains('before you have decided anything'));
+    });
+
+    test('still leaves room for the explanations section after it', () {
+      final prompt = AiService.systemPromptFor(
+        targetLanguage: target,
+        altLanguage: alt,
+        correctionMode: false,
+        explanations: true,
+        analysisFirst: true,
+      );
+      expect(prompt.indexOf('TRANSLATION:'), lessThan(prompt.indexOf('EXPLAIN:')));
+    });
+  });
+
   test('it leads the prompt rather than sitting in a numbered rule', () {
     // ADR-063's finding: a model reads the opening as the job and the numbered
     // rules as detail. This one has to be read before the first word is chosen.

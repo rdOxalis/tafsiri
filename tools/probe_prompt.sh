@@ -22,6 +22,7 @@
 #   tools/probe_prompt.sh -c                       # the correction prompt
 #   tools/probe_prompt.sh -p openai -x '{"reasoning_effort":"low"}'
 #   tools/probe_prompt.sh -g off                   # without the agreement rule
+#   tools/probe_prompt.sh --analysis on            # analyse before translating
 #   tools/probe_prompt.sh --content-only           # just the model's answer
 #
 set -uo pipefail
@@ -39,6 +40,7 @@ RUNS=1
 EXTRA='{}'
 RAW=0
 AGREEMENT='on'
+ANALYSIS='off'
 CONTENT_ONLY=0
 
 usage() { sed -n '3,26p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
@@ -56,6 +58,7 @@ while [ $# -gt 0 ]; do
     -n|--no-explanations) EXPLAIN='off'; shift ;;
     --raw)          RAW=1; shift ;;
     -g|--agreement) AGREEMENT="$2"; shift 2 ;;
+    --analysis)     ANALYSIS="$2"; shift 2 ;;
     --content-only) CONTENT_ONLY=1; shift ;;
     -h|--help)      usage 0 ;;
     *) echo "unknown option: $1" >&2; usage 1 ;;
@@ -71,7 +74,8 @@ echo "$EXTRA" | jq -e . >/dev/null 2>&1 || { echo "--extra is not valid JSON: $E
 # from what ships. Same for the model: it is read out of the service file
 # rather than repeated here, and only -m overrides it.
 PROMPT="$(cd "$ROOT" && dart run tools/dump_prompt.dart \
-            "$LEARN" "$CONFIDENT" "$MODE" "$EXPLAIN" "$TEXT" "$AGREEMENT")" || exit 1
+            "$LEARN" "$CONFIDENT" "$MODE" "$EXPLAIN" "$TEXT" \
+            "$AGREEMENT" "$ANALYSIS")" || exit 1
 
 model_of() { # <service file>
   sed -n "s/^const _model = '\(.*\)';/\1/p" "$ROOT/lib/core/services/$1"
@@ -120,9 +124,14 @@ probe() { # <provider> <model> <run>
   fi
   if [ "$RAW" = 1 ]; then echo "$out" | jq .; return 0; fi
 
-  # OpenAI and Mistral answer in .choices[0].message.content, Claude in
-  # .content[0].text. Anything else is an error worth showing verbatim.
-  content=$(echo "$out" | jq -r '.choices[0].message.content // .content[0].text // empty')
+  # OpenAI and Mistral answer in .choices[0].message.content, Claude in its
+  # content array. Pick the first block of type "text" rather than [0]: with
+  # extended thinking enabled, block 0 is the thinking and the answer sits
+  # behind it, so .content[0].text would report an empty response for a
+  # request that worked. Anything else is an error worth showing verbatim.
+  content=$(echo "$out" | jq -r '.choices[0].message.content
+                  // ([.content[]? | select(.type == "text") | .text] | join("\n"))
+                  // empty' | sed '/^$/d')
   if [ -n "$content" ]; then
     echo "$content"
     # Counts go to stderr under --content-only, so a caller can grade stdout
