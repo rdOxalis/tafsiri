@@ -71,7 +71,7 @@ case "$AGREEMENT" in on|off|both) ;; *) echo "-g takes on, off or both" >&2; exi
 [ -n "$PROVIDERS" ] || PROVIDERS='claude openai mistral'
 mkdir -p "$OUT_DIR"
 RESULTS="$OUT_DIR/grammar-$(date +%Y%m%d-%H%M%S).tsv"
-printf 'provider\tmodel\tagreement\tanalysis\trun\tid\tverdict\ttok_in\ttok_out\tsentence\ttranslation\n' \
+printf 'provider\tmodel\tagreement\tanalysis\textra\trun\tid\tverdict\ttok_in\ttok_out\tsentence\ttranslation\n' \
   > "$RESULTS"
 
 # The translation only. The LANG: header drives the microphone locale rather
@@ -173,8 +173,8 @@ run_one() { # <provider> <agreement>
         verdict='pass'; pass=$((pass + 1))
       fi
 
-      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
-        "$provider" "$model" "$agreement" "$ANALYSIS" "$run" "$id" "$verdict" \
+      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+        "$provider" "$model" "$agreement" "$ANALYSIS" "$EXTRA" "$run" "$id" "$verdict" \
         "${tok_in:-?}" "${tok_out:-?}" "$sentence" "$body" >> "$RESULTS"
 
       [ "$SLEEP" != 0 ] && sleep "$SLEEP"
@@ -191,7 +191,7 @@ run_one() { # <provider> <agreement>
   echo "  ----------------------------------------------------------------"
   echo "  $provider, rule $agreement, analysis $ANALYSIS: $pass passed, $fail failed (NOTRANS included), $errors errored"
   echo "  tokens, mean per request: $(awk -F'\t' -v m="$model" -v a="$agreement" -v an="$ANALYSIS" \
-    '$2==m && $3==a && $4==an && $8!="?" {i+=$8; o+=$9; n++} END {if (n) printf "%d in / %d out", i/n, o/n; else print "not recorded"}' "$RESULTS")"
+    '$2==m && $3==a && $4==an && $9!="?" {i+=$9; o+=$10; n++} END {if (n) printf "%d in / %d out", i/n, o/n; else print "not recorded"}' "$RESULTS")"
 }
 
 ran=0

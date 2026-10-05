@@ -18,6 +18,15 @@
 # is the 3rd-person reading the row exists to catch, and nothing but case
 # tells them apart.
 #
+# rafiki was dropped for ng'ombe. rafiki is an Arabic loan that conservative
+# grammars place in class 9/10 — identical in both numbers, animate agreement,
+# which is what this fixture needs — but current usage forms the plural as
+# marafiki, class 6. A model answering "Ich sah den Freund" to "Niliwaona
+# rafiki" may therefore be reading the modern way rather than ignoring -wa-,
+# and a test that cannot tell those apart is not a test. ng'ombe has no such
+# second plural, and German Kuh/Kühe separates cleanly where Löwe/Löwen would
+# not: "den Löwen" is singular.
+#
 # Two rows accept "ihnen" beside "Katzen". The row asks whether the plural
 # survived, and "Salim hat ihnen Futter gegeben" answers yes — it drops the
 # noun, which is a faithfulness fault worth its own fixture, not a number one.
@@ -28,8 +37,8 @@ perf-pl	Salim ameshawapatia paka chakula	Katzen|ihnen	-	-me- + -sha- + -wa-, ste
 perf-pl-pa	Salim ameshawapa paka chakula	Katzen|ihnen	-	same, bare stem -pa
 subj-sg	Mbwa analala	Hund	Hunde	subject singular a-
 subj-pl	Mbwa wanalala	Hunde	-	subject plural wa-
-obj-sg-mw	Nilimwona rafiki	Freund(in)?	Freunde	object singular -mw-
-obj-pl-wa	Niliwaona rafiki	Freunde	-	object plural -wa-
+obj-sg-mw	Nilimwona ng'ombe	Kuh|Rind	Kühe|Rinder	object singular -mw-
+obj-pl-wa	Niliwaona ng'ombe	Kühe|Rinder	-	object plural -wa-
 adj-sg	Paka mdogo analala	Katze	Katzen	adjective agreement, singular
 adj-pl	Paka wadogo wanalala	Katzen	-	adjective agreement, plural
 wa-2pl	Niliwakuta mkitembea	cs:euch|Sie	cs:sie|ihnen	-wa- = 2nd plural, resolved by m- on the second verb

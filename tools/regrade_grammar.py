@@ -20,13 +20,14 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_fixture(path):
+    """id → (expect, forbid, sentence)."""
     rules = {}
     with path.open(encoding="utf-8") as handle:
         for line in handle:
             if line.startswith("#") or not line.strip():
                 continue
             id_, _sentence, expect, forbid, *_ = line.rstrip("\n").split("\t")
-            rules[id_] = (expect, forbid)
+            rules[id_] = (expect, forbid, _sentence)
     return rules
 
 
@@ -70,8 +71,8 @@ SAMPLES = {
                    "Salim hat der Katze Futter gegeben."),
     "subj-sg": ("Der Hund schläft.", "Die Hunde schlafen."),
     "subj-pl": ("Die Hunde schlafen.", "Der Hund schläft."),
-    "obj-sg-mw": ("Ich sah die Freundin.", "Ich sah die Freunde."),
-    "obj-pl-wa": ("Ich sah die Freunde.", "Ich sah den Freund / die Freundin."),
+    "obj-sg-mw": ("Ich sah die Kuh.", "Ich sah die Kühe."),
+    "obj-pl-wa": ("Ich sah die Kühe.", "Ich sah die Kuh."),
     "adj-sg": ("Die kleine Katze schläft.", "Die kleinen Katzen schlafen."),
     "adj-pl": ("Die kleinen Katzen schlafen.", "Die kleine Katze schläft."),
     "wa-2pl": ("Ich habe euch/Sie beim Spazierengehen gefunden",
@@ -83,7 +84,8 @@ SAMPLES = {
 
 def selftest(rules):
     bad = 0
-    for id_, (expect, forbid) in rules.items():
+    for id_, expect in rules.items():
+        expect, forbid = expect[0], expect[1]
         right, wrong = SAMPLES.get(id_, (None, None))
         if right is None:
             print(f"  {id_:<12} no sample — rule unverified")
@@ -116,12 +118,16 @@ def main(argv):
         if not rows:
             continue
         arms = defaultdict(lambda: [0, 0, 0])  # pass, total, changed
+        stale = 0
         rows_failing = defaultdict(lambda: defaultdict(lambda: [0, 0]))
         for row in rows:
             id_ = row["id"]
             if id_ not in rules:
                 continue
-            expect, forbid = rules[id_]
+            expect, forbid, sentence = rules[id_]
+            if row["sentence"] != sentence:
+                stale += 1
+                continue
             now = grade(row["translation"], expect, forbid)
             arm = (row["model"], row.get("agreement", "?"),
                    row.get("analysis", "-"))
@@ -132,7 +138,9 @@ def main(argv):
             cell[0] += now == "pass"
             cell[1] += 1
 
-        print(f"\n{path.name}")
+        print(f"\n{path.name}" + (
+            f"  ({stale} row(s) skipped — the fixture sentence has changed"
+            " since this run)" if stale else ""))
         for arm, (passed, total, changed) in sorted(arms.items()):
             model, agreement, analysis = arm
             note = f"  ({changed} verdict(s) changed)" if changed else ""
