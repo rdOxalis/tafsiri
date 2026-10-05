@@ -1,0 +1,3 @@
+Tafsiri was dropping grammatical number when a language marks it on the verb rather than the noun: "Salim gave the cat food" when he fed several. Found by a tester, settled by measuring models against each other rather than guessing.
+
+Claude now uses Sonnet 5.5 by default. It gets this right and costs about twice as much per request, so Settings now lets you choose the model for each provider — including the cheaper one.

@@ -1,0 +1,3 @@
+Tafsiri hat den Numerus verloren, wenn eine Sprache ihn am Verb markiert statt am Substantiv: „Salim gab der Katze Futter", obwohl er mehrere fütterte. Von einem Tester gefunden, durch Messen mehrerer Modelle geklärt statt geraten.
+
+Claude nutzt jetzt standardmäßig Sonnet 5.5. Das trifft es richtig und kostet etwa doppelt so viel pro Anfrage — in den Einstellungen lässt sich das Modell nun je Anbieter wählen, auch das günstigere.
