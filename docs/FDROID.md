@@ -1,9 +1,13 @@
 # F-Droid Release Process
 
-> **⚠️ ABANDONED (2026-06-14, ADR-030).** Official F-Droid inclusion was given up:
-> F-Droid's `check apk` scanner rejects the `com.google.android.play.core.*`
-> classes that Flutter's embedding bundles, in a way that can't be reproduced or
-> verified locally. MR #39249 was closed and OCR was restored (1.0.8). This
+> **⚠️ ABANDONED (2026-06-14, ADR-030) — partly reopened (2026-10-09, ADR-074).**
+> Official F-Droid inclusion was given up because `check apk` rejected six
+> `com.google.android.play.core.*` classes in a way that seemed impossible to
+> reproduce locally. **That was wrong:** they were references in two Flutter
+> classes kept alive by our own `-keep class io.flutter.**` rule, and F-Droid's
+> scanner counts references. Fixed in `proguard-rules.pro`; check any APK with
+> `tools/fdroid_scan.py` before submitting. ML Kit (wall 2) is the one blocker
+> left. MR #39249 was closed and OCR was restored (1.0.8). This
 > document is kept for historical reference. For a FOSS-store presence that keeps
 > ML Kit/OCR, use IzzyOnDroid (builds from GitHub release APKs), not this repo.
 > Full story: [`docs/fdroid-postmortem.md`](fdroid-postmortem.md).

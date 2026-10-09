@@ -55,6 +55,18 @@ classes** — Google Play Core, which Flutter's embedding bundles for Play Store
 "deferred components" (unused here). This is the long-standing, unresolved
 [flutter#104219](https://github.com/flutter/flutter/issues/104219).
 
+> **Correction (2026-10-09, ADR-074).** The analysis below is wrong, and it is
+> kept here because the way it went wrong is worth seeing. The six classes were
+> in the local APK as well, as *references* inside Flutter's
+> `PlayStoreDeferredComponentManager` and `FlutterPlayStoreSplitApplication`.
+> The `dexdump` check counted only class definitions, so it found none, and the
+> `strings` hit it dismissed as a false positive was the actual finding.
+> F-Droid's scanner takes every type name in the dexdump output, references
+> included. Both classes were kept by this project's own
+> `-keep class io.flutter.** { *; }`. Excluding them removed the six
+> references and nothing else. `tools/fdroid_scan.py` now runs F-Droid's scan
+> locally.
+
 This wall could **not be cleared with local verification**:
 - Locally, R8 strips those classes regardless of any gradle exclude — the APK
   always had 0 `com.google.android.play.core` class definitions (checked with

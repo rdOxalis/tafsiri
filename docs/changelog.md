@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Removed
+- **Flutter's unused Play Store code is no longer in the app** (ADR-074). Two classes for "deferred components", a Play Store feature Tafsiri never uses, were kept alive by an over-broad build rule and pointed at proprietary Google Play Core code. They are gone, along with the six references that made F-Droid reject the app in June. You will not notice anything; the app is a little smaller, and one of the two obstacles to official F-Droid inclusion is gone.
+
 ---
 
 ## [1.0.20] - 2026-10-05
