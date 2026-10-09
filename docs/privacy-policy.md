@@ -1,6 +1,6 @@
 # Privacy Policy — Tafsiri
 
-**Last updated:** 2026-09-05
+**Last updated:** 2026-10-09
 
 ## Overview
 
@@ -18,7 +18,7 @@ Text entered into the translation field is sent to the AI provider you have conf
 - OpenAI (ChatGPT): https://openai.com/policies/privacy-policy
 
 ### Camera
-The camera permission is used exclusively for OCR (optical character recognition) to extract text from photos. Image processing is performed **on-device** using Google ML Kit. No images are uploaded to any server.
+The camera permission is used exclusively for OCR (optical character recognition) to extract text from photos. Image processing is performed **on-device**, by Tesseract — an open-source recognition engine built into the app. No images are uploaded to any server, and no Google service is involved.
 
 ### Microphone
 The microphone permission is used exclusively for speech-to-text input. Voice recognition is performed **on-device** using the Android speech recognition framework. No audio recordings are uploaded to any server.
@@ -42,7 +42,12 @@ API keys you enter in Settings are stored **locally on your device** using Andro
 
 ## Third-Party Services
 
-The only third-party network communication this app performs is sending your input text to the AI provider API you have configured. No other data leaves your device.
+The app makes two kinds of network request, and only these two:
+
+1. **Your input text, to the AI provider you configured** — Mistral, Anthropic or OpenAI, as described above. This is the only time anything you wrote leaves your device.
+2. **Text recognition data, from GitHub — once per language.** The first time you read text from an image, the app downloads the trained language data for your two configured languages from the public repository of the Tesseract project on GitHub (`raw.githubusercontent.com`), a few megabytes each. The request names only the language file it wants. It carries nothing about you, your images or your text, but as with any web request GitHub sees your IP address. The files are kept on your device and are not downloaded again. GitHub's privacy statement: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+
+No other data leaves your device.
 
 ---
 

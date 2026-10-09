@@ -38,7 +38,7 @@ ARB files live in `lib/l10n/`. The Flutter tool generates `AppLocalizations` fro
 - **Local database:** `sqflite` + `path_provider`
 - **Voice input (STT = Speech-to-Text):** `speech_to_text` — microphone button; recognition locale is derived from the detected source language of the last translation (or falls back to device locale); transcription flows into input field, translation triggers automatically
 - **Donate / Buy me a coffee:** `url_launcher` — opens PayPal donate URL from Settings screen
-- **Image input / OCR:** `image_picker` + a platform-specific engine behind the `OcrService` interface — `google_mlkit_text_recognition` on Android/iOS, the external `tesseract` binary on desktop. On-device either way, no extra API call. See ADR-037.
+- **Image input / OCR:** `image_picker` + Tesseract behind the `OcrService` interface — compiled into the app on Android (Tesseract4Android as a source submodule, ADR-075), the installed `tesseract` binary on desktop (ADR-037). On-device either way. Android fetches trained data for the two configured languages on first use. No Google code — this is what makes the app F-Droid-clean; check with `tools/fdroid_scan.py`.
 - **Language detection:** via AI prompt (more reliable for Swahili and lesser-supported languages than local libraries)
 - **Settings persistence:** `shared_preferences`
 - **Backup/restore file dialogs:** `file_selector` (Linux — native GTK) + `file_picker` (Android — Storage Access Framework). Split by platform: `file_selector` has no save dialog on Android, `file_picker` needs `zenity` on Linux. See ADR-034.
@@ -268,7 +268,7 @@ Text: [INPUT]
 - **Typing / pasting:** Standard multiline `TextField`, expandable
 - **Clipboard:** Explicit paste button
 - **Voice (STT = Speech-to-Text):** Microphone button → `speech_to_text` started with a locale derived from the detected source language of the previous translation (e.g. if last input was Swahili, STT uses `sw-TZ`; if German, `de-DE`). Falls back to device locale on first launch or if no prior translation exists. Transcription lands in input field → translation triggers automatically.
-- **Image / OCR:** `image_picker` (camera + gallery) → `google_mlkit_text_recognition` → recognised text placed in input field
+- **Image / OCR:** `image_picker` (camera + gallery) → Tesseract (Android: platform channel `tafsiri/tesseract`) → recognised text placed in input field, behind a confidence gate
 
 ### Translator UI
 
@@ -361,7 +361,6 @@ dependencies:
   http: ^1.2.1
   speech_to_text: ^6.6.1
   image_picker: ^1.0.7
-  google_mlkit_text_recognition: ^0.13.0
   riverpod: ^2.5.1
   flutter_riverpod: ^2.5.1
   intl: ^0.19.0

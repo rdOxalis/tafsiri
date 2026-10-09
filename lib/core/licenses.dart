@@ -1,29 +1,42 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import 'platform_capabilities.dart';
-
-/// Adds the licences Flutter cannot find by itself (ADR-049).
+/// Adds the licences Flutter cannot find by itself (ADR-049, ADR-075).
 ///
 /// `LicenseRegistry` is populated from the `LICENSE` file of every Dart package
 /// in the build — Tafsiri's own MIT licence included, since the root package is
-/// one of them. What it cannot know about is a program the app *runs*: text
-/// recognition on the desktop shells out to Tesseract (ADR-037), which is
-/// Apache-2.0 and appears nowhere in that list.
+/// one of them. What it cannot know about is native code that is not a Dart
+/// package, and a program the app merely runs.
 ///
-/// Tesseract is not bundled today — the user installs it — so this is
-/// attribution rather than an obligation. It becomes an obligation the moment
-/// the engine ships inside the app, which is open for both Windows and macOS,
-/// and being correct in advance costs one asset.
+/// **Android** compiles Tesseract into the app, with the three libraries it is
+/// built on (ADR-075). That is redistribution, so their licences are an
+/// obligation there, not a courtesy: Apache-2.0 for Tesseract and its Android
+/// wrapper, BSD-2-Clause for Leptonica, the libpng licence, and the IJG terms,
+/// which ask in so many words to be credited in the documentation.
+///
+/// **The desktop** runs a Tesseract the user installed (ADR-037). Nothing is
+/// redistributed, so only Tesseract is credited, as attribution — its own
+/// dependencies belong to that installation, not to this app.
+///
+/// **iOS** recognises no text at all since ML Kit left, and claims nothing.
 void registerExtraLicenses() {
-  // Only where it is actually used. Android and iOS recognise text with ML Kit,
-  // which is a Dart package and already listed; claiming Tesseract there would
-  // be a licence page describing software the app never touches.
-  if (isMobilePlatform) return;
+  if (kIsWeb) return;
+  final entries = switch (defaultTargetPlatform) {
+    TargetPlatform.android => const {
+        'tesseract': 'Tesseract-Apache-2.0.txt',
+        'tesseract4android': 'Tesseract4Android-Apache-2.0.txt',
+        'leptonica': 'Leptonica-BSD-2-Clause.txt',
+        'libjpeg': 'libjpeg-IJG.txt',
+        'libpng': 'libpng-LICENSE.txt',
+      },
+    TargetPlatform.iOS => const <String, String>{},
+    _ => const {'tesseract': 'Tesseract-Apache-2.0.txt'},
+  };
 
-  LicenseRegistry.addLicense(() async* {
-    final text =
-        await rootBundle.loadString('assets/licenses/Tesseract-Apache-2.0.txt');
-    yield LicenseEntryWithLineBreaks(const ['tesseract'], text);
-  });
+  for (final MapEntry(key: package, value: file) in entries.entries) {
+    LicenseRegistry.addLicense(() async* {
+      final text = await rootBundle.loadString('assets/licenses/$file');
+      yield LicenseEntryWithLineBreaks([package], text);
+    });
+  }
 }

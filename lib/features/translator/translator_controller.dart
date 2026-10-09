@@ -268,7 +268,8 @@ class TranslatorController extends Notifier<TranslatorState> {
     try {
       // Tesseract needs to know which trained data to load, and the user has
       // already said so in Settings — the same two languages the translation
-      // logic runs on (ADR-037). ML Kit ignores them.
+      // logic runs on (ADR-037). On Android these are also the two it fetches
+      // on first use (ADR-075).
       final settings = ref.read(settingsProvider).valueOrNull;
       final primary = settings?.targetLanguage ?? kDefaultTargetLanguage;
       final alt = settings?.altLanguage ?? kDefaultAltLanguage;

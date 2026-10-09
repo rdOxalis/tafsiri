@@ -263,7 +263,7 @@ One practical tip: **a cropped photo reads far better than a full screenshot.** 
 
 ## Privacy
 
-Camera and microphone are used entirely on-device — Google ML Kit OCR and Android STT on the phone, Tesseract on the desktop. Reading the clipboard is local too. No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
+Camera and microphone are used entirely on-device — Tesseract reads images on the phone and on the desktop alike, and voice input uses the system's own recogniser. The first time you read an image on Android, the language data for your two languages is downloaded once from the Tesseract project on GitHub. Reading the clipboard is local too. No images or audio are uploaded anywhere. Input text is sent only to the AI provider you have configured.
 
 Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md) — also linked from inside the app, at the foot of the translator screen and in Settings under About.
 
@@ -271,7 +271,7 @@ Full privacy policy: [docs/privacy-policy.md](docs/privacy-policy.md) — also l
 
 ## Tech Stack
 
-Flutter (Dart) · Android · Linux · Windows · SQLite · Riverpod · Google ML Kit · speech_to_text
+Flutter (Dart) · Android · Linux · Windows · macOS · SQLite · Riverpod · Tesseract · speech_to_text
 
 ---
 

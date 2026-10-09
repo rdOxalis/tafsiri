@@ -24,7 +24,8 @@ Tafsiri is a Flutter Android app that translates text using one of three AI back
 | `MistralService` | `lib/core/services/` | Mistral Chat API calls |
 | `aiServiceProvider` | `lib/core/services/` | Riverpod `Provider` — selects backend from settings |
 | `OcrService` (abstract) | `lib/core/services/ocr/` | Contract for text recognition engines (ADR-037) |
-| `MlKitOcrService` | `lib/core/services/ocr/` | On-device recognition, Android/iOS |
+| `AndroidTesseractOcrService` | `lib/core/services/ocr/` | On-device recognition on Android — Tesseract compiled in, via the `tafsiri/tesseract` channel (ADR-075) |
+| `TessdataStore` | `lib/core/services/ocr/` | Fetches trained data for the two configured languages on first use, pinned to a tessdata_fast commit |
 | `TesseractOcrService` | `lib/core/services/ocr/` | `tesseract` subprocess + TSV parsing + confidence gate, desktop |
 | `ocrServiceProvider` | `lib/core/services/ocr/` | Riverpod `Provider` — selects the engine by platform |
 | `DbHelper` | `lib/core/database/` | SQLite init, schema version, migrations |
@@ -45,7 +46,7 @@ Tafsiri is a Flutter Android app that translates text using one of three AI back
 flowchart TD
     A[User Input] -->|type / paste| B[InputArea]
     A -->|voice STT| C[SpeechToText]
-    A -->|image OCR| D[ocrServiceProvider\nMLKit · mobile / Tesseract · desktop]
+    A -->|image OCR| D[ocrServiceProvider\nTesseract · compiled in on Android / installed on desktop]
     C -->|recognizedWords| B
     D -->|extracted text| B
     B --> E[TranslatorController.translate]
@@ -230,7 +231,7 @@ On Linux the versioned soname is the fallback because the unversioned one only s
 | Settings, localisation, donate link | ✅ | ✅ | ✅ |
 | Backup / restore | ✅ SAF (`file_picker`) | ✅ GTK (`file_selector`) | ✅ native dialogs (`file_selector`) |
 | Image picking | ✅ camera + gallery | ⚠️ file selection only (camera entry hidden) | ⚠️ file selection only (camera entry hidden) |
-| OCR / image to text | ✅ ML Kit, on-device | ✅ Tesseract subprocess (ADR-037) | ❌ engine not bundled yet — reports "install Tesseract" |
+| OCR / image to text | ✅ Tesseract compiled in, on-device (ADR-075) | ✅ Tesseract subprocess (ADR-037) | ❌ engine not bundled yet — reports "install Tesseract" |
 | Voice input (`speech_to_text`) | ✅ | ❌ no Linux implementation — mic button disabled | ❌ no Windows implementation — mic button disabled |
 
 Build requirements for Linux: `libgtk-3-dev` to build, `libsqlite3-0` at runtime, plus `tesseract-ocr` and the trained data for the languages in use if you want image-to-text.
@@ -440,15 +441,17 @@ STT locale map (ISO 639-1 → BCP-47):
 
 ## Image Input (OCR)
 
-`image_picker` + `google_mlkit_text_recognition`. Flow:
+`image_picker` + Tesseract. On Android Tesseract is compiled into the app (ADR-075); on the desktop it is the installed program (ADR-037). Flow on Android:
 
 1. User taps image button → bottom sheet with Camera / Gallery options.
 2. `pickImageAndRecognize(source)` in `TranslatorController`.
 3. `ImagePicker().pickImage(source)` → `XFile` path.
-4. `TextRecognizer().processImage(InputImage.fromFilePath(...))` → `RecognizedText`.
-5. Extracted text placed in input field. **No auto-translate** (ADR-015).
-6. Empty result or exception → `ocrError` state flag → `ref.listen` in `TranslatorScreen` → floating SnackBar.
-7. `isOcrProcessing` drives a spinner on the image button and disables it during processing.
+4. `TessdataStore.ensure()` fetches trained data for the two configured languages if it is not on the device yet (`tessdata_fast` 4.1.0, pinned to its commit; written to a `.part` file and renamed into place).
+5. Platform channel `tafsiri/tesseract`, method `recognise` → `TesseractChannel.kt`: decode reduced to 3000 px, turn upright by EXIF orientation, `TessBaseAPI.init(dataPath, "swa+deu")`, `getUTF8Text()`, `meanConfidence()` — on one background thread.
+6. Below `kMinMeanConfidence` the read is refused rather than passed to the AI (ADR-037).
+7. Extracted text placed in input field. **No auto-translate** (ADR-015).
+8. Empty result or exception → `ocrError` state flag → `ref.listen` in `TranslatorScreen` → floating SnackBar.
+9. `isOcrProcessing` drives a spinner on the image button and disables it during processing.
 
 ---
 
@@ -530,8 +533,7 @@ flutter build apk --release
 ### ProGuard / R8
 
 `android/app/proguard-rules.pro` contains `-dontwarn` rules for:
-- `google_mlkit_text_recognition` optional script recognizers (Chinese, Devanagari, Japanese, Korean) — not bundled in the Latin-script base SDK but referenced by the plugin
-- Google Play Core split-install classes — referenced by MLKit's dynamic model download, not used directly
+- Google Play Core split-install classes — referenced by Flutter's own deferred-components code, which the keep rule excludes so R8 strips it (ADR-074)
 
 `android/app/build.gradle.kts` release type sets `isMinifyEnabled = true` and references `proguard-rules.pro`.
 
@@ -606,7 +608,7 @@ both settled this way; in both cases the measurement contradicted the guess.
 F-Droid builds the APK from source using its own signing keys. The build recipe is at `fdroid/metadata/com.njerahouse.tafsiri.yml`. Key requirements satisfied:
 - `dependenciesInfo { includeInApk = false; includeInBundle = false }` in `build.gradle.kts`
 - Java VERSION_17 source/target compatibility
-- No Google Play Services dependencies (MLKit uses unbundled Apache 2.0 version)
+- No Google code at all since ML Kit was replaced by Tesseract built from source (ADR-075); `tools/fdroid_scan.py` reproduces F-Droid's binary scan locally
 - Anti-feature `NonFreeNet` declared (AI API connectivity)
 
 Auto-updates: push a git tag `vX.Y.Z` matching the `pubspec.yaml` version — F-Droid picks it up automatically.
