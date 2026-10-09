@@ -373,4 +373,8 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get modelTierFree => 'darmowy pakiet';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'Nie udało się pobrać danych do rozpoznawania tekstu dla Twoich języków. Sprawdź połączenie i spróbuj ponownie.';
 }

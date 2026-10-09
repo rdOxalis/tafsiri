@@ -370,5 +370,6 @@
   "modelHint": "A stronger model translates grammar more reliably and costs more per request. Your choice is kept per provider.",
   "modelTierBest": "best quality",
   "modelTierEconomy": "lower cost",
-  "modelTierFree": "free tier"
+  "modelTierFree": "free tier",
+  "errorOcrDownloadFailed": "The text recognition data for your languages could not be downloaded. Check your connection and try again."
 }

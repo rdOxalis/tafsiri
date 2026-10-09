@@ -373,6 +373,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelTierFree => 'free tier';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'The text recognition data for your languages could not be downloaded. Check your connection and try again.';
 }
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
@@ -744,4 +748,8 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get modelTierFree => 'free tier';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'The text recognition data for your languages could not be downloaded. Check your connection and try again.';
 }

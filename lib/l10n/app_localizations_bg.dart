@@ -376,4 +376,8 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get modelTierFree => 'безплатно ниво';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'Данните за разпознаване на текст за твоите езици не можаха да бъдат изтеглени. Провери връзката си и опитай отново.';
 }

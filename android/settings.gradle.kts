@@ -23,3 +23,11 @@ plugins {
 }
 
 include(":app")
+
+// Tesseract built from source as a module, not fetched as an AAR (ADR-075).
+// The published AAR comes from JitPack, which F-Droid does not accept; the
+// source is Apache-2.0 and compiles Tesseract, Leptonica, libjpeg and libpng
+// itself, which is exactly what F-Droid's build server can do too.
+include(":tesseract4android")
+project(":tesseract4android").projectDir =
+    file("third_party/Tesseract4Android/tesseract4android")

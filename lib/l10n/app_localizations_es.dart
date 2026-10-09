@@ -375,4 +375,8 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get modelTierFree => 'plan gratuito';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'No se pudieron descargar los datos de reconocimiento de texto para tus idiomas. Comprueba tu conexión e inténtalo de nuevo.';
 }

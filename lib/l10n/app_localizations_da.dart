@@ -374,4 +374,8 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get modelTierFree => 'gratis niveau';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'Tekstgenkendelsesdata for dine sprog kunne ikke hentes. Tjek din forbindelse, og prøv igen.';
 }

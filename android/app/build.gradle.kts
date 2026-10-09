@@ -35,6 +35,9 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
+        // Tesseract4Android ships a plain and an OpenMP flavour; the app has no
+        // flavours of its own, so it has to say which one it means.
+        missingDimensionStrategy("parallelization", "standard")
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -72,4 +75,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation(project(":tesseract4android"))
 }

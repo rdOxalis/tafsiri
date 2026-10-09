@@ -1,8 +1,9 @@
 /// Text recognition, abstracted over the engine (ADR-037).
 ///
-/// Mobile uses ML Kit, desktop shells out to Tesseract. The interface exists so
-/// the controller never learns which one it got, and so Android can later swap
-/// engines without touching anything above this line.
+/// Tesseract everywhere: compiled into the app on Android (ADR-075), run as an
+/// installed program on the desktop. The interface exists so the controller
+/// never learns which one it got — which is how ML Kit could be swapped out on
+/// Android without touching anything above this line.
 abstract class OcrService {
   /// Extracts text from the image at [imagePath].
   ///
@@ -59,4 +60,20 @@ class OcrLanguageMissingException implements Exception {
   String toString() =>
       'OcrLanguageMissingException: no trained data for '
       '${languageCodes.join(', ')}';
+}
+
+/// The trained data for a configured language could not be fetched (ADR-075).
+///
+/// Android only: there the data is downloaded on first use rather than
+/// installed, so the remedy is a connection, not a package — and saying
+/// "install Tesseract" to someone whose phone was merely offline would send
+/// them looking for something that does not exist.
+class OcrDataDownloadException implements Exception {
+  const OcrDataDownloadException(this.languageCode);
+
+  /// ISO 639-2 code whose data was not available, e.g. `swa`.
+  final String languageCode;
+
+  @override
+  String toString() => 'OcrDataDownloadException: $languageCode';
 }

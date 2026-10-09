@@ -132,5 +132,6 @@
   "modelHint": "Mocniejszy model wierniej tłumaczy gramatykę i kosztuje więcej za zapytanie. Twój wybór jest zapisywany dla każdego dostawcy.",
   "modelTierBest": "najlepsza jakość",
   "modelTierEconomy": "taniej",
-  "modelTierFree": "darmowy pakiet"
+  "modelTierFree": "darmowy pakiet",
+  "errorOcrDownloadFailed": "Nie udało się pobrać danych do rozpoznawania tekstu dla Twoich języków. Sprawdź połączenie i spróbuj ponownie."
 }

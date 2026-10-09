@@ -375,4 +375,8 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get modelTierFree => 'kiwango cha bure';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'Data za utambuzi wa maandishi kwa lugha zako hazikuweza kupakuliwa. Angalia muunganisho wako kisha ujaribu tena.';
 }

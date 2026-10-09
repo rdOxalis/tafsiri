@@ -132,5 +132,6 @@
   "modelHint": "En stærkere model oversætter grammatik mere pålideligt og koster mere pr. forespørgsel. Dit valg gemmes pr. udbyder.",
   "modelTierBest": "bedste kvalitet",
   "modelTierEconomy": "billigere",
-  "modelTierFree": "gratis niveau"
+  "modelTierFree": "gratis niveau",
+  "errorOcrDownloadFailed": "Tekstgenkendelsesdata for dine sprog kunne ikke hentes. Tjek din forbindelse, og prøv igen."
 }

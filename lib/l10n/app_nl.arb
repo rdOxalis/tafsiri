@@ -132,5 +132,6 @@
   "modelHint": "Een sterker model vertaalt grammatica betrouwbaarder en kost meer per aanvraag. Je keuze wordt per aanbieder bewaard.",
   "modelTierBest": "beste kwaliteit",
   "modelTierEconomy": "goedkoper",
-  "modelTierFree": "gratis niveau"
+  "modelTierFree": "gratis niveau",
+  "errorOcrDownloadFailed": "De gegevens voor tekstherkenning in je talen konden niet worden gedownload. Controleer je verbinding en probeer het opnieuw."
 }

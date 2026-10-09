@@ -475,5 +475,9 @@
   "modelTierFree": "free tier",
   "@modelTierFree": {
     "description": "Short note beside a model usable with a provider's free credit"
+  },
+  "errorOcrDownloadFailed": "The text recognition data for your languages could not be downloaded. Check your connection and try again.",
+  "@errorOcrDownloadFailed": {
+    "description": "Android: the trained data for text recognition could not be fetched on first use"
   }
 }

@@ -132,5 +132,6 @@
   "modelHint": "Un modelo más potente traduce la gramática de forma más fiable y cuesta más por solicitud. Tu elección se guarda por proveedor.",
   "modelTierBest": "mejor calidad",
   "modelTierEconomy": "más barato",
-  "modelTierFree": "plan gratuito"
+  "modelTierFree": "plan gratuito",
+  "errorOcrDownloadFailed": "No se pudieron descargar los datos de reconocimiento de texto para tus idiomas. Comprueba tu conexión e inténtalo de nuevo."
 }

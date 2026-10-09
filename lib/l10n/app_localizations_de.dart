@@ -376,4 +376,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get modelTierFree => 'kostenloses Kontingent';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'Die Texterkennungsdaten für Deine Sprachen konnten nicht geladen werden. Prüfe Deine Verbindung und versuche es erneut.';
 }

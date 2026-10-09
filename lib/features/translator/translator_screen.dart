@@ -29,6 +29,7 @@ class TranslatorScreen extends ConsumerWidget {
               OcrFailure.languageMissing =>
                 l10n.errorOcrLanguageMissing(detail ?? ''),
               OcrFailure.failed => l10n.errorOcrFailed,
+              OcrFailure.downloadFailed => l10n.errorOcrDownloadFailed,
             }),
           ),
         );

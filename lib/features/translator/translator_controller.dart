@@ -24,7 +24,7 @@ enum TranslatorError { noApiKey, apiError, networkError }
 /// The last two are worth their own messages: both mean the user has to install
 /// something, which no amount of retrying will fix. [languageMissing] carries
 /// the package to install in `TranslatorState.ocrErrorDetail`.
-enum OcrFailure { failed, engineMissing, languageMissing }
+enum OcrFailure { failed, engineMissing, languageMissing, downloadFailed }
 
 class TranslatorState {
   final String inputText;
@@ -293,6 +293,14 @@ class TranslatorController extends Notifier<TranslatorState> {
         isOcrProcessing: false,
         ocrError: OcrFailure.languageMissing,
         ocrErrorDetail: tesseractPackageHint(e.languageCodes),
+      );
+    } on OcrDataDownloadException catch (e) {
+      // Android fetches trained data on first use (ADR-075): the remedy is a
+      // connection, not an installation, so it gets its own message.
+      diagLog('trained data download failed: $e');
+      state = state.copyWith(
+        isOcrProcessing: false,
+        ocrError: OcrFailure.downloadFailed,
       );
     } on OcrUnavailableException catch (e) {
       diagLog('engine unavailable: $e');

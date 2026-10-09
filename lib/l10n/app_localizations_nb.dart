@@ -374,4 +374,8 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get modelTierFree => 'gratisnivå';
+
+  @override
+  String get errorOcrDownloadFailed =>
+      'Tekstgjenkjenningsdataene for språkene dine kunne ikke lastes ned. Sjekk tilkoblingen og prøv igjen.';
 }

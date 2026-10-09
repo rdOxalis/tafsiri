@@ -778,6 +778,12 @@ abstract class AppLocalizations {
   /// In en_GB, this message translates to:
   /// **'free tier'**
   String get modelTierFree;
+
+  /// Android: the trained data for text recognition could not be fetched on first use
+  ///
+  /// In en_GB, this message translates to:
+  /// **'The text recognition data for your languages could not be downloaded. Check your connection and try again.'**
+  String get errorOcrDownloadFailed;
 }
 
 class _AppLocalizationsDelegate

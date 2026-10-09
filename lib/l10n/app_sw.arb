@@ -132,5 +132,6 @@
   "modelHint": "Modeli yenye nguvu zaidi hutafsiri sarufi kwa uhakika zaidi na hugharimu zaidi kwa kila ombi. Chaguo lako huhifadhiwa kwa kila mtoa huduma.",
   "modelTierBest": "ubora wa juu",
   "modelTierEconomy": "gharama ndogo",
-  "modelTierFree": "kiwango cha bure"
+  "modelTierFree": "kiwango cha bure",
+  "errorOcrDownloadFailed": "Data za utambuzi wa maandishi kwa lugha zako hazikuweza kupakuliwa. Angalia muunganisho wako kisha ujaribu tena."
 }

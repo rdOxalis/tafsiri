@@ -1,3 +1,9 @@
+// Tesseract4Android's own build file reads this from its root project when it
+// configures Maven publishing. Built as a module of ours, our project is its
+// root, so the value has to live here — set rather than patched in, so the
+// submodule stays exactly as upstream tagged it (ADR-075).
+extra["tesseract4AndroidVersion"] = "4.9.0"
+
 allprojects {
     repositories {
         google()
