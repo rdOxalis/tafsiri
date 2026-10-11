@@ -39,6 +39,7 @@ ARB files live in `lib/l10n/`. The Flutter tool generates `AppLocalizations` fro
 - **Voice input (STT = Speech-to-Text):** `speech_to_text` — microphone button; recognition locale is derived from the detected source language of the last translation (or falls back to device locale); transcription flows into input field, translation triggers automatically
 - **Donate / Buy me a coffee:** `url_launcher` — opens PayPal donate URL from Settings screen
 - **Image input / OCR:** `image_picker` + Tesseract behind the `OcrService` interface — compiled into the app on Android (Tesseract4Android as a source submodule, ADR-075), the installed `tesseract` binary on desktop (ADR-037). On-device either way. Android fetches trained data for the two configured languages on first use. No Google code — this is what makes the app F-Droid-clean; check with `tools/fdroid_scan.py`.
+- **Submodules:** `android/third_party/Tesseract4Android` (required for any Android build) and `.flutter` (Flutter itself, pinned to the release version; used by the F-Droid recipe, ADR-076). Clone with `--recurse-submodules`.
 - **Language detection:** via AI prompt (more reliable for Swahili and lesser-supported languages than local libraries)
 - **Settings persistence:** `shared_preferences`
 - **Backup/restore file dialogs:** `file_selector` (Linux — native GTK) + `file_picker` (Android — Storage Access Framework). Split by platform: `file_selector` has no save dialog on Android, `file_picker` needs `zenity` on Linux. See ADR-034.

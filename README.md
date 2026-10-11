@@ -156,6 +156,16 @@ The free tier has a monthly token limit that resets each month. For typical tran
 
 ## Building for Android
 
+Clone with the submodules — the Android build compiles Tesseract from the `android/third_party/Tesseract4Android` submodule, and fails without it:
+
+```bash
+git clone --recurse-submodules https://github.com/rdOxalis/tafsiri.git
+# already cloned without them:
+git submodule update --init
+```
+
+The repository also carries Flutter itself as a submodule, in `.flutter`, pinned to the version every release is built with. F-Droid builds with it; locally any installed Flutter of the same version works, and `.flutter/bin/flutter` is there if you want the exact one.
+
 ```bash
 ./build_android.sh          # the APK for a release and the AAB for Play
 ./build_android.sh --apk    # just one of them

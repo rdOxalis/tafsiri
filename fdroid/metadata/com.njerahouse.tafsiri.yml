@@ -6,6 +6,7 @@ Categories:
   - Internet
 License: MIT
 AuthorName: rdOxalis
+AuthorEmail: mail@njerahouse.com
 AuthorWebSite: https://github.com/rdOxalis
 WebSite: https://github.com/rdOxalis/tafsiri
 SourceCode: https://github.com/rdOxalis/tafsiri
@@ -18,32 +19,71 @@ Repo: https://github.com/rdOxalis/tafsiri
 
 Builds:
   - versionName: 1.0.21
-    versionCode: 21
-    commit: v1.0.21
+    versionCode: 1021
+    commit: COMMIT_PLACEHOLDER
     submodules: true
-    output: build/app/outputs/flutter-apk/app-release.apk
-    srclibs:
-      - flutter@stable
+    output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     prebuild:
       - sdkmanager 'cmake;3.22.1'
-      - flutterVersion=$(cat .flutter-version)
-      - '[[ $flutterVersion ]]'
-      - git -C $$flutter$$ checkout -f $flutterVersion
       - export PUB_CACHE=$(pwd)/.pub-cache
-      - $$flutter$$/bin/flutter config --no-analytics
-      - $$flutter$$/bin/flutter pub get
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
     scandelete:
       - .pub-cache
       - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - export TAFSIRI_UNSIGNED=1
-      - $$flutter$$/bin/flutter build apk --release --dart-define=TAFSIRI_BUILD=$(git
-        rev-parse --short HEAD)
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform=android-arm
+        --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
+    ndk: r27c
+
+  - versionName: 1.0.21
+    versionCode: 2021
+    commit: COMMIT_PLACEHOLDER
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+      - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export TAFSIRI_UNSIGNED=1
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform=android-arm64
+        --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
+    ndk: r27c
+
+  - versionName: 1.0.21
+    versionCode: 4021
+    commit: COMMIT_PLACEHOLDER
+    submodules: true
+    output: build/app/outputs/flutter-apk/app-x86_64-release.apk
+    prebuild:
+      - sdkmanager 'cmake;3.22.1'
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - .flutter/bin/flutter config --no-analytics
+      - .flutter/bin/flutter pub get
+    scandelete:
+      - .pub-cache
+      - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - export TAFSIRI_UNSIGNED=1
+      - .flutter/bin/flutter build apk --release --split-per-abi --target-platform=android-x64
+        --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
     ndk: r27c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+.\d+.\d+
+VercodeOperation:
+  - 1000 + %c
+  - 2000 + %c
+  - 4000 + %c
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
 CurrentVersion: 1.0.21
-CurrentVersionCode: 21
+CurrentVersionCode: 4021

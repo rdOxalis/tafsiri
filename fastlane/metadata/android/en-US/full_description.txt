@@ -1,19 +1,26 @@
-Tafsiri is an AI-powered translation app. "Tafsiri" is Swahili for "translation".
+Tafsiri is a translation app for people learning a language. "Tafsiri" is Swahili for "translation".
 
-Translate text using the AI provider of your choice: Mistral (free tier available), Anthropic Claude, or OpenAI ChatGPT. Bring your own API key — no account is needed in the app itself. The app talks directly to the provider; no intermediary server is involved.
+It translates with the AI provider you choose — Mistral, Anthropic Claude or OpenAI ChatGPT — using your own API key. There is no account, no subscription and no server in between: the app talks to the provider directly, and you pay only for what you use. Mistral's free tier is enough to try it out.
 
-Features:
-* Bidirectional translation: detects the source language automatically and translates to your configured primary or secondary language — no manual direction toggle needed
-* Voice input (Speech-to-Text): speak your text, translation triggers automatically
-* Image input: photograph text and extract it with on-device OCR — no cloud required for the OCR step
-* Translation history: every result is saved locally, tap any entry to reload it
-* Favourites: star entries to keep them accessible via a filter
-* 10 UI languages: English, German, Swahili, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish
-* Light and dark theme, follows system preference
+How it works
+You set a learning language and a language you are confident in. Text in your learning language is translated into your confident language; anything else is translated into your learning language. There is no direction to pick — the app works it out from each input.
 
-How the translation direction works:
-You set a primary language (e.g. Swahili) and a secondary language (e.g. English) in Settings. If your input is already in the primary language, it is translated to the secondary. Otherwise it is always translated to the primary. No language selector needed — the app adapts to each input automatically.
+For learners
+* Correction mode: write in the language you are learning and get it back corrected, with a note on every change. Words you did not know and wrote in another language are replaced with the right ones.
+* Word explanations: the essential words of a translation, with part of speech and meaning, written in your confident language.
+* Choose the model for each provider — a cheaper one, or the most accurate.
 
-Mistral is the recommended starting point: it offers a generous free tier with no credit card required.
+Input
+* Type or paste.
+* Speak, using your device's speech recognition.
+* Read text from photos and screenshots with Tesseract, on the device, Cyrillic included. The recognition data for your two languages is downloaded once from the Tesseract project; no image ever leaves the device.
 
-Privacy: API keys are stored locally on your device and sent only to the AI provider you have selected. OCR and speech recognition run on-device. No data is collected by the app.
+Also
+* History with favourites; tap an entry to load it again.
+* Backup and restore of settings and history to a file you choose.
+* Interface in 12 languages: English, German, Swahili, French, Dutch, Spanish, Danish, Norwegian, Swedish, Polish, Italian and Bulgarian.
+
+Privacy
+Your API keys stay on your device and go only to the provider you selected, and your text is sent only to that provider. No analytics, no tracking — the app collects nothing.
+
+Open source under the MIT licence.

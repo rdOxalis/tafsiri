@@ -12,7 +12,7 @@
 > **Update (2026-10-11, ADR-075):** ML Kit is replaced by Tesseract built from
 > source, so wall 2 is down as well. The recipe in `fdroid/metadata/` has been
 > rebuilt for it: `submodules: true`, `ndk: r27c`, the Flutter version from
-> `.flutter-version`, `TAFSIRI_UNSIGNED=1`, and `scandelete` for submodule files
+> `.flutter-version` (since replaced by a Flutter submodule, ADR-076), `TAFSIRI_UNSIGNED=1`, and `scandelete` for submodule files
 > that are never built. A local build that applies the recipe exactly scans
 > clean. Still to do before submitting: a real `fdroid build`.
 
@@ -26,7 +26,9 @@ live here, and `fdroid/metadata/com.njerahouse.tafsiri.yml` stays bare.
 |---|---|
 | `submodules: true` | Tesseract4Android is a submodule, built from source as a Gradle module. Its published AAR comes from JitPack, which F-Droid does not accept. |
 | `sdkmanager 'cmake;3.22.1'` | The native build pins CMake 3.22.1, and the build server provisions no CMake at all (`buildserver/provision-android-sdk`). F-Droid's sdkmanager installs it where Gradle looks. |
-| `flutterVersion=$(cat .flutter-version)` | The app pins its Flutter version in that file. The release workflow the old recipe read was deleted (ADR-042). |
+| `.flutter/bin/flutter` | Flutter is a git submodule in `.flutter`, pinned to the release's version (ADR-076). F-Droid's template asks for submodules instead of srclibs: the scanner covers them, and a Flutter update needs no merge request in fdroiddata. It replaced both the `flutter@stable` srclib and the `.flutter-version` file. |
+| Three builds per version (`--split-per-abi --target-platform=…`) | The universal APK is 77 MB; per architecture it is 23.1 (armeabi-v7a), 27.5 (arm64-v8a) and 29.4 MB (x86_64). Flutter numbers the splits *ABI × 1000 + versionCode* — 1021, 2021, 4021 for 1.0.21 — and `VercodeOperation` (`1000 + %c`, `2000 + %c`, `4000 + %c`) lets auto-update produce the same three. |
+| No `Binaries:` | Not a reproducible build: F-Droid signs with its own key (ADR-076). |
 | `scandelete`: `.pub-cache` and Leptonica's `prog` | The scanner flags binaries in both: test archives in pub packages, and the fuzzing ZIPs among Leptonica's utility programs, which CMake builds only under `BUILD_PROG` (default off). **Only paths the scanner would actually flag belong here** — F-Droid fails the build on an unused `scandelete` entry. The first local run listed three more (the submodule's Gradle wrapper, which the scanner removes by itself, and its sample app and instrumented tests, which hold only images and language data it does not object to) and failed on exactly that. |
 | `export TAFSIRI_UNSIGNED=1` | F-Droid signs with its own key and wants the APK unsigned. An explicit switch in `build.gradle.kts`, checked first, rather than `sed`-ing the signing config out. |
 | `--dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)` | The same commit stamp the app shows under Settings → About on every other channel (ADR-041). |

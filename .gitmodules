@@ -1,3 +1,6 @@
 [submodule "android/third_party/Tesseract4Android"]
 	path = android/third_party/Tesseract4Android
 	url = https://github.com/adaptech-cz/Tesseract4Android.git
+[submodule ".flutter"]
+	path = .flutter
+	url = https://github.com/flutter/flutter.git

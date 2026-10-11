@@ -1,19 +1,26 @@
-Tafsiri ist eine KI-gestützte Übersetzungs-App. „Tafsiri" ist Suaheli für „Übersetzung".
+Tafsiri ist eine Übersetzungs-App für Menschen, die eine Sprache lernen. „Tafsiri" ist Swahili für „Übersetzung".
 
-Übersetze Text mit dem KI-Anbieter deiner Wahl: Mistral (kostenloses Kontingent verfügbar), Anthropic Claude oder OpenAI ChatGPT. Eigener API-Schlüssel – kein Account in der App nötig. Die App kommuniziert direkt mit dem Anbieter, kein Zwischenserver.
+Übersetzt wird mit dem KI-Anbieter Deiner Wahl — Mistral, Anthropic Claude oder OpenAI ChatGPT — und Deinem eigenen API-Schlüssel. Kein Konto, kein Abo, kein Server dazwischen: Die App spricht direkt mit dem Anbieter, und Du zahlst nur, was Du nutzt. Zum Ausprobieren genügt Mistrals kostenloses Kontingent.
 
-Funktionen:
-* Bidirektionale Übersetzung: erkennt die Quellsprache automatisch und übersetzt in die konfigurierte Primär- oder Sekundärsprache – kein manuelles Umschalten nötig
-* Spracheingabe (Spracherkennung): Text sprechen, Übersetzung startet automatisch
-* Bildeingabe: Text fotografieren und mit On-Device-Texterkennung (OCR) extrahieren – kein Cloud-Dienst für OCR
-* Übersetzungsverlauf: jedes Ergebnis wird lokal gespeichert, durch Antippen wieder laden
-* Favoriten: Einträge markieren und über Filter schnell wiederfinden
-* 10 App-Sprachen: Englisch, Deutsch, Suaheli, Französisch, Niederländisch, Spanisch, Dänisch, Norwegisch, Schwedisch, Polnisch
-* Helles und dunkles Design, folgt der Systemeinstellung
+So funktioniert es
+Du legst eine Lernsprache fest und eine Sprache, in der Du sicher bist. Text in Deiner Lernsprache wird in Deine sichere Sprache übersetzt, alles andere in Deine Lernsprache. Eine Richtung musst Du nicht wählen — die App erkennt sie an jeder Eingabe.
 
-Wie die Übersetzungsrichtung funktioniert:
-In den Einstellungen legst du eine Primärsprache (z. B. Suaheli) und eine Sekundärsprache (z. B. Englisch) fest. Ist der Eingabetext bereits in der Primärsprache, wird er in die Sekundärsprache übersetzt – sonst immer in die Primärsprache. Kein Sprachauswahl-Schalter nötig.
+Zum Lernen
+* Korrekturmodus: Schreib in Deiner Lernsprache und bekomm den Text korrigiert zurück, mit einem Hinweis zu jeder Änderung. Wörter, die Du nicht kanntest und in einer anderen Sprache geschrieben hast, werden durch die richtigen ersetzt.
+* Worterklärungen: die wichtigen Wörter einer Übersetzung, mit Wortart und Bedeutung, erklärt in Deiner sicheren Sprache.
+* Modellwahl je Anbieter — ein günstigeres oder das genaueste.
 
-Mistral ist der empfohlene Einstieg: kostenloses Kontingent, keine Kreditkarte nötig.
+Eingabe
+* Tippen oder einfügen.
+* Sprechen, über die Spracherkennung Deines Geräts.
+* Text aus Fotos und Screenshots lesen, mit Tesseract auf dem Gerät, Kyrillisch eingeschlossen. Die Erkennungsdaten für Deine zwei Sprachen werden einmalig vom Tesseract-Projekt geladen; kein Bild verlässt das Gerät.
 
-Datenschutz: API-Schlüssel werden lokal gespeichert und nur an den gewählten Anbieter gesendet. OCR und Spracherkennung laufen auf dem Gerät. Die App sammelt keine Daten.
+Außerdem
+* Verlauf mit Favoriten; ein Tipp lädt einen Eintrag wieder.
+* Sicherung und Wiederherstellung von Einstellungen und Verlauf in eine Datei Deiner Wahl.
+* Oberfläche in 12 Sprachen: Englisch, Deutsch, Swahili, Französisch, Niederländisch, Spanisch, Dänisch, Norwegisch, Schwedisch, Polnisch, Italienisch und Bulgarisch.
+
+Datenschutz
+Deine API-Schlüssel bleiben auf Deinem Gerät und gehen nur an den gewählten Anbieter, Dein Text ebenfalls nur an diesen. Keine Analyse, kein Tracking — die App sammelt nichts.
+
+Quelloffen unter der MIT-Lizenz.
