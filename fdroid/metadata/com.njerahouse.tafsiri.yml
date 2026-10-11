@@ -28,7 +28,13 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+      - .flutter/packages/flutter_tools/gradle
     scandelete:
+      - .flutter/dev
+      - .flutter/engine/src/flutter/shell/platform/android/build.gradle
+      - .flutter/engine/src/flutter/testing/rules/.gradle
       - .pub-cache
       - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
     build:
@@ -48,7 +54,13 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+      - .flutter/packages/flutter_tools/gradle
     scandelete:
+      - .flutter/dev
+      - .flutter/engine/src/flutter/shell/platform/android/build.gradle
+      - .flutter/engine/src/flutter/testing/rules/.gradle
       - .pub-cache
       - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
     build:
@@ -68,7 +80,13 @@ Builds:
       - export PUB_CACHE=$(pwd)/.pub-cache
       - .flutter/bin/flutter config --no-analytics
       - .flutter/bin/flutter pub get
+    scanignore:
+      - .flutter/bin/cache
+      - .flutter/packages/flutter_tools/gradle
     scandelete:
+      - .flutter/dev
+      - .flutter/engine/src/flutter/shell/platform/android/build.gradle
+      - .flutter/engine/src/flutter/testing/rules/.gradle
       - .pub-cache
       - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
     build:
