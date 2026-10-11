@@ -20,7 +20,7 @@ Repo: https://github.com/rdOxalis/tafsiri
 Builds:
   - versionName: 1.0.21
     versionCode: 1021
-    commit: COMMIT_PLACEHOLDER
+    commit: eb21b85741410fa9d654206c12008e79f236c52d
     submodules: true
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     prebuild:
@@ -40,7 +40,7 @@ Builds:
 
   - versionName: 1.0.21
     versionCode: 2021
-    commit: COMMIT_PLACEHOLDER
+    commit: eb21b85741410fa9d654206c12008e79f236c52d
     submodules: true
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     prebuild:
@@ -60,7 +60,7 @@ Builds:
 
   - versionName: 1.0.21
     versionCode: 4021
-    commit: COMMIT_PLACEHOLDER
+    commit: eb21b85741410fa9d654206c12008e79f236c52d
     submodules: true
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     prebuild:
