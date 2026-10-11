@@ -60,10 +60,16 @@ android {
 
     buildTypes {
         release {
-            signingConfig = if (keyPropertiesFile.exists())
-                signingConfigs.getByName("release")
-            else
-                signingConfigs.getByName("debug")
+            // F-Droid signs every APK with its own key and wants it unsigned
+            // (ADR-075). Asked for by name rather than inferred from a missing
+            // key.properties, because a missing key file on a developer's
+            // machine should still give an installable, debug-signed build —
+            // and checked first, so it wins even where a key is present.
+            signingConfig = when {
+                System.getenv("TAFSIRI_UNSIGNED") == "1" -> null
+                keyPropertiesFile.exists() -> signingConfigs.getByName("release")
+                else -> signingConfigs.getByName("debug")
+            }
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

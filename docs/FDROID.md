@@ -7,7 +7,14 @@
 > classes kept alive by our own `-keep class io.flutter.**` rule, and F-Droid's
 > scanner counts references. Fixed in `proguard-rules.pro`; check any APK with
 > `tools/fdroid_scan.py` before submitting. ML Kit (wall 2) is the one blocker
-> left. MR #39249 was closed and OCR was restored (1.0.8). This
+> left.
+>
+> **Update (2026-10-11, ADR-075):** ML Kit is replaced by Tesseract built from
+> source, so wall 2 is down as well. The recipe in `fdroid/metadata/` has been
+> rebuilt for it: `submodules: true`, `ndk: r27c`, the Flutter version from
+> `.flutter-version`, `TAFSIRI_UNSIGNED=1`, and `scandelete` for submodule files
+> that are never built. A local build that applies the recipe exactly scans
+> clean. Still to do before submitting: a real `fdroid build`. MR #39249 was closed and OCR was restored (1.0.8). This
 > document is kept for historical reference. For a FOSS-store presence that keeps
 > ML Kit/OCR, use IzzyOnDroid (builds from GitHub release APKs), not this repo.
 > Full story: [`docs/fdroid-postmortem.md`](fdroid-postmortem.md).
