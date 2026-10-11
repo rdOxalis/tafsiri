@@ -14,7 +14,11 @@
 > rebuilt for it: `submodules: true`, `ndk: r27c`, the Flutter version from
 > `.flutter-version` (since replaced by a Flutter submodule, ADR-076), `TAFSIRI_UNSIGNED=1`, and `scandelete` for submodule files
 > that are never built. A local build that applies the recipe exactly scans
-> clean. Still to do before submitting: a real `fdroid build`.
+> clean.
+>
+> **Submitted (2026-10-11):** MR !52113 in fdroiddata. Its pipeline is green on
+> F-Droid's own CI — all three per-architecture builds (1021, 2021, 4021) from
+> `eb21b85`, lint, rewritemeta and `check apk`. Waiting for review.
 
 ## The recipe, line by line (1.0.21, ADR-075)
 
@@ -29,6 +33,8 @@ live here, and `fdroid/metadata/com.njerahouse.tafsiri.yml` stays bare.
 | `.flutter/bin/flutter` | Flutter is a git submodule in `.flutter`, pinned to the release's version (ADR-076). F-Droid's template asks for submodules instead of srclibs: the scanner covers them, and a Flutter update needs no merge request in fdroiddata. It replaced both the `flutter@stable` srclib and the `.flutter-version` file. |
 | Three builds per version (`--split-per-abi --target-platform=…`) | The universal APK is 77 MB; per architecture it is 23.1 (armeabi-v7a), 27.5 (arm64-v8a) and 29.4 MB (x86_64). Flutter numbers the splits *ABI × 1000 + versionCode* — 1021, 2021, 4021 for 1.0.21 — and `VercodeOperation` (`1000 + %c`, `2000 + %c`, `4000 + %c`) lets auto-update produce the same three. |
 | No `Binaries:` | Not a reproducible build: F-Droid signs with its own key (ADR-076). |
+| `scanignore`: `.flutter/bin/cache`, `.flutter/packages/flutter_tools/gradle` | With Flutter as a submodule the scanner walks Flutter too (28 findings locally, 36 on F-Droid's newer scanner). The cache holds the Dart SDK and engine artifacts that `flutter pub get` downloads; `flutter_tools/gradle` is Flutter's Gradle plugin, which points at the `download.flutter.io` Maven repo. The build needs both, and both are exactly what the `flutter` srclib supplies without being scanned, so they are ignored rather than deleted. |
+| `scandelete`: `.flutter/dev` and two `.flutter/engine` files | Flutter's own test projects (binaries, Play Core in a deferred-components test, foreign Maven repos) and the engine's Android `build.gradle` plus a stray `.gradle` cache. The app build does not touch them; F-Droid's CI built all three APKs with them deleted. |
 | `scandelete`: `.pub-cache` and Leptonica's `prog` | The scanner flags binaries in both: test archives in pub packages, and the fuzzing ZIPs among Leptonica's utility programs, which CMake builds only under `BUILD_PROG` (default off). **Only paths the scanner would actually flag belong here** — F-Droid fails the build on an unused `scandelete` entry. The first local run listed three more (the submodule's Gradle wrapper, which the scanner removes by itself, and its sample app and instrumented tests, which hold only images and language data it does not object to) and failed on exactly that. |
 | `export TAFSIRI_UNSIGNED=1` | F-Droid signs with its own key and wants the APK unsigned. An explicit switch in `build.gradle.kts`, checked first, rather than `sed`-ing the signing config out. |
 | `--dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)` | The same commit stamp the app shows under Settings → About on every other channel (ADR-041). |
@@ -42,7 +48,9 @@ AntiFeatures difference above is acceptable with Debian's fdroidserver), a local
 **`fdroid build` exits 0 even when the app failed to build.** Read the log for
 `Could not build app` and `ERROR:` rather than trusting the exit code — the
 first local run of 1.0.21 failed with three scan errors and still reported
-success to the shell. MR #39249 was closed and OCR was restored (1.0.8). This
+success to the shell. Also: a recipe that only F-Droid's CI has built is still a recipe that was
+built — when the local run is slow or the network is flaky, pushing to the
+fork and reading the `fdroid build` job log is a valid test. MR #39249 was closed and OCR was restored (1.0.8). This
 > document is kept for historical reference. For a FOSS-store presence that keeps
 > ML Kit/OCR, use IzzyOnDroid (builds from GitHub release APKs), not this repo.
 > Full story: [`docs/fdroid-postmortem.md`](fdroid-postmortem.md).
