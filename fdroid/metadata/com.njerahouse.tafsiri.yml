@@ -30,6 +30,11 @@ Builds:
       - flutter@stable
     ndk: r27c
     prebuild:
+      # The native build pins CMake 3.22.1, and the build server does not
+      # provision CMake at all (buildserver/provision-android-sdk lists none).
+      # F-Droid's own sdkmanager can install it, into the directory Gradle
+      # looks in; harmless when it is already there.
+      - sdkmanager 'cmake;3.22.1'
       # The app pins its Flutter version in .flutter-version; the release
       # workflow this used to read was deleted (ADR-042).
       - flutterVersion=$(cat .flutter-version)
