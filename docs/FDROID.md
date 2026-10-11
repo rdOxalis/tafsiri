@@ -14,7 +14,33 @@
 > rebuilt for it: `submodules: true`, `ndk: r27c`, the Flutter version from
 > `.flutter-version`, `TAFSIRI_UNSIGNED=1`, and `scandelete` for submodule files
 > that are never built. A local build that applies the recipe exactly scans
-> clean. Still to do before submitting: a real `fdroid build`. MR #39249 was closed and OCR was restored (1.0.8). This
+> clean. Still to do before submitting: a real `fdroid build`.
+
+## The recipe, line by line (1.0.21, ADR-075)
+
+`fdroiddata` keeps no comments — `fdroid rewritemeta` strips them, and its CI
+fails a merge request whose metadata is not in canonical form. So the reasons
+live here, and `fdroid/metadata/com.njerahouse.tafsiri.yml` stays bare.
+
+| Line | Why |
+|---|---|
+| `submodules: true` | Tesseract4Android is a submodule, built from source as a Gradle module. Its published AAR comes from JitPack, which F-Droid does not accept. |
+| `sdkmanager 'cmake;3.22.1'` | The native build pins CMake 3.22.1, and the build server provisions no CMake at all (`buildserver/provision-android-sdk`). F-Droid's sdkmanager installs it where Gradle looks. |
+| `flutterVersion=$(cat .flutter-version)` | The app pins its Flutter version in that file. The release workflow the old recipe read was deleted (ADR-042). |
+| `scandelete`: `.pub-cache` and Leptonica's `prog` | The scanner flags binaries in both: test archives in pub packages, and the fuzzing ZIPs among Leptonica's utility programs, which CMake builds only under `BUILD_PROG` (default off). **Only paths the scanner would actually flag belong here** — F-Droid fails the build on an unused `scandelete` entry. The first local run listed three more (the submodule's Gradle wrapper, which the scanner removes by itself, and its sample app and instrumented tests, which hold only images and language data it does not object to) and failed on exactly that. |
+| `export TAFSIRI_UNSIGNED=1` | F-Droid signs with its own key and wants the APK unsigned. An explicit switch in `build.gradle.kts`, checked first, rather than `sed`-ing the signing config out. |
+| `--dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)` | The same commit stamp the app shows under Settings → About on every other channel (ADR-041). |
+| `ndk: r27c` | The NDK Tesseract4Android 4.9.0 is tested with (27.2.12479018). `rewritemeta` puts this field after `build`. |
+| `AntiFeatures: NonFreeNet` with a reason | The AI providers are non-free network services. Keep the localised reason map: current `fdroidserver` reads it (`TYPE_STRINGMAP`). The older 2.2.1 in Debian flattens it to a bare list on `rewritemeta`, so do not let a local rewrite "fix" it. |
+
+**Before any submission:** `fdroid lint`, `fdroid rewritemeta --list` (only the
+AntiFeatures difference above is acceptable with Debian's fdroidserver), a local
+`fdroid build -l --scan-binary`, and `tools/fdroid_scan.py` on the result.
+
+**`fdroid build` exits 0 even when the app failed to build.** Read the log for
+`Could not build app` and `ERROR:` rather than trusting the exit code — the
+first local run of 1.0.21 failed with three scan errors and still reported
+success to the shell. MR #39249 was closed and OCR was restored (1.0.8). This
 > document is kept for historical reference. For a FOSS-store presence that keeps
 > ML Kit/OCR, use IzzyOnDroid (builds from GitHub release APKs), not this repo.
 > Full story: [`docs/fdroid-postmortem.md`](fdroid-postmortem.md).

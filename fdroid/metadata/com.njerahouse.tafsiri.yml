@@ -20,23 +20,12 @@ Builds:
   - versionName: 1.0.21
     versionCode: 21
     commit: v1.0.21
-    # Tesseract4Android is a git submodule, built from source as a Gradle
-    # module: Tesseract, Leptonica, libjpeg and libpng compile from the vendored
-    # sources with the NDK below. Its published AAR comes from JitPack, which
-    # is why it is not used (ADR-075).
     submodules: true
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
       - flutter@stable
-    ndk: r27c
     prebuild:
-      # The native build pins CMake 3.22.1, and the build server does not
-      # provision CMake at all (buildserver/provision-android-sdk lists none).
-      # F-Droid's own sdkmanager can install it, into the directory Gradle
-      # looks in; harmless when it is already there.
       - sdkmanager 'cmake;3.22.1'
-      # The app pins its Flutter version in .flutter-version; the release
-      # workflow this used to read was deleted (ADR-042).
       - flutterVersion=$(cat .flutter-version)
       - '[[ $flutterVersion ]]'
       - git -C $$flutter$$ checkout -f $flutterVersion
@@ -45,20 +34,13 @@ Builds:
       - $$flutter$$/bin/flutter pub get
     scandelete:
       - .pub-cache
-      # Never built: Tesseract4Android's own wrapper (our project's Gradle is
-      # used), its sample app and instrumented tests, and Leptonica's utility
-      # programs with their fuzzing corpora (BUILD_PROG defaults to OFF).
-      - android/third_party/Tesseract4Android/gradle/wrapper/gradle-wrapper.jar
-      - android/third_party/Tesseract4Android/sample
-      - android/third_party/Tesseract4Android/tesseract4android/src/androidTest
       - android/third_party/Tesseract4Android/tesseract4android/src/main/cpp/leptonica/src/prog
     build:
       - export PUB_CACHE=$(pwd)/.pub-cache
-      # Unsigned: F-Droid signs with its own key (ADR-075).
       - export TAFSIRI_UNSIGNED=1
-      # The same build stamp the app shows under Settings → About (ADR-041).
       - $$flutter$$/bin/flutter build apk --release --dart-define=TAFSIRI_BUILD=$(git
         rev-parse --short HEAD)
+    ndk: r27c
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags v\d+.\d+.\d+
