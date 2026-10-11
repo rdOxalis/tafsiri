@@ -1,0 +1,7 @@
+Texterkennung aus Bildern nutzt jetzt Tesseract, eine quelloffene Engine in der App, statt Google ML Kit. Tafsiri enthält keinen Google-Code mehr.
+
+Neu: Kyrillisch und andere Schriften sind lesbar. Ein unklares Foto wird abgelehnt statt geraten.
+
+Langsamer: die Erkennung dauert etwas länger, beim ersten Bild werden einmalig die Daten Deiner zwei Sprachen geladen (wenige MB). Schräge oder dunkle Fotos werden schlechter gelesen.
+
+Die App ist rund 10 MB kleiner.

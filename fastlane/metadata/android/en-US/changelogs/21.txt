@@ -1,0 +1,7 @@
+Reading text from images now uses Tesseract, an open-source engine built into the app, instead of Google ML Kit. Tafsiri contains no Google code any more.
+
+New: Cyrillic and other scripts can be read. An unclear photo is refused instead of guessed at.
+
+Slower: recognition takes a little longer, and the first image downloads the data for your two languages once (a few MB). Angled or dark photos are read less reliably.
+
+The app is about 10 MB smaller.

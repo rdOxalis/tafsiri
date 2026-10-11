@@ -1,0 +1,7 @@
+Kusoma maandishi kutoka kwenye picha sasa kunatumia Tesseract, injini huria iliyo ndani ya programu, badala ya Google ML Kit. Tafsiri haina tena msimbo wa Google.
+
+Mpya: herufi za Kisiriliki na nyingine zinasomeka. Picha isiyo wazi inakataliwa badala ya kubahatishwa.
+
+Polepole zaidi: utambuzi huchukua muda kidogo zaidi, na picha ya kwanza hupakua data ya lugha zako mbili mara moja (MB chache). Picha zilizopinda au zenye giza husomwa kwa usahihi mdogo.
+
+Programu ni ndogo kwa takriban MB 10.

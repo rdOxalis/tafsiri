@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.21] - 2026-10-11
+
 ### Changed
 - **Reading text from images on Android now uses Tesseract instead of Google ML Kit** (ADR-075). Tesseract is an open-source engine, built into the app. Tafsiri now contains no Google code at all, which is what F-Droid requires. It also brings two improvements. **Cyrillic and other scripts can be read** — ML Kit had no Cyrillic model, so Bulgarian signs came back as Latin nonsense. And **an unclear photo is now refused instead of guessed at**: Tesseract reports how sure it is, and below a threshold Tafsiri says it could not read the image rather than handing invented text to the translation. Two things are slower or weaker than before. Recognition takes a little longer, and the very first image downloads the recognition data for your two languages once (a few megabytes, from the Tesseract project on GitHub). Angled or badly lit photos are read less reliably than ML Kit managed. The app is about 10 MB smaller.
 
