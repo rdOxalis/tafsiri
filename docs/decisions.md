@@ -1,5 +1,12 @@
 # Architecture Decision Records
 
+## ADR-077: Per-ABI version codes follow F-Droid's scheme, and pub resolves from the lockfile
+**Date:** 2026-10-12
+**Status:** Accepted
+**Context:** The first review of MR !52113 (linsui) asked for two things. The recipe had taken Flutter's own split numbering, *ABI × 1000 + versionCode* (1021, 2021, 4021). That puts the architecture in the highest digits: 1.0.22 on armeabi-v7a would get 1022, below 1.0.21's x86_64 at 4021. F-Droid clients install the highest version code a device can run, and fdroidserver keeps only the highest codes in the repo and moves the rest to the archive, so the ABI has to be the lowest digit. That cannot be expressed in the recipe; F-Droid does not run Gradle code to compute version codes. Second, `flutter pub get` may resolve newer package versions than `pubspec.lock` names, so F-Droid could build something nobody tested.
+**Decision:** `android/app/build.gradle.kts` overrides the version code of every output that carries an ABI filter with *versionCode × 10 + abi* (armeabi-v7a 1, arm64-v8a 2, x86_64 3), using the snippet F-Droid gives Flutter apps. The recipe sets 211/212/213 for 1.0.21 and `VercodeOperation: 10 * %c + 1/2/3`. The prebuild runs `flutter pub get --enforce-lockfile`.
+**Consequences:** Only split APKs carry an ABI filter, so the universal APK on GitHub and the Play bundle keep the plain versionCode (21); the Play numbering is unaffected. Since F-Droid signs with its own key, its codes never have to line up with Play's. The Gradle change means a new build commit for 1.0.21, again after the tag. `--enforce-lockfile` makes a stale `pubspec.lock` a build failure, so a release must commit the lockfile it was tested with — which it already does.
+
 ## ADR-076: F-Droid signs, the APK splits by architecture, and Flutter is a submodule
 **Date:** 2026-10-11
 **Status:** Accepted

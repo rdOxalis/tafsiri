@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -81,6 +82,22 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// F-Droid builds one APK per ABI and keeps the one with the highest version
+// code, so the ABI has to be the lowest digit: versionCode * 10 + abi. Flutter's
+// own split scheme (abi * 1000 + versionCode) puts it in front, where an old
+// x86_64 build outranks a newer arm one. Only split APKs carry an ABI filter;
+// the universal APK and the Play bundle keep the plain versionCode (ADR-077).
+val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)
+android.applicationVariants.configureEach {
+    val variant = this
+    variant.outputs.forEach { output ->
+        val abiVersionCode = abiCodes[output.filters.find { it.filterType == "ABI" }?.identifier]
+        if (abiVersionCode != null) {
+            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+        }
+    }
 }
 
 dependencies {
