@@ -362,6 +362,10 @@ class TranslatorController extends Notifier<TranslatorState> {
   }
 
   Future<void> translate() async {
+    // The button is disabled while loading, but speech recognition calls this
+    // directly, and some devices deliver the final result twice — which saved
+    // the same translation twice.
+    if (state.isLoading) return;
     final input = state.inputText.trim();
     if (input.isEmpty) return;
 

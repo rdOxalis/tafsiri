@@ -10,6 +10,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Per-architecture APKs (as F-Droid builds them) are numbered *versionCode × 10 + architecture*, so a newer version always outranks an older one whatever the device (ADR-077). The Play bundle and the universal APK keep their plain version code.
 
+### Fixed
+- **A translation could be saved twice.** After voice input, some phones report the final recognition result twice, which started two translations and put the same entry into the history twice. A translation that is already running now ignores a second start.
+
 ---
 
 ## [1.0.21] - 2026-10-11

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -92,6 +93,40 @@ void main() {
       expect(state.lastSourceLang, 'en');
       expect(state.isLoading, isFalse);
       expect(state.error, isNull);
+    });
+
+    test('translate ignores a second call while one is running', () async {
+      final container = makeContainer(mockService: mockService);
+      addTearDown(container.dispose);
+
+      final reply = Completer<String>();
+      when(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
+        correctionMode: anyNamed('correctionMode'),
+      )).thenAnswer((_) => reply.future);
+
+      await container.read(settingsProvider.future);
+      final notifier = container.read(translatorProvider.notifier);
+      notifier.setInputText('special cat');
+      // What a duplicated final speech result does.
+      final first = notifier.translate();
+      final second = notifier.translate();
+      reply.complete('LANG:en\npaka maalum');
+      await Future.wait([first, second]);
+
+      verify(mockService.translate(
+        text: anyNamed('text'),
+        targetLanguage: anyNamed('targetLanguage'),
+        altLanguage: anyNamed('altLanguage'),
+        apiKey: anyNamed('apiKey'),
+        model: anyNamed('model'),
+        correctionMode: anyNamed('correctionMode'),
+      )).called(1);
+      expect(container.read(translatorProvider).outputText, 'paka maalum');
     });
 
     test('translate strips LANG prefix from multi-line response', () async {
