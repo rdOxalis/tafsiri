@@ -11,7 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Per-architecture APKs (as F-Droid builds them) are numbered *versionCode × 10 + architecture*, so a newer version always outranks an older one whatever the device (ADR-077). The Play bundle and the universal APK keep their plain version code.
 
 ### Fixed
-- **A translation could be saved twice.** After voice input, some phones report the final recognition result twice, which started two translations and put the same entry into the history twice. A translation that is already running now ignores a second start.
+- A second start while a translation is still running is now ignored. The button was already disabled during a translation, but voice input starts one directly and was not covered, so a duplicated result from speech recognition could have produced two requests and two history entries. Not observed in practice: deliberately translating the same text twice still gives two entries, as before.
 
 ---
 
