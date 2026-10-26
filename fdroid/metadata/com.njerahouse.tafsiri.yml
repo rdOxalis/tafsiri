@@ -1,9 +1,11 @@
 AntiFeatures:
   NonFreeNet:
     en-US: Connects to third-party AI API services (Mistral, Claude, OpenAI). API
-      keys are provided by the user — the app has no built-in credentials.
+      keys are provided by the user — the app has no built-in credentials. Reading
+      text from images downloads Tesseract language data for the two configured languages
+      once, from raw.githubusercontent.com.
 Categories:
-  - Internet
+  - Translation & Dictionary
 License: MIT
 AuthorName: rdOxalis
 AuthorEmail: mail@njerahouse.com
