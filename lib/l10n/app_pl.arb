@@ -20,6 +20,7 @@
   "cancel": "Anuluj",
   "delete": "Usuń",
   "undoDelete": "Cofnij",
+  "historyEntryDeleted": "Tłumaczenie usunięte",
   "favouritesLabel": "Ulubione",
   "allLabel": "Wszystkie",
   "settingsTitle": "Ustawienia",

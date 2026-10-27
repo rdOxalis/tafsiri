@@ -20,6 +20,7 @@
   "cancel": "Abbrechen",
   "delete": "Löschen",
   "undoDelete": "Rückgängig",
+  "historyEntryDeleted": "Übersetzung gelöscht",
   "favouritesLabel": "Favoriten",
   "allLabel": "Alle",
   "settingsTitle": "Einstellungen",

@@ -69,6 +69,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get undoDelete => 'Undo';
 
   @override
+  String get historyEntryDeleted => 'Translation deleted';
+
+  @override
   String get favouritesLabel => 'Favourites';
 
   @override
@@ -442,6 +445,9 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get undoDelete => 'Undo';
+
+  @override
+  String get historyEntryDeleted => 'Translation deleted';
 
   @override
   String get favouritesLabel => 'Favourites';

@@ -19,6 +19,7 @@
   "cancel": "Отказ",
   "delete": "Изтрий",
   "undoDelete": "Отмени",
+  "historyEntryDeleted": "Преводът е изтрит",
   "favouritesLabel": "Любими",
   "allLabel": "Всички",
   "settingsTitle": "Настройки",

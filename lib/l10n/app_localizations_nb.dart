@@ -69,6 +69,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get undoDelete => 'Angre';
 
   @override
+  String get historyEntryDeleted => 'Oversettelse slettet';
+
+  @override
   String get favouritesLabel => 'Favoritter';
 
   @override

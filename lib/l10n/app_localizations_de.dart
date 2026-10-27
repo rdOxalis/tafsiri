@@ -69,6 +69,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get undoDelete => 'Rückgängig';
 
   @override
+  String get historyEntryDeleted => 'Übersetzung gelöscht';
+
+  @override
   String get favouritesLabel => 'Favoriten';
 
   @override

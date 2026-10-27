@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/translator/translator_controller.dart';
 import '../../shared/providers/selected_tab_provider.dart';
+import '../../shared/models/translation_entry.dart';
 import 'history_controller.dart';
 import 'widgets/favourites_filter.dart';
 import 'widgets/history_list_item.dart';
@@ -78,17 +79,7 @@ class HistoryScreen extends ConsumerWidget {
                             .read(historyProvider.notifier)
                             .delete(entry.id!);
                         if (deleted == null || !context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.delete),
-                            action: SnackBarAction(
-                              label: l10n.undoDelete,
-                              onPressed: () => ref
-                                  .read(historyProvider.notifier)
-                                  .restore(deleted),
-                            ),
-                          ),
-                        );
+                        _showDeleted(context, ref, l10n, deleted);
                       },
                       child: HistoryListItem(
                         entry: entry,
@@ -117,9 +108,26 @@ class HistoryScreen extends ConsumerWidget {
   ) async {
     final deleted = await ref.read(historyProvider.notifier).delete(entry.id!);
     if (deleted == null || !context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
+    _showDeleted(context, ref, l10n, deleted);
+  }
+
+  /// Says the entry is gone and offers to bring it back, for a few seconds.
+  void _showDeleted(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    TranslationEntry deleted,
+  ) {
+    final messenger = ScaffoldMessenger.of(context)
+      // One message, for the latest deletion. Deleting several entries used
+      // to queue one snackbar each, so dismissing one only revealed the next.
+      ..clearSnackBars();
+    messenger.showSnackBar(
       SnackBar(
-        content: Text(l10n.delete),
+        content: Text(l10n.historyEntryDeleted),
+        // Since Flutter 3.29 a snackbar with an action stays until dismissed
+        // unless told otherwise; this one should time out like any other.
+        persist: false,
         action: SnackBarAction(
           label: l10n.undoDelete,
           onPressed: () =>

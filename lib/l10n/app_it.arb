@@ -19,6 +19,7 @@
   "cancel": "Annulla",
   "delete": "Elimina",
   "undoDelete": "Annulla",
+  "historyEntryDeleted": "Traduzione eliminata",
   "favouritesLabel": "Preferiti",
   "allLabel": "Tutte",
   "settingsTitle": "Impostazioni",

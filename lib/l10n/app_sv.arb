@@ -20,6 +20,7 @@
   "cancel": "Avbryt",
   "delete": "Ta bort",
   "undoDelete": "Ångra",
+  "historyEntryDeleted": "Översättning borttagen",
   "favouritesLabel": "Favoriter",
   "allLabel": "Alla",
   "settingsTitle": "Inställningar",

@@ -69,6 +69,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get undoDelete => 'Fortryd';
 
   @override
+  String get historyEntryDeleted => 'Oversættelse slettet';
+
+  @override
   String get favouritesLabel => 'Favoritter';
 
   @override

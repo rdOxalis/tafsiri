@@ -70,6 +70,9 @@ class AppLocalizationsBg extends AppLocalizations {
   String get undoDelete => 'Отмени';
 
   @override
+  String get historyEntryDeleted => 'Преводът е изтрит';
+
+  @override
   String get favouritesLabel => 'Любими';
 
   @override

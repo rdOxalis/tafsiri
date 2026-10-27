@@ -69,6 +69,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get undoDelete => 'Tendua';
 
   @override
+  String get historyEntryDeleted => 'Tafsiri imeondolewa';
+
+  @override
   String get favouritesLabel => 'Vipendwa';
 
   @override

@@ -69,6 +69,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get undoDelete => 'Ongedaan maken';
 
   @override
+  String get historyEntryDeleted => 'Vertaling verwijderd';
+
+  @override
   String get favouritesLabel => 'Favorieten';
 
   @override

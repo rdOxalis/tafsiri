@@ -20,6 +20,7 @@
   "cancel": "Cancelar",
   "delete": "Eliminar",
   "undoDelete": "Deshacer",
+  "historyEntryDeleted": "Traducción eliminada",
   "favouritesLabel": "Favoritos",
   "allLabel": "Todos",
   "settingsTitle": "Ajustes",

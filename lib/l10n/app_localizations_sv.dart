@@ -69,6 +69,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get undoDelete => 'Ångra';
 
   @override
+  String get historyEntryDeleted => 'Översättning borttagen';
+
+  @override
   String get favouritesLabel => 'Favoriter';
 
   @override

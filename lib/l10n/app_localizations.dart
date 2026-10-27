@@ -239,6 +239,12 @@ abstract class AppLocalizations {
   /// **'Undo'**
   String get undoDelete;
 
+  /// Snackbar message after a history entry was deleted; a statement, not a button
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Translation deleted'**
+  String get historyEntryDeleted;
+
   /// Label for the favourites filter
   ///
   /// In en_GB, this message translates to:

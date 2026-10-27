@@ -20,6 +20,7 @@
   "cancel": "Annuleren",
   "delete": "Verwijderen",
   "undoDelete": "Ongedaan maken",
+  "historyEntryDeleted": "Vertaling verwijderd",
   "favouritesLabel": "Favorieten",
   "allLabel": "Alles",
   "settingsTitle": "Instellingen",

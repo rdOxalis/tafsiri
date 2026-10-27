@@ -20,6 +20,7 @@
   "cancel": "Avbryt",
   "delete": "Slett",
   "undoDelete": "Angre",
+  "historyEntryDeleted": "Oversettelse slettet",
   "favouritesLabel": "Favoritter",
   "allLabel": "Alle",
   "settingsTitle": "Innstillinger",

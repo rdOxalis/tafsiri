@@ -97,7 +97,7 @@ class HistoryListItem extends StatelessWidget {
                     color: Theme.of(context).colorScheme.outline,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
-                    tooltip: 'Delete',
+                    tooltip: AppLocalizations.of(context)!.delete,
                     onPressed: onDelete,
                   ),
                 ],

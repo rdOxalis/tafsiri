@@ -69,6 +69,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get undoDelete => 'Cofnij';
 
   @override
+  String get historyEntryDeleted => 'Tłumaczenie usunięte';
+
+  @override
   String get favouritesLabel => 'Ulubione';
 
   @override

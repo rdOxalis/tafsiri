@@ -80,6 +80,10 @@
   "@undoDelete": {
     "description": "Undo label in the delete snackbar"
   },
+  "historyEntryDeleted": "Translation deleted",
+  "@historyEntryDeleted": {
+    "description": "Snackbar message after a history entry was deleted; a statement, not a button"
+  },
   "favouritesLabel": "Favourites",
   "@favouritesLabel": {
     "description": "Label for the favourites filter"
