@@ -20,9 +20,9 @@ RepoType: git
 Repo: https://github.com/rdOxalis/tafsiri
 
 Builds:
-  - versionName: 1.0.21
-    versionCode: 211
-    commit: f5e3d4aa9b0ff57b55a2fafa87d511815c1dfc12
+  - versionName: 1.0.22
+    versionCode: 221
+    commit: 17fbd8387e805f054cd4cfa21e6fc7d17c0dec57
     submodules: true
     output: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
     prebuild:
@@ -46,9 +46,9 @@ Builds:
         --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
     ndk: r27c
 
-  - versionName: 1.0.21
-    versionCode: 212
-    commit: f5e3d4aa9b0ff57b55a2fafa87d511815c1dfc12
+  - versionName: 1.0.22
+    versionCode: 222
+    commit: 17fbd8387e805f054cd4cfa21e6fc7d17c0dec57
     submodules: true
     output: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
     prebuild:
@@ -72,9 +72,9 @@ Builds:
         --dart-define=TAFSIRI_BUILD=$(git rev-parse --short HEAD)
     ndk: r27c
 
-  - versionName: 1.0.21
-    versionCode: 213
-    commit: f5e3d4aa9b0ff57b55a2fafa87d511815c1dfc12
+  - versionName: 1.0.22
+    versionCode: 223
+    commit: 17fbd8387e805f054cd4cfa21e6fc7d17c0dec57
     submodules: true
     output: build/app/outputs/flutter-apk/app-x86_64-release.apk
     prebuild:
@@ -105,5 +105,5 @@ VercodeOperation:
   - 10 * %c + 2
   - 10 * %c + 3
 UpdateCheckData: pubspec.yaml|version:\s.+\+(\d+)|.|version:\s(.+)\+
-CurrentVersion: 1.0.21
-CurrentVersionCode: 213
+CurrentVersion: 1.0.22
+CurrentVersionCode: 223
