@@ -80,6 +80,7 @@ No manual fdroiddata edits needed for regular releases.
 - [ ] Bump version in `pubspec.yaml` (format: `x.y.z+versionCode`)
 - [ ] Update Flutter version in `.github/workflows/release.yml` if upgraded
 - [ ] Add changelog entry in `fastlane/metadata/android/*/changelogs/<versionCode>.txt`
+  **and** the same text as `<versionCode>1.txt`, `<versionCode>2.txt`, `<versionCode>3.txt` (e.g. 22, 221, 222, 223). F-Droid matches the changelog to each build's own version code, which is versionCode × 10 + ABI (ADR-077); Play reads the plain one.
 - [ ] Test APK build locally: `flutter build apk --release`
 - [ ] Commit and push to `main`
 - [ ] Tag and push: `git tag vX.Y.Z && git push origin main --tags`

@@ -1,0 +1,3 @@
+Claude works again. Translating with Claude often failed, lately every time, with "type 'Null' is not a subtype of type 'String'". Fixed.
+
+History: the message after deleting an entry now disappears by itself and says "Translation deleted". Undo works as before.

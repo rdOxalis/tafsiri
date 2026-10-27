@@ -1,0 +1,3 @@
+Claude inafanya kazi tena. Kutafsiri kwa Claude kulishindwa mara nyingi, na hivi karibuni kila mara, kwa ujumbe "type 'Null' is not a subtype of type 'String'". Imerekebishwa.
+
+Historia: ujumbe unaoonekana baada ya kufuta kipengee sasa unatoweka wenyewe na unasema "Tafsiri imeondolewa". Tendua inafanya kazi kama awali.

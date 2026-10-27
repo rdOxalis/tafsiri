@@ -1,0 +1,3 @@
+Claude funktioniert wieder. Übersetzen mit Claude scheiterte oft, zuletzt immer, mit „type 'Null' is not a subtype of type 'String'“. Behoben.
+
+Verlauf: Die Meldung nach dem Löschen eines Eintrags verschwindet jetzt von selbst und lautet „Übersetzung gelöscht“. Rückgängig funktioniert wie bisher.

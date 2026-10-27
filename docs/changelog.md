@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.22] - 2026-10-27
+
 ### Changed
 - Per-architecture APKs (as F-Droid builds them) are numbered *versionCode × 10 + architecture*, so a newer version always outranks an older one whatever the device (ADR-077). The Play bundle and the universal APK keep their plain version code.
 
