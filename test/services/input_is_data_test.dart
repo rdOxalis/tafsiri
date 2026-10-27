@@ -74,7 +74,7 @@ void main() {
           .thenAnswer((_) async => http.Response(
               jsonEncode({
                 'content': [
-                  {'text': 'LANG:de\nMarekebisho'}
+                  {'type': 'text', 'text': 'LANG:de\nMarekebisho'}
                 ]
               }),
               200));

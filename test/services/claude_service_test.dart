@@ -30,7 +30,7 @@ void main() {
       )).thenAnswer((_) async => http.Response(
             jsonEncode({
               'content': [
-                {'text': 'LANG:en\nHabari'}
+                {'type': 'text', 'text': 'LANG:en\nHabari'}
               ]
             }),
             200,
@@ -45,6 +45,61 @@ void main() {
       );
 
       expect(result, 'LANG:en\nHabari');
+    });
+
+    test('skips a leading thinking block', () async {
+      // What Sonnet 5.5 returns when it decides to think: the thinking block
+      // comes first and has no text field.
+      when(mockClient.post(
+        any,
+        headers: anyNamed('headers'),
+        body: anyNamed('body'),
+      )).thenAnswer((_) async => http.Response(
+            jsonEncode({
+              'content': [
+                {'type': 'thinking', 'thinking': '', 'signature': 'sig'},
+                {'type': 'text', 'text': 'LANG:de\nLila jagte '},
+                {'type': 'text', 'text': 'den Gecko.'},
+              ],
+              'stop_reason': 'end_turn',
+            }),
+            200,
+          ));
+
+      final result = await service.translate(
+        text: input,
+        targetLanguage: target,
+        altLanguage: alt,
+        apiKey: apiKey,
+        model: 'claude-sonnet-5-5',
+      );
+
+      expect(result, 'LANG:de\nLila jagte den Gecko.');
+    });
+
+    test('throws AiApiException on a refusal', () {
+      expect(
+        () => ClaudeService.extractText({
+          'content': <dynamic>[],
+          'stop_reason': 'refusal',
+          'stop_details': {'type': 'refusal', 'category': 'cyber'},
+        }),
+        throwsA(isA<AiApiException>()
+            .having((e) => e.body, 'body', contains('refusal'))),
+      );
+    });
+
+    test('throws AiApiException when only thinking came back', () {
+      expect(
+        () => ClaudeService.extractText({
+          'content': [
+            {'type': 'thinking', 'thinking': ''},
+          ],
+          'stop_reason': 'max_tokens',
+        }),
+        throwsA(isA<AiApiException>()
+            .having((e) => e.body, 'body', contains('max_tokens'))),
+      );
     });
 
     test('throws AiApiException on 401', () async {
@@ -93,7 +148,7 @@ void main() {
       )).thenAnswer((_) async => http.Response(
             jsonEncode({
               'content': [
-                {'text': 'LANG:en\nHabari'}
+                {'type': 'text', 'text': 'LANG:en\nHabari'}
               ]
             }),
             200,

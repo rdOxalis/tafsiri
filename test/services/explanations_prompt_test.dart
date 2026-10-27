@@ -246,7 +246,7 @@ void main() {
     test('Claude', () async {
       answerWith(jsonEncode({
         'content': [
-          {'text': 'LANG:en\nHabari'}
+          {'type': 'text', 'text': 'LANG:en\nHabari'}
         ]
       }));
       await ClaudeService(client: client).translate(
@@ -301,7 +301,7 @@ void main() {
     test('and leave it out when the switch is off', () async {
       answerWith(jsonEncode({
         'content': [
-          {'text': 'LANG:en\nHabari'}
+          {'type': 'text', 'text': 'LANG:en\nHabari'}
         ]
       }));
       await ClaudeService(client: client).translate(

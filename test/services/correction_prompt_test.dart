@@ -157,7 +157,7 @@ void main() {
       )).thenAnswer((_) async => http.Response(
             jsonEncode({
               'content': [
-                {'text': 'LANG:sw\nMODE:correct\nNipe siagi.'}
+                {'type': 'text', 'text': 'LANG:sw\nMODE:correct\nNipe siagi.'}
               ]
             }),
             200,

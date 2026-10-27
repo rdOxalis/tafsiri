@@ -1,5 +1,12 @@
 # Architecture Decision Records
 
+## ADR-078: Read Claude's answer from its text blocks, not the first block
+**Date:** 2026-10-27
+**Status:** Accepted
+**Context:** Translating with Claude started failing with "type 'Null' is not a subtype of type 'String' in type cast", first often, then on every request; ChatGPT kept working. `ClaudeService` read `content.first['text']`. The default model, `claude-sonnet-5-5` (ADR-073), runs adaptive thinking when the request sends no `thinking` parameter: it decides per request whether to think, and when it does, the response opens with a `thinking` block whose content is omitted by default and which has no `text` field. So the cast failed exactly when the model chose to think — which explains "often, then always" without any change on our side.
+**Decision:** The answer is the concatenation of all `text` blocks. `stop_reason: "refusal"` (safety classifiers; HTTP 200 with no usable answer) and a response without any text (e.g. `max_tokens` reached during thinking) become an `AiApiException`, shown like any other API error. `max_tokens` rises from 4096 to 16000, since thinking tokens count against it; billing is by use, so the cap costs nothing. Thinking stays adaptive: switching it off (`thinking: {type: "between_tools"}` on Sonnet 5.5) would change the model's behaviour from what the ADR-073 measurements ran against, and is a separate, measurable decision.
+**Consequences:** Fixes the crash for every Claude model in the catalogue; Haiku 4.5, which does not think by default, was never affected. Tests for the thinking-first shape, a refusal and a thinking-only response. Mocked responses in the tests now carry `type: "text"`, as the real API does. Adaptive thinking adds latency and output tokens on some requests; if that turns out noticeable, measure `between_tools` against the grammar fixture before changing it.
+
 ## ADR-077: Per-ABI version codes follow F-Droid's scheme, and pub resolves from the lockfile
 **Date:** 2026-10-12
 **Status:** Accepted

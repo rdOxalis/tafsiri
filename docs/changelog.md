@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Per-architecture APKs (as F-Droid builds them) are numbered *versionCode × 10 + architecture*, so a newer version always outranks an older one whatever the device (ADR-077). The Play bundle and the universal APK keep their plain version code.
 
 ### Fixed
+- **Translating with Claude failed with "type 'Null' is not a subtype of type 'String'"** — often, then every time (ADR-078). Current Claude models think before answering when they judge it useful, and the answer then no longer comes first in the response. Tafsiri read only the first part and found nothing there. It now reads the answer wherever it is, and a request Claude declines shows as an error rather than a crash. ChatGPT and Mistral were not affected.
 - A second start while a translation is still running is now ignored. The button was already disabled during a translation, but voice input starts one directly and was not covered, so a duplicated result from speech recognition could have produced two requests and two history entries. Not observed in practice: deliberately translating the same text twice still gives two entries, as before.
 
 ---
