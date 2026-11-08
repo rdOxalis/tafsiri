@@ -185,23 +185,23 @@ class AppLocalizationsPl extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (z ostatniego tłumaczenia)';
 
   @override
-  String get sttStopOnTapTitle => 'Słuchaj mimo przerw';
-
-  @override
-  String get sttStopOnTapSubtitle =>
-      'Do mówienia powoli lub z przerwami: mikrofon pozostaje włączony, dopóki nie dotkniesz Gotowe; tekst pojawia się wtedy w polu wprowadzania, aby można go było sprawdzić przed tłumaczeniem. Wyłączone: nagrywanie kończy się przy pierwszej przerwie i od razu jest tłumaczone. Niektóre telefony piszczą po każdej przerwie.';
-
-  @override
   String get dictationTitle => 'Mów';
 
   @override
   String get dictationListening => 'Słucham…';
 
   @override
-  String get dictationWait => 'Chwileczkę…';
+  String get dictationDone => 'Użyj';
 
   @override
-  String get dictationDone => 'Gotowe';
+  String get dictationIdleHint =>
+      'Dotknij mikrofonu i mów. Przerwa kończy nagrywanie; dotknij ponownie, aby mówić dalej.';
+
+  @override
+  String get dictationStart => 'Mów';
+
+  @override
+  String get dictationStop => 'Zatrzymaj';
 
   @override
   String get dictationOtherLanguage => 'Inny język';

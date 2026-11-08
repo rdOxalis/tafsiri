@@ -449,18 +449,6 @@ abstract class AppLocalizations {
   /// **'Auto (from last translation)'**
   String get sttLanguageAuto;
 
-  /// Settings switch: the microphone keeps listening through pauses until tapped again (ADR-079)
-  ///
-  /// In en_GB, this message translates to:
-  /// **'Keep listening through pauses'**
-  String get sttStopOnTapTitle;
-
-  /// No description provided for @sttStopOnTapSubtitle.
-  ///
-  /// In en_GB, this message translates to:
-  /// **'For speaking slowly or with pauses: the microphone stays on until you tap Done, and the text then goes into the input field to check before translating. Off: recording ends at the first pause and translates at once. Some phones beep after each pause.'**
-  String get sttStopOnTapSubtitle;
-
   /// Title of the window shown while dictating with the microphone (ADR-080)
   ///
   /// In en_GB, this message translates to:
@@ -473,17 +461,29 @@ abstract class AppLocalizations {
   /// **'Listening…'**
   String get dictationListening;
 
-  /// No description provided for @dictationWait.
-  ///
-  /// In en_GB, this message translates to:
-  /// **'One moment…'**
-  String get dictationWait;
-
   /// No description provided for @dictationDone.
   ///
   /// In en_GB, this message translates to:
-  /// **'Done'**
+  /// **'Use text'**
   String get dictationDone;
+
+  /// No description provided for @dictationIdleHint.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Tap the microphone and speak. A pause ends the recording; tap again to continue.'**
+  String get dictationIdleHint;
+
+  /// No description provided for @dictationStart.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Speak'**
+  String get dictationStart;
+
+  /// No description provided for @dictationStop.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Stop'**
+  String get dictationStop;
 
   /// No description provided for @dictationOtherLanguage.
   ///

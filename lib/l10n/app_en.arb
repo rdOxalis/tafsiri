@@ -210,18 +210,15 @@
   },
   "sttLanguageLabel": "Speech Recognition (Microphone)",
   "sttLanguageAuto": "Auto (from last translation)",
-  "sttStopOnTapTitle": "Keep listening through pauses",
-  "sttStopOnTapSubtitle": "For speaking slowly or with pauses: the microphone stays on until you tap Done, and the text then goes into the input field to check before translating. Off: recording ends at the first pause and translates at once. Some phones beep after each pause.",
   "dictationTitle": "Speak",
   "dictationListening": "Listening…",
-  "dictationWait": "One moment…",
-  "dictationDone": "Done",
+  "dictationDone": "Use text",
+  "dictationIdleHint": "Tap the microphone and speak. A pause ends the recording; tap again to continue.",
+  "dictationStart": "Speak",
+  "dictationStop": "Stop",
   "dictationOtherLanguage": "Other language",
   "@dictationTitle": {
     "description": "Title of the window shown while dictating with the microphone (ADR-080)"
-  },
-  "@sttStopOnTapTitle": {
-    "description": "Settings switch: the microphone keeps listening through pauses until tapped again (ADR-079)"
   },
   "translationLanguagesSection": "Translation Languages",
   "translationInfoTitle": "How translation works",

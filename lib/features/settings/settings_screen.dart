@@ -171,14 +171,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   }
                 },
               ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(l10n.sttStopOnTapTitle),
-                subtitle: Text(l10n.sttStopOnTapSubtitle),
-                value: settings.sttStopOnTap,
-                onChanged: (v) =>
-                    ref.read(settingsProvider.notifier).setSttStopOnTap(v),
-              ),
 
               const Divider(height: 32),
 

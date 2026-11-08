@@ -186,23 +186,23 @@ class AppLocalizationsBg extends AppLocalizations {
   String get sttLanguageAuto => 'Автоматично (от последния превод)';
 
   @override
-  String get sttStopOnTapTitle => 'Слушай и при паузи';
-
-  @override
-  String get sttStopOnTapSubtitle =>
-      'За бавно говорене или с паузи: микрофонът остава включен, докато не докоснете „Готово“; тогава текстът се появява в полето за въвеждане, за да го проверите преди превода. Изключено: записът спира при първата пауза и се превежда веднага. Някои телефони издават сигнал след всяка пауза.';
-
-  @override
   String get dictationTitle => 'Говорете';
 
   @override
   String get dictationListening => 'Слушам…';
 
   @override
-  String get dictationWait => 'Момент…';
+  String get dictationDone => 'Използвай';
 
   @override
-  String get dictationDone => 'Готово';
+  String get dictationIdleHint =>
+      'Докоснете микрофона и говорете. Пауза спира записа; докоснете отново, за да продължите.';
+
+  @override
+  String get dictationStart => 'Говорете';
+
+  @override
+  String get dictationStop => 'Спри';
 
   @override
   String get dictationOtherLanguage => 'Друг език';

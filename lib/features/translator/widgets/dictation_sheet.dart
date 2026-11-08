@@ -6,15 +6,16 @@ import '../../settings/settings_controller.dart';
 import '../dictation.dart';
 import '../translator_controller.dart';
 
-/// Starts a dictation and shows the window for it (ADR-080).
+/// Shows the dictation window (ADR-080, ADR-081).
 ///
-/// The window stays open while the user speaks: it shows the recognition
-/// language, which can be switched between the learning and the confident
-/// language at any moment, whether the phone is listening right now, and
-/// what it has heard. Done puts the text into the input field.
+/// It opens without listening. The user starts each part with the large
+/// microphone button; Android ends a part at the next pause, and the window
+/// stays open for the next one. The recognition language can be switched
+/// between the learning and the confident language at any time. "Use text"
+/// puts everything into the input field.
 Future<void> showDictationSheet(BuildContext context, WidgetRef ref) async {
   final notifier = ref.read(translatorProvider.notifier);
-  await notifier.startDictation();
+  notifier.openDictation();
   if (!context.mounted) return;
   await showModalBottomSheet<void>(
     context: context,
@@ -38,9 +39,9 @@ class DictationSheet extends ConsumerWidget {
     final settings = ref.watch(settingsProvider).valueOrNull;
     final notifier = ref.read(translatorProvider.notifier);
 
-    // The dictation can end without the user: the quick mode stops at the
-    // first pause, and a recogniser that cannot work gives up.
-    ref.listen(translatorProvider.select((s) => s.isListening), (_, now) {
+    // Use text and Cancel end the dictation in the controller; the window
+    // follows.
+    ref.listen(translatorProvider.select((s) => s.isDictating), (_, now) {
       if (!now && Navigator.of(context).canPop()) Navigator.of(context).pop();
     });
 
@@ -95,31 +96,35 @@ class DictationSheet extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: state.isMicHot
-                        ? theme.colorScheme.errorContainer
-                        : theme.colorScheme.surfaceContainerHighest,
+            const SizedBox(height: 24),
+            Center(
+              child: SizedBox.square(
+                dimension: 88,
+                child: IconButton.filled(
+                  tooltip: state.isMicHot
+                      ? l10n.dictationStop
+                      : l10n.dictationStart,
+                  iconSize: 44,
+                  style: IconButton.styleFrom(
+                    backgroundColor: state.isMicHot
+                        ? theme.colorScheme.error
+                        : theme.colorScheme.primary,
+                    foregroundColor: state.isMicHot
+                        ? theme.colorScheme.onError
+                        : theme.colorScheme.onPrimary,
                   ),
-                  child: Icon(
-                    state.isMicHot ? Icons.mic : Icons.mic_none,
-                    color: state.isMicHot
-                        ? theme.colorScheme.onErrorContainer
-                        : theme.colorScheme.outline,
-                  ),
+                  onPressed: notifier.toggleSpeaking,
+                  icon: Icon(state.isMicHot ? Icons.stop : Icons.mic),
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  state.isMicHot ? l10n.dictationListening : l10n.dictationWait,
-                  style: theme.textTheme.titleMedium,
-                ),
-              ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              state.isMicHot ? l10n.dictationListening : l10n.dictationIdleHint,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 12),
             ConstrainedBox(

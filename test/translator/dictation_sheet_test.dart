@@ -16,9 +16,15 @@ class _FakeDictation extends TranslatorController {
   TranslatorState build() => const TranslatorState(isSttAvailable: true);
 
   @override
-  Future<void> startDictation() async {
-    calls.add('start');
-    state = state.copyWith(isListening: true, sttLang: 'sw');
+  void openDictation() {
+    calls.add('open');
+    state = state.copyWith(isDictating: true, sttLang: 'sw');
+  }
+
+  @override
+  Future<void> toggleSpeaking() async {
+    calls.add(state.isMicHot ? 'stop' : 'speak');
+    state = state.copyWith(isMicHot: !state.isMicHot);
   }
 
   @override
@@ -29,16 +35,16 @@ class _FakeDictation extends TranslatorController {
 
   @override
   Future<void> finishDictation() async {
-    if (!state.isListening) return;
+    if (!state.isDictating) return;
     calls.add('finish');
-    state = state.copyWith(isListening: false, inputText: 'Lila amemfukuza');
+    state = state.copyWith(isDictating: false, inputText: 'Lila amemfukuza');
   }
 
   @override
   Future<void> cancelDictation() async {
-    if (!state.isListening) return;
+    if (!state.isDictating) return;
     calls.add('cancel');
-    state = state.copyWith(isListening: false);
+    state = state.copyWith(isDictating: false);
   }
 
   void hear(String text, {bool hot = true}) =>
@@ -96,25 +102,43 @@ void main() {
     expect(de.selected, isTrue);
   });
 
-  testWidgets('shows whether to speak, and what was heard', (tester) async {
+  testWidgets('opens without listening; the user starts each part',
+      (tester) async {
     await _open(tester);
-    expect(find.text('One moment…'), findsOneWidget);
+    expect(_fake.calls, ['open']);
+    expect(find.textContaining('Tap the microphone'), findsOneWidget);
 
-    _fake.hear('Lila amemfukuza');
+    await tester.tap(find.byTooltip('Speak'));
     await tester.pump();
-
     expect(find.text('Listening…'), findsOneWidget);
+
+    // A pause ends the part; the window stays open for the next one.
+    _fake.hear('Lila amemfukuza', hot: false);
+    await tester.pump();
+    expect(find.byType(DictationSheet), findsOneWidget);
     expect(find.text('Lila amemfukuza'), findsOneWidget);
+    expect(find.byTooltip('Speak'), findsOneWidget);
   });
 
-  testWidgets('Done closes the window and keeps the text', (tester) async {
+  testWidgets('the microphone ends a running part early', (tester) async {
+    await _open(tester);
+    await tester.tap(find.byTooltip('Speak'));
+    await tester.pump();
+    await tester.tap(find.byTooltip('Stop'));
+    await tester.pump();
+
+    expect(_fake.calls, ['open', 'speak', 'stop']);
+    expect(find.byType(DictationSheet), findsOneWidget);
+  });
+
+  testWidgets('Use text closes the window and keeps the text', (tester) async {
     await _open(tester);
 
-    await tester.tap(find.text('Done'));
+    await tester.tap(find.text('Use text'));
     await tester.pumpAndSettle();
 
     expect(find.byType(DictationSheet), findsNothing);
-    expect(_fake.calls, ['start', 'finish']);
+    expect(_fake.calls, ['open', 'finish']);
     expect(_fake.state.inputText, 'Lila amemfukuza');
   });
 
@@ -125,17 +149,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(DictationSheet), findsNothing);
-    expect(_fake.calls, ['start', 'cancel']);
+    expect(_fake.calls, ['open', 'cancel']);
     expect(_fake.state.inputText, '');
   });
 
-  testWidgets('Back keeps what was said, like Done', (tester) async {
+  testWidgets('Back keeps what was said, like Use text', (tester) async {
     await _open(tester);
 
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
 
     expect(find.byType(DictationSheet), findsNothing);
-    expect(_fake.calls, ['start', 'finish']);
+    expect(_fake.calls, ['open', 'finish']);
   });
 }

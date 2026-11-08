@@ -11,7 +11,6 @@ class SettingsState {
   final String targetLanguage;
   final String altLanguage;
   final String sttLanguage; // ISO-639-1 code, empty = auto
-  final bool sttStopOnTap; // ADR-079
   final bool correctionMode; // ADR-033
   final bool explanationsMode; // ADR-060
 
@@ -27,7 +26,6 @@ class SettingsState {
     required this.targetLanguage,
     required this.altLanguage,
     required this.sttLanguage,
-    this.sttStopOnTap = false,
     this.correctionMode = false,
     this.explanationsMode = false,
     this.models = const {},
@@ -41,7 +39,6 @@ class SettingsState {
         targetLanguage = kDefaultTargetLanguage,
         altLanguage = kDefaultAltLanguage,
         sttLanguage = '',
-        sttStopOnTap = false,
         correctionMode = false,
         explanationsMode = false,
         models = const {};
@@ -91,7 +88,6 @@ class SettingsState {
     String? targetLanguage,
     String? altLanguage,
     String? sttLanguage,
-    bool? sttStopOnTap,
     bool? correctionMode,
     bool? explanationsMode,
     Map<String, String>? models,
@@ -104,7 +100,6 @@ class SettingsState {
       targetLanguage: targetLanguage ?? this.targetLanguage,
       altLanguage: altLanguage ?? this.altLanguage,
       sttLanguage: sttLanguage ?? this.sttLanguage,
-      sttStopOnTap: sttStopOnTap ?? this.sttStopOnTap,
       correctionMode: correctionMode ?? this.correctionMode,
       explanationsMode: explanationsMode ?? this.explanationsMode,
       models: models ?? this.models,
@@ -125,7 +120,6 @@ class SettingsController extends AsyncNotifier<SettingsState> {
           prefs.getString(kPrefTargetLanguage) ?? kDefaultTargetLanguage,
       altLanguage: prefs.getString(kPrefAltLanguage) ?? kDefaultAltLanguage,
       sttLanguage: prefs.getString(kPrefSttLanguage) ?? '',
-      sttStopOnTap: prefs.getBool(kPrefSttStopOnTap) ?? false,
       correctionMode: prefs.getBool(kPrefCorrectionMode) ?? false,
       explanationsMode: prefs.getBool(kPrefExplanationsMode) ?? false,
       models: _readModels(prefs),
@@ -181,12 +175,6 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     state = AsyncData(state.requireValue.copyWith(sttLanguage: code));
   }
 
-  Future<void> setSttStopOnTap(bool enabled) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(kPrefSttStopOnTap, enabled);
-    state = AsyncData(state.requireValue.copyWith(sttStopOnTap: enabled));
-  }
-
   /// Records the model chosen for [provider] (ADR-073).
   ///
   /// Only the provider's own entry changes: someone comparing two providers
@@ -227,7 +215,6 @@ class SettingsController extends AsyncNotifier<SettingsState> {
     await prefs.setString(kPrefTargetLanguage, restored.targetLanguage);
     await prefs.setString(kPrefAltLanguage, restored.altLanguage);
     await prefs.setString(kPrefSttLanguage, restored.sttLanguage);
-    await prefs.setBool(kPrefSttStopOnTap, restored.sttStopOnTap);
     await prefs.setBool(kPrefCorrectionMode, restored.correctionMode);
     await prefs.setBool(kPrefExplanationsMode, restored.explanationsMode);
     for (final entry in restored.models.entries) {

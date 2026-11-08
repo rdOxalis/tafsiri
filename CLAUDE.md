@@ -192,7 +192,6 @@ Stored via `shared_preferences`.
 | `target_language` | String | Learning language — the one being learnt, translated *into*, e.g. `'Swahili'` |
 | `alt_language` | String | Confident language — the one the user speaks well, e.g. `'English'` |
 | `app_locale` | String | UI locale, e.g. `'sw'`, `'de'`, `'en_GB'` |
-| `stt_stop_on_tap` | bool | Microphone keeps listening through pauses until tapped again (ADR-079) |
 | `correction_mode` | bool | Correction mode on/off (toggle lives in the translator header) |
 | `explanations_mode` | bool | Word explanations on/off (second toggle in the translator header, ADR-060) |
 | `model_<provider>` | String | Model chosen for that provider, e.g. `model_claude` = `'claude-sonnet-5-5'` (ADR-073). Absent means the default from `lib/core/ai_models.dart`. |
@@ -269,7 +268,7 @@ Text: [INPUT]
 
 - **Typing / pasting:** Standard multiline `TextField`, expandable
 - **Clipboard:** Explicit paste button
-- **Voice (STT = Speech-to-Text):** Microphone button → dictation window (ADR-080) with the recognition language as one-tap chips for the learning and the confident language. Starts in the language last chosen there, else the fixed setting, else the detected source language of the previous translation, else the learning language. Keep-listening mode (setting `stt_stop_on_tap`, ADR-079) restarts the recogniser after every pause until Done and does not translate; otherwise the first pause ends the dictation and translates.
+- **Voice (STT = Speech-to-Text):** Microphone button → dictation window (ADR-080, ADR-081). Opens silent; the user starts each part with the window's microphone, Android ends it at the next pause, the window stays open. Recognition language as one-tap chips for the learning and the confident language; starts in the language last chosen there, else the fixed setting, else the detected source language of the previous translation, else the learning language. "Use text" fills the input field without translating.
 - **Image / OCR:** `image_picker` (camera + gallery) → Tesseract (Android: platform channel `tafsiri/tesseract`) → recognised text placed in input field, behind a confidence gate
 
 ### Translator UI

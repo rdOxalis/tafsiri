@@ -185,23 +185,23 @@ class AppLocalizationsNb extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (fra siste oversettelse)';
 
   @override
-  String get sttStopOnTapTitle => 'Fortsett å lytte i pauser';
-
-  @override
-  String get sttStopOnTapSubtitle =>
-      'For å snakke sakte eller med pauser: mikrofonen er på til du trykker på Ferdig; teksten står da i inndatafeltet, så du kan sjekke den før den oversettes. Av: opptaket slutter ved første pause og oversettes med en gang. Noen telefoner piper etter hver pause.';
-
-  @override
   String get dictationTitle => 'Snakk';
 
   @override
   String get dictationListening => 'Lytter…';
 
   @override
-  String get dictationWait => 'Et øyeblikk…';
+  String get dictationDone => 'Bruk';
 
   @override
-  String get dictationDone => 'Ferdig';
+  String get dictationIdleHint =>
+      'Trykk på mikrofonen og snakk. En pause avslutter opptaket; trykk igjen for å fortsette.';
+
+  @override
+  String get dictationStart => 'Snakk';
+
+  @override
+  String get dictationStop => 'Stopp';
 
   @override
   String get dictationOtherLanguage => 'Annet språk';

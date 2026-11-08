@@ -184,23 +184,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (from last translation)';
 
   @override
-  String get sttStopOnTapTitle => 'Keep listening through pauses';
-
-  @override
-  String get sttStopOnTapSubtitle =>
-      'For speaking slowly or with pauses: the microphone stays on until you tap Done, and the text then goes into the input field to check before translating. Off: recording ends at the first pause and translates at once. Some phones beep after each pause.';
-
-  @override
   String get dictationTitle => 'Speak';
 
   @override
   String get dictationListening => 'Listening…';
 
   @override
-  String get dictationWait => 'One moment…';
+  String get dictationDone => 'Use text';
 
   @override
-  String get dictationDone => 'Done';
+  String get dictationIdleHint =>
+      'Tap the microphone and speak. A pause ends the recording; tap again to continue.';
+
+  @override
+  String get dictationStart => 'Speak';
+
+  @override
+  String get dictationStop => 'Stop';
 
   @override
   String get dictationOtherLanguage => 'Other language';
@@ -584,23 +584,23 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get sttLanguageAuto => 'Auto (from last translation)';
 
   @override
-  String get sttStopOnTapTitle => 'Keep listening through pauses';
-
-  @override
-  String get sttStopOnTapSubtitle =>
-      'For speaking slowly or with pauses: the microphone stays on until you tap Done, and the text then goes into the input field to check before translating. Off: recording ends at the first pause and translates at once. Some phones beep after each pause.';
-
-  @override
   String get dictationTitle => 'Speak';
 
   @override
   String get dictationListening => 'Listening…';
 
   @override
-  String get dictationWait => 'One moment…';
+  String get dictationDone => 'Use text';
 
   @override
-  String get dictationDone => 'Done';
+  String get dictationIdleHint =>
+      'Tap the microphone and speak. A pause ends the recording; tap again to continue.';
+
+  @override
+  String get dictationStart => 'Speak';
+
+  @override
+  String get dictationStop => 'Stop';
 
   @override
   String get dictationOtherLanguage => 'Other language';

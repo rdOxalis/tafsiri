@@ -53,46 +53,6 @@ void main() {
     });
   });
 
-  group('RestartGuard', () {
-    test('restarts after ordinary pauses indefinitely', () {
-      final guard = RestartGuard();
-      for (var i = 0; i < 20; i++) {
-        expect(guard.allowRestartAfter(const Duration(seconds: 6)), isTrue);
-      }
-    });
-
-    test('gives up when sessions keep ending at once', () {
-      final guard = RestartGuard();
-      const instant = Duration(milliseconds: 100);
-      expect(guard.allowRestartAfter(instant), isTrue);
-      expect(guard.allowRestartAfter(instant), isTrue);
-      expect(guard.allowRestartAfter(instant), isFalse);
-    });
-
-    test('a normal session in between clears the count', () {
-      final guard = RestartGuard();
-      const instant = Duration(milliseconds: 100);
-      guard.allowRestartAfter(instant);
-      guard.allowRestartAfter(instant);
-      guard.allowRestartAfter(const Duration(seconds: 5));
-      expect(guard.allowRestartAfter(instant), isTrue);
-    });
-  });
-
-  group('isFatalSttError', () {
-    test('a pause does not end the mode', () {
-      expect(isFatalSttError('error_speech_timeout'), isFalse);
-      expect(isFatalSttError('error_no_match'), isFalse);
-      expect(isFatalSttError('error_busy'), isFalse);
-      expect(isFatalSttError('error_client'), isFalse);
-    });
-
-    test('what a restart cannot fix does', () {
-      expect(isFatalSttError('error_permission'), isTrue);
-      expect(isFatalSttError('error_language_not_supported'), isTrue);
-    });
-  });
-
   group('sttCodeForLanguageName', () {
     test('maps the free-text names the settings hold', () {
       expect(sttCodeForLanguageName('Swahili'), 'sw');

@@ -75,7 +75,6 @@ class BackupService {
         kPrefTargetLanguage: settings.targetLanguage,
         kPrefAltLanguage: settings.altLanguage,
         kPrefSttLanguage: settings.sttLanguage,
-        kPrefSttStopOnTap: settings.sttStopOnTap,
         kPrefCorrectionMode: settings.correctionMode,
         kPrefExplanationsMode: settings.explanationsMode,
         // One entry per provider that has a choice stored (ADR-073).
@@ -132,7 +131,6 @@ class BackupService {
       altLanguage:
           _str(settingsMap[kPrefAltLanguage], fallback: defaults.altLanguage),
       sttLanguage: _str(settingsMap[kPrefSttLanguage]),
-      sttStopOnTap: settingsMap[kPrefSttStopOnTap] == true,
       correctionMode: settingsMap[kPrefCorrectionMode] == true,
       explanationsMode: settingsMap[kPrefExplanationsMode] == true,
       models: {

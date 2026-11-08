@@ -19,8 +19,8 @@ class ActionBar extends ConsumerWidget {
         ref.watch(translatorProvider.select((s) => s.isLoading));
     final isSttAvailable =
         ref.watch(translatorProvider.select((s) => s.isSttAvailable));
-    final isListening =
-        ref.watch(translatorProvider.select((s) => s.isListening));
+    final isDictating =
+        ref.watch(translatorProvider.select((s) => s.isDictating));
     final isOcrProcessing =
         ref.watch(translatorProvider.select((s) => s.isOcrProcessing));
     final isOutputStale =
@@ -60,11 +60,11 @@ class ActionBar extends ConsumerWidget {
           if (hasSpeechInput)
             IconButton(
               tooltip: l10n.microphoneButton,
-              icon: Icon(isListening ? Icons.mic : Icons.mic_none),
-              color: isListening
+              icon: Icon(isDictating ? Icons.mic : Icons.mic_none),
+              color: isDictating
                   ? Theme.of(context).colorScheme.error
                   : null,
-              onPressed: (isLoading || !isSttAvailable || isListening)
+              onPressed: (isLoading || !isSttAvailable || isDictating)
                   ? null
                   : () => showDictationSheet(context, ref),
             ),
