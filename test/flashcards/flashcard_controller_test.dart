@@ -18,6 +18,7 @@ import 'package:tafsiri/shared/models/translation_entry.dart';
 import '../translator/mock_ai_service.mocks.dart';
 
 final _now = DateTime(2026, 11, 8, 9);
+final _pair = LanguagePair('sw', 'de');
 
 void main() {
   late Database db;
@@ -72,16 +73,16 @@ void main() {
     ]);
     addTearDown(c.dispose);
     // Keep the auto-disposed session alive for the test.
-    c.listen(learnProvider, (_, __) {});
+    c.listen(learnProvider(_pair), (_, __) {});
     // The database answers from another isolate; wait for the session.
-    for (var i = 0; i < 200 && c.read(learnProvider).phase == LearnPhase.loading; i++) {
+    for (var i = 0; i < 200 && c.read(learnProvider(_pair)).phase == LearnPhase.loading; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }
     return c;
   }
 
-  LearnController ctl(ProviderContainer c) => c.read(learnProvider.notifier);
-  LearnState st(ProviderContainer c) => c.read(learnProvider);
+  LearnController ctl(ProviderContainer c) => c.read(learnProvider(_pair).notifier);
+  LearnState st(ProviderContainer c) => c.read(learnProvider(_pair));
 
   test('a favourite becomes two cards, producing first', () async {
     await favourite('das ist gesund', 'hii ni yenye afya');
@@ -91,7 +92,7 @@ void main() {
     expect(st(c).total, 2);
     expect(st(c).card!.direction, CardDirection.produce);
     expect(st(c).card!.prompt, 'das ist gesund');
-    expect(st(c).answerLanguage, 'Swahili');
+    expect(st(c).answerLanguage, 'Kiswahili');
   });
 
   test('no favourites: nothing to learn', () async {

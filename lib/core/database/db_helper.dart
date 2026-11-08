@@ -9,8 +9,9 @@ class DbHelper {
   static Database? _db;
 
   /// Current schema version. 2 adds `mode` and `notes` (ADR-033), 3 adds
-  /// `explanations` (ADR-060), 4 adds the `review_card` table (ADR-082).
-  static const schemaVersion = 4;
+  /// `explanations` (ADR-060), 4 adds the `review_card` table (ADR-082),
+  /// 5 adds `result_lang` (ADR-083).
+  static const schemaVersion = 5;
 
   /// Schema of the current version — shared with the tests so the two cannot
   /// drift apart.
@@ -26,7 +27,8 @@ class DbHelper {
             created_at   TEXT    NOT NULL,
             mode         TEXT    NOT NULL DEFAULT 'translate',
             notes        TEXT,
-            explanations TEXT
+            explanations TEXT,
+            result_lang  TEXT
           )
         ''';
 
@@ -80,6 +82,12 @@ class DbHelper {
     if (oldVersion < 4) {
       // ADR-082: flashcards from the favourites.
       await db.execute(createReviewCardTableSql);
+    }
+    if (oldVersion < 5) {
+      // ADR-083: the language the result is in, for the flashcard pairs.
+      await db.execute(
+        'ALTER TABLE translation_entry ADD COLUMN result_lang TEXT',
+      );
     }
   }
 

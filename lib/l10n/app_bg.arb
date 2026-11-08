@@ -103,6 +103,8 @@
   "learnSummary": "{correct} вярно · {almost} почти · {wrong} грешно",
   "learnFinish": "Готово",
   "learnNoAnswer": "(няма отговор)",
+  "learnChoosePair": "Кои езици?",
+  "learnNoPairYet": "Нито един от любимите ти преводи все още не може да стане карта. Подходящи са кратки преводи (до две изречения) между езика, който учиш, и друг език; за по-старите езикът се определя, щом има API ключ.",
   "dictationOtherLanguage": "Друг език",
   "translationLanguagesSection": "Езици за превод",
   "translationInfoTitle": "Как работи преводът",

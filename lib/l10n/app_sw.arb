@@ -104,6 +104,8 @@
   "learnSummary": "sahihi {correct} · karibu {almost} · si sahihi {wrong}",
   "learnFinish": "Maliza",
   "learnNoAnswer": "(hakuna jibu)",
+  "learnChoosePair": "Lugha zipi?",
+  "learnNoPairYet": "Hakuna tafsiri unayoipenda inayoweza kuwa kadi bado. Zinazofaa ni tafsiri fupi (hadi sentensi mbili) kati ya lugha unayojifunza na lugha nyingine; kwa za zamani lugha itatambuliwa ukiweka ufunguo wa API.",
   "dictationOtherLanguage": "Lugha nyingine",
   "translationLanguagesSection": "Lugha za Tafsiri",
   "translationInfoTitle": "Jinsi tafsiri inavyofanya kazi",

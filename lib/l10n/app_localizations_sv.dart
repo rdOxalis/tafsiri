@@ -272,6 +272,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get learnNoAnswer => '(inget svar)';
 
   @override
+  String get learnChoosePair => 'Vilka språk?';
+
+  @override
+  String get learnNoPairYet =>
+      'Ingen av dina favoritöversättningar kan bli ett kort än. Korta översättningar (högst två meningar) mellan ditt inlärningsspråk och ett annat språk fungerar; för äldre tas språket fram så snart en API-nyckel är angiven.';
+
+  @override
   String get dictationOtherLanguage => 'Annat språk';
 
   @override

@@ -271,6 +271,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get learnNoAnswer => '(geen antwoord)';
 
   @override
+  String get learnChoosePair => 'Welke talen?';
+
+  @override
+  String get learnNoPairYet =>
+      'Geen van je favoriete vertalingen kan al een kaart worden. Geschikt zijn korte vertalingen (hooguit twee zinnen) tussen je leertaal en een andere taal; bij oudere wordt de taal bepaald zodra er een API-sleutel is ingesteld.';
+
+  @override
   String get dictationOtherLanguage => 'Andere taal';
 
   @override

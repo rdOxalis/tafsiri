@@ -271,6 +271,13 @@ class AppLocalizationsSw extends AppLocalizations {
   String get learnNoAnswer => '(hakuna jibu)';
 
   @override
+  String get learnChoosePair => 'Lugha zipi?';
+
+  @override
+  String get learnNoPairYet =>
+      'Hakuna tafsiri unayoipenda inayoweza kuwa kadi bado. Zinazofaa ni tafsiri fupi (hadi sentensi mbili) kati ya lugha unayojifunza na lugha nyingine; kwa za zamani lugha itatambuliwa ukiweka ufunguo wa API.';
+
+  @override
   String get dictationOtherLanguage => 'Lugha nyingine';
 
   @override

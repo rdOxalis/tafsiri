@@ -266,6 +266,8 @@
   },
   "learnFinish": "Done",
   "learnNoAnswer": "(no answer)",
+  "learnChoosePair": "Which languages?",
+  "learnNoPairYet": "None of your favourite translations can become a card yet. Short translations (up to two sentences) between your learning language and another language work; for older ones the language is worked out once an API key is set.",
   "dictationOtherLanguage": "Other language",
   "@dictationTitle": {
     "description": "Title of the window shown while dictating with the microphone (ADR-080)"

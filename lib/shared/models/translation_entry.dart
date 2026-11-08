@@ -20,6 +20,10 @@ class TranslationEntry {
   /// produced with the explanations switch off.
   final String? explanations;
 
+  /// ISO 639-1 code of the language the result is in (ADR-083); `null` for
+  /// entries from before it was stored, until worked out.
+  final String? resultLang;
+
   const TranslationEntry({
     this.id,
     required this.sourceText,
@@ -32,6 +36,7 @@ class TranslationEntry {
     this.mode = kModeTranslate,
     this.notes,
     this.explanations,
+    this.resultLang,
   });
 
   bool get isCorrection => mode == kModeCorrect;
@@ -48,6 +53,7 @@ class TranslationEntry {
         'mode': mode,
         'notes': notes,
         'explanations': explanations,
+        'result_lang': resultLang,
       };
 
   factory TranslationEntry.fromMap(Map<String, dynamic> map) =>
@@ -63,6 +69,7 @@ class TranslationEntry {
         mode: map['mode'] as String? ?? kModeTranslate,
         notes: map['notes'] as String?,
         explanations: map['explanations'] as String?,
+        resultLang: map['result_lang'] as String?,
       );
 
   TranslationEntry copyWith({bool? isFavourite}) => TranslationEntry(
@@ -76,5 +83,7 @@ class TranslationEntry {
         createdAt: createdAt,
         mode: mode,
         notes: notes,
+        explanations: explanations,
+        resultLang: resultLang,
       );
 }

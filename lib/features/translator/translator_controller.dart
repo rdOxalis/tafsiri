@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'dictation.dart';
 import '../../core/constants.dart';
+import '../../core/languages.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/services/ai_service_factory.dart';
@@ -530,6 +531,12 @@ class TranslatorController extends Notifier<TranslatorState> {
             mode: result.mode,
             notes: result.notes,
             explanations: result.explanations,
+            resultLang: resultLanguageFor(
+              sourceLang: sourceLang ?? '',
+              learningLanguage: settings.targetLanguage,
+              confidentLanguage: settings.altLanguage,
+              isCorrection: result.isCorrection,
+            ),
           ),
         );
         ref.invalidate(historyProvider);

@@ -34,6 +34,15 @@ class TranslationDao {
         whereArgs: [id],
       );
 
+  /// Records the language of an entry's result, worked out after the fact
+  /// for entries from before it was stored (ADR-083).
+  Future<void> setResultLang(int id, String code) => _db.update(
+        _table,
+        {'result_lang': code},
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
   Future<void> delete(int id) =>
       _db.delete(_table, where: 'id = ?', whereArgs: [id]);
 

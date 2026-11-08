@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/languages.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/diagnostics_log.dart';
 import '../../core/services/ai_service_factory.dart';
@@ -6,6 +7,7 @@ import '../history/history_controller.dart';
 import '../settings/settings_controller.dart';
 import 'answer_check.dart';
 import 'flashcard.dart';
+import 'result_language.dart';
 import 'scheduler.dart';
 
 /// Where a learning session stands (ADR-082).
@@ -100,18 +102,18 @@ class LearnState {
 /// The current time, injectable so the schedule can be tested.
 final learnClockProvider = Provider<DateTime Function()>((_) => DateTime.now);
 
-/// One learning session (ADR-082). Disposed with the screen, so every visit
-/// starts from what is due at that moment.
-final learnProvider =
-    NotifierProvider.autoDispose<LearnController, LearnState>(
-        LearnController.new);
+/// One learning session for one language pair (ADR-082, ADR-083). Disposed
+/// with the screen, so every visit starts from what is due at that moment.
+final learnProvider = NotifierProvider.autoDispose
+    .family<LearnController, LearnState, LanguagePair>(LearnController.new);
 
-class LearnController extends AutoDisposeNotifier<LearnState> {
+class LearnController
+    extends AutoDisposeFamilyNotifier<LearnState, LanguagePair> {
   final _queue = <Flashcard>[];
   var _states = <CardKey, CardState>{};
 
   @override
-  LearnState build() {
+  LearnState build(LanguagePair pair) {
     Future.microtask(_load);
     return const LearnState();
   }
@@ -126,15 +128,11 @@ class LearnController extends AutoDisposeNotifier<LearnState> {
   }
 
   Future<void> _loadSession() async {
-    final settings = await ref.read(settingsProvider.future);
+    await ref.read(settingsProvider.future);
     final entries = await ref.read(translationDaoProvider.future);
     final reviews = await ref.read(reviewDaoProvider.future);
     _states = await reviews.getAll();
-    final cards = cardsFor(
-      await entries.getFavourites(),
-      learningLanguage: settings.targetLanguage,
-      confidentLanguage: settings.altLanguage,
-    );
+    final cards = cardsFor(await entries.getFavourites(), pair: arg);
     _queue.addAll(buildSession(cards, _states, ref.read(learnClockProvider)()));
     if (_queue.isEmpty) {
       state = state.copyWith(phase: LearnPhase.nothingDue);
@@ -150,7 +148,6 @@ class LearnController extends AutoDisposeNotifier<LearnState> {
       return;
     }
     final card = _queue.removeAt(0);
-    final settings = ref.read(settingsProvider).requireValue;
     state = state.copyWith(
       phase: LearnPhase.asking,
       card: card,
@@ -159,11 +156,7 @@ class LearnController extends AutoDisposeNotifier<LearnState> {
       clearVerdict: true,
       clearGrade: true,
       aiUnavailable: false,
-      answerLanguage: answerLanguageOf(
-        card,
-        learningLanguage: settings.targetLanguage,
-        confidentLanguage: settings.altLanguage,
-      ),
+      answerLanguage: languageDisplayName(card.answerLang),
     );
   }
 
@@ -185,8 +178,7 @@ class LearnController extends AutoDisposeNotifier<LearnState> {
         ref.read(aiServiceProvider),
         card: card,
         answer: answer,
-        learningLanguage: settings.targetLanguage,
-        confidentLanguage: settings.altLanguage,
+        feedbackLanguage: settings.altLanguage,
         apiKey: settings.activeApiKey,
         model: settings.activeModel,
       );
@@ -245,19 +237,67 @@ class LearnController extends AutoDisposeNotifier<LearnState> {
   }
 }
 
-/// How many cards a session would hold right now, for the "Learn (n)"
-/// button; `null` when no favourite can become a card at all, so the button
-/// stays hidden. Recomputed whenever the history changes.
-final learnableCountProvider = FutureProvider.autoDispose<int?>((ref) async {
+/// A language pair to learn, and how many cards a session of it holds now.
+typedef PairOffer = ({LanguagePair pair, int due});
+
+/// The language pairs the favourites form, with the cards due in each, most
+/// first; `null` when no favourite can become a card at all, so the "Learn"
+/// button stays hidden. Recomputed whenever the history changes. Favourites
+/// whose result language is not known yet are not counted until
+/// [prepareLearning] has worked it out.
+///
+/// [due] is what the button shows: the cards of one session across all
+/// pairs, which counts the daily allowance of new cards once.
+final learnOverviewProvider = FutureProvider.autoDispose<
+    ({List<PairOffer> offers, int due})?>((ref) async {
   ref.watch(historyProvider);
-  final settings = await ref.watch(settingsProvider.future);
   final entries = await ref.watch(translationDaoProvider.future);
   final reviews = await ref.watch(reviewDaoProvider.future);
-  final cards = cardsFor(
-    await entries.getFavourites(),
-    learningLanguage: settings.targetLanguage,
-    confidentLanguage: settings.altLanguage,
+  final favourites = await entries.getFavourites();
+  if (!favourites.any(isCardCandidate)) return null;
+  final cards = cardsFor(favourites);
+  final states = await reviews.getAll();
+  final now = DateTime.now();
+  return (
+    offers: offersFor(cards, states, now),
+    due: buildSession(cards, states, now).length,
   );
-  if (cards.isEmpty) return null;
-  return buildSession(cards, await reviews.getAll(), DateTime.now()).length;
 });
+
+/// One offer per pair; a pair with nothing due is still offered, at 0.
+List<PairOffer> offersFor(
+  List<Flashcard> cards,
+  Map<CardKey, CardState> states,
+  DateTime now,
+) {
+  final byPair = <LanguagePair, List<Flashcard>>{};
+  for (final c in cards) {
+    byPair.putIfAbsent(c.pair, () => []).add(c);
+  }
+  return [
+    for (final e in byPair.entries)
+      (pair: e.key, due: buildSession(e.value, states, now).length),
+  ]..sort((a, b) => b.due.compareTo(a.due));
+}
+
+/// Before a session: works out the result language of older favourites
+/// (ADR-083), asking the AI once if a key is set, and returns the offers.
+Future<List<PairOffer>> prepareLearning(WidgetRef ref) async {
+  final settings = await ref.read(settingsProvider.future);
+  final entries = await ref.read(translationDaoProvider.future);
+  final reviews = await ref.read(reviewDaoProvider.future);
+  final hasKey = settings.hasApiKeyForActiveProvider;
+  await fillInResultLanguages(
+    entries,
+    await entries.getFavourites(),
+    service: hasKey ? ref.read(aiServiceProvider) : null,
+    apiKey: settings.activeApiKey,
+    model: settings.activeModel,
+  );
+  ref.invalidate(learnOverviewProvider);
+  return offersFor(
+    cardsFor(await entries.getFavourites()),
+    await reviews.getAll(),
+    DateTime.now(),
+  );
+}

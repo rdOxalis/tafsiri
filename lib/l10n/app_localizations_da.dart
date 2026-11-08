@@ -272,6 +272,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get learnNoAnswer => '(intet svar)';
 
   @override
+  String get learnChoosePair => 'Hvilke sprog?';
+
+  @override
+  String get learnNoPairYet =>
+      'Ingen af dine favoritoversættelser kan blive et kort endnu. Korte oversættelser (højst to sætninger) mellem dit læringssprog og et andet sprog egner sig; for ældre findes sproget, så snart der er en API-nøgle.';
+
+  @override
   String get dictationOtherLanguage => 'Andet sprog';
 
   @override

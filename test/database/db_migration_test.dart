@@ -42,6 +42,23 @@ const _v2Schema = '''
   )
 ''';
 
+/// Schema as shipped in 1.0.16 … 1.0.23 (ADR-060, before ADR-082/083).
+const _v3Schema = '''
+  CREATE TABLE translation_entry (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_text  TEXT    NOT NULL,
+    result_text  TEXT    NOT NULL,
+    source_lang  TEXT    NOT NULL,
+    target_lang  TEXT    NOT NULL,
+    ai_provider  TEXT    NOT NULL,
+    is_favourite INTEGER NOT NULL DEFAULT 0,
+    created_at   TEXT    NOT NULL,
+    mode         TEXT    NOT NULL DEFAULT 'translate',
+    notes        TEXT,
+    explanations TEXT
+  )
+''';
+
 void main() {
   test('v1 → v3 migration adds mode/notes and keeps existing rows', () async {
     databaseFactory = createDesktopDatabaseFactory();
@@ -153,21 +170,22 @@ void main() {
       inMemoryDatabasePath,
       options: OpenDatabaseOptions(
         version: 3,
-        onCreate: (db, _) => db.execute(DbHelper.createTableSql),
+        onCreate: (db, _) => db.execute(_v3Schema),
       ),
     );
     addTearDown(db.close);
 
     final dao = TranslationDao(db);
-    final id = await dao.insert(TranslationEntry(
-      sourceText: 'das ist gesund',
-      resultText: 'hii ni yenye afya',
-      sourceLang: 'de',
-      targetLang: 'Swahili',
-      aiProvider: 'claude',
-      isFavourite: true,
-      createdAt: DateTime.now().toUtc(),
-    ));
+    // Written the way a v3 app wrote it, without columns it did not have.
+    final id = await db.insert('translation_entry', {
+      'source_text': 'das ist gesund',
+      'result_text': 'hii ni yenye afya',
+      'source_lang': 'de',
+      'target_lang': 'Swahili',
+      'ai_provider': 'claude',
+      'is_favourite': 1,
+      'created_at': DateTime.now().toUtc().toIso8601String(),
+    });
 
     await DbHelper.migrate(db, 3, DbHelper.schemaVersion);
 
@@ -179,5 +197,35 @@ void main() {
       schedule(null, Grade.correct, DateTime.now()),
     );
     expect(await reviews.getAll(), hasLength(1));
+  });
+
+  test('v4 → v5 adds result_lang, empty for existing rows', () async {
+    databaseFactory = createDesktopDatabaseFactory();
+    final db = await databaseFactory.openDatabase(
+      inMemoryDatabasePath,
+      options: OpenDatabaseOptions(
+        version: 4,
+        onCreate: (db, _) async {
+          await db.execute(_v3Schema);
+          await db.execute(DbHelper.createReviewCardTableSql);
+        },
+      ),
+    );
+    addTearDown(db.close);
+    final dao = TranslationDao(db);
+    final id = await db.insert('translation_entry', {
+      'source_text': 'siku njema',
+      'result_text': 'einen schönen Tag',
+      'source_lang': 'sw',
+      'target_lang': 'Swahili',
+      'ai_provider': 'claude',
+      'created_at': DateTime.now().toUtc().toIso8601String(),
+    });
+
+    await DbHelper.migrate(db, 4, DbHelper.schemaVersion);
+
+    expect((await dao.getAll()).single.resultLang, isNull);
+    await dao.setResultLang(id, 'de');
+    expect((await dao.getAll()).single.resultLang, 'de');
   });
 }

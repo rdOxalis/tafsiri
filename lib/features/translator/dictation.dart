@@ -1,6 +1,5 @@
 import '../../core/constants.dart';
-import '../../core/services/ocr/tesseract_ocr_service.dart'
-    show kTesseractLanguageCodes;
+import '../../core/languages.dart';
 
 /// Text spoken across several recogniser sessions in one dictation window
 /// (ADR-081).
@@ -51,21 +50,10 @@ String joinSpeech(String a, String b) {
   return '$left $right';
 }
 
-/// ISO 639-1 code for each language Tesseract knows, so the free-text
-/// language names from the settings ("Swahili", "Deutsch") can be turned into
-/// a recognition language through the same table OCR already uses.
-const _iso1ByTesseractCode = <String, String>{
-  'swa': 'sw', 'eng': 'en', 'deu': 'de', 'fra': 'fr', 'nld': 'nl',
-  'spa': 'es', 'dan': 'da', 'nor': 'nb', 'swe': 'sv', 'pol': 'pl',
-  'ita': 'it', 'por': 'pt', 'tur': 'tr', 'bul': 'bg', 'rus': 'ru',
-  'ell': 'el', 'ara': 'ar',
-};
-
 /// The speech-recognition language for a language name from the settings,
 /// or `null` when the name is unknown or has no recognition locale.
 String? sttCodeForLanguageName(String name) {
-  final tesseract = kTesseractLanguageCodes[name.trim().toLowerCase()];
-  final code = _iso1ByTesseractCode[tesseract];
+  final code = isoCodeFor(name);
   return kSttLocaleMap.containsKey(code) ? code : null;
 }
 

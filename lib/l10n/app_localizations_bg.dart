@@ -273,6 +273,13 @@ class AppLocalizationsBg extends AppLocalizations {
   String get learnNoAnswer => '(няма отговор)';
 
   @override
+  String get learnChoosePair => 'Кои езици?';
+
+  @override
+  String get learnNoPairYet =>
+      'Нито един от любимите ти преводи все още не може да стане карта. Подходящи са кратки преводи (до две изречения) между езика, който учиш, и друг език; за по-старите езикът се определя, щом има API ключ.';
+
+  @override
   String get dictationOtherLanguage => 'Друг език';
 
   @override

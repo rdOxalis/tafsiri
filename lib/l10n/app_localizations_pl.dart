@@ -272,6 +272,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get learnNoAnswer => '(brak odpowiedzi)';
 
   @override
+  String get learnChoosePair => 'Które języki?';
+
+  @override
+  String get learnNoPairYet =>
+      'Żadne z ulubionych tłumaczeń nie może jeszcze stać się kartą. Nadają się krótkie tłumaczenia (do dwóch zdań) między językiem nauki a innym językiem; dla starszych język zostanie ustalony, gdy ustawisz klucz API.';
+
+  @override
   String get dictationOtherLanguage => 'Inny język';
 
   @override

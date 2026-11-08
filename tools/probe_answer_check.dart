@@ -63,8 +63,7 @@ void main() {
               services[provider]!,
               card: card,
               answer: r[4],
-              learningLanguage: _learning,
-              confidentLanguage: _confident,
+              feedbackLanguage: _confident,
               apiKey: keys[provider]!,
               model: model.id,
             );
@@ -113,16 +112,16 @@ Flashcard _card(List<String> r) {
     // its target language decides which card it is.
     sourceText: r[2],
     resultText: r[3],
-    // As the translator stores it: the detected input language, and the
-    // learning language of the time as target_lang.
+    // As the translator stores it: the detected input language, the learning
+    // language of the time as target_lang, and the result's language.
     sourceLang: produce ? 'de' : 'sw',
     targetLang: _learning,
+    resultLang: produce ? 'sw' : 'de',
     aiProvider: 'probe',
     isFavourite: true,
     createdAt: DateTime.utc(2026, 11, 8),
   );
-  final card = cardsFor([entry],
-          learningLanguage: _learning, confidentLanguage: _confident)
+  final card = cardsFor([entry])
       .firstWhere((c) =>
           c.direction == (produce ? CardDirection.produce : CardDirection.recall));
   // The fixture is wrong if the card does not ask what the row means.

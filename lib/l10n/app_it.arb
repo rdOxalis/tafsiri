@@ -103,6 +103,8 @@
   "learnSummary": "{correct} giuste · {almost} quasi · {wrong} sbagliate",
   "learnFinish": "Fatto",
   "learnNoAnswer": "(nessuna risposta)",
+  "learnChoosePair": "Quali lingue?",
+  "learnNoPairYet": "Nessuna delle tue traduzioni preferite può ancora diventare una scheda. Vanno bene traduzioni brevi (fino a due frasi) tra la lingua che studi e un’altra lingua; per quelle più vecchie la lingua viene individuata appena c’è una chiave API.",
   "dictationOtherLanguage": "Altra lingua",
   "translationLanguagesSection": "Lingue di traduzione",
   "translationInfoTitle": "Come funziona la traduzione",

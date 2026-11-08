@@ -273,6 +273,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get learnNoAnswer => '(nessuna risposta)';
 
   @override
+  String get learnChoosePair => 'Quali lingue?';
+
+  @override
+  String get learnNoPairYet =>
+      'Nessuna delle tue traduzioni preferite può ancora diventare una scheda. Vanno bene traduzioni brevi (fino a due frasi) tra la lingua che studi e un’altra lingua; per quelle più vecchie la lingua viene individuata appena c’è una chiave API.';
+
+  @override
   String get dictationOtherLanguage => 'Altra lingua';
 
   @override

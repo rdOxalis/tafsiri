@@ -179,6 +179,7 @@ class BackupService {
         'mode': e.mode,
         if (e.notes != null) 'notes': e.notes,
         if (e.explanations != null) 'explanations': e.explanations,
+        if (e.resultLang != null) 'resultLang': e.resultLang,
       };
 
   /// Returns `null` for an unusable row so one bad entry cannot fail a restore.
@@ -202,6 +203,8 @@ class BackupService {
       notes: map['notes'] is String ? map['notes'] as String : null,
       explanations:
           map['explanations'] is String ? map['explanations'] as String : null,
+      resultLang:
+          map['resultLang'] is String ? map['resultLang'] as String : null,
     );
   }
 

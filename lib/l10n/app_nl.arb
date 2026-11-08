@@ -104,6 +104,8 @@
   "learnSummary": "{correct} goed · {almost} bijna · {wrong} fout",
   "learnFinish": "Klaar",
   "learnNoAnswer": "(geen antwoord)",
+  "learnChoosePair": "Welke talen?",
+  "learnNoPairYet": "Geen van je favoriete vertalingen kan al een kaart worden. Geschikt zijn korte vertalingen (hooguit twee zinnen) tussen je leertaal en een andere taal; bij oudere wordt de taal bepaald zodra er een API-sleutel is ingesteld.",
   "dictationOtherLanguage": "Andere taal",
   "translationLanguagesSection": "Vertaaltalen",
   "translationInfoTitle": "Hoe het werkt",

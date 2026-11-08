@@ -1,4 +1,5 @@
 import '../../core/services/ai_service.dart';
+import '../../core/languages.dart';
 import 'flashcard.dart';
 import 'scheduler.dart';
 
@@ -55,18 +56,6 @@ class AnswerVerdict {
       };
 }
 
-/// The language the card is answered in: the learning language when
-/// producing, today's confident language when recalling (see [cardsFor]).
-String answerLanguageOf(
-  Flashcard card, {
-  required String learningLanguage,
-  required String confidentLanguage,
-}) =>
-    switch (card.direction) {
-      CardDirection.produce => learningLanguage,
-      CardDirection.recall => confidentLanguage,
-    };
-
 /// Instructions for judging an answer (ADR-082). The point of the feature:
 /// the stored translation is one correct answer, and an answer in other
 /// words that means the same and is good [answerLanguage] is right.
@@ -113,12 +102,14 @@ String answerCheckUserMessage({
 /// empty answer is wrong, and the stored translation typed back exactly —
 /// ignoring case, punctuation and spacing — is correct. Everything else goes
 /// to the active provider. Errors propagate; the caller lets the user grade.
+///
+/// The languages come from the card's pair (ADR-083); [feedbackLanguage] is
+/// today's confident language, the one the user reads explanations in.
 Future<AnswerVerdict> checkAnswer(
   AiService service, {
   required Flashcard card,
   required String answer,
-  required String learningLanguage,
-  required String confidentLanguage,
+  required String feedbackLanguage,
   required String apiKey,
   required String model,
 }) async {
@@ -130,13 +121,9 @@ Future<AnswerVerdict> checkAnswer(
   }
   final raw = await service.complete(
     system: answerCheckSystemPrompt(
-      answerLanguage: answerLanguageOf(
-        card,
-        learningLanguage: learningLanguage,
-        confidentLanguage: confidentLanguage,
-      ),
-      learningLanguage: learningLanguage,
-      confidentLanguage: confidentLanguage,
+      answerLanguage: languageDisplayName(card.answerLang),
+      learningLanguage: languageDisplayName(card.learningLang),
+      confidentLanguage: feedbackLanguage,
     ),
     user: answerCheckUserMessage(
       shown: card.prompt,

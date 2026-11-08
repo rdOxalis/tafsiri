@@ -104,6 +104,8 @@
   "learnSummary": "{correct} bien · {almost} casi · {wrong} mal",
   "learnFinish": "Hecho",
   "learnNoAnswer": "(sin respuesta)",
+  "learnChoosePair": "¿Qué idiomas?",
+  "learnNoPairYet": "Ninguna de tus traducciones favoritas puede ser todavía una tarjeta. Sirven las traducciones cortas (hasta dos frases) entre tu idioma de aprendizaje y otro idioma; en las antiguas, el idioma se averigua en cuanto hay una clave API.",
   "dictationOtherLanguage": "Otro idioma",
   "translationLanguagesSection": "Idiomas de traducción",
   "translationInfoTitle": "Cómo funciona",

@@ -24,14 +24,17 @@ final _card = Flashcard(
   direction: CardDirection.produce,
   prompt: 'das ist gesund',
   expected: 'hii ni yenye afya',
+  learningLang: 'sw',
+  otherLang: 'de',
 );
+final _pair = LanguagePair('sw', 'de');
 
 class _Fixed extends LearnController {
   _Fixed(this.initial);
   final LearnState initial;
   final submitted = <String>[];
   @override
-  LearnState build() => initial;
+  LearnState build(LanguagePair pair) => initial;
   @override
   Future<void> submit(String answer) async => submitted.add(answer);
   @override
@@ -42,16 +45,16 @@ late _Fixed _ctl;
 
 Widget _app(LearnState s) => ProviderScope(
       overrides: [learnProvider.overrideWith(() => _ctl = _Fixed(s))],
-      child: const MaterialApp(
-        localizationsDelegates: [
+      child: MaterialApp(
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [Locale('en', 'GB')],
-        locale: Locale('en', 'GB'),
-        home: FlashcardScreen(),
+        supportedLocales: const [Locale('en', 'GB')],
+        locale: const Locale('en', 'GB'),
+        home: FlashcardScreen(pair: _pair),
       ),
     );
 

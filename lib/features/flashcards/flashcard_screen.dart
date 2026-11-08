@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/app_localizations.dart';
+import '../../core/languages.dart';
+import 'flashcard.dart';
 import 'flashcard_controller.dart';
 import 'scheduler.dart';
 
 /// A learning session with the flashcards from the favourites (ADR-082).
 class FlashcardScreen extends ConsumerWidget {
-  const FlashcardScreen({super.key});
+  const FlashcardScreen({super.key, required this.pair});
+
+  /// The language pair this session learns (ADR-083).
+  final LanguagePair pair;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final state = ref.watch(learnProvider);
+    final state = ref.watch(learnProvider(pair));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.learnTitle),
+        title: Text('${l10n.learnTitle} · ${pairLabel(pair)}'),
         actions: [
           if (state.total > 0 && state.phase != LearnPhase.done)
             Padding(
@@ -30,7 +35,7 @@ class FlashcardScreen extends ConsumerWidget {
             const Center(child: CircularProgressIndicator()),
           LearnPhase.nothingDue => _Message(text: l10n.learnNothingDue),
           LearnPhase.done => _Summary(state: state),
-          _ => _CardView(state: state),
+          _ => _CardView(pair: pair, state: state),
         },
       ),
     );
@@ -38,8 +43,9 @@ class FlashcardScreen extends ConsumerWidget {
 }
 
 class _CardView extends ConsumerStatefulWidget {
-  const _CardView({required this.state});
+  const _CardView({required this.pair, required this.state});
 
+  final LanguagePair pair;
   final LearnState state;
 
   @override
@@ -67,7 +73,7 @@ class _CardViewState extends ConsumerState<_CardView> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final state = widget.state;
-    final notifier = ref.read(learnProvider.notifier);
+    final notifier = ref.read(learnProvider(widget.pair).notifier);
     final card = state.card!;
     final asking = state.phase == LearnPhase.asking;
 
@@ -130,22 +136,23 @@ class _CardViewState extends ConsumerState<_CardView> {
             ],
           ),
         ] else
-          _Result(state: state),
+          _Result(pair: widget.pair, state: state),
       ],
     );
   }
 }
 
 class _Result extends ConsumerWidget {
-  const _Result({required this.state});
+  const _Result({required this.pair, required this.state});
 
+  final LanguagePair pair;
   final LearnState state;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final notifier = ref.read(learnProvider.notifier);
+    final notifier = ref.read(learnProvider(pair).notifier);
     final verdict = state.verdict;
 
     return Column(
@@ -269,3 +276,7 @@ class _Message extends StatelessWidget {
         ),
       );
 }
+
+/// "Kiswahili – Deutsch": a pair in the languages' own names.
+String pairLabel(LanguagePair pair) =>
+    '${languageDisplayName(pair.first)} – ${languageDisplayName(pair.second)}';

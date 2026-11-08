@@ -272,6 +272,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get learnNoAnswer => '(ikke noe svar)';
 
   @override
+  String get learnChoosePair => 'Hvilke språk?';
+
+  @override
+  String get learnNoPairYet =>
+      'Ingen av favorittoversettelsene dine kan bli et kort ennå. Korte oversettelser (høyst to setninger) mellom læringsspråket ditt og et annet språk egner seg; for eldre finnes språket så snart en API-nøkkel er satt.';
+
+  @override
   String get dictationOtherLanguage => 'Annet språk';
 
   @override

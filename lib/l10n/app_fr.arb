@@ -104,6 +104,8 @@
   "learnSummary": "{correct} juste · {almost} presque · {wrong} faux",
   "learnFinish": "Terminé",
   "learnNoAnswer": "(pas de réponse)",
+  "learnChoosePair": "Quelles langues ?",
+  "learnNoPairYet": "Aucune de vos traductions favorites ne peut encore devenir une carte. Conviennent les traductions courtes (deux phrases au plus) entre votre langue d’apprentissage et une autre langue ; pour les plus anciennes, la langue est déterminée dès qu’une clé API est définie.",
   "dictationOtherLanguage": "Autre langue",
   "translationLanguagesSection": "Langues de traduction",
   "translationInfoTitle": "Comment ça marche",

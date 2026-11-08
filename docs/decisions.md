@@ -1,5 +1,17 @@
 # Architecture Decision Records
 
+## ADR-083: Flashcards by language pair, short favourites only, and the result's language stored
+**Date:** 2026-11-08
+**Status:** Accepted
+**Context:** Testing the first flashcards on Linux showed two things. A history kept over time holds more than one pair of languages — here Swahili–English from before the confident language became German, and Swahili–German since — and a session that mixes them makes the learner switch between three languages, which is hard and was to be avoided. And favourites of whole paragraphs make cards that are something to read, not to recall. Grouping by pair needs the language of both sides; the history knew only the input's (`source_lang`) and the learning language of the time (`target_lang`, see the correction in ADR-082). The result's language followed only when the input was not in the learning language.
+**Decision:**
+- *Short only.* A favourite with more than two sentences on either side makes no card (`kMaxCardSentences`; a rough split after . ! ? … and at line breaks).
+- *Pairs.* A card belongs to the pair of its learning-language side and its other side, without direction. "Learn" works out the pairs: with one, the session starts; with more, a dialog lists them with the cards due in each, and the session uses only the chosen pair. Recall cards are answered in the pair's other language (English in Swahili–English); explanations stay in today's confident language.
+- *The result's language is stored.* Schema 5 adds `result_lang` (ISO 639-1). New translations store it: the confident language when the input was in the learning language, the learning language otherwise, the input's language for a correction. It travels in backups.
+- *Older favourites.* Where `result_lang` follows from the rest, "Learn" writes it. Where it does not (input in the learning language), "Learn" asks the AI once, for all such texts together, to name each language, and stores the answer. Without a key, or if that fails, those favourites make no card until it succeeds; the button says so when nothing can be learnt.
+- `languages.dart` holds one name/code mapping (`isoCodeFor`) for the settings' free-text names and the detected codes, shared with the dictation window.
+**Consequences:** The first "Learn" with older favourites may cost one small request. The language detection prompt is not measured; it asks for one ISO code per numbered text and is parsed leniently, and an unparseable line leaves that favourite unknown rather than guessed. A learner who changes the learning language keeps the old cards as their own pair. `TranslationEntry.copyWith` lost `explanations` before; it keeps it and `result_lang` now.
+
 ## ADR-082: Flashcards from the favourites, with spaced repetition and an AI-checked answer
 **Date:** 2026-11-08
 **Status:** Accepted (planned, not yet built)

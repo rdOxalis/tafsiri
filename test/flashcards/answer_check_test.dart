@@ -17,12 +17,8 @@ final _entry = TranslationEntry(
   createdAt: DateTime.utc(2026, 11, 8),
 );
 
-final _produce = cardsFor([_entry],
-        learningLanguage: 'Swahili', confidentLanguage: 'German')
+final _produce = cardsFor([_entry])
     .firstWhere((c) => c.direction == CardDirection.produce);
-final _recall = cardsFor([_entry],
-        learningLanguage: 'Swahili', confidentLanguage: 'German')
-    .firstWhere((c) => c.direction == CardDirection.recall);
 
 void main() {
   group('AnswerVerdict.parse', () {
@@ -86,22 +82,6 @@ void main() {
     });
   });
 
-  group('answerLanguageOf', () {
-    test('producing is answered in the learning language', () {
-      expect(
-          answerLanguageOf(_produce,
-              learningLanguage: 'Swahili', confidentLanguage: 'German'),
-          'Swahili');
-    });
-
-    test('recalling in the confident language', () {
-      expect(
-          answerLanguageOf(_recall,
-              learningLanguage: 'Swahili', confidentLanguage: 'German'),
-          'German');
-    });
-  });
-
   group('checkAnswer', () {
     late MockAiService service;
     setUp(() => service = MockAiService());
@@ -110,8 +90,7 @@ void main() {
           service,
           card: card,
           answer: answer,
-          learningLanguage: 'Swahili',
-          confidentLanguage: 'German',
+          feedbackLanguage: 'German',
           apiKey: 'sk-test',
           model: 'claude-sonnet-5-5',
         );
@@ -157,7 +136,8 @@ void main() {
         apiKey: 'sk-test',
         model: 'claude-sonnet-5-5',
       )).captured;
-      expect(captured[0] as String, contains('should be in Swahili'));
+      expect(captured[0] as String, contains('should be in Kiswahili'));
+      expect(captured[0] as String, contains('must be written in German'));
       expect(captured[1] as String, contains('hii ni afya'));
     });
   });

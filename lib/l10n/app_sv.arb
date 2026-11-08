@@ -104,6 +104,8 @@
   "learnSummary": "{correct} rätt · {almost} nästan · {wrong} fel",
   "learnFinish": "Klar",
   "learnNoAnswer": "(inget svar)",
+  "learnChoosePair": "Vilka språk?",
+  "learnNoPairYet": "Ingen av dina favoritöversättningar kan bli ett kort än. Korta översättningar (högst två meningar) mellan ditt inlärningsspråk och ett annat språk fungerar; för äldre tas språket fram så snart en API-nyckel är angiven.",
   "dictationOtherLanguage": "Annat språk",
   "translationLanguagesSection": "Översättningsspråk",
   "translationInfoTitle": "Så här fungerar det",

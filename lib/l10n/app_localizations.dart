@@ -605,6 +605,18 @@ abstract class AppLocalizations {
   /// **'(no answer)'**
   String get learnNoAnswer;
 
+  /// No description provided for @learnChoosePair.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Which languages?'**
+  String get learnChoosePair;
+
+  /// No description provided for @learnNoPairYet.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'None of your favourite translations can become a card yet. Short translations (up to two sentences) between your learning language and another language work; for older ones the language is worked out once an API key is set.'**
+  String get learnNoPairYet;
+
   /// No description provided for @dictationOtherLanguage.
   ///
   /// In en_GB, this message translates to:

@@ -271,6 +271,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get learnNoAnswer => '(no answer)';
 
   @override
+  String get learnChoosePair => 'Which languages?';
+
+  @override
+  String get learnNoPairYet =>
+      'None of your favourite translations can become a card yet. Short translations (up to two sentences) between your learning language and another language work; for older ones the language is worked out once an API key is set.';
+
+  @override
   String get dictationOtherLanguage => 'Other language';
 
   @override
@@ -737,6 +744,13 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get learnNoAnswer => '(no answer)';
+
+  @override
+  String get learnChoosePair => 'Which languages?';
+
+  @override
+  String get learnNoPairYet =>
+      'None of your favourite translations can become a card yet. Short translations (up to two sentences) between your learning language and another language work; for older ones the language is worked out once an API key is set.';
 
   @override
   String get dictationOtherLanguage => 'Other language';

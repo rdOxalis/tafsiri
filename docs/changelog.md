@@ -9,6 +9,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - **Flashcards from your favourites** (ADR-082). In the history, "Learn (n)" turns every favourite translation into two cards: one asks for the learning language, one for your confident language. You type the answer and the AI judges it by meaning, not by wording — an answer in other words that is correct counts as right, a small slip as almost, with the mistake explained in your confident language. You can change its verdict with one tap. Cards you know come back after growing intervals, as in Anki; wrong ones come back in the same session. Without an API key or a connection you grade yourself.
+- **Learn one language pair at a time** (ADR-083). If your favourites span more than one pair — say Swahili–English from earlier and Swahili–German now — "Learn" asks which to practise, and a session never mixes them. Only favourites of up to two sentences become cards. Tafsiri now remembers the language of every translation's result; for older favourites it works it out the first time you open "Learn" (one small request to your AI provider).
 
 ---
 

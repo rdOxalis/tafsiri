@@ -29,6 +29,8 @@ Flashcard _card(int id, CardDirection dir) => Flashcard(
       direction: dir,
       prompt: 'a$id',
       expected: 'b$id',
+      learningLang: 'sw',
+      otherLang: 'de',
     );
 
 void main() {

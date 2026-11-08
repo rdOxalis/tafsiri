@@ -104,6 +104,8 @@
   "learnSummary": "{correct} dobrze · {almost} prawie · {wrong} źle",
   "learnFinish": "Gotowe",
   "learnNoAnswer": "(brak odpowiedzi)",
+  "learnChoosePair": "Które języki?",
+  "learnNoPairYet": "Żadne z ulubionych tłumaczeń nie może jeszcze stać się kartą. Nadają się krótkie tłumaczenia (do dwóch zdań) między językiem nauki a innym językiem; dla starszych język zostanie ustalony, gdy ustawisz klucz API.",
   "dictationOtherLanguage": "Inny język",
   "translationLanguagesSection": "Języki tłumaczenia",
   "translationInfoTitle": "Jak to działa",

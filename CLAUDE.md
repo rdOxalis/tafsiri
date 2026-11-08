@@ -156,7 +156,9 @@ CREATE TABLE translation_entry (
   created_at   TEXT    NOT NULL,   -- ISO 8601
   mode         TEXT    NOT NULL DEFAULT 'translate',  -- 'translate' | 'correct'
   notes        TEXT,              -- improvement notes, correction entries only
-  explanations TEXT               -- word explanations, when the switch was on
+  explanations TEXT,              -- word explanations, when the switch was on
+  result_lang  TEXT               -- language of the result (ISO 639-1), ADR-083; NULL
+                                  -- for older rows until the flashcards work it out
 );
 
 -- Flashcard learning state (ADR-082, schema v4). A row exists only once a
@@ -190,6 +192,7 @@ class TranslationEntry {
   final String mode;          // 'translate' | 'correct'
   final String? notes;        // improvement notes, correction entries only
   final String? explanations; // word explanations (ADR-060)
+  final String? resultLang;   // result's language, ISO 639-1 (ADR-083)
 }
 ```
 
@@ -305,7 +308,8 @@ Text: [INPUT]
 
 ### Flashcards (ADR-082)
 
-- "Learn (n)" in the history's filter row, shown once a favourite translation exists; n = cards in a session now
+- "Learn (n)" in the history's filter row, shown once a favourite translation exists; n = cards in a session now. With more than one language pair among the favourites, a dialog picks the pair; a session never mixes pairs (ADR-083)
+- Only favourites of at most two sentences per side
 - Each translation favourite → two cards (`produce`: other side → learning; `recall`: learning → today's confident language); corrections never. The learning side is found from `source_lang`; favourites saved under another learning language yield none
 - The user types the answer; the AI judges meaning, not wording (`answer_check.dart`, `VERDICT:`/`FEEDBACK:`), feedback in the confident language; the user can override the grade with one tap; no key or an API error → self-grading
 - Simplified SM-2 (`scheduler.dart`); state in `review_card`; a session = due cards + up to 10 new per day; wrong cards repeat in the same session
