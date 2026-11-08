@@ -148,8 +148,9 @@ CREATE TABLE translation_entry (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
   source_text  TEXT    NOT NULL,
   result_text  TEXT    NOT NULL,
-  source_lang  TEXT    NOT NULL,   -- detected language (ISO 639-1 or full name)
-  target_lang  TEXT    NOT NULL,   -- actually used target language
+  source_lang  TEXT    NOT NULL,   -- language the AI detected in the input (ISO 639-1); reliable
+  target_lang  TEXT    NOT NULL,   -- the LEARNING language set at the time, whichever way it
+                                   -- translated — not the result's language (ADR-082)
   ai_provider  TEXT    NOT NULL,   -- 'mistral' | 'claude' | 'openai'
   is_favourite INTEGER NOT NULL DEFAULT 0,
   created_at   TEXT    NOT NULL,   -- ISO 8601
@@ -181,8 +182,8 @@ class TranslationEntry {
   final int? id;
   final String sourceText;
   final String resultText;
-  final String sourceLang;
-  final String targetLang;
+  final String sourceLang;   // detected input language (ISO 639-1)
+  final String targetLang;   // learning language at the time, not the result's
   final String aiProvider;
   final bool isFavourite;
   final DateTime createdAt;
@@ -305,7 +306,7 @@ Text: [INPUT]
 ### Flashcards (ADR-082)
 
 - "Learn (n)" in the history's filter row, shown once a favourite translation exists; n = cards in a session now
-- Each translation favourite → two cards (`produce`: confident → learning; `recall`: learning → confident); corrections never
+- Each translation favourite → two cards (`produce`: other side → learning; `recall`: learning → today's confident language); corrections never. The learning side is found from `source_lang`; favourites saved under another learning language yield none
 - The user types the answer; the AI judges meaning, not wording (`answer_check.dart`, `VERDICT:`/`FEEDBACK:`), feedback in the confident language; the user can override the grade with one tap; no key or an API error → self-grading
 - Simplified SM-2 (`scheduler.dart`); state in `review_card`; a session = due cards + up to 10 new per day; wrong cards repeat in the same session
 - Measure prompt changes with `tools/probe_answer_check.dart`

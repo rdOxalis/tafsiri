@@ -113,8 +113,10 @@ Flashcard _card(List<String> r) {
     // its target language decides which card it is.
     sourceText: r[2],
     resultText: r[3],
+    // As the translator stores it: the detected input language, and the
+    // learning language of the time as target_lang.
     sourceLang: produce ? 'de' : 'sw',
-    targetLang: produce ? _learning : _confident,
+    targetLang: _learning,
     aiProvider: 'probe',
     isFavourite: true,
     createdAt: DateTime.utc(2026, 11, 8),

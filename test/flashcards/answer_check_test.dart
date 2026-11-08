@@ -66,6 +66,10 @@ void main() {
       expect(system, contains('A mere difference from the reference is never a mistake'));
     });
 
+    test('a reference in another language is only a hint to the meaning', () {
+      expect(system, contains('It may even be in another language'));
+    });
+
     test('an ambiguous card accepts every reading', () {
       expect(system, contains('every reading it allows is correct'));
     });

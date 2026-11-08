@@ -50,9 +50,20 @@ typedef CardKey = (int entryId, CardDirection direction);
 ///
 /// Only translations: a correction is the user's own text improved, not a
 /// pair of languages to learn. A favourite becomes two cards, one per
-/// direction. Which side is in which language follows from the entry's
-/// target language; an entry in neither configured language (the settings
-/// changed since) keeps its stored direction as a single card.
+/// direction.
+///
+/// What the history stores decides how. `target_lang` is NOT the language
+/// the result was written in: the translator stores the learning language
+/// that was set at the time, whichever way it translated. `source_lang` is
+/// the language the AI detected in the input, and that one is reliable. So:
+/// - a favourite saved while another language was being learnt yields no
+///   card — neither side need be in today's learning language;
+/// - the side in the learning language is the input if the input was in it,
+///   otherwise the result;
+/// - the other side is in whatever language it was written in — perhaps a
+///   confident language set back then, not today's. It is shown as it is for
+///   producing; for recalling, the answer is in today's confident language
+///   and the stored side only tells the AI what was meant.
 List<Flashcard> cardsFor(
   List<TranslationEntry> favourites, {
   required String learningLanguage,
@@ -64,44 +75,32 @@ List<Flashcard> cardsFor(
     if (entry.sourceText.trim().isEmpty || entry.resultText.trim().isEmpty) {
       continue;
     }
+    if (!sameLanguage(entry.targetLang, learningLanguage)) continue;
 
-    final String learningSide;
-    final String confidentSide;
-    if (sameLanguage(entry.targetLang, learningLanguage)) {
-      learningSide = entry.resultText;
-      confidentSide = entry.sourceText;
-    } else if (sameLanguage(entry.targetLang, confidentLanguage)) {
-      learningSide = entry.sourceText;
-      confidentSide = entry.resultText;
-    } else {
-      cards.add(Flashcard(
-        entry: entry,
-        direction: CardDirection.produce,
-        prompt: entry.sourceText,
-        expected: entry.resultText,
-      ));
-      continue;
-    }
+    final inputIsLearning = sameLanguage(entry.sourceLang, learningLanguage);
+    final learningSide = inputIsLearning ? entry.sourceText : entry.resultText;
+    final otherSide = inputIsLearning ? entry.resultText : entry.sourceText;
 
     cards
       ..add(Flashcard(
         entry: entry,
         direction: CardDirection.produce,
-        prompt: confidentSide,
+        prompt: otherSide,
         expected: learningSide,
       ))
       ..add(Flashcard(
         entry: entry,
         direction: CardDirection.recall,
         prompt: learningSide,
-        expected: confidentSide,
+        expected: otherSide,
       ));
   }
   return cards;
 }
 
-/// Whether two free-text language names mean the same language, so that
-/// "German", "Deutsch" and "de" agree.
+/// Whether two language names or codes mean the same language, so that
+/// "German", "Deutsch" and "de" agree — the settings hold names, the
+/// history's `source_lang` holds the ISO code the AI detected.
 bool sameLanguage(String a, String b) {
   final x = a.trim().toLowerCase();
   final y = b.trim().toLowerCase();
