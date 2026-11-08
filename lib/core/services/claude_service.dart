@@ -31,9 +31,29 @@ class ClaudeService implements AiService {
     required String model,
     bool correctionMode = false,
     bool explanations = false,
-  }) async {
+  }) {
     debugPrint('[ClaudeService] translate — key=${maskApiKey(apiKey)}, '
         'correction=$correctionMode');
+    return complete(
+      system: AiService.systemPromptFor(
+        targetLanguage: targetLanguage,
+        altLanguage: altLanguage,
+        correctionMode: correctionMode,
+        explanations: explanations,
+      ),
+      user: AiService.buildUserMessage(text),
+      apiKey: apiKey,
+      model: model,
+    );
+  }
+
+  @override
+  Future<String> complete({
+    required String system,
+    required String user,
+    required String apiKey,
+    required String model,
+  }) async {
 
     final response = await _client.post(
       Uri.parse(_endpoint),
@@ -48,16 +68,11 @@ class ClaudeService implements AiService {
         // adaptively when the request does not say otherwise, and thinking
         // tokens count against this limit. Billed by use, not by the cap.
         'max_tokens': 16000,
-        'system': AiService.systemPromptFor(
-          targetLanguage: targetLanguage,
-          altLanguage: altLanguage,
-          correctionMode: correctionMode,
-          explanations: explanations,
-        ),
+        'system': system,
         'messages': [
           {
             'role': 'user',
-            'content': AiService.buildUserMessage(text),
+            'content': user,
           },
         ],
       }),

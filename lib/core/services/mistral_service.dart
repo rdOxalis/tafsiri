@@ -21,9 +21,29 @@ class MistralService implements AiService {
     required String model,
     bool correctionMode = false,
     bool explanations = false,
-  }) async {
+  }) {
     debugPrint('[MistralService] translate — key=${maskApiKey(apiKey)}, '
         'correction=$correctionMode');
+    return complete(
+      system: AiService.systemPromptFor(
+        targetLanguage: targetLanguage,
+        altLanguage: altLanguage,
+        correctionMode: correctionMode,
+        explanations: explanations,
+      ),
+      user: AiService.buildUserMessage(text),
+      apiKey: apiKey,
+      model: model,
+    );
+  }
+
+  @override
+  Future<String> complete({
+    required String system,
+    required String user,
+    required String apiKey,
+    required String model,
+  }) async {
 
     final response = await _client.post(
       Uri.parse(_endpoint),
@@ -37,16 +57,11 @@ class MistralService implements AiService {
         'messages': [
           {
             'role': 'system',
-            'content': AiService.systemPromptFor(
-              targetLanguage: targetLanguage,
-              altLanguage: altLanguage,
-              correctionMode: correctionMode,
-              explanations: explanations,
-            ),
+            'content': system,
           },
           {
             'role': 'user',
-            'content': AiService.buildUserMessage(text),
+            'content': user,
           },
         ],
       }),

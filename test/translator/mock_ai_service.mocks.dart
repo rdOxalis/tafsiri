@@ -68,4 +68,32 @@ class MockAiService extends _i1.Mock implements _i2.AiService {
             ),
           )
           as _i3.Future<String>);
+
+  @override
+  _i3.Future<String> complete({
+    required String? system,
+    required String? user,
+    required String? apiKey,
+    required String? model,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#complete, [], {
+              #system: system,
+              #user: user,
+              #apiKey: apiKey,
+              #model: model,
+            }),
+            returnValue: _i3.Future<String>.value(
+              _i4.dummyValue<String>(
+                this,
+                Invocation.method(#complete, [], {
+                  #system: system,
+                  #user: user,
+                  #apiKey: apiKey,
+                  #model: model,
+                }),
+              ),
+            ),
+          )
+          as _i3.Future<String>);
 }

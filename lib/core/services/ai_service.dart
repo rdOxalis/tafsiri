@@ -37,6 +37,16 @@ abstract class AiService {
     bool explanations = false,
   });
 
+  /// Sends one exchange — instructions and a message — and returns the raw
+  /// answer. [translate] is this with the translation prompt; the flashcard
+  /// check (ADR-082) uses it with its own.
+  Future<String> complete({
+    required String system,
+    required String user,
+    required String apiKey,
+    required String model,
+  });
+
   /// Picks the system prompt for the requested mode.
   static String systemPromptFor({
     required String targetLanguage,
