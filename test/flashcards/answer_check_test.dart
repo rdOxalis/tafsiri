@@ -63,6 +63,11 @@ void main() {
     test('judges meaning, not closeness to the reference', () {
       expect(system, contains('ONE correct translation, not the only one'));
       expect(system, contains('NOT by how close it is to the reference'));
+      expect(system, contains('A mere difference from the reference is never a mistake'));
+    });
+
+    test('an ambiguous card accepts every reading', () {
+      expect(system, contains('every reading it allows is correct'));
     });
 
     test('feedback comes in the confident language', () {

@@ -6,8 +6,9 @@
 
 - [ ] **Flashcards from the favourites** (ADR-082, planned 2026-11-08). Two cards per translation favourite, spaced repetition, the typed answer judged for meaning by the AI with a user override, self-grading when the AI is unavailable.
   - [x] Schema v4: `review_card` table + migration; scheduler (simplified SM-2) as pure functions with tests (2026-11-08: `lib/features/flashcards/`, `ReviewDao`; a card gets a row only once answered; orphans cleaned up on read so an undone delete keeps its progress)
-  - [ ] Answer check: system prompt, `VERDICT:`/`FEEDBACK:` parser, tests for all three providers
-  - [ ] Measure the check on real answers (other wording, small slips, real mistakes, wrong language) across providers before calling it done
+  - [x] Answer check: system prompt, `VERDICT:`/`FEEDBACK:` parser, tests for all three providers (2026-11-08; `complete()` added to every provider)
+  - [x] Measure the check on real answers (2026-11-08, Claude only: Sonnet 5.5 19/19, Haiku 4.5 15/19 — too strict, see ADR-082)
+  - [ ] Run the same probe on OpenAI and Mistral when keys are at hand (`tools/probe_answer_check.dart`)
   - [ ] Learning screen: "Learn (n)" in the favourites view, card, result with override, session summary
   - [ ] Backup format version with the learning state; strings in all 12 languages; changelog
 
