@@ -67,6 +67,11 @@ const List<(String, String)> kSttLanguageOptions = [
   ('sw', 'Kiswahili'),
   ('it', 'Italiano'),
   ('bg', 'Български'),
+  ('pt', 'Português'),
+  ('tr', 'Türkçe'),
+  ('ru', 'Русский'),
+  ('el', 'Ελληνικά'),
+  ('ar', 'العربية'),
 ];
 
 /// [kSttLanguageOptions] in display order.
@@ -144,4 +149,9 @@ const Map<String, String> kSttLocaleMap = {
   'pl': 'pl-PL',
   'it': 'it-IT',
   'bg': 'bg-BG',
+  'pt': 'pt-PT',
+  'tr': 'tr-TR',
+  'ru': 'ru-RU',
+  'el': 'el-GR',
+  'ar': 'ar-SA',
 };

@@ -78,8 +78,13 @@ void main() {
           'Nederlands',
           'Norsk',
           'Polski',
+          'Português',
           'Svenska',
+          'Türkçe',
+          'Ελληνικά',
           'Български',
+          'Русский',
+          'العربية',
         ],
       );
     });

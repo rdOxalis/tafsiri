@@ -1,3 +1,7 @@
+import '../../core/constants.dart';
+import '../../core/services/ocr/tesseract_ocr_service.dart'
+    show kTesseractLanguageCodes;
+
 /// Text spoken across several recogniser sessions, for the mode in which the
 /// microphone stays on until the user taps it again (ADR-079).
 ///
@@ -83,4 +87,40 @@ class RestartGuard {
   }
 
   void reset() => _quickEnds = 0;
+}
+
+/// ISO 639-1 code for each language Tesseract knows, so the free-text
+/// language names from the settings ("Swahili", "Deutsch") can be turned into
+/// a recognition language through the same table OCR already uses.
+const _iso1ByTesseractCode = <String, String>{
+  'swa': 'sw', 'eng': 'en', 'deu': 'de', 'fra': 'fr', 'nld': 'nl',
+  'spa': 'es', 'dan': 'da', 'nor': 'nb', 'swe': 'sv', 'pol': 'pl',
+  'ita': 'it', 'por': 'pt', 'tur': 'tr', 'bul': 'bg', 'rus': 'ru',
+  'ell': 'el', 'ara': 'ar',
+};
+
+/// The speech-recognition language for a language name from the settings,
+/// or `null` when the name is unknown or has no recognition locale.
+String? sttCodeForLanguageName(String name) {
+  final tesseract = kTesseractLanguageCodes[name.trim().toLowerCase()];
+  final code = _iso1ByTesseractCode[tesseract];
+  return kSttLocaleMap.containsKey(code) ? code : null;
+}
+
+/// Which language the dictation window starts in (ADR-080).
+///
+/// The choice made in the window wins for the rest of the session; then a
+/// fixed language from the settings; then the language of the last
+/// translation, the old "Auto"; and on first use the learning language,
+/// since practising it is what the app is for.
+String? initialSttLanguage({
+  String? chosenInWindow,
+  required String setting,
+  String? lastSourceLang,
+  required String learningLanguage,
+}) {
+  if (chosenInWindow != null) return chosenInWindow;
+  if (setting.isNotEmpty) return setting;
+  if (kSttLocaleMap.containsKey(lastSourceLang)) return lastSourceLang;
+  return sttCodeForLanguageName(learningLanguage);
 }

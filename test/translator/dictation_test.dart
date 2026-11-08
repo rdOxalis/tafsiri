@@ -92,4 +92,56 @@ void main() {
       expect(isFatalSttError('error_language_not_supported'), isTrue);
     });
   });
+
+  group('sttCodeForLanguageName', () {
+    test('maps the free-text names the settings hold', () {
+      expect(sttCodeForLanguageName('Swahili'), 'sw');
+      expect(sttCodeForLanguageName(' kiswahili '), 'sw');
+      expect(sttCodeForLanguageName('Deutsch'), 'de');
+      expect(sttCodeForLanguageName('English'), 'en');
+      expect(sttCodeForLanguageName('Bulgarian'), 'bg');
+    });
+
+    test('is null for a name it does not know', () {
+      expect(sttCodeForLanguageName('Klingon'), isNull);
+      expect(sttCodeForLanguageName(''), isNull);
+    });
+  });
+
+  group('initialSttLanguage', () {
+    test('the language chosen in the window wins', () {
+      expect(
+        initialSttLanguage(
+          chosenInWindow: 'de',
+          setting: 'sw',
+          lastSourceLang: 'en',
+          learningLanguage: 'Swahili',
+        ),
+        'de',
+      );
+    });
+
+    test('then a fixed language from the settings', () {
+      expect(
+        initialSttLanguage(
+            setting: 'sw', lastSourceLang: 'en', learningLanguage: 'Swahili'),
+        'sw',
+      );
+    });
+
+    test('then the language of the last translation', () {
+      expect(
+        initialSttLanguage(
+            setting: '', lastSourceLang: 'de', learningLanguage: 'Swahili'),
+        'de',
+      );
+    });
+
+    test('on first use, the learning language', () {
+      expect(
+        initialSttLanguage(setting: '', learningLanguage: 'Swahili'),
+        'sw',
+      );
+    });
+  });
 }

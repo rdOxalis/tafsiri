@@ -8,6 +8,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **Dictation window** (ADR-080). The microphone opens a window that stays open while you speak. It shows which language is being recognised and switches between your learning and your confident language with one tap, even mid-sentence; "Other language" offers the rest. It shows whether the phone is listening right now and what it has heard. Done puts the text into the input field, Cancel discards it. Portuguese, Turkish, Russian, Greek and Arabic can now be recognised too.
 - **Keep the microphone on through pauses** (Settings → Speech Recognition, ADR-079). Android stops listening after a short pause, which cut off anyone speaking a language they are still learning. With the new switch on, the microphone stays on until you tap it again, collects everything said, and only then puts it into the input field — not translated yet, so a long dictation can be corrected first. Off by default; some phones beep after each pause.
 
 ---

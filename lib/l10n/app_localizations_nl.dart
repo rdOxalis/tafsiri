@@ -184,11 +184,26 @@ class AppLocalizationsNl extends AppLocalizations {
   String get sttLanguageAuto => 'Automatisch (van laatste vertaling)';
 
   @override
-  String get sttStopOnTapTitle => 'Blijven luisteren tot ik tik';
+  String get sttStopOnTapTitle => 'Doorluisteren bij pauzes';
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Om langzaam of met pauzes te spreken. De microfoon blijft aan tot je er opnieuw op tikt; de tekst staat dan in het invoerveld, zodat je hem vóór het vertalen kunt controleren. Sommige telefoons piepen na elke pauze.';
+      'Om langzaam of met pauzes te spreken: de microfoon blijft aan tot je op Klaar tikt; de tekst staat dan in het invoerveld, zodat je hem vóór het vertalen kunt controleren. Uit: de opname stopt bij de eerste pauze en wordt meteen vertaald. Sommige telefoons piepen na elke pauze.';
+
+  @override
+  String get dictationTitle => 'Spreek';
+
+  @override
+  String get dictationListening => 'Ik luister…';
+
+  @override
+  String get dictationWait => 'Een moment…';
+
+  @override
+  String get dictationDone => 'Klaar';
+
+  @override
+  String get dictationOtherLanguage => 'Andere taal';
 
   @override
   String get translationLanguagesSection => 'Vertaaltalen';

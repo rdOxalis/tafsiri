@@ -7,6 +7,7 @@ import '../../../core/platform_capabilities.dart';
 import '../../../shared/providers/selected_tab_provider.dart';
 import '../../settings/settings_controller.dart';
 import '../translator_controller.dart';
+import 'dictation_sheet.dart';
 
 class ActionBar extends ConsumerWidget {
   const ActionBar({super.key});
@@ -63,10 +64,9 @@ class ActionBar extends ConsumerWidget {
               color: isListening
                   ? Theme.of(context).colorScheme.error
                   : null,
-              onPressed: (isLoading || !isSttAvailable)
+              onPressed: (isLoading || !isSttAvailable || isListening)
                   ? null
-                  : () =>
-                      ref.read(translatorProvider.notifier).toggleListening(),
+                  : () => showDictationSheet(context, ref),
             ),
           // Image / OCR
           IconButton(

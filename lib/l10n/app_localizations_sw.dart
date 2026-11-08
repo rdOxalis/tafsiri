@@ -185,11 +185,26 @@ class AppLocalizationsSw extends AppLocalizations {
   String get sttLanguageAuto => 'Kiotomatiki (kutoka tafsiri ya mwisho)';
 
   @override
-  String get sttStopOnTapTitle => 'Sikiliza hadi nigonge';
+  String get sttStopOnTapTitle => 'Endelea kusikiliza hata kwenye vituo';
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Kwa kuzungumza polepole au kwa vituo. Kipaza sauti kinabaki wazi hadi ukigonge tena; kisha maandishi yanaonekana kwenye kisanduku ili uyakague kabla ya kutafsiri. Simu nyingine hulia baada ya kila kituo.';
+      'Kwa kuzungumza polepole au kwa vituo: kipaza sauti kinabaki wazi hadi ugonge Maliza, kisha maandishi yanaingia kwenye kisanduku ili uyakague kabla ya kutafsiri. Kikizimwa: kurekodi kunaisha kwenye kituo cha kwanza na kunatafsiriwa mara moja. Simu nyingine hulia baada ya kila kituo.';
+
+  @override
+  String get dictationTitle => 'Zungumza';
+
+  @override
+  String get dictationListening => 'Ninasikiliza…';
+
+  @override
+  String get dictationWait => 'Subiri kidogo…';
+
+  @override
+  String get dictationDone => 'Maliza';
+
+  @override
+  String get dictationOtherLanguage => 'Lugha nyingine';
 
   @override
   String get translationLanguagesSection => 'Lugha za Tafsiri';

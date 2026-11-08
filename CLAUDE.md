@@ -269,7 +269,7 @@ Text: [INPUT]
 
 - **Typing / pasting:** Standard multiline `TextField`, expandable
 - **Clipboard:** Explicit paste button
-- **Voice (STT = Speech-to-Text):** Microphone button → `speech_to_text` started with a locale derived from the detected source language of the previous translation (e.g. if last input was Swahili, STT uses `sw-TZ`; if German, `de-DE`). Falls back to device locale on first launch or if no prior translation exists. Transcription lands in input field → translation triggers automatically.
+- **Voice (STT = Speech-to-Text):** Microphone button → dictation window (ADR-080) with the recognition language as one-tap chips for the learning and the confident language. Starts in the language last chosen there, else the fixed setting, else the detected source language of the previous translation, else the learning language. Keep-listening mode (setting `stt_stop_on_tap`, ADR-079) restarts the recogniser after every pause until Done and does not translate; otherwise the first pause ends the dictation and translates.
 - **Image / OCR:** `image_picker` (camera + gallery) → Tesseract (Android: platform channel `tafsiri/tesseract`) → recognised text placed in input field, behind a confidence gate
 
 ### Translator UI

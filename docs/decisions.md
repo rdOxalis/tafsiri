@@ -1,5 +1,12 @@
 # Architecture Decision Records
 
+## ADR-080: Dictation in a window, with the recognition language at hand
+**Date:** 2026-11-08
+**Status:** Accepted
+**Context:** Two things came up once keep-listening mode worked (ADR-079). A learner speaks both languages, but Android's recogniser listens for exactly one, fixed when a session starts; "Auto (from last translation)" is right only if the user keeps speaking the same language, and wrong on the first try after every switch. And with the text hidden until Done, nothing showed whether the phone was listening at the moment, which mattered because it is deaf for a fraction of a second after every pause.
+**Decision:** The microphone opens a bottom sheet for the whole dictation, the user's design. It shows the recognition language as chips for the learning and the confident language (mapped from the free-text names in the settings through the table OCR already uses), plus "Other language" for the full list; switching mid-dictation keeps what was heard and recognises the next words in the new language. A status line says "Listening…" while a session runs and "One moment…" in the gap between sessions. What has been heard is shown in the window, not in the input field. Done closes it and fills the field; Cancel discards; Back or tapping outside counts as Done, since losing a dictation by accident is worse than keeping one. The window starts in the language last chosen in it, else the fixed language from the settings, else the language of the last translation, else the learning language. Both modes use it: keep-listening ends on Done without translating; the quick mode closes the window itself at the first pause and translates at once. Five recognition languages that OCR already knew were added (Portuguese, Turkish, Russian, Greek, Arabic).
+**Consequences:** One dictation flow instead of two code paths. The language chosen in the window lasts until the app is closed; it is not written to the settings, where "Auto" or a fixed language stays the default. The window's behaviour is covered by widget tests against a stand-in controller; the recogniser side still needs a phone, and was tried on the Galaxy S25 over USB.
+
 ## ADR-079: Optional keep-listening mode for the microphone
 **Date:** 2026-11-08
 **Status:** Accepted

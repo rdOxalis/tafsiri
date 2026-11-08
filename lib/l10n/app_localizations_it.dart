@@ -185,11 +185,26 @@ class AppLocalizationsIt extends AppLocalizations {
   String get sttLanguageAuto => 'Automatico (dall’ultima traduzione)';
 
   @override
-  String get sttStopOnTapTitle => 'Ascolta finché non tocco';
+  String get sttStopOnTapTitle => 'Continua ad ascoltare nelle pause';
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Per parlare lentamente o con pause. Il microfono resta attivo finché non lo tocchi di nuovo; il testo compare poi nel campo di inserimento per controllarlo prima della traduzione. Alcuni telefoni emettono un bip dopo ogni pausa.';
+      'Per parlare lentamente o con pause: il microfono resta attivo finché non tocchi Fatto; il testo compare poi nel campo di inserimento per controllarlo prima della traduzione. Disattivato: la registrazione termina alla prima pausa e viene tradotta subito. Alcuni telefoni emettono un bip dopo ogni pausa.';
+
+  @override
+  String get dictationTitle => 'Parla';
+
+  @override
+  String get dictationListening => 'Sto ascoltando…';
+
+  @override
+  String get dictationWait => 'Un momento…';
+
+  @override
+  String get dictationDone => 'Fatto';
+
+  @override
+  String get dictationOtherLanguage => 'Altra lingua';
 
   @override
   String get translationLanguagesSection => 'Lingue di traduzione';
