@@ -91,7 +91,14 @@ void main() {
       answerLanguage: 'Swahili',
     )));
 
-    expect(find.text('hii ni yenye afya'), findsOneWidget);
+    // The stored answer, highlighted.
+    expect(
+      find.descendant(
+        of: find.byKey(const ValueKey('saved-translation')),
+        matching: find.text('hii ni yenye afya'),
+      ),
+      findsOneWidget,
+    );
     expect(find.text('- afia → afya: spelling'), findsOneWidget);
     final seg = tester.widget<SegmentedButton<Grade>>(
         find.byType(SegmentedButton<Grade>));

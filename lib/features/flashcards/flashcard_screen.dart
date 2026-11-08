@@ -163,7 +163,35 @@ class _Result extends ConsumerWidget {
           text: state.answer.trim().isEmpty ? l10n.learnNoAnswer : state.answer,
         ),
         const SizedBox(height: 12),
-        _Labelled(label: l10n.learnSaved, text: state.card!.expected),
+        // The answer to learn from — after "I don't know" the only thing
+        // that matters on this screen — so it stands out from the rest.
+        Container(
+          key: const ValueKey('saved-translation'),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.learnSaved,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ),
+              const SizedBox(height: 4),
+              SelectableText(
+                state.card!.expected,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: 16),
         if (verdict != null && verdict.feedback.isNotEmpty) ...[
           Text(verdict.feedback, style: theme.textTheme.bodyMedium),
