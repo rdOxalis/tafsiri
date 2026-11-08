@@ -4,6 +4,13 @@
 
 <!-- Move items here when actively working on them -->
 
+- [ ] **Flashcards from the favourites** (ADR-082, planned 2026-11-08). Two cards per translation favourite, spaced repetition, the typed answer judged for meaning by the AI with a user override, self-grading when the AI is unavailable.
+  - [ ] Schema v4: `review_card` table + migration; scheduler (simplified SM-2) as pure functions with tests
+  - [ ] Answer check: system prompt, `VERDICT:`/`FEEDBACK:` parser, tests for all three providers
+  - [ ] Measure the check on real answers (other wording, small slips, real mistakes, wrong language) across providers before calling it done
+  - [ ] Learning screen: "Learn (n)" in the favourites view, card, result with override, session summary
+  - [ ] Backup format version with the learning state; strings in all 12 languages; changelog
+
 - [x] **The Swahili plural that lives on the verb** (2026-10-05, ADR-072, ADR-073). Measured across three providers and seven model/prompt arms instead of guessed: the prompt rule helped only the weakest provider, a place to think helped more than a budget to think in, and the real spread was between models. Settled by changing the Claude default to Sonnet 5.5 and giving every provider a model picker.
 
 - [ ] **Price Mistral's paid tier, then revisit the recommendation** (ADR-073). `mistral-medium-latest` scored 89% against Claude Sonnet's 100%, and Mistral's published pricing page lists a figure for Large but not for Medium. If Medium is as cheap as Large ($0.5/$1.5 per MTok) it is less than a quarter of Sonnet's price for most of the quality, which would change what the README recommends on cost grounds. One look in the provider console settles it.

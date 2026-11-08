@@ -1,5 +1,19 @@
 # Architecture Decision Records
 
+## ADR-082: Flashcards from the favourites, with spaced repetition and an AI-checked answer
+**Date:** 2026-11-08
+**Status:** Accepted (planned, not yet built)
+**Context:** Favourites collect what a learner wants to keep, but the app only lets them reread it. Anki shows that typing or recalling the other side on a schedule is what makes vocabulary stick. Anki compares against the stored answer, though, and a learner who writes a correct sentence in different words is marked wrong — the stored translation is one correct answer among many. Tafsiri already has an AI that judges language; that is the difference worth having.
+**Decision:**
+- *Cards.* Every favourite that is a translation (`mode = translate`, not a correction) yields **two cards**: confident → learning language (producing) and learning → confident (understanding), each with its own learning state. Which side is which follows from the entry's `target_lang` compared with the configured languages; an entry matching neither is shown in its stored direction only.
+- *Entry point.* A "Learn (n)" button in the history's favourites view, shown when at least one card exists; it opens a separate learning screen, not a fourth tab.
+- *Answer.* One side is shown, the user types the other. The AI judges **meaning and correctness, not wording**: `correct`, `almost` (a small error, with a hint) or `wrong`, plus a short explanation in the confident language. A new system prompt with a line protocol (`VERDICT:` / `FEEDBACK:`) parsed like `AiResult`, one API call per answer, on the active provider and model. The verdict is a suggestion: one tap overrides it if the AI was too strict or too lenient, and the final grade drives the schedule.
+- *Without the AI* (no key, no network, API error) the stored translation is shown and the user grades themselves, as in Anki; learning works offline.
+- *Schedule.* Spaced repetition, a simplified SM-2: each card has a due date, interval and ease. `correct` grows the interval (1 → 3 → 7 → … days, scaled by ease), `almost` grows it a little and lowers the ease, `wrong` resets it and shows the card again later in the same session. A session is all due cards plus at most N new ones per day, ending with a short summary.
+- *Data.* A new table `review_card` (entry id, direction, due, interval, ease, repetitions, lapses), schema version 4; `translation_entry` stays as it is. Unfavouriting hides a card but keeps its state; deleting the entry deletes its cards. The learning state travels in backups (new backup format version; older backups still restore).
+**Consequences:** One API call per answer costs money on the user's own key — cheap per call, but a long session adds up; the summary could show it later. The AI's strictness is the risk: before the feature is called done, the check prompt is measured on real answers (right in other words, small slips, real mistakes, answers in the wrong language) across the three providers, as the grammar prompt was (ADR-072). Desktop works the same, without the microphone.
+**Plan:** (1) migration and the scheduler as pure, tested functions; (2) the check prompt, parser and provider tests, then the measurement; (3) the learning screen, card, result with override, summary; (4) backup, strings in all 12 languages, docs.
+
 ## ADR-081: The user starts every part of a dictation; no automatic restarts
 **Date:** 2026-11-08
 **Status:** Accepted
