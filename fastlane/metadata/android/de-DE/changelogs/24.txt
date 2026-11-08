@@ -1,0 +1,3 @@
+Neu: Karteikarten aus deinen Favoriten. Tippe im Verlauf auf „Lernen“. Jede kurze Lieblingsübersetzung wird zu zwei Karten, eine je Richtung; du tippst die Antwort, und die KI prüft den Sinn, nicht den Wortlaut, und erklärt Fehler. Ihr Urteil kannst du ändern. Gewusste Karten kommen seltener wieder, wie bei Anki; ohne API-Schlüssel bewertest du selbst.
+
+Umfassen deine Favoriten mehrere Sprachpaare, wählst du pro Runde eines.

@@ -1,0 +1,3 @@
+New: flashcards from your favourites. Tap "Learn" in the history. Each short favourite translation becomes two cards, one in each direction; you type the answer, and the AI judges it by meaning, not word for word, explaining any mistake. You can change its verdict. Cards you know come back less often, as in Anki; without an API key you grade yourself.
+
+If your favourites span several language pairs, you choose one per session.

@@ -1,0 +1,3 @@
+Mpya: kadi za kujifunzia kutoka kwenye tafsiri unazozipenda. Gonga "Jifunze" kwenye historia. Kila tafsiri fupi unayoipenda inakuwa kadi mbili, moja kwa kila upande; unaandika jibu, na AI inakagua maana, si neno kwa neno, na inaeleza makosa. Unaweza kubadilisha tathmini yake. Kadi unazozijua zinarudi mara chache, kama Anki; bila ufunguo wa API unajitathmini mwenyewe.
+
+Ikiwa tafsiri zako zina jozi kadhaa za lugha, unachagua moja kwa kila raundi.
