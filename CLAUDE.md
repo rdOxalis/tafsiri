@@ -157,6 +157,21 @@ CREATE TABLE translation_entry (
   notes        TEXT,              -- improvement notes, correction entries only
   explanations TEXT               -- word explanations, when the switch was on
 );
+
+-- Flashcard learning state (ADR-082, schema v4). A row exists only once a
+-- card has been answered; orphans are deleted on read, not on entry delete.
+CREATE TABLE review_card (
+  entry_id          INTEGER NOT NULL,   -- translation_entry.id
+  direction         TEXT    NOT NULL,   -- 'produce' (confident → learning) | 'recall'
+  due_at            TEXT    NOT NULL,   -- ISO 8601 UTC
+  interval_days     REAL    NOT NULL DEFAULT 0,
+  ease              REAL    NOT NULL DEFAULT 2.5,
+  repetitions       INTEGER NOT NULL DEFAULT 0,
+  lapses            INTEGER NOT NULL DEFAULT 0,
+  first_reviewed_at TEXT    NOT NULL,
+  last_reviewed_at  TEXT    NOT NULL,
+  PRIMARY KEY (entry_id, direction)
+);
 ```
 
 ### `TranslationEntry` (Dart)

@@ -33,7 +33,7 @@ void main() {
       path,
       options: OpenDatabaseOptions(
         version: DbHelper.schemaVersion,
-        onCreate: (db, _) => db.execute(DbHelper.createTableSql),
+        onCreate: (db, _) => DbHelper.createSchema(db),
       ),
     );
     addTearDown(db.close);

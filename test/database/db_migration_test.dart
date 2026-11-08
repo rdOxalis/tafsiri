@@ -6,7 +6,10 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:tafsiri/core/constants.dart';
 import 'package:tafsiri/core/database/db_helper.dart';
 import 'package:tafsiri/core/database/sqflite_desktop.dart';
+import 'package:tafsiri/core/database/review_dao.dart';
 import 'package:tafsiri/core/database/translation_dao.dart';
+import 'package:tafsiri/features/flashcards/flashcard.dart';
+import 'package:tafsiri/features/flashcards/scheduler.dart';
 import 'package:tafsiri/shared/models/translation_entry.dart';
 
 /// Schema as shipped in app versions up to 1.0.8 (before ADR-033).
@@ -142,5 +145,39 @@ void main() {
     // A plain translation carrying explanations is still a translation.
     expect(withWords.mode, kModeTranslate);
     expect(withWords.isCorrection, isFalse);
+  });
+
+  test('v3 → v4 adds the flashcard table and keeps the history', () async {
+    databaseFactory = createDesktopDatabaseFactory();
+    final db = await databaseFactory.openDatabase(
+      inMemoryDatabasePath,
+      options: OpenDatabaseOptions(
+        version: 3,
+        onCreate: (db, _) => db.execute(DbHelper.createTableSql),
+      ),
+    );
+    addTearDown(db.close);
+
+    final dao = TranslationDao(db);
+    final id = await dao.insert(TranslationEntry(
+      sourceText: 'das ist gesund',
+      resultText: 'hii ni yenye afya',
+      sourceLang: 'de',
+      targetLang: 'Swahili',
+      aiProvider: 'claude',
+      isFavourite: true,
+      createdAt: DateTime.now().toUtc(),
+    ));
+
+    await DbHelper.migrate(db, 3, DbHelper.schemaVersion);
+
+    expect((await dao.getAll()).single.sourceText, 'das ist gesund');
+    final reviews = ReviewDao(db);
+    expect(await reviews.getAll(), isEmpty);
+    await reviews.save(
+      (id, CardDirection.produce),
+      schedule(null, Grade.correct, DateTime.now()),
+    );
+    expect(await reviews.getAll(), hasLength(1));
   });
 }

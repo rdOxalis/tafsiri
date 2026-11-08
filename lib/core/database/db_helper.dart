@@ -9,8 +9,8 @@ class DbHelper {
   static Database? _db;
 
   /// Current schema version. 2 adds `mode` and `notes` (ADR-033), 3 adds
-  /// `explanations` (ADR-060).
-  static const schemaVersion = 3;
+  /// `explanations` (ADR-060), 4 adds the `review_card` table (ADR-082).
+  static const schemaVersion = 4;
 
   /// Schema of the current version — shared with the tests so the two cannot
   /// drift apart.
@@ -29,6 +29,32 @@ class DbHelper {
             explanations TEXT
           )
         ''';
+
+  /// Learning state of the flashcards (ADR-082). A card is a favourite in
+  /// one direction; it gets a row only once it has been answered, so new
+  /// favourites need no bookkeeping. There is no foreign key: a row whose
+  /// entry is gone is an orphan, cleaned up by the DAO — which lets an
+  /// undone delete in the history come back with its learning state.
+  static const createReviewCardTableSql = '''
+          CREATE TABLE review_card (
+            entry_id          INTEGER NOT NULL,
+            direction         TEXT    NOT NULL,
+            due_at            TEXT    NOT NULL,
+            interval_days     REAL    NOT NULL DEFAULT 0,
+            ease              REAL    NOT NULL DEFAULT 2.5,
+            repetitions       INTEGER NOT NULL DEFAULT 0,
+            lapses            INTEGER NOT NULL DEFAULT 0,
+            first_reviewed_at TEXT    NOT NULL,
+            last_reviewed_at  TEXT    NOT NULL,
+            PRIMARY KEY (entry_id, direction)
+          )
+        ''';
+
+  /// Creates every table of the current schema, for a fresh database.
+  static Future<void> createSchema(Database db) async {
+    await db.execute(createTableSql);
+    await db.execute(createReviewCardTableSql);
+  }
 
   /// ADR-014: add migration steps here when the schema version increments.
   static Future<void> migrate(
@@ -50,6 +76,10 @@ class DbHelper {
       await db.execute(
         'ALTER TABLE translation_entry ADD COLUMN explanations TEXT',
       );
+    }
+    if (oldVersion < 4) {
+      // ADR-082: flashcards from the favourites.
+      await db.execute(createReviewCardTableSql);
     }
   }
 
@@ -77,7 +107,7 @@ class DbHelper {
     return openDatabase(
       path,
       version: schemaVersion,
-      onCreate: (db, version) => db.execute(createTableSql),
+      onCreate: (db, version) => createSchema(db),
       onUpgrade: migrate,
     );
   }

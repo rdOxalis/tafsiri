@@ -11,7 +11,7 @@ Future<Database> _openInMemory() async {
     inMemoryDatabasePath,
     options: OpenDatabaseOptions(
       version: DbHelper.schemaVersion,
-      onCreate: (db, _) => db.execute(DbHelper.createTableSql),
+      onCreate: (db, _) => DbHelper.createSchema(db),
     ),
   );
   return db;
