@@ -78,7 +78,7 @@
   "sttLanguageLabel": "Riconoscimento vocale (microfono)",
   "sttLanguageAuto": "Automatico (dall’ultima traduzione)",
   "sttStopOnTapTitle": "Ascolta finché non tocco",
-  "sttStopOnTapSubtitle": "Per parlare lentamente o con pause. Il microfono resta attivo finché non lo tocchi di nuovo, poi traduce. Alcuni telefoni emettono un bip dopo ogni pausa.",
+  "sttStopOnTapSubtitle": "Per parlare lentamente o con pause. Il microfono resta attivo finché non lo tocchi di nuovo; il testo compare poi nel campo di inserimento per controllarlo prima della traduzione. Alcuni telefoni emettono un bip dopo ogni pausa.",
   "translationLanguagesSection": "Lingue di traduzione",
   "translationInfoTitle": "Come funziona la traduzione",
   "translationInfoPart1": "Il testo inserito viene tradotto in ",

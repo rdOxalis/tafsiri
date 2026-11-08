@@ -189,7 +189,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Til at tale langsomt eller med pauser. Mikrofonen forbliver tændt, indtil du trykker på den igen, og oversætter så. Nogle telefoner bipper efter hver pause.';
+      'Til at tale langsomt eller med pauser. Mikrofonen forbliver tændt, indtil du trykker på den igen; teksten står så i indtastningsfeltet, så du kan tjekke den, før den oversættes. Nogle telefoner bipper efter hver pause.';
 
   @override
   String get translationLanguagesSection => 'Oversættelsessprog';

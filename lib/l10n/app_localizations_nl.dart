@@ -188,7 +188,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Om langzaam of met pauzes te spreken. De microfoon blijft aan tot je er opnieuw op tikt en vertaalt dan. Sommige telefoons piepen na elke pauze.';
+      'Om langzaam of met pauzes te spreken. De microfoon blijft aan tot je er opnieuw op tikt; de tekst staat dan in het invoerveld, zodat je hem vóór het vertalen kunt controleren. Sommige telefoons piepen na elke pauze.';
 
   @override
   String get translationLanguagesSection => 'Vertaaltalen';

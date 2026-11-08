@@ -189,7 +189,7 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Kwa kuzungumza polepole au kwa vituo. Kipaza sauti kinabaki wazi hadi ukigonge tena, kisha kinatafsiri. Simu nyingine hulia baada ya kila kituo.';
+      'Kwa kuzungumza polepole au kwa vituo. Kipaza sauti kinabaki wazi hadi ukigonge tena; kisha maandishi yanaonekana kwenye kisanduku ili uyakague kabla ya kutafsiri. Simu nyingine hulia baada ya kila kituo.';
 
   @override
   String get translationLanguagesSection => 'Lugha za Tafsiri';

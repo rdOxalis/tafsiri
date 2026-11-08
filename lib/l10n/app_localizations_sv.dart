@@ -189,7 +189,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'För att tala långsamt eller med pauser. Mikrofonen är på tills du trycker på den igen och översätter sedan. Vissa telefoner piper efter varje paus.';
+      'För att tala långsamt eller med pauser. Mikrofonen är på tills du trycker på den igen; texten hamnar då i inmatningsfältet så att du kan kontrollera den innan den översätts. Vissa telefoner piper efter varje paus.';
 
   @override
   String get translationLanguagesSection => 'Översättningsspråk';

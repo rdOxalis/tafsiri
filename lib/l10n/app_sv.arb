@@ -79,7 +79,7 @@
   "sttLanguageLabel": "Taligenkänning (Mikrofon)",
   "sttLanguageAuto": "Auto (från senaste översättning)",
   "sttStopOnTapTitle": "Lyssna tills jag trycker",
-  "sttStopOnTapSubtitle": "För att tala långsamt eller med pauser. Mikrofonen är på tills du trycker på den igen och översätter sedan. Vissa telefoner piper efter varje paus.",
+  "sttStopOnTapSubtitle": "För att tala långsamt eller med pauser. Mikrofonen är på tills du trycker på den igen; texten hamnar då i inmatningsfältet så att du kan kontrollera den innan den översätts. Vissa telefoner piper efter varje paus.",
   "translationLanguagesSection": "Översättningsspråk",
   "translationInfoTitle": "Så här fungerar det",
   "translationInfoPart1": "Inmatad text översätts till ",

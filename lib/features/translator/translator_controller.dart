@@ -297,14 +297,16 @@ class TranslatorController extends Notifier<TranslatorState> {
     _listenForDictation();
   }
 
-  /// The user tapped the microphone: stop, keep what was heard, translate.
+  /// The user tapped the microphone: stop and put what was heard into the
+  /// input field. Not translated yet — a long dictation in a language being
+  /// learnt usually wants a correction first; the translate button is right
+  /// there.
   Future<void> _finishDictation() async {
     _keepListening = false;
     _restartTimer?.cancel();
     _dictationSession++;
     await _stt.stop();
     state = state.copyWith(isListening: false, inputText: _dictation.text);
-    await translate();
   }
 
   void _onSttResult(SpeechRecognitionResult result) {

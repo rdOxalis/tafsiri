@@ -191,7 +191,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Für langsames Sprechen mit Pausen. Das Mikrofon bleibt an, bis du es erneut antippst, dann wird übersetzt. Manche Handys piepen nach jeder Pause.';
+      'Für langsames Sprechen mit Pausen. Das Mikrofon bleibt an, bis du es erneut antippst; dann steht der Text im Eingabefeld, und du kannst ihn vor dem Übersetzen prüfen. Manche Handys piepen nach jeder Pause.';
 
   @override
   String get translationLanguagesSection => 'Übersetzungssprachen';

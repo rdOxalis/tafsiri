@@ -211,7 +211,7 @@
   "sttLanguageLabel": "Speech Recognition (Microphone)",
   "sttLanguageAuto": "Auto (from last translation)",
   "sttStopOnTapTitle": "Keep listening until I tap",
-  "sttStopOnTapSubtitle": "For speaking slowly or with pauses. The microphone stays on until you tap it again, then translates. Some phones beep after each pause.",
+  "sttStopOnTapSubtitle": "For speaking slowly or with pauses. The microphone stays on until you tap it again; the text then appears in the input field for you to check before translating. Some phones beep after each pause.",
   "@sttStopOnTapTitle": {
     "description": "Settings switch: the microphone keeps listening through pauses until tapped again (ADR-079)"
   },

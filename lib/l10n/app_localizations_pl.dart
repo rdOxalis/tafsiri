@@ -189,7 +189,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Do mówienia powoli lub z przerwami. Mikrofon pozostaje włączony, dopóki nie dotkniesz go ponownie, a potem tłumaczy. Niektóre telefony piszczą po każdej przerwie.';
+      'Do mówienia powoli lub z przerwami. Mikrofon pozostaje włączony, dopóki nie dotkniesz go ponownie; tekst pojawia się wtedy w polu wprowadzania, aby można go było sprawdzić przed tłumaczeniem. Niektóre telefony piszczą po każdej przerwie.';
 
   @override
   String get translationLanguagesSection => 'Języki tłumaczenia';

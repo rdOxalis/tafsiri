@@ -189,7 +189,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get sttStopOnTapSubtitle =>
-      'Pour parler lentement ou avec des pauses. Le micro reste actif jusqu’à ce que vous le touchiez à nouveau, puis la traduction démarre. Certains téléphones émettent un bip après chaque pause.';
+      'Pour parler lentement ou avec des pauses. Le micro reste actif jusqu’à ce que vous le touchiez à nouveau ; le texte apparaît alors dans le champ de saisie pour être vérifié avant la traduction. Certains téléphones émettent un bip après chaque pause.';
 
   @override
   String get translationLanguagesSection => 'Langues de traduction';

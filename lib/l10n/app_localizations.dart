@@ -458,7 +458,7 @@ abstract class AppLocalizations {
   /// No description provided for @sttStopOnTapSubtitle.
   ///
   /// In en_GB, this message translates to:
-  /// **'For speaking slowly or with pauses. The microphone stays on until you tap it again, then translates. Some phones beep after each pause.'**
+  /// **'For speaking slowly or with pauses. The microphone stays on until you tap it again; the text then appears in the input field for you to check before translating. Some phones beep after each pause.'**
   String get sttStopOnTapSubtitle;
 
   /// Section header for the translation languages group in settings
