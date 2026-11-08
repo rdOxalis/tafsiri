@@ -204,6 +204,74 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dictationStop => 'Arrêter';
 
   @override
+  String learnButton(int count) {
+    return 'Apprendre ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Apprendre';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Répondez en $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Votre traduction';
+
+  @override
+  String get learnCheck => 'Vérifier';
+
+  @override
+  String get learnDontKnow => 'Je ne sais pas';
+
+  @override
+  String get learnChecking => 'Vérification…';
+
+  @override
+  String get learnYourAnswer => 'Votre réponse';
+
+  @override
+  String get learnSaved => 'Traduction enregistrée';
+
+  @override
+  String get gradeCorrect => 'Juste';
+
+  @override
+  String get gradeAlmost => 'Presque';
+
+  @override
+  String get gradeWrong => 'Faux';
+
+  @override
+  String get learnNext => 'Suivant';
+
+  @override
+  String get learnAiUnavailable =>
+      'La vérification n’est pas disponible pour le moment. Comment ça s’est passé ?';
+
+  @override
+  String get learnOverrideHint => 'Pas d’accord ? Choisissez une autre note.';
+
+  @override
+  String get learnNothingDue =>
+      'Rien à apprendre aujourd’hui. Les cartes viennent de vos traductions favorites ; celles que vous savez reviennent à leur échéance.';
+
+  @override
+  String get learnSessionDone => 'Série terminée';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct juste · $almost presque · $wrong faux';
+  }
+
+  @override
+  String get learnFinish => 'Terminé';
+
+  @override
+  String get learnNoAnswer => '(pas de réponse)';
+
+  @override
   String get dictationOtherLanguage => 'Autre langue';
 
   @override

@@ -9,7 +9,8 @@
   - [x] Answer check: system prompt, `VERDICT:`/`FEEDBACK:` parser, tests for all three providers (2026-11-08; `complete()` added to every provider)
   - [x] Measure the check on real answers (2026-11-08, Claude only: Sonnet 5.5 19/19, Haiku 4.5 15/19 — too strict, see ADR-082)
   - [x] Run the same probe on OpenAI and Mistral (2026-11-08: GPT-5.6 Luna 18/19, Mistral Medium/Small 17/19; see ADR-082)
-  - [ ] Learning screen: "Learn (n)" in the favourites view, card, result with override, session summary
+  - [x] Learning screen: "Learn (n)" in the history's filter row, card, result with override, session summary (2026-11-08)
+  - [ ] Try it on a phone
   - [ ] Backup format version with the learning state; strings in all 12 languages; changelog
 
 - [x] **The Swahili plural that lives on the verb** (2026-10-05, ADR-072, ADR-073). Measured across three providers and seven model/prompt arms instead of guessed: the prompt rule helped only the weakest provider, a place to think helped more than a budget to think in, and the real spread was between models. Settled by changing the Claude default to Sonnet 5.5 and giving every provider a model picker.

@@ -485,6 +485,126 @@ abstract class AppLocalizations {
   /// **'Stop'**
   String get dictationStop;
 
+  /// History: opens the flashcards (ADR-082); count is the cards due now
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Learn ({count})'**
+  String learnButton(int count);
+
+  /// No description provided for @learnTitle.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Learn'**
+  String get learnTitle;
+
+  /// Flashcard instruction; language is the user's own language name from the settings
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Answer in {language}'**
+  String learnTranslateInto(String language);
+
+  /// No description provided for @learnAnswerHint.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Your translation'**
+  String get learnAnswerHint;
+
+  /// No description provided for @learnCheck.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Check'**
+  String get learnCheck;
+
+  /// No description provided for @learnDontKnow.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'I don\'t know'**
+  String get learnDontKnow;
+
+  /// No description provided for @learnChecking.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Checking…'**
+  String get learnChecking;
+
+  /// No description provided for @learnYourAnswer.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Your answer'**
+  String get learnYourAnswer;
+
+  /// No description provided for @learnSaved.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Saved translation'**
+  String get learnSaved;
+
+  /// No description provided for @gradeCorrect.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Right'**
+  String get gradeCorrect;
+
+  /// No description provided for @gradeAlmost.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Almost'**
+  String get gradeAlmost;
+
+  /// No description provided for @gradeWrong.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Wrong'**
+  String get gradeWrong;
+
+  /// No description provided for @learnNext.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Next'**
+  String get learnNext;
+
+  /// No description provided for @learnAiUnavailable.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'The check is not available right now. How did you do?'**
+  String get learnAiUnavailable;
+
+  /// No description provided for @learnOverrideHint.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Disagree? Pick another grade.'**
+  String get learnOverrideHint;
+
+  /// No description provided for @learnNothingDue.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Nothing to learn today. Cards come from your favourite translations; the ones you know come back when they are due.'**
+  String get learnNothingDue;
+
+  /// No description provided for @learnSessionDone.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Session complete'**
+  String get learnSessionDone;
+
+  /// Flashcard session summary
+  ///
+  /// In en_GB, this message translates to:
+  /// **'{correct} right · {almost} almost · {wrong} wrong'**
+  String learnSummary(int correct, int almost, int wrong);
+
+  /// No description provided for @learnFinish.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Done'**
+  String get learnFinish;
+
+  /// No description provided for @learnNoAnswer.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'(no answer)'**
+  String get learnNoAnswer;
+
   /// No description provided for @dictationOtherLanguage.
   ///
   /// In en_GB, this message translates to:

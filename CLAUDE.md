@@ -302,6 +302,14 @@ Text: [INPUT]
 - **Favourites tab:** Separate tab or filter chip showing only favourites
 - **Delete:** Swipe-to-delete with undo snackbar
 
+### Flashcards (ADR-082)
+
+- "Learn (n)" in the history's filter row, shown once a favourite translation exists; n = cards in a session now
+- Each translation favourite → two cards (`produce`: confident → learning; `recall`: learning → confident); corrections never
+- The user types the answer; the AI judges meaning, not wording (`answer_check.dart`, `VERDICT:`/`FEEDBACK:`), feedback in the confident language; the user can override the grade with one tap; no key or an API error → self-grading
+- Simplified SM-2 (`scheduler.dart`); state in `review_card`; a session = due cards + up to 10 new per day; wrong cards repeat in the same session
+- Measure prompt changes with `tools/probe_answer_check.dart`
+
 ### Voice Input (STT) — Language Matching
 
 The STT recognition locale adapts to the user's actual input language, not the app UI language. Logic:

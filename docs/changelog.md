@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Flashcards from your favourites** (ADR-082). In the history, "Learn (n)" turns every favourite translation into two cards: one asks for the learning language, one for your confident language. You type the answer and the AI judges it by meaning, not by wording — an answer in other words that is correct counts as right, a small slip as almost, with the mistake explained in your confident language. You can change its verdict with one tap. Cards you know come back after growing intervals, as in Anki; wrong ones come back in the same session. Without an API key or a connection you grade yourself.
+
 ---
 
 ## [1.0.23] - 2026-11-08

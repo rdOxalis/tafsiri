@@ -205,6 +205,74 @@ class AppLocalizationsBg extends AppLocalizations {
   String get dictationStop => 'Спри';
 
   @override
+  String learnButton(int count) {
+    return 'Учи ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Учене';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Отговори на $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Твоят превод';
+
+  @override
+  String get learnCheck => 'Провери';
+
+  @override
+  String get learnDontKnow => 'Не знам';
+
+  @override
+  String get learnChecking => 'Проверява се…';
+
+  @override
+  String get learnYourAnswer => 'Твоят отговор';
+
+  @override
+  String get learnSaved => 'Запазен превод';
+
+  @override
+  String get gradeCorrect => 'Вярно';
+
+  @override
+  String get gradeAlmost => 'Почти';
+
+  @override
+  String get gradeWrong => 'Грешно';
+
+  @override
+  String get learnNext => 'Напред';
+
+  @override
+  String get learnAiUnavailable =>
+      'Проверката не е достъпна в момента. Как се справи?';
+
+  @override
+  String get learnOverrideHint => 'Не си съгласен? Избери друга оценка.';
+
+  @override
+  String get learnNothingDue =>
+      'Днес няма какво да учиш. Картите идват от любимите ти преводи; тези, които знаеш, се връщат, когато им дойде времето.';
+
+  @override
+  String get learnSessionDone => 'Рундът е завършен';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct вярно · $almost почти · $wrong грешно';
+  }
+
+  @override
+  String get learnFinish => 'Готово';
+
+  @override
+  String get learnNoAnswer => '(няма отговор)';
+
+  @override
   String get dictationOtherLanguage => 'Друг език';
 
   @override

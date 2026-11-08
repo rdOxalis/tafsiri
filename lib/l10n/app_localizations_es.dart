@@ -204,6 +204,75 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dictationStop => 'Detener';
 
   @override
+  String learnButton(int count) {
+    return 'Aprender ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Aprender';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Responde en $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Tu traducción';
+
+  @override
+  String get learnCheck => 'Comprobar';
+
+  @override
+  String get learnDontKnow => 'No lo sé';
+
+  @override
+  String get learnChecking => 'Comprobando…';
+
+  @override
+  String get learnYourAnswer => 'Tu respuesta';
+
+  @override
+  String get learnSaved => 'Traducción guardada';
+
+  @override
+  String get gradeCorrect => 'Bien';
+
+  @override
+  String get gradeAlmost => 'Casi';
+
+  @override
+  String get gradeWrong => 'Mal';
+
+  @override
+  String get learnNext => 'Siguiente';
+
+  @override
+  String get learnAiUnavailable =>
+      'La comprobación no está disponible ahora. ¿Cómo te fue?';
+
+  @override
+  String get learnOverrideHint =>
+      '¿No estás de acuerdo? Elige otra valoración.';
+
+  @override
+  String get learnNothingDue =>
+      'Hoy no hay nada que aprender. Las tarjetas salen de tus traducciones favoritas; las que sabes vuelven cuando les toca.';
+
+  @override
+  String get learnSessionDone => 'Ronda terminada';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct bien · $almost casi · $wrong mal';
+  }
+
+  @override
+  String get learnFinish => 'Hecho';
+
+  @override
+  String get learnNoAnswer => '(sin respuesta)';
+
+  @override
   String get dictationOtherLanguage => 'Otro idioma';
 
   @override

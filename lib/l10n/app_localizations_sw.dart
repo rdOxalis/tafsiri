@@ -204,6 +204,73 @@ class AppLocalizationsSw extends AppLocalizations {
   String get dictationStop => 'Simamisha';
 
   @override
+  String learnButton(int count) {
+    return 'Jifunze ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Jifunze';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Jibu kwa $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Tafsiri yako';
+
+  @override
+  String get learnCheck => 'Kagua';
+
+  @override
+  String get learnDontKnow => 'Sijui';
+
+  @override
+  String get learnChecking => 'Inakaguliwa…';
+
+  @override
+  String get learnYourAnswer => 'Jibu lako';
+
+  @override
+  String get learnSaved => 'Tafsiri iliyohifadhiwa';
+
+  @override
+  String get gradeCorrect => 'Sahihi';
+
+  @override
+  String get gradeAlmost => 'Karibu';
+
+  @override
+  String get gradeWrong => 'Si sahihi';
+
+  @override
+  String get learnNext => 'Endelea';
+
+  @override
+  String get learnAiUnavailable => 'Ukaguzi haupatikani kwa sasa. Ulifanyaje?';
+
+  @override
+  String get learnOverrideHint => 'Hukubaliani? Chagua tathmini nyingine.';
+
+  @override
+  String get learnNothingDue =>
+      'Hakuna cha kujifunza leo. Kadi zinatoka kwenye tafsiri unazozipenda; unazozijua zinarudi zikifika wakati wake.';
+
+  @override
+  String get learnSessionDone => 'Raundi imekamilika';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return 'sahihi $correct · karibu $almost · si sahihi $wrong';
+  }
+
+  @override
+  String get learnFinish => 'Maliza';
+
+  @override
+  String get learnNoAnswer => '(hakuna jibu)';
+
+  @override
   String get dictationOtherLanguage => 'Lugha nyingine';
 
   @override

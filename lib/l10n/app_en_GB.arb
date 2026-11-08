@@ -234,6 +234,56 @@
   "dictationIdleHint": "Tap the microphone and speak. A pause ends the recording; tap again to continue.",
   "dictationStart": "Speak",
   "dictationStop": "Stop",
+  "learnButton": "Learn ({count})",
+  "@learnButton": {
+    "description": "History: opens the flashcards (ADR-082); count is the cards due now",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "learnTitle": "Learn",
+  "learnTranslateInto": "Answer in {language}",
+  "@learnTranslateInto": {
+    "description": "Flashcard instruction; language is the user's own language name from the settings",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "learnAnswerHint": "Your translation",
+  "learnCheck": "Check",
+  "learnDontKnow": "I don't know",
+  "learnChecking": "Checking…",
+  "learnYourAnswer": "Your answer",
+  "learnSaved": "Saved translation",
+  "gradeCorrect": "Right",
+  "gradeAlmost": "Almost",
+  "gradeWrong": "Wrong",
+  "learnNext": "Next",
+  "learnAiUnavailable": "The check is not available right now. How did you do?",
+  "learnOverrideHint": "Disagree? Pick another grade.",
+  "learnNothingDue": "Nothing to learn today. Cards come from your favourite translations; the ones you know come back when they are due.",
+  "learnSessionDone": "Session complete",
+  "learnSummary": "{correct} right · {almost} almost · {wrong} wrong",
+  "@learnSummary": {
+    "description": "Flashcard session summary",
+    "placeholders": {
+      "correct": {
+        "type": "int"
+      },
+      "almost": {
+        "type": "int"
+      },
+      "wrong": {
+        "type": "int"
+      }
+    }
+  },
+  "learnFinish": "Done",
+  "learnNoAnswer": "(no answer)",
   "dictationOtherLanguage": "Other language",
   "@dictationTitle": {
     "description": "Title of the window shown while dictating with the microphone (ADR-080)"

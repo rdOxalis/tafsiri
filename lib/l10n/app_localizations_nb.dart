@@ -204,6 +204,74 @@ class AppLocalizationsNb extends AppLocalizations {
   String get dictationStop => 'Stopp';
 
   @override
+  String learnButton(int count) {
+    return 'Lær ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Lær';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Svar på $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Din oversettelse';
+
+  @override
+  String get learnCheck => 'Sjekk';
+
+  @override
+  String get learnDontKnow => 'Vet ikke';
+
+  @override
+  String get learnChecking => 'Sjekker…';
+
+  @override
+  String get learnYourAnswer => 'Ditt svar';
+
+  @override
+  String get learnSaved => 'Lagret oversettelse';
+
+  @override
+  String get gradeCorrect => 'Riktig';
+
+  @override
+  String get gradeAlmost => 'Nesten';
+
+  @override
+  String get gradeWrong => 'Feil';
+
+  @override
+  String get learnNext => 'Neste';
+
+  @override
+  String get learnAiUnavailable =>
+      'Sjekken er ikke tilgjengelig akkurat nå. Hvordan gikk det?';
+
+  @override
+  String get learnOverrideHint => 'Uenig? Velg en annen vurdering.';
+
+  @override
+  String get learnNothingDue =>
+      'Ingenting å lære i dag. Kortene kommer fra favorittoversettelsene dine; de du kan, kommer tilbake når de forfaller.';
+
+  @override
+  String get learnSessionDone => 'Runden er ferdig';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct riktig · $almost nesten · $wrong feil';
+  }
+
+  @override
+  String get learnFinish => 'Ferdig';
+
+  @override
+  String get learnNoAnswer => '(ikke noe svar)';
+
+  @override
   String get dictationOtherLanguage => 'Annet språk';
 
   @override

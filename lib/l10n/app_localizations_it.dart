@@ -204,6 +204,75 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dictationStop => 'Ferma';
 
   @override
+  String learnButton(int count) {
+    return 'Impara ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Impara';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Rispondi in $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'La tua traduzione';
+
+  @override
+  String get learnCheck => 'Controlla';
+
+  @override
+  String get learnDontKnow => 'Non lo so';
+
+  @override
+  String get learnChecking => 'Controllo in corso…';
+
+  @override
+  String get learnYourAnswer => 'La tua risposta';
+
+  @override
+  String get learnSaved => 'Traduzione salvata';
+
+  @override
+  String get gradeCorrect => 'Giusto';
+
+  @override
+  String get gradeAlmost => 'Quasi';
+
+  @override
+  String get gradeWrong => 'Sbagliato';
+
+  @override
+  String get learnNext => 'Avanti';
+
+  @override
+  String get learnAiUnavailable =>
+      'Il controllo non è disponibile ora. Com’è andata?';
+
+  @override
+  String get learnOverrideHint =>
+      'Non sei d’accordo? Scegli un’altra valutazione.';
+
+  @override
+  String get learnNothingDue =>
+      'Niente da imparare oggi. Le schede nascono dalle tue traduzioni preferite; quelle che sai tornano quando è il momento.';
+
+  @override
+  String get learnSessionDone => 'Giro completato';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct giuste · $almost quasi · $wrong sbagliate';
+  }
+
+  @override
+  String get learnFinish => 'Fatto';
+
+  @override
+  String get learnNoAnswer => '(nessuna risposta)';
+
+  @override
   String get dictationOtherLanguage => 'Altra lingua';
 
   @override

@@ -203,6 +203,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dictationStop => 'Stop';
 
   @override
+  String learnButton(int count) {
+    return 'Learn ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Learn';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Answer in $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Your translation';
+
+  @override
+  String get learnCheck => 'Check';
+
+  @override
+  String get learnDontKnow => 'I don\'t know';
+
+  @override
+  String get learnChecking => 'Checking…';
+
+  @override
+  String get learnYourAnswer => 'Your answer';
+
+  @override
+  String get learnSaved => 'Saved translation';
+
+  @override
+  String get gradeCorrect => 'Right';
+
+  @override
+  String get gradeAlmost => 'Almost';
+
+  @override
+  String get gradeWrong => 'Wrong';
+
+  @override
+  String get learnNext => 'Next';
+
+  @override
+  String get learnAiUnavailable =>
+      'The check is not available right now. How did you do?';
+
+  @override
+  String get learnOverrideHint => 'Disagree? Pick another grade.';
+
+  @override
+  String get learnNothingDue =>
+      'Nothing to learn today. Cards come from your favourite translations; the ones you know come back when they are due.';
+
+  @override
+  String get learnSessionDone => 'Session complete';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct right · $almost almost · $wrong wrong';
+  }
+
+  @override
+  String get learnFinish => 'Done';
+
+  @override
+  String get learnNoAnswer => '(no answer)';
+
+  @override
   String get dictationOtherLanguage => 'Other language';
 
   @override
@@ -601,6 +669,74 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get dictationStop => 'Stop';
+
+  @override
+  String learnButton(int count) {
+    return 'Learn ($count)';
+  }
+
+  @override
+  String get learnTitle => 'Learn';
+
+  @override
+  String learnTranslateInto(String language) {
+    return 'Answer in $language';
+  }
+
+  @override
+  String get learnAnswerHint => 'Your translation';
+
+  @override
+  String get learnCheck => 'Check';
+
+  @override
+  String get learnDontKnow => 'I don\'t know';
+
+  @override
+  String get learnChecking => 'Checking…';
+
+  @override
+  String get learnYourAnswer => 'Your answer';
+
+  @override
+  String get learnSaved => 'Saved translation';
+
+  @override
+  String get gradeCorrect => 'Right';
+
+  @override
+  String get gradeAlmost => 'Almost';
+
+  @override
+  String get gradeWrong => 'Wrong';
+
+  @override
+  String get learnNext => 'Next';
+
+  @override
+  String get learnAiUnavailable =>
+      'The check is not available right now. How did you do?';
+
+  @override
+  String get learnOverrideHint => 'Disagree? Pick another grade.';
+
+  @override
+  String get learnNothingDue =>
+      'Nothing to learn today. Cards come from your favourite translations; the ones you know come back when they are due.';
+
+  @override
+  String get learnSessionDone => 'Session complete';
+
+  @override
+  String learnSummary(int correct, int almost, int wrong) {
+    return '$correct right · $almost almost · $wrong wrong';
+  }
+
+  @override
+  String get learnFinish => 'Done';
+
+  @override
+  String get learnNoAnswer => '(no answer)';
 
   @override
   String get dictationOtherLanguage => 'Other language';
