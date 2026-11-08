@@ -24,11 +24,32 @@ class DictationBuffer {
     }
   }
 
+  /// Called when a new session starts. If the previous one ended without a
+  /// final result (an error after a pause, for instance), its partial words
+  /// are kept rather than overwritten by the new session's.
+  void startSession() {
+    _committed = joinSpeech(_committed, _current);
+    _current = '';
+  }
+
   void reset() {
     _committed = '';
     _current = '';
   }
 }
+
+/// Whether a recogniser error ends keep-listening mode.
+///
+/// `speech_to_text` marks every Android error as permanent, including the
+/// silence timeout and no-match that a pause produces — exactly the moments
+/// this mode must carry on through. So the decision is made here, by error:
+/// only what a restart cannot fix ends the mode.
+bool isFatalSttError(String errorMsg) => const {
+      'error_permission',
+      'error_audio_error',
+      'error_language_not_supported',
+      'error_language_unavailable',
+    }.contains(errorMsg);
 
 /// Joins two pieces of recognised speech with a single space.
 String joinSpeech(String a, String b) {

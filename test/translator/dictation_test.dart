@@ -35,6 +35,17 @@ void main() {
       expect(buffer.text, 'siku njema');
     });
 
+    test('a session that ended without a final result keeps its words', () {
+      // Pause → the recogniser reports an error instead of a final result.
+      final buffer = DictationBuffer()
+        ..startSession()
+        ..update('Lila amemfukuza', isFinal: false)
+        ..startSession()
+        ..update('mjusi', isFinal: false);
+
+      expect(buffer.text, 'Lila amemfukuza mjusi');
+    });
+
     test('reset starts over', () {
       final buffer = DictationBuffer()..update('paka', isFinal: true);
       buffer.reset();
@@ -65,6 +76,20 @@ void main() {
       guard.allowRestartAfter(instant);
       guard.allowRestartAfter(const Duration(seconds: 5));
       expect(guard.allowRestartAfter(instant), isTrue);
+    });
+  });
+
+  group('isFatalSttError', () {
+    test('a pause does not end the mode', () {
+      expect(isFatalSttError('error_speech_timeout'), isFalse);
+      expect(isFatalSttError('error_no_match'), isFalse);
+      expect(isFatalSttError('error_busy'), isFalse);
+      expect(isFatalSttError('error_client'), isFalse);
+    });
+
+    test('what a restart cannot fix does', () {
+      expect(isFatalSttError('error_permission'), isTrue);
+      expect(isFatalSttError('error_language_not_supported'), isTrue);
     });
   });
 }
