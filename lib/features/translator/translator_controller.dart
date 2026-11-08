@@ -160,6 +160,10 @@ class TranslatorController extends Notifier<TranslatorState> {
   Future<void> _initStt() async {
     try {
       final available = await _stt.initialize(
+        // Plugin-side logging (logcat tag SpeechToTextPlugin), for builds
+        // made to diagnose recognition on a device.
+        debugLogging:
+            const bool.fromEnvironment('TAFSIRI_STT_DEBUG'),
         onError: (e) {
           diagLog('stt: error ${e.errorMsg} (permanent: ${e.permanent})');
           // Not e.permanent: the plugin sets it on every Android error,
@@ -174,6 +178,8 @@ class TranslatorController extends Notifier<TranslatorState> {
           }
         },
         onStatus: (s) {
+          diagLog('stt: status $s (session $_dictationSession, '
+              'keep=$_keepListening)');
           if (_keepListening) {
             // Between sessions the microphone stays shown as on.
             if (s == SpeechToText.doneStatus) _scheduleRestart();
@@ -256,6 +262,10 @@ class TranslatorController extends Notifier<TranslatorState> {
 
   void _onDictationResult(int session, SpeechRecognitionResult result) {
     // A late result from a session already replaced or finished.
+    if (result.finalResult) {
+      diagLog('stt: final result, session $session/$_dictationSession, '
+          '${result.recognizedWords.length} chars');
+    }
     if (!_keepListening || session != _dictationSession) return;
     // Collected only; the input field is filled when the user taps to stop,
     // so nothing half-recognised appears while they are still speaking.
@@ -263,17 +273,21 @@ class TranslatorController extends Notifier<TranslatorState> {
   }
 
   /// A session ended by `done` and by an error alike, sometimes both; one
-  /// restart, slightly delayed so the recogniser is free again.
+  /// restart. On a Galaxy S25 (Android 17) `done` came after the final
+  /// result every time, so the recogniser is already free; the short delay
+  /// only lets a second end event for the same session fall into the same
+  /// restart. Every millisecond here is one in which the phone is deaf.
   void _scheduleRestart() {
     if (_restartTimer?.isActive ?? false) return;
     _restartTimer =
-        Timer(const Duration(milliseconds: 300), _restartDictation);
+        Timer(const Duration(milliseconds: 100), _restartDictation);
   }
 
   /// Called when the recogniser ended a session on its own, after a pause.
   void _restartDictation() {
     if (!_keepListening || !state.isListening || _stt.isListening) return;
     final lasted = DateTime.now().difference(_sessionStartedAt);
+    diagLog('stt: restart after ${lasted.inMilliseconds} ms');
     if (!_restartGuard.allowRestartAfter(lasted)) {
       diagLog('stt: recogniser keeps ending at once, giving up');
       _keepListening = false;
