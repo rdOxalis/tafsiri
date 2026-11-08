@@ -16,6 +16,7 @@ const _settings = SettingsState(
   targetLanguage: 'Swahili',
   altLanguage: 'German',
   sttLanguage: 'sw',
+  sttStopOnTap: true,
   correctionMode: true,
 );
 
@@ -59,6 +60,7 @@ void main() {
       expect(restored.settings.targetLanguage, 'Swahili');
       expect(restored.settings.altLanguage, 'German');
       expect(restored.settings.sttLanguage, 'sw');
+      expect(restored.settings.sttStopOnTap, isTrue);
       expect(restored.settings.correctionMode, isTrue);
       expect(restored.appVersion, '1.0.9+9');
 

@@ -185,6 +185,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (fra siste oversettelse)';
 
   @override
+  String get sttStopOnTapTitle => 'Lytt til jeg trykker';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'For å snakke sakte eller med pauser. Mikrofonen er på til du trykker på den igjen, og oversetter så. Noen telefoner piper etter hver pause.';
+
+  @override
   String get translationLanguagesSection => 'Oversettingsspråk';
 
   @override

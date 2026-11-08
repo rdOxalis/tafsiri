@@ -78,6 +78,8 @@
   "ocrSourceGallery": "Galerie",
   "sttLanguageLabel": "Spracherkennung (Mikrofon)",
   "sttLanguageAuto": "Automatisch (aus letzter Übersetzung)",
+  "sttStopOnTapTitle": "Zuhören, bis ich tippe",
+  "sttStopOnTapSubtitle": "Für langsames Sprechen mit Pausen. Das Mikrofon bleibt an, bis du es erneut antippst, dann wird übersetzt. Manche Handys piepen nach jeder Pause.",
   "translationLanguagesSection": "Übersetzungssprachen",
   "translationInfoTitle": "Wie die Übersetzung funktioniert",
   "translationInfoPart1": "Eingegebener Text wird nach ",

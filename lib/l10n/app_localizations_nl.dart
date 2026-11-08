@@ -184,6 +184,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get sttLanguageAuto => 'Automatisch (van laatste vertaling)';
 
   @override
+  String get sttStopOnTapTitle => 'Blijven luisteren tot ik tik';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'Om langzaam of met pauzes te spreken. De microfoon blijft aan tot je er opnieuw op tikt en vertaalt dan. Sommige telefoons piepen na elke pauze.';
+
+  @override
   String get translationLanguagesSection => 'Vertaaltalen';
 
   @override

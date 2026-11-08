@@ -78,6 +78,8 @@
   "ocrSourceGallery": "Galleri",
   "sttLanguageLabel": "Talegjenkjenning (Mikrofon)",
   "sttLanguageAuto": "Auto (fra siste oversettelse)",
+  "sttStopOnTapTitle": "Lytt til jeg trykker",
+  "sttStopOnTapSubtitle": "For å snakke sakte eller med pauser. Mikrofonen er på til du trykker på den igjen, og oversetter så. Noen telefoner piper etter hver pause.",
   "translationLanguagesSection": "Oversettingsspråk",
   "translationInfoTitle": "Slik fungerer det",
   "translationInfoPart1": "Innskrevet tekst oversettes til ",

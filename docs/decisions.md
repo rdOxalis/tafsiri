@@ -1,5 +1,12 @@
 # Architecture Decision Records
 
+## ADR-079: Optional keep-listening mode for the microphone
+**Date:** 2026-11-08
+**Status:** Accepted
+**Context:** Reported from 1.0.22 on a phone: speaking the learning language slowly, with pauses to find words, the microphone often switched off mid-sentence. Android's recogniser ends a session by itself after a short silence, and `speech_to_text` (7.3.0) passes no silence-length extras; its `pauseFor` is a Dart-side timer that can only end a session *earlier*. There is no switch that makes one session last longer.
+**Decision:** A setting, `stt_stop_on_tap` (default off, so the quick one-sentence dictation stays as it was). When on, the controller restarts the recogniser every time it reports `done`, and keeps the text of finished sessions in a `DictationBuffer`, adding each new session's words after it. Translation starts only when the user taps the microphone again; the partial words of the session running at that moment are kept. Permanent recogniser errors end the mode; a `RestartGuard` gives up after three sessions in a row that end within a second, so a recogniser that cannot work does not make the phone beep in a loop. A session token discards late results from a session already replaced. The setting travels in backups.
+**Consequences:** Two costs the platform imposes and the app cannot remove: many phones play the start beep on every restart, and a word spoken in the fraction of a second between two sessions can be lost; the settings subtitle mentions the beep. The buffer and the guard are unit-tested; the restart loop itself runs only against a real recogniser and has to be tried on a phone. If the beep proves too annoying, the alternative is an on-device recogniser with its own silence handling, which is a much larger change.
+
 ## ADR-078: Read Claude's answer from its text blocks, not the first block
 **Date:** 2026-10-27
 **Status:** Accepted

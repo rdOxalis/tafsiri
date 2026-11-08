@@ -187,6 +187,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sttLanguageAuto => 'Automatisch (aus letzter Übersetzung)';
 
   @override
+  String get sttStopOnTapTitle => 'Zuhören, bis ich tippe';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'Für langsames Sprechen mit Pausen. Das Mikrofon bleibt an, bis du es erneut antippst, dann wird übersetzt. Manche Handys piepen nach jeder Pause.';
+
+  @override
   String get translationLanguagesSection => 'Übersetzungssprachen';
 
   @override

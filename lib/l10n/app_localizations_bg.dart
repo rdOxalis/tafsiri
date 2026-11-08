@@ -186,6 +186,13 @@ class AppLocalizationsBg extends AppLocalizations {
   String get sttLanguageAuto => 'Автоматично (от последния превод)';
 
   @override
+  String get sttStopOnTapTitle => 'Слушай, докато не докосна';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'За бавно говорене или с паузи. Микрофонът остава включен, докато не го докоснете отново, след което превежда. Някои телефони издават сигнал след всяка пауза.';
+
+  @override
   String get translationLanguagesSection => 'Езици за превод';
 
   @override

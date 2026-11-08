@@ -49,6 +49,9 @@ String maskApiKey(String key) {
 // SharedPreferences key for STT input language
 const kPrefSttLanguage = 'stt_language';
 
+// Microphone stays on until tapped again instead of stopping on a pause (ADR-079)
+const kPrefSttStopOnTap = 'stt_stop_on_tap';
+
 // STT language options: (ISO-639-1 code, display name). Empty code = auto.
 const List<(String, String)> kSttLanguageOptions = [
   ('', 'Auto'),

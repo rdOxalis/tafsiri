@@ -78,6 +78,8 @@
   "ocrSourceGallery": "Galería",
   "sttLanguageLabel": "Reconocimiento de voz (Micrófono)",
   "sttLanguageAuto": "Auto (de la última traducción)",
+  "sttStopOnTapTitle": "Escuchar hasta que toque",
+  "sttStopOnTapSubtitle": "Para hablar despacio o con pausas. El micrófono sigue activo hasta que lo vuelvas a tocar y entonces traduce. Algunos teléfonos pitan tras cada pausa.",
   "translationLanguagesSection": "Idiomas de traducción",
   "translationInfoTitle": "Cómo funciona",
   "translationInfoPart1": "El texto ingresado se traduce al ",

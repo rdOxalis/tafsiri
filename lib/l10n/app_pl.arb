@@ -78,6 +78,8 @@
   "ocrSourceGallery": "Galeria",
   "sttLanguageLabel": "Rozpoznawanie mowy (Mikrofon)",
   "sttLanguageAuto": "Auto (z ostatniego tłumaczenia)",
+  "sttStopOnTapTitle": "Słuchaj, aż dotknę",
+  "sttStopOnTapSubtitle": "Do mówienia powoli lub z przerwami. Mikrofon pozostaje włączony, dopóki nie dotkniesz go ponownie, a potem tłumaczy. Niektóre telefony piszczą po każdej przerwie.",
   "translationLanguagesSection": "Języki tłumaczenia",
   "translationInfoTitle": "Jak to działa",
   "translationInfoPart1": "Wprowadzony tekst jest tłumaczony na ",

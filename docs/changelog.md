@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Keep the microphone on through pauses** (Settings → Speech Recognition, ADR-079). Android stops listening after a short pause, which cut off anyone speaking a language they are still learning. With the new switch on, the microphone stays on until you tap it again, collects everything said, and only then translates. Off by default; some phones beep after each pause.
+
 ---
 
 ## [1.0.22] - 2026-10-27

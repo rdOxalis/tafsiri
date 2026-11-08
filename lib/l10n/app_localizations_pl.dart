@@ -185,6 +185,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (z ostatniego tłumaczenia)';
 
   @override
+  String get sttStopOnTapTitle => 'Słuchaj, aż dotknę';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'Do mówienia powoli lub z przerwami. Mikrofon pozostaje włączony, dopóki nie dotkniesz go ponownie, a potem tłumaczy. Niektóre telefony piszczą po każdej przerwie.';
+
+  @override
   String get translationLanguagesSection => 'Języki tłumaczenia';
 
   @override

@@ -77,6 +77,8 @@
   "ocrSourceGallery": "Галерия",
   "sttLanguageLabel": "Разпознаване на реч (микрофон)",
   "sttLanguageAuto": "Автоматично (от последния превод)",
+  "sttStopOnTapTitle": "Слушай, докато не докосна",
+  "sttStopOnTapSubtitle": "За бавно говорене или с паузи. Микрофонът остава включен, докато не го докоснете отново, след което превежда. Някои телефони издават сигнал след всяка пауза.",
   "translationLanguagesSection": "Езици за превод",
   "translationInfoTitle": "Как работи преводът",
   "translationInfoPart1": "Въведеният текст се превежда на ",

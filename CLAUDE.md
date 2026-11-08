@@ -192,6 +192,7 @@ Stored via `shared_preferences`.
 | `target_language` | String | Learning language — the one being learnt, translated *into*, e.g. `'Swahili'` |
 | `alt_language` | String | Confident language — the one the user speaks well, e.g. `'English'` |
 | `app_locale` | String | UI locale, e.g. `'sw'`, `'de'`, `'en_GB'` |
+| `stt_stop_on_tap` | bool | Microphone keeps listening through pauses until tapped again (ADR-079) |
 | `correction_mode` | bool | Correction mode on/off (toggle lives in the translator header) |
 | `explanations_mode` | bool | Word explanations on/off (second toggle in the translator header, ADR-060) |
 | `model_<provider>` | String | Model chosen for that provider, e.g. `model_claude` = `'claude-sonnet-5-5'` (ADR-073). Absent means the default from `lib/core/ai_models.dart`. |

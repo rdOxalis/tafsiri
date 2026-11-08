@@ -449,6 +449,18 @@ abstract class AppLocalizations {
   /// **'Auto (from last translation)'**
   String get sttLanguageAuto;
 
+  /// Settings switch: the microphone keeps listening through pauses until tapped again (ADR-079)
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Keep listening until I tap'**
+  String get sttStopOnTapTitle;
+
+  /// No description provided for @sttStopOnTapSubtitle.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'For speaking slowly or with pauses. The microphone stays on until you tap it again, then translates. Some phones beep after each pause.'**
+  String get sttStopOnTapSubtitle;
+
   /// Section header for the translation languages group in settings
   ///
   /// In en_GB, this message translates to:

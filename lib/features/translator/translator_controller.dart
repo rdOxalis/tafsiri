@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'dictation.dart';
 import '../../core/constants.dart';
 import '../../core/database/dao_provider.dart';
 import '../../core/services/ai_service.dart';
@@ -134,9 +135,21 @@ class TranslatorState {
 class TranslatorController extends Notifier<TranslatorState> {
   final _stt = SpeechToText();
 
+  // Keep-listening mode (ADR-079): the recogniser is restarted after every
+  // pause until the user taps the microphone again.
+  bool _keepListening = false;
+  int _dictationSession = 0;
+  String? _sttLocaleId;
+  DateTime _sessionStartedAt = DateTime.now();
+  final _dictation = DictationBuffer();
+  final _restartGuard = RestartGuard();
+
   @override
   TranslatorState build() {
-    ref.onDispose(_stt.stop);
+    ref.onDispose(() {
+      _keepListening = false;
+      _stt.stop();
+    });
     Future.microtask(_initStt);
     return const TranslatorState();
   }
@@ -144,9 +157,21 @@ class TranslatorController extends Notifier<TranslatorState> {
   Future<void> _initStt() async {
     try {
       final available = await _stt.initialize(
-        onError: (e) => diagLog('stt: error ${e.errorMsg} '
-            '(permanent: ${e.permanent})'),
+        onError: (e) {
+          diagLog('stt: error ${e.errorMsg} (permanent: ${e.permanent})');
+          // A permanent error (no permission, no recogniser) will not go
+          // away by restarting; ordinary ones (silence, no match) will.
+          if (e.permanent && _keepListening) {
+            _keepListening = false;
+            state = state.copyWith(isListening: false);
+          }
+        },
         onStatus: (s) {
+          if (_keepListening) {
+            // Between sessions the microphone stays shown as on.
+            if (s == SpeechToText.doneStatus) _restartDictation();
+            return;
+          }
           if (s == SpeechToText.notListeningStatus) {
             state = state.copyWith(isListening: false);
           }
@@ -167,6 +192,10 @@ class TranslatorController extends Notifier<TranslatorState> {
   }
 
   Future<void> toggleListening() async {
+    if (state.isListening && _keepListening) {
+      await _finishDictation();
+      return;
+    }
     if (state.isListening) {
       await _stt.stop();
       state = state.copyWith(isListening: false);
@@ -179,6 +208,15 @@ class TranslatorController extends Notifier<TranslatorState> {
     final localeId = kSttLocaleMap[langCode];
     state = state.copyWith(isListening: true, clearOutput: true, clearError: true);
 
+    if (ref.read(settingsProvider).valueOrNull?.sttStopOnTap ?? false) {
+      _keepListening = true;
+      _sttLocaleId = localeId;
+      _dictation.reset();
+      _restartGuard.reset();
+      await _listenForDictation();
+      return;
+    }
+
     await _stt.listen(
       onResult: _onSttResult,
       localeId: localeId,
@@ -187,6 +225,54 @@ class TranslatorController extends Notifier<TranslatorState> {
         partialResults: true,
       ),
     );
+  }
+
+  Future<void> _listenForDictation() async {
+    final session = ++_dictationSession;
+    _sessionStartedAt = DateTime.now();
+    try {
+      await _stt.listen(
+        onResult: (result) => _onDictationResult(session, result),
+        localeId: _sttLocaleId,
+        listenOptions: SpeechListenOptions(
+          cancelOnError: true,
+          partialResults: true,
+        ),
+      );
+    } catch (e) {
+      diagLog('stt: dictation listen threw $e');
+      _keepListening = false;
+      state = state.copyWith(isListening: false);
+    }
+  }
+
+  void _onDictationResult(int session, SpeechRecognitionResult result) {
+    // A late result from a session already replaced or finished.
+    if (!_keepListening || session != _dictationSession) return;
+    _dictation.update(result.recognizedWords, isFinal: result.finalResult);
+    state = state.copyWith(inputText: _dictation.text);
+  }
+
+  /// Called when the recogniser ended a session on its own, after a pause.
+  void _restartDictation() {
+    if (!_keepListening || !state.isListening) return;
+    final lasted = DateTime.now().difference(_sessionStartedAt);
+    if (!_restartGuard.allowRestartAfter(lasted)) {
+      diagLog('stt: recogniser keeps ending at once, giving up');
+      _keepListening = false;
+      state = state.copyWith(isListening: false);
+      return;
+    }
+    _listenForDictation();
+  }
+
+  /// The user tapped the microphone: stop, keep what was heard, translate.
+  Future<void> _finishDictation() async {
+    _keepListening = false;
+    _dictationSession++;
+    await _stt.stop();
+    state = state.copyWith(isListening: false, inputText: _dictation.text);
+    await translate();
   }
 
   void _onSttResult(SpeechRecognitionResult result) {

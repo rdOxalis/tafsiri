@@ -228,6 +228,11 @@
   "@sttLanguageAuto": {
     "description": "Option in STT language selector meaning auto-detect"
   },
+  "sttStopOnTapTitle": "Keep listening until I tap",
+  "sttStopOnTapSubtitle": "For speaking slowly or with pauses. The microphone stays on until you tap it again, then translates. Some phones beep after each pause.",
+  "@sttStopOnTapTitle": {
+    "description": "Settings switch: the microphone keeps listening through pauses until tapped again (ADR-079)"
+  },
   "translationLanguagesSection": "Translation Languages",
   "@translationLanguagesSection": {
     "description": "Section header for the translation languages group in settings"

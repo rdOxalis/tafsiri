@@ -184,6 +184,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (from last translation)';
 
   @override
+  String get sttStopOnTapTitle => 'Keep listening until I tap';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'For speaking slowly or with pauses. The microphone stays on until you tap it again, then translates. Some phones beep after each pause.';
+
+  @override
   String get translationLanguagesSection => 'Translation Languages';
 
   @override
@@ -560,6 +567,13 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get sttLanguageAuto => 'Auto (from last translation)';
+
+  @override
+  String get sttStopOnTapTitle => 'Keep listening until I tap';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'For speaking slowly or with pauses. The microphone stays on until you tap it again, then translates. Some phones beep after each pause.';
 
   @override
   String get translationLanguagesSection => 'Translation Languages';

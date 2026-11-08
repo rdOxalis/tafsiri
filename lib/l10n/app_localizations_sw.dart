@@ -185,6 +185,13 @@ class AppLocalizationsSw extends AppLocalizations {
   String get sttLanguageAuto => 'Kiotomatiki (kutoka tafsiri ya mwisho)';
 
   @override
+  String get sttStopOnTapTitle => 'Sikiliza hadi nigonge';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'Kwa kuzungumza polepole au kwa vituo. Kipaza sauti kinabaki wazi hadi ukigonge tena, kisha kinatafsiri. Simu nyingine hulia baada ya kila kituo.';
+
+  @override
   String get translationLanguagesSection => 'Lugha za Tafsiri';
 
   @override

@@ -185,6 +185,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sttLanguageAuto => 'Auto (de la dernière traduction)';
 
   @override
+  String get sttStopOnTapTitle => 'Écouter jusqu’à ce que je touche';
+
+  @override
+  String get sttStopOnTapSubtitle =>
+      'Pour parler lentement ou avec des pauses. Le micro reste actif jusqu’à ce que vous le touchiez à nouveau, puis la traduction démarre. Certains téléphones émettent un bip après chaque pause.';
+
+  @override
   String get translationLanguagesSection => 'Langues de traduction';
 
   @override
