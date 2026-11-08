@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.0.23] - 2026-11-08
+
 ### Added
 - **Dictation window** (ADR-080, ADR-081). The microphone opens a window and waits. You tap its large microphone button and speak; a pause ends the recording, the window stays open, and you tap again for the next part — as often as you like, at your own pace. The window shows which language is being recognised and switches between your learning and your confident language with one tap, even between two parts; "Other language" offers the rest. It shows what has been heard so far. "Use text" puts it into the input field to check before translating; Cancel discards it. Portuguese, Turkish, Russian, Greek and Arabic can now be recognised too.
 

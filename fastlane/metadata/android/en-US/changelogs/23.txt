@@ -1,0 +1,3 @@
+New dictation window. Tap the microphone, then tap its large button and speak. A pause ends the recording, but the window stays open: tap again to go on, at your own pace. Switch between your two languages with one tap, even between two parts. "Use text" puts everything into the input field, so you can correct it before translating.
+
+Portuguese, Turkish, Russian, Greek and Arabic can now be dictated too.
