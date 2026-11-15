@@ -8,11 +8,12 @@ Unaweka lugha unayojifunza na lugha unayoimudu. Maandishi katika lugha unayojifu
 Kwa wanaojifunza
 * Hali ya kusahihisha: andika katika lugha unayojifunza na upate maandishi yako yamesahihishwa, pamoja na maelezo kwa kila badiliko. Maneno uliyoandika kwa lugha nyingine kwa sababu hukuyajua yanabadilishwa kwa maneno sahihi.
 * Maelezo ya maneno: maneno muhimu ya tafsiri, pamoja na aina ya neno na maana yake, yakielezwa katika lugha unayoimudu.
+* Kadi za kujifunzia kutoka kwenye vipendwa vyako: kila tafsiri fupi unayoipenda inakuwa kadi mbili, moja kwa kila upande. Unaandika jibu, na AI inakagua maana, si neno kwa neno — jibu sahihi kwa maneno mengine linahesabiwa sahihi, kosa dogo linahesabiwa karibu, pamoja na maelezo. Unaweza kubadilisha tathmini yake. Kadi unazozijua zinarudi mara chache, kama Anki; bila ufunguo wa API unajitathmini mwenyewe. Jozi moja ya lugha kwa kila raundi.
 * Chagua modeli kwa kila mtoa huduma — ya bei nafuu, au iliyo sahihi zaidi.
 
 Kuingiza maandishi
 * Andika au bandika.
-* Ongea, kwa kutumia utambuzi wa sauti wa kifaa chako.
+* Ongea katika dirisha la kuzungumza: unaanza kila sehemu mwenyewe, unapumzika kadri unavyohitaji, unabadilisha kati ya lugha zako mbili kwa kugonga mara moja, na unasahihisha maandishi kabla ya kuyatumia. Utambuzi unafanywa na huduma ya utambuzi wa sauti ya kifaa chako.
 * Soma maandishi kutoka kwenye picha na picha za skrini kwa Tesseract, ndani ya kifaa, pamoja na herufi za Kisiriliki. Data ya utambuzi kwa lugha zako mbili hupakuliwa mara moja kutoka mradi wa Tesseract; hakuna picha inayotoka kwenye kifaa.
 
 Pia
@@ -21,6 +22,6 @@ Pia
 * Kiolesura katika lugha 12: Kiingereza, Kijerumani, Kiswahili, Kifaransa, Kiholanzi, Kihispania, Kidenmaki, Kinorwe, Kiswidi, Kipolandi, Kiitaliano na Kibulgaria.
 
 Faragha
-Funguo zako za API zinabaki kwenye kifaa chako na zinatumwa tu kwa mtoa huduma uliyemchagua; maandishi yako pia yanatumwa kwake tu. Hakuna uchambuzi, hakuna ufuatiliaji — programu haikusanyi chochote.
+Funguo zako za API zinabaki kwenye kifaa chako na zinatumwa tu kwa mtoa huduma uliyemchagua. Maandishi yako — unayotafsiri, na majibu yako ya kadi — yanatumwa kwake tu. Tafsiri haina seva yake, haina uchambuzi wala ufuatiliaji. Historia na maendeleo yako ya kujifunza yanabaki kwenye kifaa chako.
 
 Programu huria chini ya leseni ya MIT.

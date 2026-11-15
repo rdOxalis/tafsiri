@@ -1,1 +1,1 @@
-AI translation with voice and image input — bring your own API key
+AI translation and flashcards for learners — bring your own API key
