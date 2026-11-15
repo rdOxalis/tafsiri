@@ -4,6 +4,8 @@
 
 <!-- Move items here when actively working on them -->
 
+- [ ] **First production release on Google Play** (production access granted 2026-11-15). Done so far: privacy policy updated for flashcards and the device's speech service; Data safety corrected — it said "no data collected", but text goes to the user's AI provider, a third party: now "Other user-generated content", collected, not shared (user-initiated, own provider and key), not ephemeral (providers keep requests by their own rules), required, for app functionality, encrypted in transit, no accounts, no deletion requests. Next: production release of 1.0.24 with countries selected, store screenshots updated in the console.
+
 - [ ] **Flashcards from the favourites** (ADR-082, planned 2026-11-08). Two cards per translation favourite, spaced repetition, the typed answer judged for meaning by the AI with a user override, self-grading when the AI is unavailable.
   - [x] Schema v4: `review_card` table + migration; scheduler (simplified SM-2) as pure functions with tests (2026-11-08: `lib/features/flashcards/`, `ReviewDao`; a card gets a row only once answered; orphans cleaned up on read so an undone delete keeps its progress)
   - [x] Answer check: system prompt, `VERDICT:`/`FEEDBACK:` parser, tests for all three providers (2026-11-08; `complete()` added to every provider)
