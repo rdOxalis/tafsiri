@@ -1,0 +1,1 @@
+Tafsiri no longer asks for access to your photos. Choosing a picture goes through Android's own picker, which hands over only the one picture you pick.

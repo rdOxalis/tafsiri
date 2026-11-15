@@ -1,5 +1,12 @@
 # Architecture Decision Records
 
+## ADR-084: No storage permission; the system picker hands over the image
+**Date:** 2026-11-15
+**Status:** Accepted
+**Context:** Submitting 1.0.24 for the first production release, Google Play's pre-review flagged `READ_MEDIA_IMAGES`: apps targeting Android 13+ may request it only when a system picker cannot provide the core feature. The permission, with `READ_EXTERNAL_STORAGE` up to API 32, dated from the ML Kit OCR of June (ADR-030) and was never needed: `image_picker` (Android 0.8.13) opens the system's picker (`ACTION_GET_CONTENT`), which grants access to the chosen image only, and takes photos through the camera intent, which needs `CAMERA` alone. Nothing in Tafsiri requests a storage permission at runtime.
+**Decision:** Remove both storage permissions from the manifest. The merged manifest of the release build now asks for `INTERNET`, `RECORD_AUDIO` and `CAMERA` only. Released as 1.0.25, which replaces 1.0.24 as the first production release.
+**Consequences:** The Play Console's "Photo and video permissions" declaration no longer applies. Choosing a picture from the gallery should behave as before; it has to be tried on a phone before the release goes out, since no test can show the system picker. The photo picker proper (`useAndroidPhotoPicker`) stays off: it would need `image_picker_android` as a direct dependency for a cosmetic difference.
+
 ## ADR-083: Flashcards by language pair, short favourites only, and the result's language stored
 **Date:** 2026-11-08
 **Status:** Accepted

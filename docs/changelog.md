@@ -9,6 +9,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.25] - 2026-11-15
+
+### Removed
+- **No more storage permission** (ADR-084). Tafsiri asked for access to your photos, a leftover from earlier image recognition. Choosing a picture goes through Android's own picker, which hands over just the one picture you choose, so the permission was never needed. Google Play requires apps not to ask for it in such a case.
+
+---
+
 ## [1.0.24] - 2026-11-08
 
 ### Added
