@@ -8,7 +8,10 @@ Tafsiri is an Android, Linux, Windows, MacOS app for AI-powered text translation
 
 ## Download
 
-<a href="https://github.com/rdOxalis/tafsiri/releases/latest"><img alt="Get it on GitHub" src="assets/badges/github.png" height="48"></a>
+<a href="https://play.google.com/store/apps/details?id=com.njerahouse.tafsiri"><img alt="Get it on Google Play" src="assets/badges/google-play.png" height="71" align="middle"></a>
+<a href="https://github.com/rdOxalis/tafsiri/releases/latest"><img alt="Get it on GitHub" src="assets/badges/github.png" height="48" align="middle"></a>
+
+<sub>Google Play and the Google Play logo are trademarks of Google LLC.</sub>
 
 ---
 
